@@ -1,0 +1,27 @@
+﻿@model Entity.Ciiu
+
+@{
+    ViewBag.Title = "Detalles del CIIU";
+}
+
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del CIIU</h3>
+
+    <a href="/Ciiu/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold">C&oacute;digo: </span> <span>@Model.Codigo</span>
+        </div>    
+        <div>
+            <span class="bold">Descripci&oacute;n: </span> <span>@Model.Nombre</span>
+        </div>  
+        <div>
+            <span class="bold">Revisi&oacute;n: </span> <span>@Model.Revision</span>
+        </div>  
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>   
+          
+    </div>
+</div>

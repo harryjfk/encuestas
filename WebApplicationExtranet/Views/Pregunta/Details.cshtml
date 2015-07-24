@@ -1,0 +1,47 @@
+﻿@using Entity
+@model Entity.Pregunta
+
+@{
+    ViewBag.Title = "Detalles de la Pregunta";
+}
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles de la Pregunta</h3>
+
+    <a href="/Pregunta/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        
+        <div>
+            <span class="bold">Texto: </span> <span>@Model.Texto</span>
+        </div>
+        <div>
+            <span class="bold">Tipo de Pregunta: </span> <span>@Model.TipoPregunta</span>
+        </div>
+        @if (@Model.TipoPregunta == TipoPregunta.Temporal)
+        {
+            <div>
+                <span class="bold">Comienza: </span> <span>@Model.Comienza.GetValueOrDefault().ToString("dd-MM-yyyy")</span>
+            </div>
+    <div>
+        <span class="bold">Intervalo: </span> <span>@Model.Intervalo mes(es)</span>
+    </div>
+        }
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>
+        <div>
+            <span class="bold">Posibles Respuestas: </span>
+            @if (Model.PosiblesRespuestas != null && Model.PosiblesRespuestas.Any() && Model.PosiblesRespuestas.FirstOrDefault().Valores.Any())
+            {
+                foreach (var val in Model.PosiblesRespuestas.FirstOrDefault().Valores)
+                {
+                    <span class="label label-primary">@val.Texto</span>
+                }
+            }
+            else
+            {
+                <span >Sin Asignar</span>
+            }
+        </div>
+    </div>
+</div>

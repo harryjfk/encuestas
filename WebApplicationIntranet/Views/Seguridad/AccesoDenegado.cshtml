@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Denegado</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar">
+        <div class="container">
+            <img alt="semci" src="~/Content/img/logo-apl.png" />
+        </div>
+    </div>
+
+    <div class="container"> 
+        <h1>Acceso Denegado</h1>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.navbar-inverse').empty();
+        });
+    </script>
+</body>
+</html>

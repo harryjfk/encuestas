@@ -1,0 +1,83 @@
+﻿@using System.Globalization
+@using Entity
+@using WebApplication.Models
+@model EncuestaEstadistica
+
+@{
+
+}
+
+@Scripts.Render("~/bundles/jquery")
+<a href="/EncuestaEstadistica/Encuestas/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+<div>
+    <div class="row">
+        <div class="col-md-5">
+            @*<img alt="semci" src="~/Content/img/logo-apl.png" />*@
+        </div>
+        <div class="col-md-12 text-align-center">
+            <h2>Estadística Industrial Mensual  @Model.Fecha.ToString("yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()</h2>
+            <h4>Información del mes @Model.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper()</h4>
+            <h5>Enviada el @Model.fecha_ultimo_envio.GetValueOrDefault().ToString("D", CultureInfo.GetCultureInfo("es"))</h5>
+            @if (Model.EstadoEncuesta == EstadoEncuesta.Validada)
+            {
+                <h5>Validada el @Model.fecha_validacion.GetValueOrDefault().ToString("D", CultureInfo.GetCultureInfo("es"))</h5>
+            }
+        </div>
+        <div class="col-md-12 text-align-center">
+            <span class="col-md-12">Esta encuesta tiene solo fines estadísticos amparada por</span>
+            <span class="col-md-12">D.L. Nº 604    --   D.S. 043-2001-PCM-Art. 97 del secreto estadístico y</span>
+            <span class="col-md-12">R.M. 343-2012    Ley Nº 29812     R.J. N° XXX -2014-INEI</span>
+            <span class="col-md-12">La información será utilizada en la elaboración de estadísticas del sector Manufactura en el País.</span>
+
+        </div>
+    </div>
+</div>
+
+
+@if (Model != null)
+{
+    using (Html.BeginForm("Enviar", "EncuestaEstadistica", FormMethod.Post, new { name = "encuestaEstadisticaForm" }))
+    {
+        @Html.HiddenFor(t => t.Id)
+        @*<h3 class="screen-title">
+                Encuesta de Manufactura Estad&iacute;stica
+                <span class="label label-primary">
+                    @Model.Fecha.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()
+                </span>
+            </h3>*@
+        <div id="cap1">
+            @{ Html.RenderPartial("_IdentificacionEstablecimientoV", Model); }
+        </div>
+        <div id="cap2">
+            @{ Html.RenderPartial("_VolumenProduccionMensualV", Model); }
+        </div>
+        <div id="cap3">
+            @{ Html.RenderPartial("_ValorProduccionEstablecimientoV", Model); }
+        </div>
+        <div id="cap4">
+            @{ Html.RenderPartial("_ValorVentasProductosEstablecimientoV", Model); }
+        </div>
+        <div id="cap5">
+            @{ Html.RenderPartial("_TrabajadoresDiasTrabajadosV", Model); }
+        </div>
+        <div id="cap6">
+            @{ Html.RenderPartial("_FactorProduccionV", Model); }
+        </div>
+
+    }
+}
+
+<div class="row text-align-center">
+    <h4 class="col-md-12">Agradecemos su valiosa colaboración con las estadísticas oficiales del país</h4>
+    <span class="col-md-12 text-align-left">El  formulario debera remitirse : </span>
+    <span class="col-md-12 text-align-left">Via WEB  en forma virtual a través de la ruta de acceso https://extranet.produce.gob.pe utilizando su clave de acceso</span>
+    <span class="col-md-12 text-align-left">Correo electronico : est_manufactura@produce.gob.pe</span>
+    <span class="col-md-12 text-align-left">Coordinaciones en Lima y Callao,  Ministerio de la Producción al 616-2222 anexos 1651,1636,1414,1839, 1832, 1847</span>
+    <span class="col-md-12 text-align-left">Regiones,  Direcciones Regionales de PRODUCE</span>
+    <span class="col-md-12 text-align-left"> La presentación tardía, el suministro de datos falsos y la negativa a dar información solicitada dan lugar a las sanciones establecidas en el Artículo 89° del D.S. N° 043-2001-PCM, publicado en El Peruano del día 25/04/2001 </span>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>

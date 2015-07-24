@@ -1,0 +1,136 @@
+﻿@model Entity.Contacto
+@{
+    Layout = "";
+}
+@using (Html.BeginForm("Create", "Contacto", FormMethod.Post, new { name = "addform" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+        }
+        <div class="form-group">
+            <label for="Nombre" class="col-md-4 control-label">Nombre</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.Nombre, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Nombre)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        <div class="form-group">
+            <label for="Telefono" class="col-md-4 control-label">Tel&eacute;fono</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.Telefono, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Telefono)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        <div class="form-group">
+            <label for="Correo" class="col-md-4 control-label">Correo</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.Correo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Correo)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        <div class="form-group">
+            <label for="Anexo" class="col-md-4 control-label">Anexo</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.Anexo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Anexo)
+            </div>
+           
+        </div>
+        <div class="form-group">
+            <label for="Celular" class="col-md-4 control-label">Celular</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.Celular, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Celular)
+            </div>
+            
+        </div>
+        <div class="form-group">
+            <label for="Cargo" class="col-md-4 control-label">Cargo</label>
+            <div class="col-md-7">
+                @{Html.RenderAction("GetDorpDown", "Cargo", new { id = (Model != null && Model.IdCargo != null) ? Model.IdCargo : 0, nombre = "IdCargo" });}
+
+                @Html.ValidationMessageFor(model => model.IdCargo)
+            </div>
+           
+        </div>
+        <div class="form-group">
+            <label for="Activado" class="col-md-4 control-label">Activado</label>
+            <div class="col-md-1">
+                @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                @Html.ValidationMessageFor(model => model.Activado)
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button[name='aceptarbtn']").click(function () {
+            var $elem = $(this);
+            $elem.addClass("disabled");
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/Contacto/CreatePost/",
+                data: $("form[name='addform']").serialize(),
+                success: function (data) {
+                    $elem.removeClass("disabled");
+                    if (data.Success) {
+                        $("#table-container").html(data.Data);
+                        $("#editItem").modal("hide");
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 100, statusText: 'caracteres restantes' });
+        $('#Telefono').maxlength({ events: ['blur'], slider: true, maxCharacters: 10, statusText: 'caracteres restantes' }); 
+        $('#Correo').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
+        $('#Anexo').maxlength({ events: ['blur'], slider: true, maxCharacters: 5, statusText: 'caracteres restantes' });
+        $('#Celular').maxlength({ events: ['blur'], slider: true, maxCharacters: 10, statusText: 'caracteres restantes' });
+
+    })
+</script>
+

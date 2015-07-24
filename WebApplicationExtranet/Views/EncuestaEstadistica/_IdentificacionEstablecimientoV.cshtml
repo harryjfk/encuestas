@@ -1,0 +1,191 @@
+﻿@model Entity.EncuestaEstadistica
+
+@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post,new{name="cap1form"}))
+    {*@
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Capítulo I: Identificación del establecimiento</div>
+    @Html.HiddenFor(t => t.IdEstablecimiento)
+    <div class="panel-body">
+        @*@if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger fade in">
+                    <button class="close" data-dismiss="alert">×</button>
+                    <strong>Alertas</strong>
+                    <div>
+                        @Html.ValidationSummary(false)
+                    </div>
+                </div>
+
+            }*@
+        @if (Model != null)
+        {
+            @Html.HiddenFor(t => t.Informante.Apellidos)
+            @Html.HiddenFor(t => t.Informante.Identificador)
+            @Html.HiddenFor(t => t.IdInformante)
+            <div>
+                <div>
+                    <div class="col-md-6 ">
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">Razón social</span>
+                           @if (string.IsNullOrEmpty(Model.Establecimiento.RazonSocial))
+                           {
+                               <span class="form-control">Sin Establecer</span>
+                           }
+                           else
+                           {
+                                @Html.Label("", Model.Establecimiento.RazonSocial, new { @class = "form-control reset-max-width" })
+                           }
+                        </div>
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">Identificador</span>
+                            @Html.Label("", Model.Establecimiento.IdentificadorInterno, new { @class = "form-control reset-max-width" })
+                        </div>
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">Dirección</span>
+                            @Html.Label("", Model.Establecimiento.Direccion, new { @class = "form-control reset-max-width" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">RUC</span>
+                            @Html.Label("", Model.Establecimiento.Ruc, new { @class = "form-control reset-max-width" })
+                        </div>
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">Nombre</span>
+                            @Html.Label("", Model.Establecimiento.Nombre, new { @class = "form-control reset-max-width" })
+                        </div>
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">Teléfono</span>
+                            @Html.Label("", Model.Establecimiento.Telefono, new { @class = "form-control reset-max-width" })
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-md-4">
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">Departamento</span>
+                            @{Html.RenderAction("GetNombreDepartamento", new { idDepartamento = Model.Establecimiento.IdDepartamento });}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">Provincia</span>
+                            @{Html.RenderAction("GetNombreProvincia", new { idProvincia = Model.Establecimiento.IdProvincia });}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group padding-5">
+                            <span class="input-group-addon">Distrito</span>
+                            @{Html.RenderAction("GetNombreDistrito", new { idDistrito = Model.Establecimiento.IdDistrito });}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="label label-primary">Datos del informante </h4>
+           
+           
+            <div id="divContacto" style="margin-top: 5px;display: none;">
+                
+            </div>
+             <div>
+
+                <div class="col-md-6">
+                    <div class="input-group padding-5">
+                        <span class="input-group-addon">Nombre</span>
+                        @if (Model.Establecimiento.ContactoPredeterminado != null && Model.Establecimiento.ContactoPredeterminado.Nombre != null)
+                        {
+                            <label class="form-control reset-max-width" >@Model.Establecimiento.ContactoPredeterminado.Nombre</label>
+                        }
+                        else
+                        {
+                            <label class="form-control reset-max-width" >Sin contacto predeterminado</label>
+                        }
+                    </div>
+                    <div class="input-group padding-5">
+                        <span class="input-group-addon">Cargo</span>
+                        @if (Model.Establecimiento.ContactoPredeterminado != null)
+                        {
+                            <label class="form-control reset-max-width">@Model.Establecimiento.ContactoPredeterminado.Cargo.Nombre</label>
+                        }
+                        else
+                        {
+                            <label class="form-control reset-max-width">Sin contacto predeterminado</label>
+                        }
+                    </div>
+                    <div class="input-group padding-5">
+                        <span class="input-group-addon">Teléfono</span>
+                        @if (Model.Establecimiento.ContactoPredeterminado != null && Model.Establecimiento.ContactoPredeterminado.Telefono != null)
+                        {
+                            <label  class="form-control reset-max-width" >@Model.Establecimiento.ContactoPredeterminado.Telefono</label>
+                        }
+                        else
+                        {
+                            <label  class="form-control reset-max-width" >Sin contacto predeterminado</label>
+                        }
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group padding-5">
+                        <span class="input-group-addon">Anexo</span>
+                        @if (Model.Establecimiento.ContactoPredeterminado != null && Model.Establecimiento.ContactoPredeterminado.Anexo != null)
+                        {
+                            <label  class="form-control reset-max-width" >@Model.Establecimiento.ContactoPredeterminado.Anexo</label>
+                        }
+                        else
+                        {
+                            <label  class="form-control reset-max-width" >Sin contacto predeterminado</label>
+                        }
+                    </div>
+                    <div class="input-group padding-5">
+                        <span class="input-group-addon">Celular</span>
+                        @if (Model.Establecimiento.ContactoPredeterminado != null && Model.Establecimiento.ContactoPredeterminado.Celular != null)
+                        {
+                            <label class="form-control reset-max-width">@Model.Establecimiento.ContactoPredeterminado.Celular</label>
+                        }
+                        else
+                        {
+                            <label  class="form-control reset-max-width" >Sin contacto predeterminado</label>
+                        }
+                    </div>
+                    <div class="input-group padding-5">
+                        <span class="input-group-addon">Correo</span>
+                        @if (Model.Establecimiento.ContactoPredeterminado != null && Model.Establecimiento.ContactoPredeterminado.Correo != null)
+                        {
+                            <label class="form-control reset-max-width">@Model.Establecimiento.ContactoPredeterminado.Correo</label>
+                        }
+                        else
+                        {
+                            <label  class="form-control reset-max-width" >Sin contacto predeterminado</label>
+                        }
+                    </div>
+                </div>
+
+
+
+                </div>
+
+        }
+    </div>
+</div>
+@*}*@
+
+@*MODALS*@
+<div class="modal fade" id="newContact" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Contactos</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+    })
+</script>

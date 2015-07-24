@@ -1,0 +1,209 @@
+﻿@model Tuple<Entity.Contacto, Domain.Query<Entity.Contacto>>
+
+@using (Html.BeginForm("Create", "Contacto", FormMethod.Post, new { name = "addformEnc" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default">
+        <div class="panel-heading"><a href="javascript:void(0);" id="btnAddnewContact">Adicione un nuevo Contacto</a></div>
+        <div id="divNuevoContactoBody" class="form-horizontal panel-body" style="display: none">
+
+
+            <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+                <strong>Alertas</strong>
+                <div>
+                    <ul></ul>
+                </div>
+            </div>
+
+
+
+            @if (Model != null && Model.Item1 != null)
+            {
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Nombre" class="col-md-4 control-label">Nombre</label>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(t => t.Item1.Nombre, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Item1.Nombre)
+                        </div>
+                        <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Telefono" class="col-md-4 control-label">Tel&eacute;fono</label>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(t => t.Item1.Telefono, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Item1.Telefono)
+                        </div>
+                        <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Correo" class="col-md-4 control-label">Correo</label>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(t => t.Item1.Correo, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Item1.Correo)
+                        </div>
+                        <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+                    </div>
+                    @*<div class="form-group">
+                        <label for="Activado" class="col-md-4 control-label">Activado</label>
+                        <div class="col-md-1">
+                            @Html.CheckBoxFor(t => t.Item1.Activado, new { @class = "form-control check-small" })
+                            @Html.ValidationMessageFor(model => model.Item1.Activado)
+                        </div>
+                    </div>*@
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Anexo" class="col-md-4 control-label">Anexo</label>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(t => t.Item1.Anexo, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Item1.Anexo)
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Celular" class="col-md-4 control-label">Celular</label>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(t => t.Item1.Celular, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Item1.Celular)
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Cargo" class="col-md-4 control-label">Cargo</label>
+                        <div class="col-md-7">
+                            @{ Html.RenderAction("GetDorpDown", "Cargo", new { id = (Model != null && Model.Item1.IdCargo != null) ? Model.Item1.IdCargo : 0, nombre = "IdCargo" }); }
+
+                            @Html.ValidationMessageFor(model => model.Item1.IdCargo)
+                        </div>
+
+                    </div>
+                </div>
+
+
+            }
+            else
+            {
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Nombre" class="col-md-4 control-label">Nombre</label>
+                        <div class="col-md-7">
+                            <input type="text" name="Nombre" class="form-control" />
+                        </div>
+                        <div class="col-md-1 txt-color-red"><span style="margin-left: 25px;">(*)</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Telefono" class="col-md-4 control-label">Tel&eacute;fono</label>
+                        <div class="col-md-7">
+                            <input type="text" name="Telefono" class="form-control" />
+                        </div>
+                        <div class="col-md-1 txt-color-red"><span style="margin-left: 25px;">(*)</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Correo" class="col-md-4 control-label">Correo</label>
+                        <div class="col-md-7">
+                            <input type="text" name="Correo" class="form-control" />
+                        </div>
+                        <div class="col-md-1 txt-color-red"><span style="margin-left: 25px;">(*)</span></div>
+                    </div>
+                    @*<div class="form-group">
+                        <label for="Activado" class="col-md-4 control-label">Activado</label>
+                        <div class="col-md-1">
+                            <input type="checkbox" name="Nombre" class="form-control" />
+                        </div>
+                    </div>*@
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Anexo" class="col-md-4 control-label">Anexo</label>
+                        <div class="col-md-7">
+                            <input type="text" name="Anexo" class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Celular" class="col-md-4 control-label">Celular</label>
+                        <div class="col-md-7">
+                            <input type="text" name="Celular" class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Cargo" class="col-md-4 control-label">Cargo</label>
+                        <div class="col-md-7">
+                            @{ Html.RenderAction("GetDorpDown", "Cargo", new { id = 0, nombre = "IdCargo" }); }
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+
+
+
+            <div style="color: white">_</div>
+            <div style="color: white">_</div>
+
+            <div class="modal-footer">
+                <button type="button" name="aceptarbtnEn" class="btn btn-primary" value="Aceptar">Adicionar</button>
+            </div>
+
+        </div>
+    </div>
+}
+<div>
+    @Html.Partial("_TableContactosEncuesta",Model.Item2)
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button[name='aceptarbtnEn']").click(function () {
+            var $elem = $(this);
+            $elem.addClass("disabled");
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/EncuestaEstadistica/CreateNuevoContacto/",
+                data: $("form[name='addformEnc']").serialize(),
+                success: function (data) {
+                    $elem.removeClass("disabled");
+                    if (data.Success) {
+                        $("#divContacto").html(data.Data);
+                        $("#editItem").modal("hide");
+                        $(document.body).removeClass('modal-open');
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        
+        $('#btnAddnewContact').click(function() {
+            $("#divNuevoContactoBody").toggle();
+        });
+    })
+</script>

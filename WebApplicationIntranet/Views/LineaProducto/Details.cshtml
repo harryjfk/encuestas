@@ -1,0 +1,41 @@
+﻿
+@model Entity.LineaProducto
+
+@{
+    ViewBag.Title = "Detalles de la Línea de Producto";
+}
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles de la Línea de Producto</h3>
+
+    <a href="/LineaProducto/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+	 <div>
+            <span class="bold">Nombre: </span> <span>@Model.Nombre</span>
+        </div>   
+        <div>
+            <span class="bold">Codigo: </span> <span>@Model.Codigo</span>
+        </div>
+        <div>
+            <span class="bold">CIIU: </span> <span>@Model.Ciiu.Nombre</span>
+        </div>
+		 <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+		 </div>  
+        <div>
+            <span class="bold">Unidades de Medida: </span>
+            @if (Model.UnidadesMedida != null && Model.UnidadesMedida.Count > 0)
+            {
+                foreach (var um in Model.UnidadesMedida)
+                {
+                    <span title="@um.Descripcion" class="label label-primary">@um.Abreviatura</span>
+                }
+            }
+            else
+            {
+                <span >Sin Asignar</span>
+            }
+        </div>  
+	
+    </div>
+</div>	

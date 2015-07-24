@@ -1,0 +1,2509 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CAT_CARGO">
+          <Key>
+            <PropertyRef Name="id_cargo" />
+          </Key>
+          <Property Name="id_cargo" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="nombre" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_CIIU">
+          <Key>
+            <PropertyRef Name="id_ciiu" />
+          </Key>
+          <Property Name="codigo" Type="varchar2" MaxLength="4" Nullable="false" />
+          <Property Name="nombre" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="revision" Type="varchar2" MaxLength="10" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_CONTACTO">
+          <Key>
+            <PropertyRef Name="id_contacto" />
+          </Key>
+          <Property Name="id_contacto" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="nombre" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="telefono" Type="varchar2" MaxLength="10" />
+          <Property Name="correo" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="anexo" Type="varchar2" MaxLength="5" />
+          <Property Name="celular" Type="varchar2" MaxLength="10" />
+          <Property Name="id_establecimiento" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_cargo" Type="number" Precision="11" Scale="0" />
+          <Property Name="id_usuario" Type="number" Precision="38" Scale="0" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_ENCUESTA">
+          <Key>
+            <PropertyRef Name="id_ENCUESTA" />
+          </Key>
+          <Property Name="id_ENCUESTA" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_establecimiento" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="estado_ENCUESTA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="justificacion" Type="varchar2" MaxLength="1000" />
+          <Property Name="id_analista" Type="number" Precision="38" Scale="0" />
+          <Property Name="id_informante" Type="number" Precision="38" Scale="0" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="fecha_ultimo_envio" Type="date" />
+        </EntityType>
+        <EntityType Name="CAT_ENCUESTA_EMPRESARIAL">
+          <Key>
+            <PropertyRef Name="id_ENCUESTA" />
+          </Key>
+          <Property Name="id_ENCUESTA" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAT_ENCUESTA_ESTADISTICA">
+          <Key>
+            <PropertyRef Name="id_ENCUESTA" />
+          </Key>
+          <Property Name="id_ENCUESTA" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="fecha_validacion" Type="date" />
+        </EntityType>
+        <EntityType Name="CAT_ESTAB_CIIU">
+          <Key>
+            <PropertyRef Name="id_establecimiento" />
+            <PropertyRef Name="id_ciiu" />
+          </Key>
+          <Property Name="id_establecimiento" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAT_ESTAB_LINEA_PROD">
+          <Key>
+            <PropertyRef Name="id_estab_linea_prod" />
+          </Key>
+          <Property Name="id_establecimiento" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_linea_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_estab_linea_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="fecha_creacion_informante" Type="date" />
+        </EntityType>
+        <EntityType Name="CAT_ESTABLECIMIENTO">
+          <Key>
+            <PropertyRef Name="id_establecimiento" />
+          </Key>
+          <Property Name="id_establecimiento" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="nombre" Type="varchar2" MaxLength="150" Nullable="false" />
+          <Property Name="identificador_interno" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="ubigeo" Type="varchar2" MaxLength="6" Nullable="false" />
+          <Property Name="razon_social" Type="varchar2" MaxLength="1000" />
+          <Property Name="ruc" Type="varchar2" MaxLength="11" Nullable="false" />
+          <Property Name="direccion" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="telefono" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="fax" Type="varchar2" MaxLength="100" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_analista" Type="number" Precision="38" Scale="0" />
+          <Property Name="id_informante" Type="number" Precision="38" Scale="0" />
+          <Property Name="observaciones" Type="varchar2" MaxLength="1000" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="tipo_establecimiento" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="CAT_FACTOR">
+          <Key>
+            <PropertyRef Name="id_factor" />
+          </Key>
+          <Property Name="id_factor" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="tipo_factor" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="nombre" Type="varchar2" MaxLength="150" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_FACTOR_FACTOR_PROD">
+          <Key>
+            <PropertyRef Name="id_factor" />
+            <PropertyRef Name="id_factor_produccion" />
+          </Key>
+          <Property Name="id_factor" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_factor_produccion" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAT_FACTOR_PRODUCCION">
+          <Key>
+            <PropertyRef Name="id_factor_produccion" />
+          </Key>
+          <Property Name="id_factor_produccion" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="produccion_normal" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="incremento" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="decrecimiento" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_LINEA_PROD_UNIDAD_MEDIDA">
+          <Key>
+            <PropertyRef Name="id_linea_prod" />
+            <PropertyRef Name="id_unidad_medida" />
+          </Key>
+          <Property Name="id_linea_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_unidad_medida" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAT_LINEA_PRODUCTO">
+          <Key>
+            <PropertyRef Name="id_linea_prod" />
+          </Key>
+          <Property Name="id_linea_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="nombre" Type="varchar2" MaxLength="250" Nullable="false" />
+          <Property Name="codigo" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_MATERIA_PROPIA">
+          <Key>
+            <PropertyRef Name="id_materia_propia" />
+          </Key>
+          <Property Name="id_materia_propia" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_linea_producto" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_unidad_medida" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="justificacion_valor_unitario" Type="varchar2" MaxLength="1000" />
+          <Property Name="justificacion_produccion" Type="varchar2" MaxLength="1000" />
+          <Property Name="valor unitario" Type="number" Precision="38" Scale="0" />
+          <Property Name="existencia" Type="number" Precision="38" Scale="0" />
+          <Property Name="produccion" Type="number" Precision="38" Scale="0" />
+          <Property Name="otros_ingresos" Type="number" Precision="38" Scale="0" />
+          <Property Name="ventas_pais" Type="number" Precision="38" Scale="0" />
+          <Property Name="ventas_extranjeros" Type="number" Precision="38" Scale="0" />
+          <Property Name="otras_salidas" Type="number" Precision="38" Scale="0" />
+          <Property Name="id_volumen_produccion" Type="number" Precision="11" Scale="0" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="justificacion_venta_pais" Type="varchar2" MaxLength="1000" />
+          <Property Name="justificacion_venta_extranjero" Type="varchar2" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="CAT_MATERIA_TERCEROS">
+          <Key>
+            <PropertyRef Name="id_materia_terceros" />
+          </Key>
+          <Property Name="id_materia_terceros" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_linea_producto" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_unidad_medida" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="unidad_produccion" Type="varchar2" MaxLength="1000" />
+          <Property Name="id_volumen_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="justificacion_produccion" Type="varchar2" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="CAT_POSIBLE_RESPUESTA">
+          <Key>
+            <PropertyRef Name="id_posible_respuesta" />
+          </Key>
+          <Property Name="id_posible_respuesta" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="tipo_posible_respuesta" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_pregunta" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAT_PREGUNTA">
+          <Key>
+            <PropertyRef Name="id_pregunta" />
+          </Key>
+          <Property Name="id_pregunta" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="texto " Type="varchar2" MaxLength="1000" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="comienza" Type="date" />
+          <Property Name="intervalo" Type="number" Precision="2" Scale="0" />
+          <Property Name="id_encuesta_empresarial" Type="number" Precision="11" Scale="0" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="orden" Type="number" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="todas_alternativas_oblig" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="CAT_TRABAJADORES_DIAS_TRAB">
+          <Key>
+            <PropertyRef Name="id_trabajadores_dias_trabajado" />
+          </Key>
+          <Property Name="id_trabajadores_dias_trabajado" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="dias_trabajados" Type="number" Precision="38" Scale="0" />
+          <Property Name="trabajadores_produccion" Type="number" Precision="38" Scale="0" />
+          <Property Name="administrativos_planta" Type="number" Precision="38" Scale="0" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_UNIDAD_MEDIDA">
+          <Key>
+            <PropertyRef Name="Id_unidad_medida" />
+          </Key>
+          <Property Name="descripcion" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="abreviatura" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="Id_unidad_medida" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_VALOR">
+          <Key>
+            <PropertyRef Name="id_valor" />
+          </Key>
+          <Property Name="id_valor" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="texto" Type="varchar2" MaxLength="1000" Nullable="false" />
+          <Property Name="numero" Type="number" Precision="38" Scale="0" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_posible_respuesta" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_pregunta" Type="number" Precision="11" Scale="0" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_VALOR_PROD_MENSUAL">
+          <Key>
+            <PropertyRef Name="id_valor_prod" />
+          </Key>
+          <Property Name="id_valor_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="prod_materia_propia" Type="number" Precision="38" Scale="0" />
+          <Property Name="prod_materia_terceros" Type="number" Precision="38" Scale="0" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_encuesta" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="justificacion_materia_prop" Type="varchar2" MaxLength="1000" />
+          <Property Name="justificacion_materia_terc" Type="varchar2" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="CAT_VENTA_SERV_MANUF">
+          <Key>
+            <PropertyRef Name="id_venta_servicio" />
+          </Key>
+          <Property Name="id_venta_servicio" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="venta" Type="number" Precision="38" Scale="0" />
+          <Property Name="id_venta_prod_estab" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="ciiu" Type="varchar2" MaxLength="4" Nullable="false" />
+          <Property Name="detalle" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="venta_extranjero" Type="number" Precision="38" Scale="0" />
+          <Property Name="justificacion_venta_pais" Type="varchar2" MaxLength="1000" />
+          <Property Name="justificacion_venta_ext" Type="varchar2" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="CAT_VENTAS_PAIS_EXTRANJERO">
+          <Key>
+            <PropertyRef Name="id_venta_pais_extranjero" />
+          </Key>
+          <Property Name="id_venta_pais_extranjero" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="venta_pais" Type="number" Precision="38" Scale="0" />
+          <Property Name="venta_extranjero" Type="number" Precision="38" Scale="0" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_ventas_producto" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="justificacion_venta_pais" Type="varchar2" MaxLength="1000" />
+          <Property Name="justificacion_venta_ext" Type="varchar2" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="CAT_VENTAS_PROD_ESTAB">
+          <Key>
+            <PropertyRef Name="id_ventas_prod" />
+          </Key>
+          <Property Name="id_ventas_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="brindo_servicios" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAT_VOLUMEN_PRODUCCION">
+          <Key>
+            <PropertyRef Name="id_volumen_prod" />
+          </Key>
+          <Property Name="id_volumen_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SEG_ROL">
+          <Key>
+            <PropertyRef Name="id_rol" />
+          </Key>
+          <Property Name="id_rol" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="nombre" Type="nclob" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SEG_USUARIO">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="login" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="creado" Type="date" />
+          <Property Name="modificado" Type="date" />
+          <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SEG_USUARIO_ROL">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="id_rol" />
+          </Key>
+          <Property Name="id_usuario" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_rol" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <Association Name="SYS_C007758">
+          <End Role="CAT_CARGO" Type="Self.CAT_CARGO" Multiplicity="0..1" />
+          <End Role="CAT_CONTACTO" Type="Self.CAT_CONTACTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CARGO">
+              <PropertyRef Name="id_cargo" />
+            </Principal>
+            <Dependent Role="CAT_CONTACTO">
+              <PropertyRef Name="id_cargo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007759">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_CONTACTO" Type="Self.CAT_CONTACTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_establecimiento" />
+            </Principal>
+            <Dependent Role="CAT_CONTACTO">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007760">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="0..1" />
+          <End Role="CAT_CONTACTO" Type="Self.CAT_CONTACTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="CAT_CONTACTO">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007761">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007762">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_establecimiento" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007763">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA">
+              <PropertyRef Name="id_informante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007764">
+          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA_EMPRESARIAL" Type="Self.CAT_ENCUESTA_EMPRESARIAL" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA_EMPRESARIAL">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007765">
+          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA_ESTADISTICA" Type="Self.CAT_ENCUESTA_ESTADISTICA" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA_ESTADISTICA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007766">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_CIIU" Type="Self.CAT_ESTAB_CIIU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007767">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_CIIU" Type="Self.CAT_ESTAB_CIIU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_establecimiento" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_CIIU">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007768">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_LINEA_PROD" Type="Self.CAT_ESTAB_LINEA_PROD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_establecimiento" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_LINEA_PROD">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007769">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Self.CAT_LINEA_PRODUCTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_LINEA_PROD" Type="Self.CAT_ESTAB_LINEA_PROD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="id_linea_prod" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_LINEA_PROD">
+              <PropertyRef Name="id_linea_prod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007770">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="0..1" />
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007771">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="0..1" />
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_informante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007772">
+          <End Role="CAT_FACTOR" Type="Self.CAT_FACTOR" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_FACTOR_FACTOR_PROD" Type="Self.CAT_FACTOR_FACTOR_PROD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_FACTOR">
+              <PropertyRef Name="id_factor" />
+            </Principal>
+            <Dependent Role="CAT_FACTOR_FACTOR_PROD">
+              <PropertyRef Name="id_factor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007773">
+          <End Role="CAT_FACTOR_PRODUCCION" Type="Self.CAT_FACTOR_PRODUCCION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_FACTOR_FACTOR_PROD" Type="Self.CAT_FACTOR_FACTOR_PROD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_FACTOR_PRODUCCION">
+              <PropertyRef Name="id_factor_produccion" />
+            </Principal>
+            <Dependent Role="CAT_FACTOR_FACTOR_PROD">
+              <PropertyRef Name="id_factor_produccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007774">
+          <End Role="CAT_ENCUESTA_ESTADISTICA" Type="Self.CAT_ENCUESTA_ESTADISTICA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_FACTOR_PRODUCCION" Type="Self.CAT_FACTOR_PRODUCCION" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA_ESTADISTICA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_FACTOR_PRODUCCION">
+              <PropertyRef Name="id_factor_produccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007775">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Self.CAT_LINEA_PRODUCTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_LINEA_PROD_UNIDAD_MEDIDA" Type="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="id_linea_prod" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PROD_UNIDAD_MEDIDA">
+              <PropertyRef Name="id_linea_prod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007776">
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Self.CAT_UNIDAD_MEDIDA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_LINEA_PROD_UNIDAD_MEDIDA" Type="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_UNIDAD_MEDIDA">
+              <PropertyRef Name="Id_unidad_medida" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PROD_UNIDAD_MEDIDA">
+              <PropertyRef Name="id_unidad_medida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007777">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_LINEA_PRODUCTO" Type="Self.CAT_LINEA_PRODUCTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007778">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Self.CAT_LINEA_PRODUCTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_PROPIA" Type="Self.CAT_MATERIA_PROPIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="id_linea_prod" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_PROPIA">
+              <PropertyRef Name="id_linea_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007779">
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Self.CAT_UNIDAD_MEDIDA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_PROPIA" Type="Self.CAT_MATERIA_PROPIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_UNIDAD_MEDIDA">
+              <PropertyRef Name="Id_unidad_medida" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_PROPIA">
+              <PropertyRef Name="id_unidad_medida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007780">
+          <End Role="CAT_VOLUMEN_PRODUCCION" Type="Self.CAT_VOLUMEN_PRODUCCION" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_PROPIA" Type="Self.CAT_MATERIA_PROPIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_VOLUMEN_PRODUCCION">
+              <PropertyRef Name="id_volumen_prod" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_PROPIA">
+              <PropertyRef Name="id_volumen_produccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007781">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Self.CAT_LINEA_PRODUCTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_TERCEROS" Type="Self.CAT_MATERIA_TERCEROS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="id_linea_prod" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_TERCEROS">
+              <PropertyRef Name="id_linea_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007782">
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Self.CAT_UNIDAD_MEDIDA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_TERCEROS" Type="Self.CAT_MATERIA_TERCEROS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_UNIDAD_MEDIDA">
+              <PropertyRef Name="Id_unidad_medida" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_TERCEROS">
+              <PropertyRef Name="id_unidad_medida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007783">
+          <End Role="CAT_VOLUMEN_PRODUCCION" Type="Self.CAT_VOLUMEN_PRODUCCION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_TERCEROS" Type="Self.CAT_MATERIA_TERCEROS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_VOLUMEN_PRODUCCION">
+              <PropertyRef Name="id_volumen_prod" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_TERCEROS">
+              <PropertyRef Name="id_volumen_prod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007784">
+          <End Role="CAT_PREGUNTA" Type="Self.CAT_PREGUNTA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_POSIBLE_RESPUESTA" Type="Self.CAT_POSIBLE_RESPUESTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_PREGUNTA">
+              <PropertyRef Name="id_pregunta" />
+            </Principal>
+            <Dependent Role="CAT_POSIBLE_RESPUESTA">
+              <PropertyRef Name="id_pregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007785">
+          <End Role="CAT_ENCUESTA_EMPRESARIAL" Type="Self.CAT_ENCUESTA_EMPRESARIAL" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_PREGUNTA" Type="Self.CAT_PREGUNTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA_EMPRESARIAL">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_PREGUNTA">
+              <PropertyRef Name="id_encuesta_empresarial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007786">
+          <End Role="CAT_ENCUESTA_ESTADISTICA" Type="Self.CAT_ENCUESTA_ESTADISTICA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_TRABAJADORES_DIAS_TRAB" Type="Self.CAT_TRABAJADORES_DIAS_TRAB" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA_ESTADISTICA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_TRABAJADORES_DIAS_TRAB">
+              <PropertyRef Name="id_trabajadores_dias_trabajado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007787">
+          <End Role="CAT_POSIBLE_RESPUESTA" Type="Self.CAT_POSIBLE_RESPUESTA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VALOR" Type="Self.CAT_VALOR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_POSIBLE_RESPUESTA">
+              <PropertyRef Name="id_posible_respuesta" />
+            </Principal>
+            <Dependent Role="CAT_VALOR">
+              <PropertyRef Name="id_posible_respuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007788">
+          <End Role="CAT_PREGUNTA" Type="Self.CAT_PREGUNTA" Multiplicity="0..1" />
+          <End Role="CAT_VALOR" Type="Self.CAT_VALOR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_PREGUNTA">
+              <PropertyRef Name="id_pregunta" />
+            </Principal>
+            <Dependent Role="CAT_VALOR">
+              <PropertyRef Name="id_pregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007789">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VALOR_PROD_MENSUAL" Type="Self.CAT_VALOR_PROD_MENSUAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_VALOR_PROD_MENSUAL">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007790">
+          <End Role="CAT_ENCUESTA_ESTADISTICA" Type="Self.CAT_ENCUESTA_ESTADISTICA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VALOR_PROD_MENSUAL" Type="Self.CAT_VALOR_PROD_MENSUAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA_ESTADISTICA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_VALOR_PROD_MENSUAL">
+              <PropertyRef Name="id_encuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007791">
+          <End Role="CAT_VENTAS_PROD_ESTAB" Type="Self.CAT_VENTAS_PROD_ESTAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VENTA_SERV_MANUF" Type="Self.CAT_VENTA_SERV_MANUF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_VENTAS_PROD_ESTAB">
+              <PropertyRef Name="id_ventas_prod" />
+            </Principal>
+            <Dependent Role="CAT_VENTA_SERV_MANUF">
+              <PropertyRef Name="id_venta_prod_estab" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007792">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VENTAS_PAIS_EXTRANJERO" Type="Self.CAT_VENTAS_PAIS_EXTRANJERO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_VENTAS_PAIS_EXTRANJERO">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007793">
+          <End Role="CAT_VENTAS_PROD_ESTAB" Type="Self.CAT_VENTAS_PROD_ESTAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VENTAS_PAIS_EXTRANJERO" Type="Self.CAT_VENTAS_PAIS_EXTRANJERO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_VENTAS_PROD_ESTAB">
+              <PropertyRef Name="id_ventas_prod" />
+            </Principal>
+            <Dependent Role="CAT_VENTAS_PAIS_EXTRANJERO">
+              <PropertyRef Name="id_ventas_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007794">
+          <End Role="CAT_ENCUESTA_ESTADISTICA" Type="Self.CAT_ENCUESTA_ESTADISTICA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VENTAS_PROD_ESTAB" Type="Self.CAT_VENTAS_PROD_ESTAB" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA_ESTADISTICA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_VENTAS_PROD_ESTAB">
+              <PropertyRef Name="id_ventas_prod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007795">
+          <End Role="CAT_ENCUESTA_ESTADISTICA" Type="Self.CAT_ENCUESTA_ESTADISTICA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VOLUMEN_PRODUCCION" Type="Self.CAT_VOLUMEN_PRODUCCION" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA_ESTADISTICA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_VOLUMEN_PRODUCCION">
+              <PropertyRef Name="id_volumen_prod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007796">
+          <End Role="SEG_ROL" Type="Self.SEG_ROL" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SEG_USUARIO_ROL" Type="Self.SEG_USUARIO_ROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_ROL">
+              <PropertyRef Name="id_rol" />
+            </Principal>
+            <Dependent Role="SEG_USUARIO_ROL">
+              <PropertyRef Name="id_rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C007797">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SEG_USUARIO_ROL" Type="Self.SEG_USUARIO_ROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="SEG_USUARIO_ROL">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO"  store:Type="Tables" />
+          <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU"  store:Type="Tables" />
+          <EntitySet Name="CAT_CONTACTO" EntityType="Self.CAT_CONTACTO"  store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA" EntityType="Self.CAT_ENCUESTA"  store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA_EMPRESARIAL" EntityType="Self.CAT_ENCUESTA_EMPRESARIAL"  store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA_ESTADISTICA" EntityType="Self.CAT_ENCUESTA_ESTADISTICA"  store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_CIIU" EntityType="Self.CAT_ESTAB_CIIU"  store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_LINEA_PROD" EntityType="Self.CAT_ESTAB_LINEA_PROD"  store:Type="Tables" />
+          <EntitySet Name="CAT_ESTABLECIMIENTO" EntityType="Self.CAT_ESTABLECIMIENTO"  store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR" EntityType="Self.CAT_FACTOR"  store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR_FACTOR_PROD" EntityType="Self.CAT_FACTOR_FACTOR_PROD"  store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR_PRODUCCION" EntityType="Self.CAT_FACTOR_PRODUCCION"  store:Type="Tables" />
+          <EntitySet Name="CAT_LINEA_PROD_UNIDAD_MEDIDA" EntityType="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA"  store:Type="Tables" />
+          <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Self.CAT_LINEA_PRODUCTO"  store:Type="Tables" />
+          <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Self.CAT_MATERIA_PROPIA"  store:Type="Tables" />
+          <EntitySet Name="CAT_MATERIA_TERCEROS" EntityType="Self.CAT_MATERIA_TERCEROS"  store:Type="Tables" />
+          <EntitySet Name="CAT_POSIBLE_RESPUESTA" EntityType="Self.CAT_POSIBLE_RESPUESTA"  store:Type="Tables" />
+          <EntitySet Name="CAT_PREGUNTA" EntityType="Self.CAT_PREGUNTA"  store:Type="Tables" />
+          <EntitySet Name="CAT_TRABAJADORES_DIAS_TRAB" EntityType="Self.CAT_TRABAJADORES_DIAS_TRAB"  store:Type="Tables" />
+          <EntitySet Name="CAT_UNIDAD_MEDIDA" EntityType="Self.CAT_UNIDAD_MEDIDA"  store:Type="Tables" />
+          <EntitySet Name="CAT_VALOR" EntityType="Self.CAT_VALOR"  store:Type="Tables" />
+          <EntitySet Name="CAT_VALOR_PROD_MENSUAL" EntityType="Self.CAT_VALOR_PROD_MENSUAL"  store:Type="Tables" />
+          <EntitySet Name="CAT_VENTA_SERV_MANUF" EntityType="Self.CAT_VENTA_SERV_MANUF"  store:Type="Tables" />
+          <EntitySet Name="CAT_VENTAS_PAIS_EXTRANJERO" EntityType="Self.CAT_VENTAS_PAIS_EXTRANJERO"  store:Type="Tables" />
+          <EntitySet Name="CAT_VENTAS_PROD_ESTAB" EntityType="Self.CAT_VENTAS_PROD_ESTAB"  store:Type="Tables" />
+          <EntitySet Name="CAT_VOLUMEN_PRODUCCION" EntityType="Self.CAT_VOLUMEN_PRODUCCION"  store:Type="Tables" />
+          <EntitySet Name="SEG_ROL" EntityType="Self.SEG_ROL"  store:Type="Tables" />
+          <EntitySet Name="SEG_USUARIO" EntityType="Self.SEG_USUARIO"  store:Type="Tables" />
+          <EntitySet Name="SEG_USUARIO_ROL" EntityType="Self.SEG_USUARIO_ROL"  store:Type="Tables" />
+          <AssociationSet Name="SYS_C007758" Association="Self.SYS_C007758">
+            <End Role="CAT_CARGO" EntitySet="CAT_CARGO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007759" Association="Self.SYS_C007759">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007760" Association="Self.SYS_C007760">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007761" Association="Self.SYS_C007761">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007762" Association="Self.SYS_C007762">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007763" Association="Self.SYS_C007763">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007764" Association="Self.SYS_C007764">
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_ENCUESTA_EMPRESARIAL" EntitySet="CAT_ENCUESTA_EMPRESARIAL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007765" Association="Self.SYS_C007765">
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007766" Association="Self.SYS_C007766">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_ESTAB_CIIU" EntitySet="CAT_ESTAB_CIIU" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007767" Association="Self.SYS_C007767">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_CIIU" EntitySet="CAT_ESTAB_CIIU" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007768" Association="Self.SYS_C007768">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007769" Association="Self.SYS_C007769">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007770" Association="Self.SYS_C007770">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007771" Association="Self.SYS_C007771">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007772" Association="Self.SYS_C007772">
+            <End Role="CAT_FACTOR" EntitySet="CAT_FACTOR" />
+            <End Role="CAT_FACTOR_FACTOR_PROD" EntitySet="CAT_FACTOR_FACTOR_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007773" Association="Self.SYS_C007773">
+            <End Role="CAT_FACTOR_PRODUCCION" EntitySet="CAT_FACTOR_PRODUCCION" />
+            <End Role="CAT_FACTOR_FACTOR_PROD" EntitySet="CAT_FACTOR_FACTOR_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007774" Association="Self.SYS_C007774">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_FACTOR_PRODUCCION" EntitySet="CAT_FACTOR_PRODUCCION" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007775" Association="Self.SYS_C007775">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_LINEA_PROD_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PROD_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007776" Association="Self.SYS_C007776">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_LINEA_PROD_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PROD_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007777" Association="Self.SYS_C007777">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007778" Association="Self.SYS_C007778">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007779" Association="Self.SYS_C007779">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007780" Association="Self.SYS_C007780">
+            <End Role="CAT_VOLUMEN_PRODUCCION" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007781" Association="Self.SYS_C007781">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007782" Association="Self.SYS_C007782">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007783" Association="Self.SYS_C007783">
+            <End Role="CAT_VOLUMEN_PRODUCCION" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007784" Association="Self.SYS_C007784">
+            <End Role="CAT_PREGUNTA" EntitySet="CAT_PREGUNTA" />
+            <End Role="CAT_POSIBLE_RESPUESTA" EntitySet="CAT_POSIBLE_RESPUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007785" Association="Self.SYS_C007785">
+            <End Role="CAT_ENCUESTA_EMPRESARIAL" EntitySet="CAT_ENCUESTA_EMPRESARIAL" />
+            <End Role="CAT_PREGUNTA" EntitySet="CAT_PREGUNTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007786" Association="Self.SYS_C007786">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_TRABAJADORES_DIAS_TRAB" EntitySet="CAT_TRABAJADORES_DIAS_TRAB" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007787" Association="Self.SYS_C007787">
+            <End Role="CAT_POSIBLE_RESPUESTA" EntitySet="CAT_POSIBLE_RESPUESTA" />
+            <End Role="CAT_VALOR" EntitySet="CAT_VALOR" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007788" Association="Self.SYS_C007788">
+            <End Role="CAT_PREGUNTA" EntitySet="CAT_PREGUNTA" />
+            <End Role="CAT_VALOR" EntitySet="CAT_VALOR" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007789" Association="Self.SYS_C007789">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_VALOR_PROD_MENSUAL" EntitySet="CAT_VALOR_PROD_MENSUAL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007790" Association="Self.SYS_C007790">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_VALOR_PROD_MENSUAL" EntitySet="CAT_VALOR_PROD_MENSUAL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007791" Association="Self.SYS_C007791">
+            <End Role="CAT_VENTAS_PROD_ESTAB" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+            <End Role="CAT_VENTA_SERV_MANUF" EntitySet="CAT_VENTA_SERV_MANUF" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007792" Association="Self.SYS_C007792">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_VENTAS_PAIS_EXTRANJERO" EntitySet="CAT_VENTAS_PAIS_EXTRANJERO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007793" Association="Self.SYS_C007793">
+            <End Role="CAT_VENTAS_PROD_ESTAB" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+            <End Role="CAT_VENTAS_PAIS_EXTRANJERO" EntitySet="CAT_VENTAS_PAIS_EXTRANJERO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007794" Association="Self.SYS_C007794">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_VENTAS_PROD_ESTAB" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007795" Association="Self.SYS_C007795">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_VOLUMEN_PRODUCCION" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007796" Association="Self.SYS_C007796">
+            <End Role="SEG_ROL" EntitySet="SEG_ROL" />
+            <End Role="SEG_USUARIO_ROL" EntitySet="SEG_USUARIO_ROL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007797" Association="Self.SYS_C007797">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="SEG_USUARIO_ROL" EntitySet="SEG_USUARIO_ROL" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cargo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Contactos" Relationship="Self.SYS_C0012596" FromRole="CAT_CARGO" ToRole="CAT_CONTACTO" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Ciiu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="Revision" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="LineasProducto" Relationship="Self.SYS_C0012614" FromRole="CAT_CIIU" ToRole="CAT_LINEA_PRODUCTO" />
+          <NavigationProperty Name="Establecimientos" Relationship="Self.CAT_ESTAB_CIIU" FromRole="CAT_CIIU" ToRole="CAT_ESTABLECIMIENTO" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CAT_VALOR_PROD_MENSUAL" Relationship="Model.FK_VALOR_PROD_CIIU" FromRole="Ciiu" ToRole="ValorProduccion" />
+          <NavigationProperty Name="CAT_VENTAS_PAIS_EXTRANJERO" Relationship="Model.FK_VENTA_PAIS_EXTR_CIIU" FromRole="Ciiu" ToRole="VentasPaisExtranjero" />
+        </EntityType>
+        <EntityType Name="Contacto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Anexo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Celular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdEstablecimiento" Type="Int64" Nullable="false" />
+          <Property Name="IdCargo" Type="Int64" />
+          <Property Name="IdUsuario" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="Cargo" Relationship="Self.SYS_C0012596" FromRole="CAT_CONTACTO" ToRole="CAT_CARGO" />
+          <NavigationProperty Name="Establecimiento" Relationship="Self.SYS_C0012597" FromRole="CAT_CONTACTO" ToRole="CAT_ESTABLECIMIENTO" />
+          <NavigationProperty Name="Usuario" Relationship="Self.SYS_C0012598" FromRole="CAT_CONTACTO" ToRole="SEG_USUARIO" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Encuesta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="IdEstablecimiento" Type="Int64" Nullable="false" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" />
+          <Property Name="Justificacion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IdAnalista" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IdInformante" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="Analista" Relationship="Self.SYS_C0012599" FromRole="CAT_ENCUESTA" ToRole="SEG_USUARIO" />
+          <NavigationProperty Name="Establecimiento" Relationship="Self.SYS_C0012600" FromRole="CAT_ENCUESTA" ToRole="CAT_ESTABLECIMIENTO" />
+          <NavigationProperty Name="Informante" Relationship="Self.SYS_C0012601" FromRole="CAT_ENCUESTA" ToRole="SEG_USUARIO" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_ultimo_envio" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="EncuestaEmpresarial" BaseType="Model.Encuesta">
+          <NavigationProperty Name="Preguntas" Relationship="Model.SYS_C0012622" FromRole="EncuestaEmpresarial" ToRole="Pregunta" />
+          <NavigationProperty Name="CAT_PREGUNTA" Relationship="Model.FK_PREGUNTA_ENCUESTA" FromRole="EncuestaEmpresarial" ToRole="Pregunta" />
+        </EntityType>
+        <EntityType Name="EncuestaEstadistica" BaseType="Model.Encuesta">
+          <NavigationProperty Name="TrabajadoresDiasTrabajados" Relationship="Model.SYS_C0012623" FromRole="EncuestaEstadistica" ToRole="TrabajadoresDiasTrabajados" />
+          <NavigationProperty Name="VentasProductosEstablecimiento" Relationship="Model.SYS_C0012629" FromRole="EncuestaEstadistica" ToRole="VentasProductosEstablecimiento" />
+          <NavigationProperty Name="VolumenProduccionMensual" Relationship="Model.SYS_C0012630" FromRole="EncuestaEstadistica" ToRole="VolumenProduccion" />
+          <NavigationProperty Name="CAT_VALOR_PROD_MENSUAL" Relationship="Model.FK_VALORPROD_ENCUESTA" FromRole="EncuestaEstadistica" ToRole="ValorProduccion" />
+          <NavigationProperty Name="FactorProduccion" Relationship="Model.SYS_C0014682" FromRole="EncuestaEstadistica" ToRole="CAT_FACTOR_PRODUCCION" />
+          <Property Name="fecha_validacion" Type="DateTime" />
+          </EntityType>
+        <EntityType Name="LineaProductoEstablecimiento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="IdEstablecimiento" Type="Int64" Nullable="false" />
+          <Property Name="IdLineaProducto" Type="Int64" Nullable="false" />
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Establecimiento" Relationship="Self.SYS_C0012606" FromRole="CAT_ESTAB_LINEA_PROD" ToRole="CAT_ESTABLECIMIENTO" />
+          <NavigationProperty Name="LineaProducto" Relationship="Self.SYS_C0012607" FromRole="CAT_ESTAB_LINEA_PROD" ToRole="CAT_LINEA_PRODUCTO" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_creacion_informante" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="Establecimiento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdentificadorInterno" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ubigeo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RazonSocial" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Ruc" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IdAnalista" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IdInformante" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="Observaciones" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Contactos" Relationship="Self.SYS_C0012597" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_CONTACTO" />
+          <NavigationProperty Name="Encuestas" Relationship="Self.SYS_C0012600" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_ENCUESTA" />
+          <NavigationProperty Name="LineasProductoEstablecimiento" Relationship="Self.SYS_C0012606" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_ESTAB_LINEA_PROD" />
+          <NavigationProperty Name="Analista" Relationship="Self.SYS_C0012608" FromRole="CAT_ESTABLECIMIENTO" ToRole="SEG_USUARIO" />
+          <NavigationProperty Name="Informante" Relationship="Self.SYS_C0012609" FromRole="CAT_ESTABLECIMIENTO" ToRole="SEG_USUARIO" />
+          <NavigationProperty Name="Ciius" Relationship="Self.CAT_ESTAB_CIIU" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_CIIU" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tipo_establecimiento" Type="Decimal" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="LineaProducto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Codigo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IdCiiu" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Ciiu" Relationship="Self.SYS_C0012614" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_CIIU" />
+          <NavigationProperty Name="LineasProductoEstablecimiento" Relationship="Self.SYS_C0012607" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_ESTAB_LINEA_PROD" />
+          <NavigationProperty Name="MateriasPropia" Relationship="Self.SYS_C0012615" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_MATERIA_PROPIA" />
+          <NavigationProperty Name="MateriaTercero" Relationship="Self.SYS_C0012618" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_MATERIA_TERCEROS" />
+          <NavigationProperty Name="UnidadesMedida" Relationship="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_UNIDAD_MEDIDA" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MateriaPropia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="IdLineaProducto" Type="Int64" Nullable="false" />
+          <Property Name="IdUnidadMedida" Type="Int64" Nullable="false" />
+          <Property Name="JustificacionValorUnitario" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="JustificacionProduccion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="ValorUnitario" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="Existencia" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="Produccion" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="OtrosIngresos" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="VentasPais" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="VentasExtranjero" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="OtrasSalidas" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IdVolumenProduccion" Type="Int64" />
+          <NavigationProperty Name="LineaProducto" Relationship="Self.SYS_C0012615" FromRole="CAT_MATERIA_PROPIA" ToRole="CAT_LINEA_PRODUCTO" />
+          <NavigationProperty Name="UnidadMedida" Relationship="Self.SYS_C0012616" FromRole="CAT_MATERIA_PROPIA" ToRole="CAT_UNIDAD_MEDIDA" />
+          <NavigationProperty Name="VolumenProduccion" Relationship="Self.SYS_C0012617" FromRole="CAT_MATERIA_PROPIA" ToRole="CAT_VOLUMEN_PRODUCCION" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="justificacion_venta_pais" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="justificacion_venta_extranjero" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MateriaTerceros">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="IdLineaProducto" Type="Int64" Nullable="false" />
+          <Property Name="IdUnidadMedida" Type="Int64" Nullable="false" />
+          <Property Name="UnidadProduccion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IdVolumenProduccion" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="LineaProducto" Relationship="Self.SYS_C0012618" FromRole="CAT_MATERIA_TERCEROS" ToRole="CAT_LINEA_PRODUCTO" />
+          <NavigationProperty Name="UnidadMedida" Relationship="Self.SYS_C0012619" FromRole="CAT_MATERIA_TERCEROS" ToRole="CAT_UNIDAD_MEDIDA" />
+          <NavigationProperty Name="VolumenProduccion" Relationship="Self.SYS_C0012620" FromRole="CAT_MATERIA_TERCEROS" ToRole="CAT_VOLUMEN_PRODUCCION" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="justificacion_produccion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PosibleRespuesta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="TipoPosibleRespuesta" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IdPregunta" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Pregunta" Relationship="Self.SYS_C0012621" FromRole="CAT_POSIBLE_RESPUESTA" ToRole="CAT_PREGUNTA" />
+          <NavigationProperty Name="Valores" Relationship="Self.SYS_C0012624" FromRole="CAT_POSIBLE_RESPUESTA" ToRole="CAT_VALOR" />
+        </EntityType>
+        <EntityType Name="Pregunta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Texto" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="Comienza" Type="DateTime" />
+          <Property Name="Intervalo" Type="Int16" />
+          <Property Name="IdEncuestaEmpresarial" Type="Int64" />
+          <NavigationProperty Name="PosiblesRespuestas" Relationship="Self.SYS_C0012621" FromRole="CAT_PREGUNTA" ToRole="CAT_POSIBLE_RESPUESTA" />
+          <NavigationProperty Name="Valores" Relationship="Self.SYS_C0012625" FromRole="CAT_PREGUNTA" ToRole="CAT_VALOR" />
+          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C0012622" FromRole="Pregunta" ToRole="EncuestaEmpresarial" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="orden" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="CAT_ENCUESTA_EMPRESARIAL" Relationship="Model.FK_PREGUNTA_ENCUESTA" FromRole="Pregunta" ToRole="EncuestaEmpresarial" />
+          <Property Name="todas_alternativas_oblig" Type="Decimal" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="TrabajadoresDiasTrabajados">
+          <Key>
+            <PropertyRef Name="Identificador" />
+          </Key>
+          <Property Name="Identificador" Type="Int64" Nullable="false" />
+          <Property Name="DiasTrabajados" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="TrabajadoresProduccion" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="AdministrativosPlanta" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C0012623" FromRole="TrabajadoresDiasTrabajados" ToRole="EncuestaEstadistica" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UnidadMedida">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Descripcion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Abreviatura" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="MateriasPropias" Relationship="Self.SYS_C0012616" FromRole="CAT_UNIDAD_MEDIDA" ToRole="CAT_MATERIA_PROPIA" />
+          <NavigationProperty Name="MateriasTerceros" Relationship="Self.SYS_C0012619" FromRole="CAT_UNIDAD_MEDIDA" ToRole="CAT_MATERIA_TERCEROS" />
+          <NavigationProperty Name="LineasProducto" Relationship="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" FromRole="CAT_UNIDAD_MEDIDA" ToRole="CAT_LINEA_PRODUCTO" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Valor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Texto" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Numero" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IdPosibleRespuesta" Type="Int64" Nullable="false" />
+          <Property Name="IdPregunta" Type="Int64" />
+          <NavigationProperty Name="PosibleRespuesta" Relationship="Self.SYS_C0012624" FromRole="CAT_VALOR" ToRole="CAT_POSIBLE_RESPUESTA" />
+          <NavigationProperty Name="Pregunta" Relationship="Self.SYS_C0012625" FromRole="CAT_VALOR" ToRole="CAT_PREGUNTA" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ValorProduccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="ProductosMateriaPropia" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ProductosMateriaTerceros" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="id_ciiu" Type="Int64" Nullable="false" />
+          <Property Name="id_encuesta" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="CAT_CIIU" Relationship="Model.FK_VALOR_PROD_CIIU" FromRole="ValorProduccion" ToRole="Ciiu" />
+          <NavigationProperty Name="CAT_ENCUESTA_ESTADISTICA" Relationship="Model.FK_VALORPROD_ENCUESTA" FromRole="ValorProduccion" ToRole="EncuestaEstadistica" />
+          <Property Name="justificacion_materia_prop" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="justificacion_materia_terc" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VentasServicioManufactura">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="IdVentaProductoestablecimiento" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="VentaProductoEstablecimiento" Relationship="Self.SYS_C0012627" FromRole="CAT_VENTA_SERV_MANUF" ToRole="CAT_VENTAS_PROD_ESTAB" />
+          <Property Name="venta" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ciiu" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="detalle" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="venta_extranjero" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="justificacion_venta_pais" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="justificacion_venta_ext" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VentasPaisExtranjero">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="VentaPais" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="VentaExtranjero" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="id_ciiu" Type="Int64" Nullable="false" />
+          <Property Name="id_ventas_producto" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="CAT_CIIU" Relationship="Model.FK_VENTA_PAIS_EXTR_CIIU" FromRole="VentasPaisExtranjero" ToRole="Ciiu" />
+          <NavigationProperty Name="CAT_VENTAS_PROD_ESTAB" Relationship="Model.FK_VENTA_PAIS_EXT_VENTA_PROD" FromRole="VentasPaisExtranjero" ToRole="VentasProductosEstablecimientos" />
+          <Property Name="justificacion_venta_pais" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="justificacion_venta_ext" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VentasProductosEstablecimientos">
+          <Key>
+            <PropertyRef Name="Identificador" />
+          </Key>
+          <Property Name="Identificador" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="VentasServicioManufactura" Relationship="Self.SYS_C0012627" FromRole="CAT_VENTAS_PROD_ESTAB" ToRole="CAT_VENTA_SERV_MANUF" />
+          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C0012629" FromRole="VentasProductosEstablecimiento" ToRole="EncuestaEstadistica" />
+          <NavigationProperty Name="CAT_VENTAS_PAIS_EXTRANJERO" Relationship="Model.FK_VENTA_PAIS_EXT_VENTA_PROD" FromRole="VentasProductosEstablecimientos" ToRole="VentasPaisExtranjero" />
+          <Property Name="brindo_servicios" Type="Int16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VolumenProduccion">
+          <Key>
+            <PropertyRef Name="Identificador" />
+          </Key>
+          <Property Name="Identificador" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="MateriasPropia" Relationship="Self.SYS_C0012617" FromRole="CAT_VOLUMEN_PRODUCCION" ToRole="CAT_MATERIA_PROPIA" />
+          <NavigationProperty Name="MateriasTercero" Relationship="Self.SYS_C0012620" FromRole="CAT_VOLUMEN_PRODUCCION" ToRole="CAT_MATERIA_TERCEROS" />
+          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C0012630" FromRole="VolumenProduccion" ToRole="EncuestaEstadistica" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Estado" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.SEG_USUARIO_ROL" FromRole="SEG_ROL" ToRole="SEG_USUARIO" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Identificador" />
+          </Key>
+          <Property Name="Identificador" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Contactos" Relationship="Self.SYS_C0012598" FromRole="SEG_USUARIO" ToRole="CAT_CONTACTO" />
+          <NavigationProperty Name="EncuestasAsAnalista" Relationship="Self.SYS_C0012599" FromRole="SEG_USUARIO" ToRole="CAT_ENCUESTA" />
+          <NavigationProperty Name="EncuestasAsInformante" Relationship="Self.SYS_C0012601" FromRole="SEG_USUARIO" ToRole="CAT_ENCUESTA" />
+          <NavigationProperty Name="EstablecimientosAnalista" Relationship="Self.SYS_C0012608" FromRole="SEG_USUARIO" ToRole="CAT_ESTABLECIMIENTO" />
+          <NavigationProperty Name="EstablecimientosInformante" Relationship="Self.SYS_C0012609" FromRole="SEG_USUARIO" ToRole="CAT_ESTABLECIMIENTO" />
+          <NavigationProperty Name="Roles" Relationship="Self.SEG_USUARIO_ROL" FromRole="SEG_USUARIO" ToRole="SEG_ROL" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="SYS_C0012596">
+          <End Role="CAT_CARGO" Type="Model.Cargo" Multiplicity="0..1" />
+          <End Role="CAT_CONTACTO" Type="Model.Contacto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CARGO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_CONTACTO">
+              <PropertyRef Name="IdCargo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012614">
+          <End Role="CAT_CIIU" Type="Model.Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_LINEA_PRODUCTO" Type="Model.LineaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="IdCiiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012597">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_CONTACTO" Type="Model.Contacto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_CONTACTO">
+              <PropertyRef Name="IdEstablecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012598">
+          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1" />
+          <End Role="CAT_CONTACTO" Type="Model.Contacto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_CONTACTO">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012599">
+          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA" Type="Model.Encuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA">
+              <PropertyRef Name="IdAnalista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012600">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA" Type="Model.Encuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA">
+              <PropertyRef Name="IdEstablecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012601">
+          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA" Type="Model.Encuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA">
+              <PropertyRef Name="IdInformante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012606">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_LINEA_PROD" Type="Model.LineaProductoEstablecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_LINEA_PROD">
+              <PropertyRef Name="IdEstablecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012607">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Model.LineaProducto" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_LINEA_PROD" Type="Model.LineaProductoEstablecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_LINEA_PROD">
+              <PropertyRef Name="IdLineaProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012608">
+          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1" />
+          <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="IdAnalista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012609">
+          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1" />
+          <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="IdInformante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012615">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Model.LineaProducto" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_PROPIA" Type="Model.MateriaPropia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_PROPIA">
+              <PropertyRef Name="IdLineaProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012618">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Model.LineaProducto" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_TERCEROS" Type="Model.MateriaTerceros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_TERCEROS">
+              <PropertyRef Name="IdLineaProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012616">
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Model.UnidadMedida" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_PROPIA" Type="Model.MateriaPropia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_UNIDAD_MEDIDA">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_PROPIA">
+              <PropertyRef Name="IdUnidadMedida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012617">
+          <End Role="CAT_VOLUMEN_PRODUCCION" Type="Model.VolumenProduccion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_PROPIA" Type="Model.MateriaPropia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_VOLUMEN_PRODUCCION">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_PROPIA">
+              <PropertyRef Name="IdVolumenProduccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012619">
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Model.UnidadMedida" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_TERCEROS" Type="Model.MateriaTerceros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_UNIDAD_MEDIDA">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_TERCEROS">
+              <PropertyRef Name="IdUnidadMedida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012620">
+          <End Role="CAT_VOLUMEN_PRODUCCION" Type="Model.VolumenProduccion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_MATERIA_TERCEROS" Type="Model.MateriaTerceros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_VOLUMEN_PRODUCCION">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_MATERIA_TERCEROS">
+              <PropertyRef Name="IdVolumenProduccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012621">
+          <End Role="CAT_PREGUNTA" Type="Model.Pregunta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_POSIBLE_RESPUESTA" Type="Model.PosibleRespuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_PREGUNTA">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_POSIBLE_RESPUESTA">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012624">
+          <End Role="CAT_POSIBLE_RESPUESTA" Type="Model.PosibleRespuesta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VALOR" Type="Model.Valor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_POSIBLE_RESPUESTA">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_VALOR">
+              <PropertyRef Name="IdPosibleRespuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012625">
+          <End Role="CAT_PREGUNTA" Type="Model.Pregunta" Multiplicity="0..1" />
+          <End Role="CAT_VALOR" Type="Model.Valor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_PREGUNTA">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_VALOR">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012627">
+          <End Role="CAT_VENTAS_PROD_ESTAB" Type="Model.VentasProductosEstablecimientos" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_VENTA_SERV_MANUF" Type="Model.VentasServicioManufactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_VENTAS_PROD_ESTAB">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_VENTA_SERV_MANUF">
+              <PropertyRef Name="IdVentaProductoestablecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CAT_ESTAB_CIIU">
+          <End Role="CAT_CIIU" Type="Model.Ciiu" Multiplicity="*" />
+          <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="*" />
+        </Association>
+        <Association Name="CAT_LINEA_PROD_UNIDAD_MEDIDA">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Model.LineaProducto" Multiplicity="*" />
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Model.UnidadMedida" Multiplicity="*" />
+        </Association>
+        <Association Name="SEG_USUARIO_ROL">
+          <End Role="SEG_ROL" Type="Model.Rol" Multiplicity="*" />
+          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CAT_CARGO" EntityType="Model.Cargo" />
+          <EntitySet Name="CAT_CIIU" EntityType="Model.Ciiu" />
+          <EntitySet Name="CAT_CONTACTO" EntityType="Model.Contacto" />
+          <EntitySet Name="CAT_ENCUESTA" EntityType="Model.Encuesta" />
+          <EntitySet Name="CAT_ESTAB_LINEA_PROD" EntityType="Model.LineaProductoEstablecimiento" />
+          <EntitySet Name="CAT_ESTABLECIMIENTO" EntityType="Model.Establecimiento" />
+          <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Model.LineaProducto" />
+          <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Model.MateriaPropia" />
+          <EntitySet Name="CAT_MATERIA_TERCEROS" EntityType="Model.MateriaTerceros" />
+          <EntitySet Name="CAT_POSIBLE_RESPUESTA" EntityType="Model.PosibleRespuesta" />
+          <EntitySet Name="CAT_PREGUNTA" EntityType="Model.Pregunta" />
+          <EntitySet Name="CAT_TRABAJADORES_DIAS_TRAB" EntityType="Model.TrabajadoresDiasTrabajados" />
+          <EntitySet Name="CAT_UNIDAD_MEDIDA" EntityType="Model.UnidadMedida" />
+          <EntitySet Name="CAT_VALOR" EntityType="Model.Valor" />
+          <EntitySet Name="CAT_VALOR_PROD_MENSUAL" EntityType="Model.ValorProduccion" />
+          <EntitySet Name="CAT_VENTA_SERV_MANUF" EntityType="Model.VentasServicioManufactura" />
+          <EntitySet Name="CAT_VENTAS_PAIS_EXTRANJERO" EntityType="Model.VentasPaisExtranjero" />
+          <EntitySet Name="CAT_VENTAS_PROD_ESTAB" EntityType="Model.VentasProductosEstablecimientos" />
+          <EntitySet Name="CAT_VOLUMEN_PRODUCCION" EntityType="Model.VolumenProduccion" />
+          <EntitySet Name="SEG_ROL" EntityType="Model.Rol" />
+          <EntitySet Name="SEG_USUARIO" EntityType="Model.Usuario" />
+          <AssociationSet Name="SYS_C0012596" Association="Self.SYS_C0012596">
+            <End Role="CAT_CARGO" EntitySet="CAT_CARGO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012614" Association="Self.SYS_C0012614">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012597" Association="Self.SYS_C0012597">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012598" Association="Self.SYS_C0012598">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012599" Association="Self.SYS_C0012599">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012600" Association="Self.SYS_C0012600">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012601" Association="Self.SYS_C0012601">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012606" Association="Self.SYS_C0012606">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012607" Association="Self.SYS_C0012607">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012608" Association="Self.SYS_C0012608">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012609" Association="Self.SYS_C0012609">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012615" Association="Self.SYS_C0012615">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012618" Association="Self.SYS_C0012618">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012616" Association="Self.SYS_C0012616">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012617" Association="Self.SYS_C0012617">
+            <End Role="CAT_VOLUMEN_PRODUCCION" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012619" Association="Self.SYS_C0012619">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012620" Association="Self.SYS_C0012620">
+            <End Role="CAT_VOLUMEN_PRODUCCION" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012621" Association="Self.SYS_C0012621">
+            <End Role="CAT_PREGUNTA" EntitySet="CAT_PREGUNTA" />
+            <End Role="CAT_POSIBLE_RESPUESTA" EntitySet="CAT_POSIBLE_RESPUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012624" Association="Self.SYS_C0012624">
+            <End Role="CAT_POSIBLE_RESPUESTA" EntitySet="CAT_POSIBLE_RESPUESTA" />
+            <End Role="CAT_VALOR" EntitySet="CAT_VALOR" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012625" Association="Self.SYS_C0012625">
+            <End Role="CAT_PREGUNTA" EntitySet="CAT_PREGUNTA" />
+            <End Role="CAT_VALOR" EntitySet="CAT_VALOR" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012627" Association="Self.SYS_C0012627">
+            <End Role="CAT_VENTAS_PROD_ESTAB" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+            <End Role="CAT_VENTA_SERV_MANUF" EntitySet="CAT_VENTA_SERV_MANUF" />
+          </AssociationSet>
+          <AssociationSet Name="CAT_ESTAB_CIIU" Association="Self.CAT_ESTAB_CIIU">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="CAT_LINEA_PROD_UNIDAD_MEDIDA" Association="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SEG_USUARIO_ROL" Association="Self.SEG_USUARIO_ROL">
+            <End Role="SEG_ROL" EntitySet="SEG_ROL" />
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012622" Association="Model.SYS_C0012622">
+            <End Role="EncuestaEmpresarial" EntitySet="CAT_ENCUESTA" />
+            <End Role="Pregunta" EntitySet="CAT_PREGUNTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012623" Association="Model.SYS_C0012623">
+            <End Role="EncuestaEstadistica" EntitySet="CAT_ENCUESTA" />
+            <End Role="TrabajadoresDiasTrabajados" EntitySet="CAT_TRABAJADORES_DIAS_TRAB" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012629" Association="Model.SYS_C0012629">
+            <End Role="EncuestaEstadistica" EntitySet="CAT_ENCUESTA" />
+            <End Role="VentasProductosEstablecimiento" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0012630" Association="Model.SYS_C0012630">
+            <End Role="EncuestaEstadistica" EntitySet="CAT_ENCUESTA" />
+            <End Role="VolumenProduccion" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VALOR_PROD_CIIU" Association="Model.FK_VALOR_PROD_CIIU">
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+            <End Role="ValorProduccion" EntitySet="CAT_VALOR_PROD_MENSUAL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VALORPROD_ENCUESTA" Association="Model.FK_VALORPROD_ENCUESTA">
+            <End Role="EncuestaEstadistica" EntitySet="CAT_ENCUESTA" />
+            <End Role="ValorProduccion" EntitySet="CAT_VALOR_PROD_MENSUAL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VENTA_PAIS_EXTR_CIIU" Association="Model.FK_VENTA_PAIS_EXTR_CIIU">
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+            <End Role="VentasPaisExtranjero" EntitySet="CAT_VENTAS_PAIS_EXTRANJERO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VENTA_PAIS_EXT_VENTA_PROD" Association="Model.FK_VENTA_PAIS_EXT_VENTA_PROD">
+            <End Role="VentasProductosEstablecimientos" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+            <End Role="VentasPaisExtranjero" EntitySet="CAT_VENTAS_PAIS_EXTRANJERO" />
+          </AssociationSet>
+          <EntitySet Name="CAT_FACTOR" EntityType="Model.Factor" />
+          <EntitySet Name="CAT_FACTOR_PRODUCCION" EntityType="Model.FactorProducccion" />
+          <AssociationSet Name="SYS_C0014682" Association="Model.SYS_C0014682">
+            <End Role="EncuestaEstadistica" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_FACTOR_PRODUCCION" EntitySet="CAT_FACTOR_PRODUCCION" />
+          </AssociationSet>
+          <AssociationSet Name="CAT_FACTOR_FACTOR_PROD" Association="Model.CAT_FACTOR_FACTOR_PROD">
+            <End Role="CAT_FACTOR_PRODUCCION" EntitySet="CAT_FACTOR_PRODUCCION" />
+            <End Role="Factor" EntitySet="CAT_FACTOR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PREGUNTA_ENCUESTA" Association="Model.FK_PREGUNTA_ENCUESTA">
+            <End Role="EncuestaEmpresarial" EntitySet="CAT_ENCUESTA" />
+            <End Role="Pregunta" EntitySet="CAT_PREGUNTA" />
+          </AssociationSet>
+          </EntityContainer>
+        <Association Name="SYS_C0012622">
+          <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.Pregunta" Role="Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncuestaEmpresarial">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="IdEncuestaEmpresarial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012623">
+          <End Type="Model.EncuestaEstadistica" Role="EncuestaEstadistica" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.TrabajadoresDiasTrabajados" Role="TrabajadoresDiasTrabajados" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="EncuestaEstadistica">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrabajadoresDiasTrabajados">
+              <PropertyRef Name="Identificador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012629">
+          <End Type="Model.EncuestaEstadistica" Role="EncuestaEstadistica" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.VentasProductosEstablecimientos" Role="VentasProductosEstablecimiento" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="EncuestaEstadistica">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VentasProductosEstablecimiento">
+              <PropertyRef Name="Identificador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0012630">
+          <End Type="Model.EncuestaEstadistica" Role="EncuestaEstadistica" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.VolumenProduccion" Role="VolumenProduccion" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="EncuestaEstadistica">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VolumenProduccion">
+              <PropertyRef Name="Identificador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VALOR_PROD_CIIU">
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.ValorProduccion" Role="ValorProduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciiu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ValorProduccion">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VALORPROD_ENCUESTA">
+          <End Type="Model.EncuestaEstadistica" Role="EncuestaEstadistica" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.ValorProduccion" Role="ValorProduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncuestaEstadistica">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ValorProduccion">
+              <PropertyRef Name="id_encuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VENTA_PAIS_EXTR_CIIU">
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.VentasPaisExtranjero" Role="VentasPaisExtranjero" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciiu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VentasPaisExtranjero">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VENTA_PAIS_EXT_VENTA_PROD">
+          <End Type="Model.VentasProductosEstablecimientos" Role="VentasProductosEstablecimientos" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.VentasPaisExtranjero" Role="VentasPaisExtranjero" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VentasProductosEstablecimientos">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="VentasPaisExtranjero">
+              <PropertyRef Name="id_ventas_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Factor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Tipo" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CAT_FACTOR_PRODUCCION1" Relationship="Model.CAT_FACTOR_FACTOR_PROD" FromRole="Factor" ToRole="CAT_FACTOR_PRODUCCION" />
+        </EntityType>
+        <EntityType Name="FactorProducccion">
+          <Key>
+            <PropertyRef Name="Identificador" />
+          </Key>
+          <Property Name="Identificador" Type="Int64" Nullable="false" />
+          <Property Name="ProduccionNormal" Type="Int16" Nullable="false" />
+          <Property Name="Incremento" Type="Int16" Nullable="false" />
+          <Property Name="Decrecimiento" Type="Int16" Nullable="false" />
+          <Property Name="creado" Type="DateTime" />
+          <Property Name="modificado" Type="DateTime" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C0014682" FromRole="CAT_FACTOR_PRODUCCION" ToRole="EncuestaEstadistica" />
+          <NavigationProperty Name="CAT_FACTOR1" Relationship="Model.CAT_FACTOR_FACTOR_PROD" FromRole="CAT_FACTOR_PRODUCCION" ToRole="Factor" />
+        </EntityType>
+        <Association Name="SYS_C0014682">
+          <End Type="Model.EncuestaEstadistica" Role="EncuestaEstadistica" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.FactorProducccion" Role="CAT_FACTOR_PRODUCCION" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="EncuestaEstadistica">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_FACTOR_PRODUCCION">
+              <PropertyRef Name="Identificador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CAT_FACTOR_FACTOR_PROD">
+          <End Type="Model.FactorProducccion" Role="CAT_FACTOR_PRODUCCION" Multiplicity="*" />
+          <End Type="Model.Factor" Role="Factor" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_PREGUNTA_ENCUESTA">
+          <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.Pregunta" Role="Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncuestaEmpresarial">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="IdEncuestaEmpresarial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="CAT_CARGO">
+            <EntityTypeMapping TypeName="Model.Cargo">
+              <MappingFragment StoreEntitySet="CAT_CARGO">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_cargo" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_CIIU">
+            <EntityTypeMapping TypeName="Model.Ciiu">
+              <MappingFragment StoreEntitySet="CAT_CIIU">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Codigo" ColumnName="codigo" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+                <ScalarProperty Name="Revision" ColumnName="revision" />
+                <ScalarProperty Name="Id" ColumnName="id_ciiu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_CONTACTO">
+            <EntityTypeMapping TypeName="Model.Contacto">
+              <MappingFragment StoreEntitySet="CAT_CONTACTO">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_contacto" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Telefono" ColumnName="telefono" />
+                <ScalarProperty Name="Correo" ColumnName="correo" />
+                <ScalarProperty Name="Anexo" ColumnName="anexo" />
+                <ScalarProperty Name="Celular" ColumnName="celular" />
+                <ScalarProperty Name="IdEstablecimiento" ColumnName="id_establecimiento" />
+                <ScalarProperty Name="IdCargo" ColumnName="id_cargo" />
+                <ScalarProperty Name="IdUsuario" ColumnName="id_usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_ENCUESTA">
+            <EntityTypeMapping TypeName="IsTypeOf(Model.Encuesta)">
+              <MappingFragment StoreEntitySet="CAT_ENCUESTA">
+                <ScalarProperty Name="fecha_ultimo_envio" ColumnName="fecha_ultimo_envio" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_ENCUESTA" />
+                <ScalarProperty Name="IdInformante" ColumnName="id_informante" />
+                <ScalarProperty Name="IdAnalista" ColumnName="id_analista" />
+                <ScalarProperty Name="Justificacion" ColumnName="justificacion" />
+                <ScalarProperty Name="Fecha" ColumnName="fecha" />
+                <ScalarProperty Name="Estado" ColumnName="estado_ENCUESTA" />
+                <ScalarProperty Name="IdEstablecimiento" ColumnName="id_establecimiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(Model.EncuestaEstadistica)">
+              <MappingFragment StoreEntitySet="CAT_ENCUESTA_ESTADISTICA" >
+                <ScalarProperty Name="fecha_validacion" ColumnName="fecha_validacion" />
+                <ScalarProperty Name="Id" ColumnName="id_ENCUESTA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(Model.EncuestaEmpresarial)">
+              <MappingFragment StoreEntitySet="CAT_ENCUESTA_EMPRESARIAL" >
+                <ScalarProperty Name="Id" ColumnName="id_ENCUESTA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_ESTAB_LINEA_PROD">
+            <EntityTypeMapping TypeName="Model.LineaProductoEstablecimiento">
+              <MappingFragment StoreEntitySet="CAT_ESTAB_LINEA_PROD">
+                <ScalarProperty Name="fecha_creacion_informante" ColumnName="fecha_creacion_informante" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="IdEstablecimiento" ColumnName="id_establecimiento" />
+                <ScalarProperty Name="IdLineaProducto" ColumnName="id_linea_prod" />
+                <ScalarProperty Name="Id" ColumnName="id_estab_linea_prod" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_ESTABLECIMIENTO">
+            <EntityTypeMapping TypeName="Model.Establecimiento">
+              <MappingFragment StoreEntitySet="CAT_ESTABLECIMIENTO">
+                <ScalarProperty Name="tipo_establecimiento" ColumnName="tipo_establecimiento" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_establecimiento" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="IdentificadorInterno" ColumnName="identificador_interno" />
+                <ScalarProperty Name="Ubigeo" ColumnName="ubigeo" />
+                <ScalarProperty Name="RazonSocial" ColumnName="razon_social" />
+                <ScalarProperty Name="Ruc" ColumnName="ruc" />
+                <ScalarProperty Name="Direccion" ColumnName="direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="telefono" />
+                <ScalarProperty Name="Fax" ColumnName="fax" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+                <ScalarProperty Name="IdAnalista" ColumnName="id_analista" />
+                <ScalarProperty Name="IdInformante" ColumnName="id_informante" />
+                <ScalarProperty Name="Observaciones" ColumnName="observaciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_LINEA_PRODUCTO">
+            <EntityTypeMapping TypeName="Model.LineaProducto">
+              <MappingFragment StoreEntitySet="CAT_LINEA_PRODUCTO">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_linea_prod" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Codigo" ColumnName="codigo" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+                <ScalarProperty Name="IdCiiu" ColumnName="id_ciiu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_MATERIA_PROPIA">
+            <EntityTypeMapping TypeName="Model.MateriaPropia">
+              <MappingFragment StoreEntitySet="CAT_MATERIA_PROPIA">
+                <ScalarProperty Name="justificacion_venta_extranjero" ColumnName="justificacion_venta_extranjero" />
+                <ScalarProperty Name="justificacion_venta_pais" ColumnName="justificacion_venta_pais" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_materia_propia" />
+                <ScalarProperty Name="IdLineaProducto" ColumnName="id_linea_producto" />
+                <ScalarProperty Name="IdUnidadMedida" ColumnName="id_unidad_medida" />
+                <ScalarProperty Name="JustificacionValorUnitario" ColumnName="justificacion_valor_unitario" />
+                <ScalarProperty Name="JustificacionProduccion" ColumnName="justificacion_produccion" />
+                <ScalarProperty Name="ValorUnitario" ColumnName="valor unitario" />
+                <ScalarProperty Name="Existencia" ColumnName="existencia" />
+                <ScalarProperty Name="Produccion" ColumnName="produccion" />
+                <ScalarProperty Name="OtrosIngresos" ColumnName="otros_ingresos" />
+                <ScalarProperty Name="VentasPais" ColumnName="ventas_pais" />
+                <ScalarProperty Name="VentasExtranjero" ColumnName="ventas_extranjeros" />
+                <ScalarProperty Name="OtrasSalidas" ColumnName="otras_salidas" />
+                <ScalarProperty Name="IdVolumenProduccion" ColumnName="id_volumen_produccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_MATERIA_TERCEROS">
+            <EntityTypeMapping TypeName="Model.MateriaTerceros">
+              <MappingFragment StoreEntitySet="CAT_MATERIA_TERCEROS">
+                <ScalarProperty Name="justificacion_produccion" ColumnName="justificacion_produccion" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_materia_terceros" />
+                <ScalarProperty Name="IdLineaProducto" ColumnName="id_linea_producto" />
+                <ScalarProperty Name="IdUnidadMedida" ColumnName="id_unidad_medida" />
+                <ScalarProperty Name="UnidadProduccion" ColumnName="unidad_produccion" />
+                <ScalarProperty Name="IdVolumenProduccion" ColumnName="id_volumen_prod" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_POSIBLE_RESPUESTA">
+            <EntityTypeMapping TypeName="Model.PosibleRespuesta">
+              <MappingFragment StoreEntitySet="CAT_POSIBLE_RESPUESTA">
+                <ScalarProperty Name="Id" ColumnName="id_posible_respuesta" />
+                <ScalarProperty Name="TipoPosibleRespuesta" ColumnName="tipo_posible_respuesta" />
+                <ScalarProperty Name="IdPregunta" ColumnName="id_pregunta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_PREGUNTA">
+            <EntityTypeMapping TypeName="Model.Pregunta">
+              <MappingFragment StoreEntitySet="CAT_PREGUNTA">
+                <ScalarProperty Name="todas_alternativas_oblig" ColumnName="todas_alternativas_oblig" />
+                <ScalarProperty Name="IdEncuestaEmpresarial" ColumnName="id_encuesta_empresarial" />
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_pregunta" />
+                <ScalarProperty Name="Texto" ColumnName="texto " />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+                <ScalarProperty Name="Comienza" ColumnName="comienza" />
+                <ScalarProperty Name="Intervalo" ColumnName="intervalo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_TRABAJADORES_DIAS_TRAB">
+            <EntityTypeMapping TypeName="Model.TrabajadoresDiasTrabajados">
+              <MappingFragment StoreEntitySet="CAT_TRABAJADORES_DIAS_TRAB">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Identificador" ColumnName="id_trabajadores_dias_trabajado" />
+                <ScalarProperty Name="DiasTrabajados" ColumnName="dias_trabajados" />
+                <ScalarProperty Name="TrabajadoresProduccion" ColumnName="trabajadores_produccion" />
+                <ScalarProperty Name="AdministrativosPlanta" ColumnName="administrativos_planta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_VALOR">
+            <EntityTypeMapping TypeName="Model.Valor">
+              <MappingFragment StoreEntitySet="CAT_VALOR">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Id" ColumnName="id_valor" />
+                <ScalarProperty Name="Texto" ColumnName="texto" />
+                <ScalarProperty Name="Numero" ColumnName="numero" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+                <ScalarProperty Name="IdPosibleRespuesta" ColumnName="id_posible_respuesta" />
+                <ScalarProperty Name="IdPregunta" ColumnName="id_pregunta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_VALOR_PROD_MENSUAL">
+            <EntityTypeMapping TypeName="Model.ValorProduccion">
+              <MappingFragment StoreEntitySet="CAT_VALOR_PROD_MENSUAL">
+                <ScalarProperty Name="justificacion_materia_terc" ColumnName="justificacion_materia_terc" />
+                <ScalarProperty Name="justificacion_materia_prop" ColumnName="justificacion_materia_prop" />
+                <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
+                <ScalarProperty Name="id_ciiu" ColumnName="id_ciiu" />
+                <ScalarProperty Name="Id" ColumnName="id_valor_prod" />
+                <ScalarProperty Name="ProductosMateriaPropia" ColumnName="prod_materia_propia" />
+                <ScalarProperty Name="ProductosMateriaTerceros" ColumnName="prod_materia_terceros" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_VENTA_SERV_MANUF">
+            <EntityTypeMapping TypeName="Model.VentasServicioManufactura">
+              <MappingFragment StoreEntitySet="CAT_VENTA_SERV_MANUF">
+                <ScalarProperty Name="justificacion_venta_ext" ColumnName="justificacion_venta_ext" />
+                <ScalarProperty Name="justificacion_venta_pais" ColumnName="justificacion_venta_pais" />
+                <ScalarProperty Name="venta_extranjero" ColumnName="venta_extranjero" />
+                <ScalarProperty Name="detalle" ColumnName="detalle" />
+                <ScalarProperty Name="ciiu" ColumnName="ciiu" />
+                <ScalarProperty Name="venta" ColumnName="venta" />
+                <ScalarProperty Name="Id" ColumnName="id_venta_servicio" />
+                <ScalarProperty Name="IdVentaProductoestablecimiento" ColumnName="id_venta_prod_estab" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_VENTAS_PAIS_EXTRANJERO">
+            <EntityTypeMapping TypeName="Model.VentasPaisExtranjero">
+              <MappingFragment StoreEntitySet="CAT_VENTAS_PAIS_EXTRANJERO">
+                <ScalarProperty Name="justificacion_venta_ext" ColumnName="justificacion_venta_ext" />
+                <ScalarProperty Name="justificacion_venta_pais" ColumnName="justificacion_venta_pais" />
+                <ScalarProperty Name="id_ventas_producto" ColumnName="id_ventas_producto" />
+                <ScalarProperty Name="id_ciiu" ColumnName="id_ciiu" />
+                <ScalarProperty Name="Id" ColumnName="id_venta_pais_extranjero" />
+                <ScalarProperty Name="VentaPais" ColumnName="venta_pais" />
+                <ScalarProperty Name="VentaExtranjero" ColumnName="venta_extranjero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_VENTAS_PROD_ESTAB">
+            <EntityTypeMapping TypeName="Model.VentasProductosEstablecimientos">
+              <MappingFragment StoreEntitySet="CAT_VENTAS_PROD_ESTAB">
+                <ScalarProperty Name="brindo_servicios" ColumnName="brindo_servicios" />
+                <ScalarProperty Name="Identificador" ColumnName="id_ventas_prod" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_VOLUMEN_PRODUCCION">
+            <EntityTypeMapping TypeName="Model.VolumenProduccion">
+              <MappingFragment StoreEntitySet="CAT_VOLUMEN_PRODUCCION">
+                <ScalarProperty Name="Identificador" ColumnName="id_volumen_prod" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SEG_ROL">
+            <EntityTypeMapping TypeName="Model.Rol">
+              <MappingFragment StoreEntitySet="SEG_ROL">
+                <ScalarProperty Name="Id" ColumnName="id_rol" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SEG_USUARIO">
+            <EntityTypeMapping TypeName="Model.Usuario">
+              <MappingFragment StoreEntitySet="SEG_USUARIO">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Identificador" ColumnName="id_usuario" />
+                <ScalarProperty Name="Login" ColumnName="login" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CAT_ESTAB_CIIU" TypeName="Model.CAT_ESTAB_CIIU" StoreEntitySet="CAT_ESTAB_CIIU">
+            <EndProperty Name="CAT_CIIU">
+              <ScalarProperty Name="Id" ColumnName="id_ciiu" />
+            </EndProperty>
+            <EndProperty Name="CAT_ESTABLECIMIENTO">
+              <ScalarProperty Name="Id" ColumnName="id_establecimiento" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CAT_LINEA_PROD_UNIDAD_MEDIDA" TypeName="Model.CAT_LINEA_PROD_UNIDAD_MEDIDA" StoreEntitySet="CAT_LINEA_PROD_UNIDAD_MEDIDA">
+            <EndProperty Name="CAT_LINEA_PRODUCTO">
+              <ScalarProperty Name="Id" ColumnName="id_linea_prod" />
+            </EndProperty>
+            <EndProperty Name="CAT_UNIDAD_MEDIDA">
+              <ScalarProperty Name="Id" ColumnName="id_unidad_medida" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="SEG_USUARIO_ROL" TypeName="Model.SEG_USUARIO_ROL" StoreEntitySet="SEG_USUARIO_ROL">
+            <EndProperty Name="SEG_ROL">
+              <ScalarProperty Name="Id" ColumnName="id_rol" />
+            </EndProperty>
+            <EndProperty Name="SEG_USUARIO">
+              <ScalarProperty Name="Identificador" ColumnName="id_usuario" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="CAT_UNIDAD_MEDIDA">
+            <EntityTypeMapping TypeName="IsTypeOf(Model.UnidadMedida)">
+              <MappingFragment StoreEntitySet="CAT_UNIDAD_MEDIDA" >
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+                <ScalarProperty Name="Id" ColumnName="Id_unidad_medida" />
+                <ScalarProperty Name="Abreviatura" ColumnName="abreviatura" />
+                <ScalarProperty Name="Descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_FACTOR">
+            <EntityTypeMapping TypeName="Model.Factor">
+              <MappingFragment StoreEntitySet="CAT_FACTOR">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Estado" ColumnName="estado" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Tipo" ColumnName="tipo_factor" />
+                <ScalarProperty Name="Id" ColumnName="id_factor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_FACTOR_PRODUCCION">
+            <EntityTypeMapping TypeName="Model.FactorProducccion">
+              <MappingFragment StoreEntitySet="CAT_FACTOR_PRODUCCION">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="modificado" ColumnName="modificado" />
+                <ScalarProperty Name="creado" ColumnName="creado" />
+                <ScalarProperty Name="Decrecimiento" ColumnName="decrecimiento" />
+                <ScalarProperty Name="Incremento" ColumnName="incremento" />
+                <ScalarProperty Name="ProduccionNormal" ColumnName="produccion_normal" />
+                <ScalarProperty Name="Identificador" ColumnName="id_factor_produccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CAT_FACTOR_FACTOR_PROD" TypeName="Model.CAT_FACTOR_FACTOR_PROD" StoreEntitySet="CAT_FACTOR_FACTOR_PROD">
+            <EndProperty Name="Factor">
+              <ScalarProperty Name="Id" ColumnName="id_factor" />
+            </EndProperty>
+            <EndProperty Name="CAT_FACTOR_PRODUCCION">
+              <ScalarProperty Name="Identificador" ColumnName="id_factor_produccion" />
+            </EndProperty>
+          </AssociationSetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="NameAndType">
+  <Class Name="Entity.Context" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBAAIAIAghQQCCAGAIQhCAAAEgCAIMhgIAAAAEAAIgI=</HashCode>
+      <FileName>Context.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Administrador" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Administrador.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Alternativa" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Alternativa.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Analista" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Entidades\Analista.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Area" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Area.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Configuracion" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Configuracion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Departamento" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Departamento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Direccion" Collapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Direccion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Distrito" Collapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Distrito.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.ElementoExcluyente" Collapsed="true">
+    <Position X="10.25" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\ElementoExcluyente.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Encuesta" Collapsed="true">
+    <Position X="6.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Entidades\Encuesta.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Establecimiento" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAgBAAgAAEACQAAAAACAAABAAAAACAAgAAIAI=</HashCode>
+      <FileName>Entidades\Establecimiento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Excluyente" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Excluyente.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Factor" Collapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAACAAAAAAAAEAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Entidades\Factor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.FactoresProduccion" Collapsed="true">
+    <Position X="15.5" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABCAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\FactoresProduccion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Informante" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Informante.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.LineaProducto" Collapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAABAAQAAAAAAAAAAAgAAAAAAAAAAAAAAAAgAIAA=</HashCode>
+      <FileName>Entidades\LineaProducto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.ManufacturaEstadistica" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQCACAAAAAAACIAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\ManufacturaEstadistica.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.ManufacturaOpinionEmpresarial" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\ManufacturaOpinionEmpresarial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.OpinionEmpresarial" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\OpinionEmpresarial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.PosibleRespuesta" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\PosibleRespuesta.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Pregunta" Collapsed="true">
+    <Position X="10.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAQABAAAAAABAAQAAAAI=</HashCode>
+      <FileName>Entidades\Pregunta.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.ProductoMateriaPrimaPropia" Collapsed="true">
+    <Position X="12" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACBAAAgAAAAAAAkAAAAgAIAACAAAAAAAAAIAAgAAA=</HashCode>
+      <FileName>Entidades\ProductoMateriaPrimaPropia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.ProductosMateriaPrimaTerceros" Collapsed="true">
+    <Position X="13.75" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAgAAAAAAAAAAAAgAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Entidades\ProductosMateriaPrimaTerceros.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Provincia" Collapsed="true">
+    <Position X="15.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\Provincia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.TrabajadoresDiasTrabajados" Collapsed="true">
+    <Position X="17.25" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAgAAAAAQAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\TrabajadoresDiasTrabajados.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Usuario" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAEAAAAgAAAAIAAAAABAAAAAgAAEAI=</HashCode>
+      <FileName>Entidades\Usuario.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Valor" Collapsed="true">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAQAAAAAAAAAAAAAQAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Entidades\Valor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.ValorProduccionMensual" Collapsed="true">
+    <Position X="12" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\ValorProduccionMensual.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.VentaPaisExtranjero" Collapsed="true">
+    <Position X="13.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAQAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\VentaPaisExtranjero.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.VentaServiciosManufactura" Collapsed="true">
+    <Position X="15.5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACABAAAAQAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\VentaServiciosManufactura.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.VentasProductosElaboradosEstablecimiento" Collapsed="true">
+    <Position X="17.25" Y="3.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAABAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Entidades\VentasProductosElaboradosEstablecimiento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.VolumenProduccionMensual">
+    <Position X="10.75" Y="4.5" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAgAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\VolumenProduccionMensual.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Entity.EstadoEncuesta">
+    <Position X="10.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAAAAAAAACAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\EstadoEncuesta.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entity.TipoFactor">
+    <Position X="12.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Entidades\TipoFactor.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entity.TipoPregunta">
+    <Position X="14.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\TipoPregunta.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entity.UnidadMedida">
+    <Position X="16.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\UnidadMedida.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

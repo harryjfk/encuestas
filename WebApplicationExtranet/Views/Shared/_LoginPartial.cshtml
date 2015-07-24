@@ -1,0 +1,71 @@
+﻿@using Entity
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("SignOut", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @*@Html.AntiForgeryToken()*@
+    <span class="hidden-lg welcome-small-screen">
+        <a href="javascript:void(0);" style="color: #000000" class="no-navbar-link">Bienvenido @Session["ulogin"]!</a>
+    </span>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li class="hidden-sm hidden-xs hidden-md">
+            <a href="javascript:void(0);" class="no-navbar-link"><span>Bienvenido</span> @Session["ulogin"]<span>!</span></a>
+            
+            @*@Html.ActionLink("Bienvenido " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })*@
+        </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Salir</a></li>
+    </ul>
+    }
+}
+else
+{
+    var url = "Home/Login";
+    
+    @*<ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Entrar", "Login", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>*@
+    <button class="semi-bold txt-color-white btn-login" data-toggle="dropdown">
+        <i class="fa fa-sign-in"></i> Entrar
+    </button>
+    <div id="form-login" class="pull-right text-left drop-login animated bounceIn fast hidden">
+        
+        <form action="@url" id="login-form" method="POST" class="smart-form client-form" novalidate="novalidate">
+            <header>
+                Entrar
+                <button type="button" id="collapse-create" class="close" aria-hidden="true">×</button>
+            </header>
+
+            <fieldset>
+
+                <section>
+                    <label class="label">Nick</label>
+                    <label class="input">
+                        <i class="icon-append fa fa-user"></i>
+                        <input type="text" name="Login">
+
+                    </label>
+                </section>
+
+                <section>
+                    <label class="label">Clave</label>
+                    <label class="input">
+                        <i class="icon-append fa fa-lock"></i>
+                        <input type="password" name="Password">
+
+                    </label>
+                </section>
+
+            </fieldset>
+            <footer>
+                <button type="submit" class="btn btn-primary">
+                    Entrar
+                </button>
+            </footer>
+        </form>
+
+    </div>
+    
+}
+

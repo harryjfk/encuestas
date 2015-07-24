@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    @*<h1>Identificador: @ViewBag.Identificador</h1>
+    <h1>Rol: @ViewBag.Rol</h1>
+    <h1>Empresa: @ViewBag.Empresa</h1>
+    <h1>Id: @ViewBag.Id</h1>
+    <h1>Login: @ViewBag.Login</h1>
+    <h1>Ndocumento: @ViewBag.Ndocumento</h1>
+    <h1>Nombre: @ViewBag.Nombre</h1>
+    <h1>Tipo: @ViewBag.Tipo</h1>
+    <h1>IdentityName: @ViewBag.IdentityName</h1>*@
+    <input type="hidden" id="hosturl" value="@ViewBag.Host" />
+    <div class="navbar">
+        <div class="container">
+            <ul class="nav nav-pills">
+                <li><img alt="semci" src="~/Content/img/logo-apl.png" /></li>
+                @*<li class="navbar-right"><img alt="produce" src="~/Content/img/logo-emp.png" /></li>*@
+            </ul>
+        </div>
+    </div>
+
+    @{
+        var navbarclass = Request.IsAuthenticated ? "" : "nav-home-view";
+        var bodyclass = Request.IsAuthenticated ? "" : "body-home-view";        
+    }
+
+    <div class="navbar navbar-inverse @navbarclass">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @if (Request.IsAuthenticated)                
+                {
+                    @Html.ActionLink("Inicio", "Index", "Home", new { area = "" }, new { @class = "navbar-brand hidden-sm" })
+                }
+            </div>
+
+            @try
+            {
+                if (Session["pr"] != null)
+                {
+                    <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    @if (Session["pr"].ToString() == "Informante")
+                    {
+                        <li class="dropdown">
+                            @Html.ActionLink("Establecimientos", "EstablecimientosEncuestaEmpresarial", "UsuarioExtranet")
+                            @*<a href="#" class="dropdown-toggle" data-toggle="dropdown">Establecimientos <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Registro de Encuesta Estadística", "EstablecimientosEncuestaEstadistica", "UsuarioExtranet")</li>
+                                <li>@Html.ActionLink("Registro de Encuesta de Opinión", "EstablecimientosEncuestaEmpresarial", "UsuarioExtranet")</li>
+
+                            </ul>*@
+                        </li>
+                    }
+
+
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+                }
+            }
+            catch (Exception)
+            {
+
+                //throw;
+            }
+
+            
+        </div>
+    </div>
+    <div class="container body-content @bodyclass">
+        @RenderBody()
+    </div>
+
+    @if (!Request.IsAuthenticated)    
+    {
+        <footer>
+            <div class="container">
+                <div class="col-md-6">
+                    <address>
+                        Redmond, WA 98052-6399<br />
+                        <abbr>P:</abbr><br />
+                        425.555.0100
+                    </address>
+                    <address>
+                        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+                        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+                    </address>
+                </div>
+
+
+                <div class="col-md-6 copyright">
+                    <p>© 2015 PRODUCE. All Rights Reserved</p>
+                </div>
+            </div>
+
+        </footer>
+    }
+    
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/mask")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/notifications")
+    @Scripts.Render("~/bundles/boostrapdatetimepicker")
+    @Scripts.Render("~/bundles/customscripts")
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btn-login").click(function (event) {
+            $(".drop-login").toggleClass("hidden");
+            event.stopPropagation();
+        });
+        $('html').click(function () {
+            var $login = $("#form-login");
+            if ($login.length) {
+                $login.addClass("hidden");
+            }
+        });
+        $('#form-login').click(function (event) {
+            event.stopPropagation();
+        });
+        $("#collapse-create").click(function () {
+            $("#form-login").addClass("hidden");
+        });
+    })
+</script>

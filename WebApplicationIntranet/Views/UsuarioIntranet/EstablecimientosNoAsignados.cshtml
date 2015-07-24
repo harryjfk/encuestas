@@ -1,0 +1,135 @@
+﻿@using Entity
+@using PagedList.Mvc
+@model Domain.Query<Entity.Establecimiento>
+@*@using (Html.BeginForm("BuscarEstablecimientosNoAsignados", "UsuarioIntranet", FormMethod.Post,new{id="formSearchEstNoAsig",name="formSearch"}))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">NOMBRE</span>
+                        @*<input type="text" class="form-control">*@
+                        @*@Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <input type="button" value="Buscar" name="buscarbtn" class="btn btn-default send" />
+                </div>
+            </div>
+        </div>*@
+
+
+    @*</div>
+}*@
+<table class="table table-striped table-hover table-bordered table-condensed tabla small">
+    <thead>
+        <tr class="cabecera">
+            <th> NOMBRE </th>
+            <th> RUC </th>
+            <th>ACCI&Oacute;N</th>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Elements)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
+                <td>
+                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Asignar" id="edit-@item.Id" role="@item.Id" class="asign-btn">
+                        <i class="color-black glyphicon glyphicon-ok"></i>
+                    </a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Elements.Count == 0)
+{
+    <div class="no-elements-notification">
+        No hay elementos para mostrar
+    </div>
+}
+@Html.PagedListPager(Model.Elements, page => Url.Action("PageEstablecimientosNoAsignados", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".asign-btn").click(function () {
+            var $elem = $(this);
+            var id = $elem.attr("role");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: $.origin() + "/UsuarioIntranet/AsignarEstablecimiento/",
+                data: { "id": id },
+                success: function (data) {
+                    if (data.Success) {
+                        $("#editItem .modal-body").html(data.NoAsignados);
+                        $("#table-container").html(data.Asignados);
+                    } else {
+
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        $(".modal-body div .pagination li a").each(function (i, e) {
+            var url = $(e).attr('href');
+            $(e).attr('href', "javascript:void(0);");
+            $(e).on('click', function () {
+                goToPage(url);
+            });
+        });
+        var pag = $(".modal-body .pagination-container");
+        pag.removeClass("pagination-container");
+        $("#formSearchEstNoAsig .send").click(function() {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/UsuarioIntranet/AsignarEstablecimiento/",
+                data: { "criteria": $("form[name='formSearch']").serialize() },
+                success: function (data) {
+                    if (data.Success) {
+                        $("#editItem .modal-body").html(data)
+                       
+                    } else {
+
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        });
+        $.InitTooltip();
+    });
+    function goToPage(url) {
+        if (url) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: url,
+                //data: { "idLineaProducto": id },
+                success: function (data) {
+                    $("#editItem .modal-body").html(data);
+                    //$("#unidadesMedida").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                    console.log(xhr);
+                }
+            });
+        }
+    }
+</script>
+
+

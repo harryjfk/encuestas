@@ -1,0 +1,53 @@
+﻿@using Entity
+@model Domain.Query<Entity.EncuestaEmpresarial>
+
+@{
+    ViewBag.Title = "Encuesta de Opinión Empresarial";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+
+<a href="/UsuarioIntranet/EstablecimientosEncuestaEmpresarial" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+<h3 class="screen-title">Registro de Formato de Encuesta de Opini&oacute;n por establecimiento (@ViewBag.Establecimiento.Ruc-@ViewBag.Establecimiento.Nombre-@ViewBag.Establecimiento.IdentificadorInterno)</h3>
+@using (Html.BeginForm("BuscarAnalista", "EncuestaEmpresarial", FormMethod.Post))
+{
+    @*<div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+       
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>*@
+}
+<div id="table-container">
+    @Html.Partial("_TableAnalista", Model)
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#Criteria_Year").inputmask("9999");
+    });
+</script>
+
+
+
+
+

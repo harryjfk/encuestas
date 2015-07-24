@@ -1,0 +1,120 @@
+﻿@using System.Globalization
+@using Entity
+@using WebApplication.Models
+@model MateriaTerceros
+
+@{
+
+}
+
+@Html.AntiForgeryToken()
+@using (Html.BeginForm("Create", "EncuestaEstadistica", FormMethod.Post, new { name = "addformT" }))
+{
+
+    <div class="form-horizontal">
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+        <input type="hidden" name="Id" value="@Model.Id" />
+        }
+
+        <div class="form-group">
+            <label for="LineaProducto" class="col-md-4 control-label">Producto</label>
+            <div class="col-md-8">
+                @{ Html.RenderAction("GetDorpDown", "LineaProducto", new { id = (Model != null && Model.IdLineaProducto != null) ? Model.IdLineaProducto : 0 }); }
+
+                @Html.ValidationMessageFor(model => model.LineaProducto)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="UnidadMedida" class="col-md-4 control-label">Unidad de Medida</label>
+            <div class="col-md-8" id="divUm">
+                
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="UnidadProduccion" class="col-md-4 control-label">Unidad de Producci&oacute;n</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.UnidadProduccion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UnidadProduccion)
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+    </div>
+
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#IdLineaProducto').on("change", function () {
+            loadUm();
+        });
+        $("button[name='aceptarbtn']").click(function () {
+            var $elem = $(this);
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/EncuestaEstadistica/CreateProdMatTer/",
+                data: $("form[name='addformT']").serialize(),
+                success: function (data) {
+                    if (data.Success) {
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                        $("#editItemT").modal("hide");
+                        $("#productosMateriaPrimaTerceros").html(data.Data);
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        loadUm();
+
+        function loadUm() {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/UnidadMedida/GetDorpDownLineaProducto/",
+                data: {
+                    idLineaProducto: $("#IdLineaProducto").val(),
+                },
+                success: function (data) {
+                    $('#divUm').html(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
+
+    })
+</script>
+

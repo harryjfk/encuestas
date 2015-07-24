@@ -1,0 +1,41 @@
+﻿@model Entity.EncuestaEstadistica
+
+@{
+
+}
+@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap5form"}))
+    {*@
+
+<div class="panel panel-primary">
+    <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+        <strong>Alertas</strong>
+        <div>
+            <ul></ul>
+        </div>
+    </div>
+    @Html.HiddenFor(t => t.TrabajadoresDiasTrabajados.Identificador)
+    <div class="panel-heading">Capítulo V: Número de trabajadores y días trabajados</div>
+    <div class="panel-body">
+        <div class="col-md-6 ">
+            <div class="input-group padding-5">
+                <span class="">Días trabajados: </span>
+               <span>@Model.TrabajadoresDiasTrabajados.DiasTrabajados</span>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="input-group padding-5">
+                <span class="">Trabajadores en producción: </span>
+                <span>@Model.TrabajadoresDiasTrabajados.TrabajadoresProduccion</span>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="input-group padding-5">
+                <span class="">Administrativos en planta: </span>
+                <span>@Model.TrabajadoresDiasTrabajados.AdministrativosPlanta</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*}*@

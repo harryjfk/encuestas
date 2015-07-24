@@ -1,0 +1,35 @@
+﻿@model Entity.Contacto
+
+@{
+    ViewBag.Title = "Detalles del Contacto";
+}
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del Contacto</h3>
+
+    <a href="/Contacto/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold">Nombre: </span> <span>@Model.Nombre</span>
+        </div>
+        <div>
+            <span class="bold">Tel&eacute;fono: </span> <span>@Model.Telefono</span>
+        </div>
+        <div>
+            <span class="bold">Correo: </span> <span>@Model.Correo</span>
+        </div>
+        <div>
+            <span class="bold">Anexo: </span> <span>@Model.Anexo</span>
+        </div>
+        <div>
+            <span class="bold">Celular: </span> <span>@Model.Celular</span>
+        </div>
+        <div>
+            <span class="bold">Cargo: </span> <span>@Model.Cargo.Nombre</span>
+        </div>
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>
+
+    </div>
+</div>

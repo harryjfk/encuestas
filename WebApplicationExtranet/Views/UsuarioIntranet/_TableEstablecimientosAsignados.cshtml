@@ -1,0 +1,82 @@
+﻿@using Entity
+@using PagedList.Mvc
+@model Domain.Query<Entity.Establecimiento>
+<table class="table table-striped table-hover table-bordered table-condensed tabla small">
+    <thead>
+        <tr class="cabecera">
+            <th> IDENTIFICADOR </th>
+            <th> RUC </th>
+            <th> RAZON SOCIAL </th>
+            <th> NOMBRE </th>
+            <th> DIRECCI&Oacute;N </th>
+            <th>ACCI&Oacute;N</th>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Elements)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdentificadorInterno)</td>
+                <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
+                <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                <td>
+                    <a href="/UsuarioIntranet/EliminarEstablecimiento/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Asignar" id="quitar-@item.Id" role="@item.Id" class="quitarw-btn">
+                        <i class="color-red glyphicon glyphicon-remove"></i>
+                    </a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Elements.Count == 0)
+{
+    <div class="no-elements-notification">
+        No hay elementos para mostrar
+    </div>
+}
+@Html.PagedListPager(Model.Elements, page => Url.Action("PageEstablecimientosAsignados", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+     
+        $(".quitar-btn").click(function (e) {
+            var $elem = $(this);
+            var id = $elem.attr("role");
+            console.log(id);
+            $.SmartMessageBox({
+                title: "Mensaje",
+                content: "¿Esta seguro que desea eliminar el elemento?",
+                buttons: '[No][Si]'
+            }, function (ButtonPressed) {
+                if (ButtonPressed === "Si") {
+                    $.ajax({
+                        cache: false,
+                        type: "GET",
+                        url: $.origin() + "/UsuarioIntranet/EliminarEstablecimiento/",
+                        data: { "id": id },
+                        success: function (data) {
+                            $("#editItem .modal-body").html(data);
+                            $("#editItem").modal("show");
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve data.');
+                        }
+                    });
+                }
+                if (ButtonPressed === "No") {
+
+                }
+
+            });
+            e.preventDefault();
+        });
+       
+        $.InitTooltip();
+    })
+</script>
+

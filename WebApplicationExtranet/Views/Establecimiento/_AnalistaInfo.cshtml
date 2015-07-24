@@ -1,0 +1,30 @@
+﻿@model Entity.Usuario
+@{
+    ViewBag.Title = "Analista Asignado";
+}
+<div class="title-container-details">
+    <h3 class="screen-title">Analista Asignado al establecimiento (@ViewBag.Establecimiento.Ruc-@ViewBag.Establecimiento.Nombre-@ViewBag.Establecimiento.IdentificadorInterno)</h3>
+
+    <a href="/UsuarioExtranet/EstablecimientosEncuestaEmpresarial" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    @if (Model != null)
+    {
+        <div class="info-child-screen-details">
+            <div>
+                <span class="bold">Nombre: </span> <span>@Model.Nombres</span>
+            </div>
+            <div>
+                <span class="bold">Apellidos: </span> <span>@Model.Apellidos</span>
+            </div>
+            <div>
+                <span class="bold">Nombre de Usuario: </span> <span>@Model.Login</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="info-child-screen-details">
+            SIN ASIGNAR
+        </div>
+    }
+</div>

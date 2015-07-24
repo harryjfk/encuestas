@@ -1,0 +1,145 @@
+﻿@using System.Globalization
+@using Entity
+@
+@using WebApplication.Models
+@model MateriaPropia
+
+@{
+
+}
+
+@Html.AntiForgeryToken()
+@using (Html.BeginForm("Create", "EncuestaEstadistica", FormMethod.Post, new { name = "addform" }))
+{
+
+    <div class="form-horizontal">
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+        <input type="hidden" name="Id" value="@Model.Id" />
+        }
+
+        <div class="form-group">
+            <label for="LineaProducto" class="col-md-4 control-label">Producto</label>
+            <div class="col-md-8">
+                @{ Html.RenderAction("GetDorpDown", "LineaProducto", new { id = (Model != null && Model.LineaProductoId != null) ? Model.LineaProductoId : 0 }); }
+
+                @Html.ValidationMessageFor(model => model.LineaProducto)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="UnidadMedida" class="col-md-4 control-label">Unidad de Medida</label>
+            <div class="col-md-8">
+                @{ Html.RenderAction("GetDorpDownUM", "LineaProducto", new { id = Model.UnidadMedida }); }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ValorUnitario" class="col-md-4 control-label">Valor Unitario</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.ValorUnirio, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ValorUnirio)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Existencias" class="col-md-4 control-label">Existencias</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.Existicia, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Existicia)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Produccion" class="col-md-4 control-label">Producci&oacute;n</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.Produccion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Produccion)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="OtrosIngresos" class="col-md-4 control-label">Otros Ingresos</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.OtrosIngresos, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OtrosIngresos)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="VentasPais" class="col-md-4 control-label">Ventas Pa&iacute;s</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.VentasPais, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VentasPais)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="VentasExtranjero" class="col-md-4 control-label">Ventas Extranjero</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.VentasExtrajero, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VentasExtrajero)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="OtrasSalidas" class="col-md-4 control-label">Otras Salidas</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.OtrasSalidas, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OtrasSalidas)
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+    </div>
+
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button[name='aceptarbtn']").click(function () {
+            var $elem = $(this);
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/EncuestaEstadistica/CreateProdMatProp/",
+                data: $("form[name='addform']").serialize(),
+                success: function (data) {
+                    if (data.Success) {
+                        $("#productosMateriaPrimaPropia").html(data.Data);
+                        $("#editItem").modal("hide");
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+
+
+    })
+</script>
+

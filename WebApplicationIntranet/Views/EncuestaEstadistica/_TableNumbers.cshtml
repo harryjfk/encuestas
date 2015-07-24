@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Entity.NumberTableItem>
+
+<div style="background: #fff; border: 1px solid #ccc">
+    <table class="table table-striped table-hover table-bordered table-condensed tabla small">
+        <thead>
+            <tr class="cabecera">
+            <th>MES</th>
+            @foreach (var item in Model.GroupBy(t => t.Year).OrderBy(t => t.Key))
+            {
+                <th>@item.Key</th>
+            }
+        </thead>
+
+        <tbody>
+            @{ var years = Model.GroupBy(t => t.Year).OrderBy(t => t.Key).Select(t => t.Key).ToList(); }
+
+            @foreach (var item in Model.OrderBy(t => t.MonthNumber).GroupBy(t => t.Month))
+            {
+                <tr>
+                    <td>@item.Key.ToUpper()</td>
+                    @foreach (var year in years)
+                    {
+                        var este = item.FirstOrDefault(t => t.Year == year);
+                        var text = "-";
+                        if (este != null)
+                        {
+                            text = este.Value.ToString("0.000");
+                        }
+                        <td>@text</td>
+                    }
+                </tr>
+
+            }
+        </tbody>
+
+    </table>
+    
+  
+    @{
+        var first = Model.FirstOrDefault();
+        if (first != null)
+        {
+            <div class="padding-5">
+                <!--<div><b>Promedio:</b> @first.Promedio.ToString(".000")</div>
+                <div><b>Desviaci&oacute;n:</b> @first.Desviacion.ToString(".000")</div>-->
+                <div><b>Desviaci&oacute;n M&aacute;x.:</b> @first.Maximo.ToString(".000")</div>
+                <div><b>Desviaci&oacute;n M&iacute;n.:</b> @first.Minimo.ToString(".000")</div>
+            </div>
+        }
+    }
+</div>

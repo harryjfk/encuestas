@@ -1,0 +1,90 @@
+﻿@using Entity
+@model Domain.Query<Entity.Contacto>
+
+@{
+    ViewBag.Title = "Contacto";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+<a href="/Establecimiento/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+@{
+    var name = Model.Criteria != null && Model.Criteria.Establecimiento != null ? string.Format("Contactos del establecimiento ({0}-{1}-{2}-{3})", Model.Criteria.Establecimiento.Ruc, Model.Criteria.Establecimiento.RazonSocial, Model.Criteria.Establecimiento.Nombre, Model.Criteria.Establecimiento.IdentificadorInterno) : "Contactos";
+}
+
+<h3 class="screen-title">@name</h3>
+
+@using (Html.BeginForm("Buscar", "Contacto", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">NOMBRE</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">TEL&Eacute;FONO</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.Telefono, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+<p>
+    <a href="javascript:void(0);" id="add-btn" class="btn btn-primary btn-custom-add">Nuevo Contacto</a>
+</p>
+<div id="table-container">
+    @Html.Partial("_Table", Model)
+</div>
+
+
+
+@*MODALS*@
+<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Nuevo Contacto</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.CreateItemOpenModal("add-btn", "editItem", "Contacto");
+
+    })
+</script>
+
+

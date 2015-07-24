@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="b8c806ca-4996-4252-8480-bcaac0e68f59" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <layers>
+    <layer Id="93a7d7ed-097a-4284-8441-002ec70c95ed" name="Datos">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="815d1dd8-a249-4166-b20f-cdea6d07fa88" direction="Forward">
+          <layerMoniker Id="841dadd6-a8f3-4112-9726-b4897d70394b" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="5e7323eb-0490-4054-9caa-f3c68e6860e6" direction="Forward">
+          <layerMoniker Id="1d9af884-2ba4-4fcb-9799-a7083cbbf149" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <childLayers>
+        <layer Id="205859a8-0e73-40a2-a427-c1623ced60e8" name="RepositorioGénerico">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="4c366e4c-d577-4a83-a00d-a702985d8360" direction="Forward">
+              <layerMoniker Id="254adaa0-096b-40f8-a346-6281f72e46b4" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+        </layer>
+        <layer Id="254adaa0-096b-40f8-a346-6281f72e46b4" name="Contexto" />
+      </childLayers>
+    </layer>
+    <layer Id="841dadd6-a8f3-4112-9726-b4897d70394b" name="Entidades" />
+    <layer Id="1d9af884-2ba4-4fcb-9799-a7083cbbf149" name="Seguridad" />
+    <layer Id="87d9d530-8fd9-4857-bdc4-d9a09b9e08a1" name="Dominio">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="30efeced-d1c4-458e-ae57-57deedcdd999" direction="Forward">
+          <layerMoniker Id="205859a8-0e73-40a2-a427-c1623ced60e8" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="3c7a43bd-d977-4c06-b3db-648e394a45be" direction="Forward">
+          <layerMoniker Id="841dadd6-a8f3-4112-9726-b4897d70394b" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="bac8b8a9-d778-4683-89b3-0a3f2854faee" direction="Forward">
+          <layerMoniker Id="1d9af884-2ba4-4fcb-9799-a7083cbbf149" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <childLayers>
+        <layer Id="0570de45-bd30-45c8-b602-41ab2c62a8b1" name="AdministradorNegocio">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="cc673dfe-2f85-4c04-b63e-9230e428c0ef" direction="Forward">
+              <layerMoniker Id="57987905-e298-4014-b150-1720c205dbe7" />
+            </dependencyFromLayerToLayer>
+            <dependencyFromLayerToLayer Id="9497e92b-be21-4e31-bd47-ffa95e0a74f7" direction="Forward">
+              <layerMoniker Id="2cba8dae-0fa7-4f22-9383-08e639e0a45a" />
+            </dependencyFromLayerToLayer>
+            <dependencyFromLayerToLayer Id="38be49f5-6e8b-489b-bad1-97e50106dc3a" direction="Forward">
+              <layerMoniker Id="315ab43a-01ff-4208-9b1d-c45ce06f91fd" />
+            </dependencyFromLayerToLayer>
+            <dependencyFromLayerToLayer Id="a69f64a2-6faa-4476-b787-ff36389384ca" direction="Forward">
+              <layerMoniker Id="81eb7a8d-33b7-4fff-bd0e-9ef9545129d9" />
+            </dependencyFromLayerToLayer>
+            <dependencyFromLayerToLayer Id="72ab6ae9-b3d6-4371-884f-6a5ac71eeef1" direction="Forward">
+              <layerMoniker Id="da0b9dad-e81d-4d3c-a7ab-bc11b90cf7a4" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+        </layer>
+        <layer Id="57987905-e298-4014-b150-1720c205dbe7" name="AdministradorEncuesta" />
+        <layer Id="2cba8dae-0fa7-4f22-9383-08e639e0a45a" name="AdministradorAnalista" />
+        <layer Id="315ab43a-01ff-4208-9b1d-c45ce06f91fd" name="AdministradorInformante" />
+        <layer Id="81eb7a8d-33b7-4fff-bd0e-9ef9545129d9" name="AdministradorLineaProducto" />
+        <layer Id="da0b9dad-e81d-4d3c-a7ab-bc11b90cf7a4" name="..." />
+      </childLayers>
+    </layer>
+    <layer Id="c292c0ed-a5f6-4331-aa6e-2ca1809cb358" name="Presentación">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="4a3b0ff7-ae70-42f4-be29-2839abfa4a21" direction="Forward">
+          <layerMoniker Id="841dadd6-a8f3-4112-9726-b4897d70394b" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="afe69005-bfb2-4bcb-a3d3-1f0f9e714786" direction="Forward">
+          <layerMoniker Id="1d9af884-2ba4-4fcb-9799-a7083cbbf149" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <childLayers>
+        <layer Id="bb01a4d2-ebab-4ce9-8f79-585228bca49d" name="Aplicación MVC 4">
+          <childLayers>
+            <layer Id="8201e533-c56e-4b27-87c8-9d420c10894d" name="Controladores">
+              <dependencyToLayers>
+                <dependencyFromLayerToLayer Id="77508fc7-597d-4f49-a5b2-8a31db3d471d" direction="Forward">
+                  <layerMoniker Id="0570de45-bd30-45c8-b602-41ab2c62a8b1" />
+                </dependencyFromLayerToLayer>
+              </dependencyToLayers>
+            </layer>
+            <layer Id="b4de7d82-31f4-49f8-b341-ddb3e3f14866" name="Vistas">
+              <dependencyToLayers>
+                <dependencyFromLayerToLayer Id="53eb4a32-b52c-46bb-b930-0d0689f5f9a1" direction="Bidirectional">
+                  <layerMoniker Id="8201e533-c56e-4b27-87c8-9d420c10894d" />
+                </dependencyFromLayerToLayer>
+              </dependencyToLayers>
+            </layer>
+          </childLayers>
+        </layer>
+      </childLayers>
+    </layer>
+  </layers>
+</layerModel>

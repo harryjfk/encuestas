@@ -1,0 +1,92 @@
+﻿@model Entity.EncuestaEstadistica
+
+@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap3form"}))
+    {*@
+<div class="panel panel-primary">
+    <div class="panel-heading">Capítulo III: Valor total de la producción mensual del establecimiento</div>
+    <div class="panel-body">
+        <table class="table table-striped table-hover table-bordered table-condensed tabla small">
+            <thead>
+                <tr class="cabecera">
+                    <th>
+                        CIIU
+                    </th>
+                    <th>
+                        Materia prima propia
+                    </th>
+                    <th>
+                        Materia prima de terceros
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.CAT_VALOR_PROD_MENSUAL.OrderBy(t => t.CAT_CIIU.ToString()))
+                {
+                    <tr>
+                        <td>
+                            @item.CAT_CIIU.ToString()
+                        </td>
+                        <td>
+                            @Html.Label("", String.Format("{0:0.0000}", item.ProductosMateriaPropia), new { @class = "" })
+                        </td>
+                        <td>
+                            @if (item.MateriaPrimaTercerosActivada)
+                            {
+
+                                if (!string.IsNullOrEmpty(item.justificacion_materia_terc) || !string.IsNullOrWhiteSpace(item.justificacion_materia_terc))
+                                {
+                                    <div class="color-red panel panel-primary padding-10 valorProductosTercerosPanel" data-elementid="@item.Id">
+                                        @*@Html.DisplayFor(t => item.ProductosMateriaTerceros, new { @class = "", Value = String.Format("{0:0.0000}", item.ProductosMateriaTerceros) })*@
+                                        @Html.Label("", item.ProductosMateriaTerceros.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.ProductosMateriaTerceros.GetValueOrDefault()) })
+                                        <div style="margin-top: 5px;" class="panel panel-default">
+                                            <span>Justificaci&oacute;n</span>
+                                            <div>@Html.DisplayFor(modelItem => item.justificacion_materia_terc, new { style = " width: 100%;", @class = "form-control" })</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="valorProductosTercerosError-@item.Id" style="display: none; position: absolute;">
+                                        @{
+                                            Html.RenderAction("GetHistoricoMateriaPrimaTerceros", new { id = item.Id });
+                                        }
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    @Html.Label("", item.ProductosMateriaTerceros.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.ProductosMateriaTerceros.GetValueOrDefault()) })
+                                }
+
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.CAT_VALOR_PROD_MENSUAL.Count == 0)
+        {
+            <div class="no-elements-notification">
+                No hay elementos para mostrar
+            </div>
+        }
+    </div>
+
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.valorProductosTercerosPanel').on('mouseenter', function (e) {
+        var $elem = $(this);
+        var id = $elem.attr("data-elementid");
+        $(".valorProductosTercerosError-" + id).css('top', e.pageY);
+        $(".valorProductosTercerosError-" + id).css('left', e.pageX);
+        $(".valorProductosTercerosError-" + id).toggle();
+    });
+    $('.valorProductosTercerosPanel').on('mouseleave', function () {
+        var $elem = $(this);
+        var id = $elem.attr("data-elementid");
+        $(".valorProductosTercerosError-" + id).toggle();
+    });
+});
+</script>
+@*}*@

@@ -1,0 +1,19 @@
+﻿@model Entity.Cargo
+
+@{
+    ViewBag.Title = "Detalles del Cargo";
+}
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del Cargo</h3>
+
+    <a href="/Cargo/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+		<div>
+            <span class="bold">Nombre: </span> <span>@Model.Nombre</span>
+		</div>
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>
+	</div>
+</div>
