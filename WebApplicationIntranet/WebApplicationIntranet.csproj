@@ -43,9 +43,8 @@
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
@@ -65,9 +64,8 @@
     <Reference Include="PagedList.Mvc">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Seguridad.PRODUCE, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Seguridad.PRODUCE.dll</HintPath>
+    <Reference Include="Seguridad.PRODUCE">
+      <HintPath>..\packages\Seguridad.PRODUCE.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -181,8 +179,6 @@
     <Compile Include="Attributes\MultiButtonAttribute.cs" />
     <Compile Include="Binders\ModelBinder.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ConsumoHarinaFideoController.cs" />
-    <Compile Include="Controllers\IpmIppController.cs" />
     <Compile Include="Controllers\CargoController.cs" />
     <Compile Include="Controllers\ContactoController.cs" />
     <Compile Include="Controllers\DistritoController.cs" />
@@ -196,7 +192,6 @@
     <Compile Include="Controllers\FactorController.cs" />
     <Compile Include="Controllers\LineaProductoController.cs" />
     <Compile Include="Controllers\SeguridadController.cs" />
-    <Compile Include="Controllers\TipoCambioController.cs" />
     <Compile Include="Controllers\UnidadMedidaController.cs" />
     <Compile Include="Controllers\UsuarioExtranetController.cs" />
     <Compile Include="Controllers\UsuarioIntranetController.cs" />
@@ -422,10 +417,6 @@
     </Content>
     <Content Include="Web References\ServiceSunat\WCFSistemasService.wsdl" />
     <Content Include="Views\Seguridad\AccesoDenegado.cshtml" />
-    <Content Include="Views\TipoCambio\_Create.cshtml" />
-    <Content Include="Views\TipoCambio\_Table.cshtml" />
-    <Content Include="Views\TipoCambio\Details.cshtml" />
-    <Content Include="Views\TipoCambio\Index.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -492,6 +483,9 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -512,6 +506,9 @@
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <servers defaultServer="SelfHostServer">
+            <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:5000/" workingDir="" />
+          </servers>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
