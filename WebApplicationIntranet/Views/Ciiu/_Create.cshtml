@@ -74,7 +74,7 @@
         <div class="form-group">
             <label for="subsector" class="col-md-4 control-label">Sub Sector</label>
             <div class="col-md-7">
-                <select class="form-control" name="sub_sector">
+                <select class="form-control chosen" name="sub_sector">
                     <option @s1 value="1">Manufactura primaria</option>
                     <option @s2 value="2">Manufactura no primaria</option>
                 </select>
@@ -84,7 +84,7 @@
         <div class="form-group" id="div-rubro">
             <label for="rubro" class="col-md-4 control-label">Rubro</label>
             <div class="col-md-7">
-                <select class="form-control" name="rubro">
+                <select class="form-control chosen" name="rubro">
                     <option @r1 value="1">Bienes de consumo</option>
                     <option @r2 value="2">Bienes intermedios</option>
                     <option @r3 value="3">Bienes de capital</option>
@@ -156,15 +156,38 @@
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 255, statusText: 'caracteres restantes' });
         $('#Revision').maxlength({ events: ['blur'], slider: true, maxCharacters: 10, statusText: 'caracteres restantes' });
         verifyRubro();
+        setTimeout(function () {
+            $("select[name='sub_sector']").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione un elemento" });
+            $("div[class*='chosen-container chosen-container-single chosen-container-single-nosearch']").addClass("form-control");
+            var a = $("a[class*='chosen-single']");
+            if (a != null) {
+                a.css("border", "0");
+                a.css("background", "white");
+                a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+            }
+        }, 500);
         $("select[name='sub_sector']").change(function() {
             verifyRubro();
+            
         });
+      
     });
     
     function verifyRubro() {
+       
         var value = $("select[name='sub_sector']").val();
         if (value == 2) {
             $('#div-rubro').show();
+            setTimeout(function () {
+                $("select[name='rubro']").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione un elemento" });
+                $("div[class*='chosen-container chosen-container-single chosen-container-single-nosearch']").addClass("form-control");
+                var a = $("a[class*='chosen-single']");
+                if (a != null) {
+                    a.css("border", "0");
+                    a.css("background", "white");
+                    a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                }
+            }, 500);
         } else {
             $('#div-rubro').hide();
         }

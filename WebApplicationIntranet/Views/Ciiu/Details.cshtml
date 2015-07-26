@@ -19,6 +19,24 @@
         <div>
             <span class="bold">Revisi&oacute;n: </span> <span>@Model.Revision</span>
         </div>  
+       @if (@Model.CAT_METODO_CALCULO!=null)
+       {
+        <div>
+            <span class="bold">Tipo de C&aacute;lculo: </span> <span>@Model.CAT_METODO_CALCULO.nombre</span>
+        </div>
+       }
+        @if (@Model.sub_sector != 0)
+        {
+            <div>
+                <span class="bold">Sub Sector: </span> <span>@Model.EnumSubSector</span>
+            </div>
+        }
+        @if (@Model.rubro != 0 && @Model.sub_sector==2)
+        {
+            <div>
+                <span class="bold">Rubro: </span> <span>@Model.EnumRubro</span>
+            </div>
+        }
         <div>
             <span class="bold">Activado: </span> <span>@Model.Activado</span>
         </div>   

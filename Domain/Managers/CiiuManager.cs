@@ -814,12 +814,20 @@ namespace Domain.Managers
             var list=base.Validate(element);
             list.Required(element, t => t.Nombre,"Descripción");
             list.Required(element, t => t.Codigo, "Codigo");
+            list.Required(element, t => t.sub_sector, "Sub Sector");
+            list.Required(element, t => t.id_metodo_calculo, "Tipo de Cálculo");
+            if (element.sub_sector == 2)
+            {
+                list.Required(element, t => t.rubro, "Rubro");
+            }
 
             list.MaxLength(element, t => t.Codigo,4, "Codigo");
             list.MaxLength(element, t => t.Nombre,255, "Nombre");
             list.MaxLength(element, t => t.Revision, 10, "Revision");
 
             list.Number(element,t=>t.Codigo,"Código");
+
+
             return list;
         }
     }
