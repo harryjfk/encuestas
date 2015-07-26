@@ -425,6 +425,7 @@
     <Content Include="Views\TipoCambio\Index.cshtml" />
     <Content Include="Views\TipoCambio\_Create.cshtml" />
     <Content Include="Views\TipoCambio\_Table.cshtml" />
+    <Content Include="Views\Cargo\View1.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>
