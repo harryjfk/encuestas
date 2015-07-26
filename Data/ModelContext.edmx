@@ -31,6 +31,15 @@
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
         </EntityType>
+        <EntityType Name="CAT_CONSUMO_HARINA_FIDEO">
+          <Key>
+            <PropertyRef Name="id_consumo" />
+          </Key>
+          <Property Name="id_consumo" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="tonelada_tmb" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CAT_CONTACTO">
           <Key>
             <PropertyRef Name="id_contacto" />
@@ -950,6 +959,7 @@
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Self.CAT_CONSUMO_HARINA_FIDEO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CONTACTO" EntityType="Self.CAT_CONTACTO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ENCUESTA" EntityType="Self.CAT_ENCUESTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ENCUESTA_EMPRESARIAL" EntityType="Self.CAT_ENCUESTA_EMPRESARIAL" Schema="TEST" store:Type="Tables" />
@@ -1973,6 +1983,7 @@
             <End Role="Ciiu" EntitySet="CAT_CIIU" />
             <End Role="CAT_IPM_IPP" EntitySet="CAT_IPM_IPP" />
           </AssociationSet>
+          <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Model.ConsumoHarinaFideo" />
           </EntityContainer>
         <Association Name="SYS_C0012622">
           <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
@@ -2183,6 +2194,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ConsumoHarinaFideo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <Property Name="tonelada_tmb" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2587,6 +2607,16 @@
                 <ScalarProperty Name="ipm" ColumnName="ipm" />
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="Id" ColumnName="id_ipm_ipp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_CONSUMO_HARINA_FIDEO">
+            <EntityTypeMapping TypeName="Model.ConsumoHarinaFideo">
+              <MappingFragment StoreEntitySet="CAT_CONSUMO_HARINA_FIDEO">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="tonelada_tmb" ColumnName="tonelada_tmb" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="Id" ColumnName="id_consumo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

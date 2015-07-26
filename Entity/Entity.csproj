@@ -57,6 +57,9 @@
     <Compile Include="Ciiu.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="ConsumoHarinaFideo.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
     <Compile Include="Contacto.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
@@ -93,6 +96,7 @@
     <Compile Include="MateriaTerceros.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="Parciales\ConsumoHarinaFideos.cs" />
     <Compile Include="Parciales\IpmIpp.cs" />
     <Compile Include="Parciales\TipoCambio.cs" />
     <Compile Include="Parciales\VentaPaisExtranjero.cs" />

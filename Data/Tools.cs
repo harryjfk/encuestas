@@ -71,7 +71,21 @@ namespace Data
                     typeof (TipoCambio), 
                     new string[]
                     {
+                        "Estado","fecha","Activado","Id","tonelada_tmb","Año"
+                    }
+                },
+                {
+                    typeof (ConsumoHarinaFideo), 
+                    new string[]
+                    {
                         "Estado","fecha","Activado","Id","tipo_cambio_ventas","tipo_cambio_compra","Año"
+                    }
+                },
+                {
+                    typeof (IpmIpp), 
+                    new string[]
+                    {
+                        "Estado","fecha","Activado","Id","ipm","ipp","Año"
                     }
                 },
                 {

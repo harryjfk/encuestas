@@ -51,5 +51,6 @@ namespace Data
         public DbSet<FactorProducccion> CAT_FACTOR_PRODUCCION { get; set; }
         public DbSet<TipoCambio> CAT_TIPO_CAMBIO { get; set; }
         public DbSet<IpmIpp> CAT_IPM_IPP { get; set; }
+        public DbSet<ConsumoHarinaFideo> CAT_CONSUMO_HARINA_FIDEO { get; set; }
     }
 }
