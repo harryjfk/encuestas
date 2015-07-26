@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Filters.cs" />
+    <Compile Include="Managers\IpmIppManager.cs" />
     <Compile Include="Managers\TipoCambioManager.cs" />
     <Compile Include="Managers\MateriaPropiaManager.cs" />
     <Compile Include="Managers\MateriaTercerosManager.cs" />

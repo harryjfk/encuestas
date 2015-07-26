@@ -158,6 +158,17 @@
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
         </EntityType>
+        <EntityType Name="CAT_IPM_IPP">
+          <Key>
+            <PropertyRef Name="id_ipm_ipp" />
+          </Key>
+          <Property Name="id_ipm_ipp" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="ipm" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ipp" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CAT_LINEA_PROD_UNIDAD_MEDIDA">
           <Key>
             <PropertyRef Name="id_linea_prod" />
@@ -922,6 +933,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SYS_C008155">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_IPM_IPP" Type="Self.CAT_IPM_IPP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_IPM_IPP">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU" Schema="TEST" store:Type="Tables" />
@@ -935,6 +960,7 @@
           <EntitySet Name="CAT_FACTOR" EntityType="Self.CAT_FACTOR" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_FACTOR_FACTOR_PROD" EntityType="Self.CAT_FACTOR_FACTOR_PROD" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_FACTOR_PRODUCCION" EntityType="Self.CAT_FACTOR_PRODUCCION" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_IPM_IPP" EntityType="Self.CAT_IPM_IPP" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_LINEA_PROD_UNIDAD_MEDIDA" EntityType="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Self.CAT_LINEA_PRODUCTO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Self.CAT_MATERIA_PROPIA" Schema="TEST" store:Type="Tables" />
@@ -1113,6 +1139,10 @@
             <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
             <End Role="SEG_USUARIO_ROL" EntitySet="SEG_USUARIO_ROL" />
           </AssociationSet>
+          <AssociationSet Name="SYS_C008155" Association="Self.SYS_C008155">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_IPM_IPP" EntitySet="CAT_IPM_IPP" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1148,6 +1178,7 @@
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CAT_VALOR_PROD_MENSUAL" Relationship="Model.FK_VALOR_PROD_CIIU" FromRole="Ciiu" ToRole="ValorProduccion" />
           <NavigationProperty Name="CAT_VENTAS_PAIS_EXTRANJERO" Relationship="Model.FK_VENTA_PAIS_EXTR_CIIU" FromRole="Ciiu" ToRole="VentasPaisExtranjero" />
+          <NavigationProperty Name="CAT_IPM_IPP" Relationship="Model.SYS_C008155" FromRole="Ciiu" ToRole="CAT_IPM_IPP" />
         </EntityType>
         <EntityType Name="Contacto">
           <Key>
@@ -1937,6 +1968,11 @@
             <End Role="Pregunta" EntitySet="CAT_PREGUNTA" />
           </AssociationSet>
           <EntitySet Name="CAT_TIPO_CAMBIO" EntityType="Model.TipoCambio" />
+          <EntitySet Name="CAT_IPM_IPP" EntityType="Model.IpmIpp" />
+          <AssociationSet Name="SYS_C008155" Association="Model.SYS_C008155">
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+            <End Role="CAT_IPM_IPP" EntitySet="CAT_IPM_IPP" />
+          </AssociationSet>
           </EntityContainer>
         <Association Name="SYS_C0012622">
           <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
@@ -2121,6 +2157,32 @@
           <Property Name="tipo_cambio_compra" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
         </EntityType>
+        <EntityType Name="IpmIpp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <Property Name="ipm" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ipp" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="id_ciiu" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Ciiu" Relationship="Model.SYS_C008155" FromRole="CAT_IPM_IPP" ToRole="Ciiu" />
+        </EntityType>
+        <Association Name="SYS_C008155">
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.IpmIpp" Role="CAT_IPM_IPP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciiu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_IPM_IPP">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2513,6 +2575,18 @@
                 <ScalarProperty Name="tipo_cambio_ventas" ColumnName="tipo_cambio_ventas" />
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="Id" ColumnName="id_cambio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_IPM_IPP">
+            <EntityTypeMapping TypeName="Model.IpmIpp">
+              <MappingFragment StoreEntitySet="CAT_IPM_IPP">
+                <ScalarProperty Name="id_ciiu" ColumnName="id_ciiu" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="ipp" ColumnName="ipp" />
+                <ScalarProperty Name="ipm" ColumnName="ipm" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="Id" ColumnName="id_ipm_ipp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

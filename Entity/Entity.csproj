@@ -78,6 +78,9 @@
     <Compile Include="FactorProducccion.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="IpmIpp.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
     <Compile Include="LineaProducto.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
@@ -90,6 +93,7 @@
     <Compile Include="MateriaTerceros.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="Parciales\IpmIpp.cs" />
     <Compile Include="Parciales\TipoCambio.cs" />
     <Compile Include="Parciales\VentaPaisExtranjero.cs" />
     <Compile Include="Parciales\NumberTableItem.cs" />

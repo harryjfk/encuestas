@@ -20,6 +20,7 @@ namespace Entity
             this.Establecimientos = new HashSet<Establecimiento>();
             this.CAT_VALOR_PROD_MENSUAL = new HashSet<ValorProduccion>();
             this.CAT_VENTAS_PAIS_EXTRANJERO = new HashSet<VentasPaisExtranjero>();
+            this.CAT_IPM_IPP = new HashSet<IpmIpp>();
         }
     
         public string Codigo { get; set; }
@@ -36,5 +37,6 @@ namespace Entity
         public virtual ICollection<Establecimiento> Establecimientos { get; set; }
         public virtual ICollection<ValorProduccion> CAT_VALOR_PROD_MENSUAL { get; set; }
         public virtual ICollection<VentasPaisExtranjero> CAT_VENTAS_PAIS_EXTRANJERO { get; set; }
+        public virtual ICollection<IpmIpp> CAT_IPM_IPP { get; set; }
     }
 }
