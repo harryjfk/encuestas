@@ -42,6 +42,10 @@ namespace Domain.Managers
         public VentaServicioManufacturaManager VentaServicioManufacturaManager { get; set; }
         public MateriaTercerosManager MateriaTercerosManager { get; set; }
         public MateriaPropiaManager MateriaPropiaManager { get; set; }
+        public TipoCambioManager TipoCambioManager { get; set; }
+        public IpmIppManager IpmIppManager { get; set; }
+
+        public ConsumoHarinaFideoManager ConsumoHarinaFideoManager { get; set; }
 
         public Manager(IRepositorioUsuario repositorioUsuario,IRepositorioDepartamento departamentoRepository,IRepositorioProvincia provinciaRepository,IRepositorioDistrito distritoRepository,IRepositorioUbigeo ubigeoRepository)
         {
@@ -75,6 +79,9 @@ namespace Domain.Managers
             VentaServicioManufacturaManager = new VentaServicioManufacturaManager(context, this);
             MateriaTercerosManager = new MateriaTercerosManager(context, this);
             MateriaPropiaManager = new MateriaPropiaManager(context, this);
+            TipoCambioManager = new TipoCambioManager(context, this);
+            IpmIppManager = new IpmIppManager(context, this);
+            ConsumoHarinaFideoManager = new ConsumoHarinaFideoManager(context, this);
         }
 
         public void Seed()
