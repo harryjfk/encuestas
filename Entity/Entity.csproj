@@ -105,6 +105,8 @@
     <Compile Include="MetodoCalculo.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="Parciales\EnumRubro.cs" />
+    <Compile Include="Parciales\EnumSubsector.cs" />
     <Compile Include="Parciales\MetodoCalculo.cs" />
     <Compile Include="Parciales\ConsumoHarinaFideos.cs" />
     <Compile Include="Parciales\ExportacionHarinaTrigo.cs" />

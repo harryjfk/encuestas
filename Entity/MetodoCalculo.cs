@@ -14,8 +14,15 @@ namespace Entity
     
     public partial class MetodoCalculo
     {
+        public MetodoCalculo()
+        {
+            this.CAT_CIIU = new HashSet<Ciiu>();
+        }
+    
         public long Id { get; set; }
         public string nombre { get; set; }
         public decimal estado { get; set; }
+    
+        public virtual ICollection<Ciiu> CAT_CIIU { get; set; }
     }
 }

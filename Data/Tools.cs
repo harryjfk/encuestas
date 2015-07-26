@@ -57,7 +57,7 @@ namespace Data
                     typeof (Ciiu), 
                     new string[]
                     {
-                        "Estado","Activado","Id"
+                        "Estado","Activado","Id","id_metodo_calculo","rubro","sub_sector","EnumSubSector","EnumRubro"
                     }
                 },
                 {

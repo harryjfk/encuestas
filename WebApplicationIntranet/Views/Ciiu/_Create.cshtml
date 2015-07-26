@@ -51,7 +51,47 @@
                 @*<input class="text-box single-line form-control" id="Nombre" name="Nombre" type="text" value="">*@
                 @Html.ValidationMessageFor(model => model.Revision)
             </div>
-           
+
+        </div>
+        <div class="form-group">
+            <label for="tipoCalculo" class="col-md-4 control-label">Tipo de C&aacute;lculo</label>
+            <div class="col-md-7">
+                @{Html.RenderAction("GetDorpDown", "MetodoCalculo", new { id = (Model != null && Model.id_metodo_calculo != null) ? Model.id_metodo_calculo : 0, nombre = "id_metodo_calculo" });}
+
+                @Html.ValidationMessageFor(model => model.id_metodo_calculo)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        @{
+                  var s1 = Model != null && Model.sub_sector == 1 ? "selected" : "";
+                  var s2 = Model != null && Model.sub_sector == 2 ? "selected" : "";
+
+                  var r1 = Model != null && Model.rubro == 1 ? "selected" : "";
+                  var r2 = Model != null && Model.rubro == 2 ? "selected" : "";
+                  var r3 = Model != null && Model.rubro == 3 ? "selected" : "";
+                  var r4 = Model != null && Model.rubro == 4 ? "selected" : "";
+        }
+        <div class="form-group">
+            <label for="subsector" class="col-md-4 control-label">Sub Sector</label>
+            <div class="col-md-7">
+                <select class="form-control" name="sub_sector">
+                    <option @s1 value="1">Manufactura primaria</option>
+                    <option @s2 value="2">Manufactura no primaria</option>
+                </select>
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        <div class="form-group" id="div-rubro">
+            <label for="rubro" class="col-md-4 control-label">Rubro</label>
+            <div class="col-md-7">
+                <select class="form-control" name="rubro">
+                    <option @r1 value="1">Bienes de consumo</option>
+                    <option @r2 value="2">Bienes intermedios</option>
+                    <option @r3 value="3">Bienes de capital</option>
+                    <option @r4 value="4">Servicios</option>
+                </select>
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
         <div class="form-group">
             <label for="Activado" class="col-md-4 control-label">Activado</label>
@@ -62,9 +102,9 @@
             </div>
         </div>
 
-        
 
-        
+
+
         <div class="modal-footer">
             <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -74,8 +114,8 @@
 }
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("button[name='aceptarbtn']").click(function () {
+    $(document).ready(function() {
+        $("button[name='aceptarbtn']").click(function() {
             var $elem = $(this);
             $elem.addClass("disabled");
             $.ajax({
@@ -83,7 +123,7 @@
                 type: "POST",
                 url: $.origin() + "/Ciiu/CreatePost/",
                 data: $("form[name='addform']").serialize(),
-                success: function (data) {
+                success: function(data) {
                     $elem.removeClass("disabled");
                     if (data.Success) {
                         $("#table-container").html(data.Data);
@@ -105,7 +145,7 @@
                     //$("#editItem .modal-body").html(data);
                     //$("#editItem").modal("show");
                 },
-                error: function (xhr, ajaxOptions, thrownError) {
+                error: function(xhr, ajaxOptions, thrownError) {
                     $elem.removeClass("disabled");
                     alert('Failed to retrieve data.');
                 }
@@ -115,6 +155,18 @@
         $('#Codigo').maxlength({ events: ['blur'], slider: true, maxCharacters: 4, statusText: 'caracteres restantes' });
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 255, statusText: 'caracteres restantes' });
         $('#Revision').maxlength({ events: ['blur'], slider: true, maxCharacters: 10, statusText: 'caracteres restantes' });
-
-    })
+        verifyRubro();
+        $("select[name='sub_sector']").change(function() {
+            verifyRubro();
+        });
+    });
+    
+    function verifyRubro() {
+        var value = $("select[name='sub_sector']").val();
+        if (value == 2) {
+            $('#div-rubro').show();
+        } else {
+            $('#div-rubro').hide();
+        }
+    }
 </script>

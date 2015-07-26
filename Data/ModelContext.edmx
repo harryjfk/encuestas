@@ -30,6 +30,9 @@
           <Property Name="modificado" Type="date" />
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="id_metodo_calculo" Type="number" Precision="11" Scale="0" />
+          <Property Name="sub_sector" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="rubro" Type="number" Precision="11" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_CONSUMO_HARINA_FIDEO">
           <Key>
@@ -984,6 +987,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SYS_C008183">
+          <End Role="CAT_METODO_CALCULO" Type="Self.CAT_METODO_CALCULO" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_METODO_CALCULO">
+              <PropertyRef Name="id_metodo" />
+            </Principal>
+            <Dependent Role="CAT_CIIU">
+              <PropertyRef Name="id_metodo_calculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU" Schema="TEST" store:Type="Tables" />
@@ -1184,6 +1201,10 @@
             <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
             <End Role="CAT_IPM_IPP" EntitySet="CAT_IPM_IPP" />
           </AssociationSet>
+          <AssociationSet Name="SYS_C008183" Association="Self.SYS_C008183">
+            <End Role="CAT_METODO_CALCULO" EntitySet="CAT_METODO_CALCULO" />
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1220,6 +1241,10 @@
           <NavigationProperty Name="CAT_VALOR_PROD_MENSUAL" Relationship="Model.FK_VALOR_PROD_CIIU" FromRole="Ciiu" ToRole="ValorProduccion" />
           <NavigationProperty Name="CAT_VENTAS_PAIS_EXTRANJERO" Relationship="Model.FK_VENTA_PAIS_EXTR_CIIU" FromRole="Ciiu" ToRole="VentasPaisExtranjero" />
           <NavigationProperty Name="CAT_IPM_IPP" Relationship="Model.SYS_C008155" FromRole="Ciiu" ToRole="CAT_IPM_IPP" />
+          <Property Name="id_metodo_calculo" Type="Int64" />
+          <Property Name="sub_sector" Type="Int64" Nullable="false" />
+          <Property Name="rubro" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="CAT_METODO_CALCULO" Relationship="Model.SYS_C008183" FromRole="Ciiu" ToRole="MetodoCalculo" />
         </EntityType>
         <EntityType Name="Contacto">
           <Key>
@@ -2018,6 +2043,10 @@
           <EntitySet Name="CAT_EXPORTACION_HARINA_TRIGO" EntityType="Model.ExportacionHarinaTrigo" />
           <EntitySet Name="CAT_IMPORTACION_HARINA_TRIGO" EntityType="Model.ImportacionHarinaTrigo" />
           <EntitySet Name="CAT_METODO_CALCULO" EntityType="Model.MetodoCalculo" />
+          <AssociationSet Name="SYS_C008183" Association="Model.SYS_C008183">
+            <End Role="MetodoCalculo" EntitySet="CAT_METODO_CALCULO" />
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+          </AssociationSet>
           </EntityContainer>
         <Association Name="SYS_C0012622">
           <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
@@ -2264,7 +2293,22 @@
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CAT_CIIU" Relationship="Model.SYS_C008183" FromRole="MetodoCalculo" ToRole="Ciiu" />
         </EntityType>
+        <Association Name="SYS_C008183">
+          <End Type="Model.MetodoCalculo" Role="MetodoCalculo" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MetodoCalculo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ciiu">
+              <PropertyRef Name="id_metodo_calculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2287,6 +2331,9 @@
           <EntitySetMapping Name="CAT_CIIU">
             <EntityTypeMapping TypeName="Model.Ciiu">
               <MappingFragment StoreEntitySet="CAT_CIIU">
+                <ScalarProperty Name="rubro" ColumnName="rubro" />
+                <ScalarProperty Name="sub_sector" ColumnName="sub_sector" />
+                <ScalarProperty Name="id_metodo_calculo" ColumnName="id_metodo_calculo" />
                 <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
                 <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
                 <ScalarProperty Name="modificado" ColumnName="modificado" />
