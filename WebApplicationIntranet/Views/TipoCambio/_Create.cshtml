@@ -28,9 +28,10 @@
         <div class="form-group">
             <label for="Año" class="col-md-4 control-label"> Año</label>
             <div class="col-md-7">
-                @Html.Label(Model.fecha.Year.ToString(), new { @class = "form-control" })
+                @Html.Label(Model.fecha.Year.ToString(), new { @class = "form-control", style = "max-width: 280px;" })
                 @Html.ValidationMessageFor(model => model.Año)
             </div>
+           
         </div>
         
         <div class="form-group">

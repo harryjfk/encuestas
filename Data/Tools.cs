@@ -57,6 +57,13 @@ namespace Data
                     typeof (Ciiu), 
                     new string[]
                     {
+                        "Estado","Activado","Id","id_metodo_calculo","rubro","sub_sector","EnumSubSector","EnumRubro"
+                    }
+                },
+                {
+                    typeof (MetodoCalculo), 
+                    new string[]
+                    {
                         "Estado","Activado","Id"
                     }
                 },
@@ -72,6 +79,20 @@ namespace Data
                     new string[]
                     {
                         "Estado","fecha","Activado","Id","tonelada_tmb","Año"
+                    }
+                },
+                {
+                    typeof (ExportacionHarinaTrigo), 
+                    new string[]
+                    {
+                        "Estado","fecha","Activado","Id","fob_usd","fob_s","Año"
+                    }
+                },
+                {
+                    typeof (ImportacionHarinaTrigo), 
+                    new string[]
+                    {
+                        "Estado","fecha","Activado","Id","cif_usd","cif_s","Año"
                     }
                 },
                 {

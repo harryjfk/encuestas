@@ -30,6 +30,9 @@
           <Property Name="modificado" Type="date" />
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="id_metodo_calculo" Type="number" Precision="11" Scale="0" />
+          <Property Name="sub_sector" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="rubro" Type="number" Precision="11" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_CONSUMO_HARINA_FIDEO">
           <Key>
@@ -133,6 +136,16 @@
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="tipo_establecimiento" Type="number" Precision="38" Scale="0" />
         </EntityType>
+        <EntityType Name="CAT_EXPORTACION_HARINA_TRIGO">
+          <Key>
+            <PropertyRef Name="id_exportacion" />
+          </Key>
+          <Property Name="id_exportacion" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="fob_usd" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="fob_s" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CAT_FACTOR">
           <Key>
             <PropertyRef Name="id_factor" />
@@ -166,6 +179,16 @@
           <Property Name="modificado" Type="date" />
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CAT_IMPORTACION_HARINA_TRIGO">
+          <Key>
+            <PropertyRef Name="id_importacion" />
+          </Key>
+          <Property Name="id_importacion" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="cif_usd" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="cif_s" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_IPM_IPP">
           <Key>
@@ -238,6 +261,14 @@
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="justificacion_produccion" Type="varchar2" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="CAT_METODO_CALCULO">
+          <Key>
+            <PropertyRef Name="id_metodo" />
+          </Key>
+          <Property Name="id_metodo" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="nombre" Type="varchar2" MaxLength="20" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_POSIBLE_RESPUESTA">
           <Key>
@@ -956,6 +987,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SYS_C008183">
+          <End Role="CAT_METODO_CALCULO" Type="Self.CAT_METODO_CALCULO" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_METODO_CALCULO">
+              <PropertyRef Name="id_metodo" />
+            </Principal>
+            <Dependent Role="CAT_CIIU">
+              <PropertyRef Name="id_metodo_calculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU" Schema="TEST" store:Type="Tables" />
@@ -967,14 +1012,17 @@
           <EntitySet Name="CAT_ESTAB_CIIU" EntityType="Self.CAT_ESTAB_CIIU" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ESTAB_LINEA_PROD" EntityType="Self.CAT_ESTAB_LINEA_PROD" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ESTABLECIMIENTO" EntityType="Self.CAT_ESTABLECIMIENTO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_EXPORTACION_HARINA_TRIGO" EntityType="Self.CAT_EXPORTACION_HARINA_TRIGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_FACTOR" EntityType="Self.CAT_FACTOR" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_FACTOR_FACTOR_PROD" EntityType="Self.CAT_FACTOR_FACTOR_PROD" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_FACTOR_PRODUCCION" EntityType="Self.CAT_FACTOR_PRODUCCION" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_IMPORTACION_HARINA_TRIGO" EntityType="Self.CAT_IMPORTACION_HARINA_TRIGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_IPM_IPP" EntityType="Self.CAT_IPM_IPP" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_LINEA_PROD_UNIDAD_MEDIDA" EntityType="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Self.CAT_LINEA_PRODUCTO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Self.CAT_MATERIA_PROPIA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_MATERIA_TERCEROS" EntityType="Self.CAT_MATERIA_TERCEROS" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_METODO_CALCULO" EntityType="Self.CAT_METODO_CALCULO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_POSIBLE_RESPUESTA" EntityType="Self.CAT_POSIBLE_RESPUESTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_PREGUNTA" EntityType="Self.CAT_PREGUNTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_TIPO_CAMBIO" EntityType="Self.CAT_TIPO_CAMBIO" Schema="TEST" store:Type="Tables" />
@@ -1153,6 +1201,10 @@
             <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
             <End Role="CAT_IPM_IPP" EntitySet="CAT_IPM_IPP" />
           </AssociationSet>
+          <AssociationSet Name="SYS_C008183" Association="Self.SYS_C008183">
+            <End Role="CAT_METODO_CALCULO" EntitySet="CAT_METODO_CALCULO" />
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1189,6 +1241,10 @@
           <NavigationProperty Name="CAT_VALOR_PROD_MENSUAL" Relationship="Model.FK_VALOR_PROD_CIIU" FromRole="Ciiu" ToRole="ValorProduccion" />
           <NavigationProperty Name="CAT_VENTAS_PAIS_EXTRANJERO" Relationship="Model.FK_VENTA_PAIS_EXTR_CIIU" FromRole="Ciiu" ToRole="VentasPaisExtranjero" />
           <NavigationProperty Name="CAT_IPM_IPP" Relationship="Model.SYS_C008155" FromRole="Ciiu" ToRole="CAT_IPM_IPP" />
+          <Property Name="id_metodo_calculo" Type="Int64" />
+          <Property Name="sub_sector" Type="Int64" Nullable="false" />
+          <Property Name="rubro" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="CAT_METODO_CALCULO" Relationship="Model.SYS_C008183" FromRole="Ciiu" ToRole="MetodoCalculo" />
         </EntityType>
         <EntityType Name="Contacto">
           <Key>
@@ -1984,6 +2040,13 @@
             <End Role="CAT_IPM_IPP" EntitySet="CAT_IPM_IPP" />
           </AssociationSet>
           <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Model.ConsumoHarinaFideo" />
+          <EntitySet Name="CAT_EXPORTACION_HARINA_TRIGO" EntityType="Model.ExportacionHarinaTrigo" />
+          <EntitySet Name="CAT_IMPORTACION_HARINA_TRIGO" EntityType="Model.ImportacionHarinaTrigo" />
+          <EntitySet Name="CAT_METODO_CALCULO" EntityType="Model.MetodoCalculo" />
+          <AssociationSet Name="SYS_C008183" Association="Model.SYS_C008183">
+            <End Role="MetodoCalculo" EntitySet="CAT_METODO_CALCULO" />
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+          </AssociationSet>
           </EntityContainer>
         <Association Name="SYS_C0012622">
           <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
@@ -2203,6 +2266,49 @@
           <Property Name="tonelada_tmb" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
         </EntityType>
+        <EntityType Name="ExportacionHarinaTrigo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <Property Name="fob_usd" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="fob_s" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="ImportacionHarinaTrigo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <Property Name="cif_usd" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="cif_s" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="MetodoCalculo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CAT_CIIU" Relationship="Model.SYS_C008183" FromRole="MetodoCalculo" ToRole="Ciiu" />
+        </EntityType>
+        <Association Name="SYS_C008183">
+          <End Type="Model.MetodoCalculo" Role="MetodoCalculo" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MetodoCalculo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ciiu">
+              <PropertyRef Name="id_metodo_calculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2225,6 +2331,9 @@
           <EntitySetMapping Name="CAT_CIIU">
             <EntityTypeMapping TypeName="Model.Ciiu">
               <MappingFragment StoreEntitySet="CAT_CIIU">
+                <ScalarProperty Name="rubro" ColumnName="rubro" />
+                <ScalarProperty Name="sub_sector" ColumnName="sub_sector" />
+                <ScalarProperty Name="id_metodo_calculo" ColumnName="id_metodo_calculo" />
                 <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
                 <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
                 <ScalarProperty Name="modificado" ColumnName="modificado" />
@@ -2617,6 +2726,37 @@
                 <ScalarProperty Name="tonelada_tmb" ColumnName="tonelada_tmb" />
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="Id" ColumnName="id_consumo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_EXPORTACION_HARINA_TRIGO">
+            <EntityTypeMapping TypeName="Model.ExportacionHarinaTrigo">
+              <MappingFragment StoreEntitySet="CAT_EXPORTACION_HARINA_TRIGO">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fob_s" ColumnName="fob_s" />
+                <ScalarProperty Name="fob_usd" ColumnName="fob_usd" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="Id" ColumnName="id_exportacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_IMPORTACION_HARINA_TRIGO">
+            <EntityTypeMapping TypeName="Model.ImportacionHarinaTrigo">
+              <MappingFragment StoreEntitySet="CAT_IMPORTACION_HARINA_TRIGO">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="cif_s" ColumnName="cif_s" />
+                <ScalarProperty Name="cif_usd" ColumnName="cif_usd" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="Id" ColumnName="id_importacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_METODO_CALCULO">
+            <EntityTypeMapping TypeName="Model.MetodoCalculo">
+              <MappingFragment StoreEntitySet="CAT_METODO_CALCULO">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Id" ColumnName="id_metodo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

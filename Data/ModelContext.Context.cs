@@ -52,5 +52,8 @@ namespace Data
         public DbSet<TipoCambio> CAT_TIPO_CAMBIO { get; set; }
         public DbSet<IpmIpp> CAT_IPM_IPP { get; set; }
         public DbSet<ConsumoHarinaFideo> CAT_CONSUMO_HARINA_FIDEO { get; set; }
+        public DbSet<ExportacionHarinaTrigo> CAT_EXPORTACION_HARINA_TRIGO { get; set; }
+        public DbSet<ImportacionHarinaTrigo> CAT_IMPORTACION_HARINA_TRIGO { get; set; }
+        public DbSet<MetodoCalculo> CAT_METODO_CALCULO { get; set; }
     }
 }

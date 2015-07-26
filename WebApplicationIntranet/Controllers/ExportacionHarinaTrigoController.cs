@@ -8,9 +8,9 @@ using Entity;
 
 namespace WebApplication.Controllers
 {
-    public class TestController : BaseController<Cargo>
+    public class ExportacionHarinaTrigoController : BaseController<ExportacionHarinaTrigo>
     {
-        public ActionResult GetDorpDown(string id, string nombre = "IdCargo", string @default = null)
+        public ActionResult GetDorpDown(string id, string nombre = "IdExportacion", string @default = null)
         {
            var list =OwnManager.Get(t => t.Activado).Select(t => new SelectListItem()
             {

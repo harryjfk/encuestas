@@ -75,10 +75,16 @@
     <Compile Include="Establecimiento.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="ExportacionHarinaTrigo.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
     <Compile Include="Factor.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
     <Compile Include="FactorProducccion.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ImportacionHarinaTrigo.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
     <Compile Include="IpmIpp.cs">
@@ -96,7 +102,15 @@
     <Compile Include="MateriaTerceros.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="MetodoCalculo.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Parciales\EnumRubro.cs" />
+    <Compile Include="Parciales\EnumSubsector.cs" />
+    <Compile Include="Parciales\MetodoCalculo.cs" />
     <Compile Include="Parciales\ConsumoHarinaFideos.cs" />
+    <Compile Include="Parciales\ExportacionHarinaTrigo.cs" />
+    <Compile Include="Parciales\ImportacionHarinaTrigo.cs" />
     <Compile Include="Parciales\IpmIpp.cs" />
     <Compile Include="Parciales\TipoCambio.cs" />
     <Compile Include="Parciales\VentaPaisExtranjero.cs" />

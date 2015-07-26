@@ -32,11 +32,15 @@ namespace Entity
         public Nullable<System.DateTime> modificado { get; set; }
         public string usuario_creacion { get; set; }
         public string usuario_modificacion { get; set; }
+        public Nullable<long> id_metodo_calculo { get; set; }
+        public long sub_sector { get; set; }
+        public long rubro { get; set; }
     
         public virtual ICollection<LineaProducto> LineasProducto { get; set; }
         public virtual ICollection<Establecimiento> Establecimientos { get; set; }
         public virtual ICollection<ValorProduccion> CAT_VALOR_PROD_MENSUAL { get; set; }
         public virtual ICollection<VentasPaisExtranjero> CAT_VENTAS_PAIS_EXTRANJERO { get; set; }
         public virtual ICollection<IpmIpp> CAT_IPM_IPP { get; set; }
+        public virtual MetodoCalculo CAT_METODO_CALCULO { get; set; }
     }
 }
