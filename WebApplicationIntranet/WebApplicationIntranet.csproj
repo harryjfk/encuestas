@@ -179,6 +179,7 @@
     <Compile Include="Attributes\MultiButtonAttribute.cs" />
     <Compile Include="Binders\ModelBinder.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\CargoController.cs" />
     <Compile Include="Controllers\ConsumoHarinaFideoController.cs" />
     <Compile Include="Controllers\ContactoController.cs" />
