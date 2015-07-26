@@ -61,6 +61,13 @@ namespace Data
                     }
                 },
                 {
+                    typeof (MetodoCalculo), 
+                    new string[]
+                    {
+                        "Estado","Activado","Id"
+                    }
+                },
+                {
                     typeof (LineaProducto), 
                     new string[]
                     {

@@ -46,8 +46,9 @@ namespace Domain.Managers
         public IpmIppManager IpmIppManager { get; set; }
         public ImportacionHarinaTrigoManager ImportacionHarinaTrigoManager { get; set; }
         public ExportacionHarinaTrigoManager ExportacionHarinaTrigoManager { get; set; }
-
         public ConsumoHarinaFideoManager ConsumoHarinaFideoManager { get; set; }
+
+        public MetodoCalculoManager MetodoCalculoManager { get; set; }
 
         public Manager(IRepositorioUsuario repositorioUsuario,IRepositorioDepartamento departamentoRepository,IRepositorioProvincia provinciaRepository,IRepositorioDistrito distritoRepository,IRepositorioUbigeo ubigeoRepository)
         {
@@ -86,6 +87,7 @@ namespace Domain.Managers
             ConsumoHarinaFideoManager = new ConsumoHarinaFideoManager(context, this);
             ImportacionHarinaTrigoManager = new ImportacionHarinaTrigoManager(context, this);
             ExportacionHarinaTrigoManager = new ExportacionHarinaTrigoManager(context, this);
+            MetodoCalculoManager = new MetodoCalculoManager(context, this);
         }
 
         public void Seed()

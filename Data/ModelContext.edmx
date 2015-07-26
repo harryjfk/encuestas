@@ -259,6 +259,14 @@
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="justificacion_produccion" Type="varchar2" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="CAT_METODO_CALCULO">
+          <Key>
+            <PropertyRef Name="id_metodo" />
+          </Key>
+          <Property Name="id_metodo" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="nombre" Type="varchar2" MaxLength="20" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CAT_POSIBLE_RESPUESTA">
           <Key>
             <PropertyRef Name="id_posible_respuesta" />
@@ -997,6 +1005,7 @@
           <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Self.CAT_LINEA_PRODUCTO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Self.CAT_MATERIA_PROPIA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_MATERIA_TERCEROS" EntityType="Self.CAT_MATERIA_TERCEROS" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_METODO_CALCULO" EntityType="Self.CAT_METODO_CALCULO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_POSIBLE_RESPUESTA" EntityType="Self.CAT_POSIBLE_RESPUESTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_PREGUNTA" EntityType="Self.CAT_PREGUNTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_TIPO_CAMBIO" EntityType="Self.CAT_TIPO_CAMBIO" Schema="TEST" store:Type="Tables" />
@@ -2008,6 +2017,7 @@
           <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Model.ConsumoHarinaFideo" />
           <EntitySet Name="CAT_EXPORTACION_HARINA_TRIGO" EntityType="Model.ExportacionHarinaTrigo" />
           <EntitySet Name="CAT_IMPORTACION_HARINA_TRIGO" EntityType="Model.ImportacionHarinaTrigo" />
+          <EntitySet Name="CAT_METODO_CALCULO" EntityType="Model.MetodoCalculo" />
           </EntityContainer>
         <Association Name="SYS_C0012622">
           <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
@@ -2245,6 +2255,14 @@
           <Property Name="fecha" Type="DateTime" Nullable="false" />
           <Property Name="cif_usd" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="cif_s" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="MetodoCalculo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
         </EntityType>
         </Schema>
@@ -2683,6 +2701,15 @@
                 <ScalarProperty Name="cif_usd" ColumnName="cif_usd" />
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="Id" ColumnName="id_importacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_METODO_CALCULO">
+            <EntityTypeMapping TypeName="Model.MetodoCalculo">
+              <MappingFragment StoreEntitySet="CAT_METODO_CALCULO">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Id" ColumnName="id_metodo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
