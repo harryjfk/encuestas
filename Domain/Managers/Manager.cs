@@ -44,6 +44,8 @@ namespace Domain.Managers
         public MateriaPropiaManager MateriaPropiaManager { get; set; }
         public TipoCambioManager TipoCambioManager { get; set; }
         public IpmIppManager IpmIppManager { get; set; }
+        public ImportacionHarinaTrigoManager ImportacionHarinaTrigoManager { get; set; }
+        public ExportacionHarinaTrigoManager ExportacionHarinaTrigoManager { get; set; }
 
         public ConsumoHarinaFideoManager ConsumoHarinaFideoManager { get; set; }
 
@@ -82,6 +84,8 @@ namespace Domain.Managers
             TipoCambioManager = new TipoCambioManager(context, this);
             IpmIppManager = new IpmIppManager(context, this);
             ConsumoHarinaFideoManager = new ConsumoHarinaFideoManager(context, this);
+            ImportacionHarinaTrigoManager = new ImportacionHarinaTrigoManager(context, this);
+            ExportacionHarinaTrigoManager = new ExportacionHarinaTrigoManager(context, this);
         }
 
         public void Seed()

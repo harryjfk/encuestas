@@ -75,6 +75,20 @@ namespace Data
                     }
                 },
                 {
+                    typeof (ExportacionHarinaTrigo), 
+                    new string[]
+                    {
+                        "Estado","fecha","Activado","Id","fob_usd","fob_s","Año"
+                    }
+                },
+                {
+                    typeof (ImportacionHarinaTrigo), 
+                    new string[]
+                    {
+                        "Estado","fecha","Activado","Id","cif_usd","cif_s","Año"
+                    }
+                },
+                {
                     typeof (ConsumoHarinaFideo), 
                     new string[]
                     {

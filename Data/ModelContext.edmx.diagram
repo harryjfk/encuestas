@@ -71,6 +71,8 @@
         <EntityTypeShape EntityType="Model.IpmIpp" Width="1.5" PointX="3.25" PointY="23.375" />
         <AssociationConnector Association="Model.SYS_C008155" />
         <EntityTypeShape EntityType="Model.ConsumoHarinaFideo" Width="1.5" PointX="5.625" PointY="3.625" />
+        <EntityTypeShape EntityType="Model.ExportacionHarinaTrigo" Width="1.5" PointX="8.25" PointY="2.5" />
+        <EntityTypeShape EntityType="Model.ImportacionHarinaTrigo" Width="1.5" PointX="10.25" PointY="2.5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
