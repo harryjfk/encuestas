@@ -90,6 +90,7 @@
     <Compile Include="MateriaTerceros.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="Parciales\TipoCambio.cs" />
     <Compile Include="Parciales\VentaPaisExtranjero.cs" />
     <Compile Include="Parciales\NumberTableItem.cs" />
     <Compile Include="Parciales\VentasProductosEstablecimientos.cs" />
@@ -137,6 +138,9 @@
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
     <Compile Include="Rol.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TipoCambio.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
     <Compile Include="TrabajadoresDiasTrabajados.cs">

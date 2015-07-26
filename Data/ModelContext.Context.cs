@@ -49,5 +49,6 @@ namespace Data
         public DbSet<Usuario> SEG_USUARIO { get; set; }
         public DbSet<Factor> CAT_FACTOR { get; set; }
         public DbSet<FactorProducccion> CAT_FACTOR_PRODUCCION { get; set; }
+        public DbSet<TipoCambio> CAT_TIPO_CAMBIO { get; set; }
     }
 }

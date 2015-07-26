@@ -194,6 +194,7 @@
     <Compile Include="Controllers\FactorController.cs" />
     <Compile Include="Controllers\LineaProductoController.cs" />
     <Compile Include="Controllers\SeguridadController.cs" />
+    <Compile Include="Controllers\TipoCambioController.cs" />
     <Compile Include="Controllers\UnidadMedidaController.cs" />
     <Compile Include="Controllers\UsuarioExtranetController.cs" />
     <Compile Include="Controllers\UsuarioIntranetController.cs" />
@@ -419,6 +420,10 @@
     </Content>
     <Content Include="Web References\ServiceSunat\WCFSistemasService.wsdl" />
     <Content Include="Views\Seguridad\AccesoDenegado.cshtml" />
+    <Content Include="Views\TipoCambio\_Create.cshtml" />
+    <Content Include="Views\TipoCambio\_Table.cshtml" />
+    <Content Include="Views\TipoCambio\Details.cshtml" />
+    <Content Include="Views\TipoCambio\Index.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>

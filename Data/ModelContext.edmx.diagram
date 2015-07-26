@@ -67,6 +67,7 @@
         <AssociationConnector Association="Model.SYS_C0014682" />
         <AssociationConnector Association="Model.CAT_FACTOR_FACTOR_PROD" />
         <AssociationConnector Association="Model.FK_PREGUNTA_ENCUESTA" />
+        <EntityTypeShape EntityType="Model.TipoCambio" Width="1.5" PointX="0.75" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
