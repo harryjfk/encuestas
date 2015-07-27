@@ -22,7 +22,7 @@ namespace Domain.Managers
 
         public override OperationResult<UnidadMedida> Delete(UnidadMedida element)
         {
-            if (element.LineasProducto.Count > 0)
+            if (element.LineasProductoUnidadMedida.Count > 0)
                 return new OperationResult<UnidadMedida>(element) { Errors = new List<string>() { "Hay líneas de producto relacionadas" }, Success = false };
             return base.Delete(element);
         }
@@ -40,7 +40,7 @@ namespace Domain.Managers
             if (lineaProd == null) return;
             var all = Manager.UnidadMedida.Get(t => t.Activado == true).ToList();
             query.Elements = all.Any() ? all.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage) : new PagedList<UnidadMedida>(all, 1, 1);
-            var list = lineaProd.UnidadesMedida.Select(t => t.Id).ToList();
+            var list = lineaProd.LineasProductoUnidadMedida.Select(t => t.id_unidad_medida).ToList();
             foreach (var um in query.Elements.Where(um => list.Contains(um.Id)))
                 um.Asignado = true;
         }

@@ -667,7 +667,7 @@ namespace WebApplication.Controllers
 
         public ActionResult GetDorpDownLineaProductoNotIncluded(string id, long idCiiu = 0, string nombre = "IdLineaProducto", string @default = null)
         {
-            var list = Manager.LineaProducto.Get(t => t.Activado && t.UnidadesMedida.Any()
+            var list = Manager.LineaProducto.Get(t => t.Activado && t.LineasProductoUnidadMedida.Any()
                 && t.MateriaTercero.All(h => h.VolumenProduccion.Encuesta.Id != Model.Id)
                 /*&& t.Ciiu.Establecimientos.Any(h=>h.Id==IdEstablecimiento*/
                 && t.IdCiiu == idCiiu && t.LineasProductoEstablecimiento.All(h => h.IdEstablecimiento != IdEstablecimiento))
@@ -689,7 +689,7 @@ namespace WebApplication.Controllers
 
         public ActionResult GetDorpDownLineaProductop(string id, long idCiiu = 0, string nombre = "IdLineaProducto", string @default = null)
         {
-            var list = Manager.LineaProducto.Get(t => t.Activado && t.UnidadesMedida.Any()
+            var list = Manager.LineaProducto.Get(t => t.Activado && t.LineasProductoUnidadMedida.Any()
                 && t.MateriasPropia.All(h => h.VolumenProduccion.Encuesta.Id != Model.Id)
                 /*&& t.Ciiu.Establecimientos.Any(h=>h.Id==IdEstablecimiento*/
                 && t.IdCiiu == idCiiu && t.LineasProductoEstablecimiento.All(h => h.IdEstablecimiento != IdEstablecimiento))
@@ -931,7 +931,7 @@ namespace WebApplication.Controllers
         public ActionResult GetDorpDownUnidadMedida(long idLineaProducto, string id, string nombre = "IdUnidadMedida", string @default = null)
         {
             var list = Manager.UnidadMedida.Get(t =>
-                t.LineasProducto.Any(h => h.Id == idLineaProducto)).Select(t => new SelectListItem()
+                t.LineasProductoUnidadMedida.Any(h => h.id_linea_producto == idLineaProducto)).Select(t => new SelectListItem()
                 {
                     Text = t.ToString(),
                     Value = t.Id.ToString(),

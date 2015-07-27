@@ -55,5 +55,6 @@ namespace Data
         public DbSet<ExportacionHarinaTrigo> CAT_EXPORTACION_HARINA_TRIGO { get; set; }
         public DbSet<ImportacionHarinaTrigo> CAT_IMPORTACION_HARINA_TRIGO { get; set; }
         public DbSet<MetodoCalculo> CAT_METODO_CALCULO { get; set; }
+        public DbSet<LineaProductoUnidadMedida> CAT_LINEA_PRODTO_UNIDAD_MEDIDA { get; set; }
     }
 }

@@ -733,7 +733,7 @@ namespace WebApplication.Controllers
         public ActionResult GetDorpDownUnidadMedida(long idLineaProducto, string id, string nombre = "IdUnidadMedida", string @default = null)
         {
             var list = Manager.UnidadMedida.Get(t =>
-                t.LineasProducto.Any(h => h.Id == idLineaProducto)).Select(t => new SelectListItem()
+                t.LineasProductoUnidadMedida.Any(h => h.id_linea_producto == idLineaProducto)).Select(t => new SelectListItem()
                 {
                     Text = t.ToString(),
                     Value = t.Id.ToString(),
