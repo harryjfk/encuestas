@@ -96,6 +96,9 @@
     <Compile Include="LineaProductoEstablecimiento.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="LineaProductoUnidadMedida.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
     <Compile Include="MateriaPropia.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
@@ -105,6 +108,7 @@
     <Compile Include="MetodoCalculo.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="Parciales\LineaProductoUnidadMedida.cs" />
     <Compile Include="Parciales\EnumRubro.cs" />
     <Compile Include="Parciales\EnumSubsector.cs" />
     <Compile Include="Parciales\MetodoCalculo.cs" />

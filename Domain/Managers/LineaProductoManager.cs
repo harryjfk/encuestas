@@ -26,16 +26,23 @@ namespace Domain.Managers
             var unidadMedida = manager.UnidadMedida.Find(idUnidadMedida);
             var lineaProducto = manager.LineaProducto.Find(idLineaProducto);
             if (unidadMedida == null || lineaProducto == null) return;
-            var asigned = unidadMedida.LineasProducto.FirstOrDefault(t => t.Id == lineaProducto.Id);
+            var asigned = unidadMedida.LineasProductoUnidadMedida.FirstOrDefault(t => t.id_linea_producto == lineaProducto.Id);
             if (asigned == null)
             {
-                unidadMedida.LineasProducto.Add(lineaProducto);
-                manager.UnidadMedida.SaveChanges();
+                //unidadMedida.LineasProducto.Add(lineaProducto);
+                var lin = new LineaProductoUnidadMedida()
+                {
+                    id_linea_producto = lineaProducto.Id,
+                    id_unidad_medida = unidadMedida.Id
+                };
+                manager.LineaProductoUnidadMedidaManager.Add(lin);
+                manager.LineaProductoUnidadMedidaManager.SaveChanges();
             }
             else
             {
-                unidadMedida.LineasProducto.Remove(lineaProducto);
-                lineaProducto.UnidadesMedida.Remove(unidadMedida);
+               // unidadMedida.LineasProducto.Remove(lineaProducto);
+                //lineaProducto.UnidadesMedida.Remove(unidadMedida);
+                manager.LineaProductoUnidadMedidaManager.Delete(asigned.Id);
                 manager.UnidadMedida.SaveChanges();
             }
         }

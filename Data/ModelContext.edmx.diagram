@@ -13,13 +13,13 @@
         <EntityTypeShape EntityType="Model.EncuestaEstadistica" Width="2" PointX="8" PointY="22.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.LineaProductoEstablecimiento" Width="2.875" PointX="7.5" PointY="13" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Establecimiento" Width="2" PointX="4.75" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.LineaProducto" Width="2.25" PointX="5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.LineaProducto" Width="2.25" PointX="5" PointY="7.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.MateriaPropia" Width="2.125" PointX="15" PointY="30.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.MateriaTerceros" Width="2.75" PointX="18" PointY="29.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.PosibleRespuesta" Width="1.5" PointX="15" PointY="12.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Pregunta" Width="1.875" PointX="12.375" PointY="12.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.TrabajadoresDiasTrabajados" Width="2.375" PointX="12.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.UnidadMedida" Width="3" PointX="10.875" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.UnidadMedida" Width="3" PointX="13.875" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Valor" Width="1.75" PointX="17" PointY="12.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.ValorProduccion" Width="2.375" PointX="21.125" PointY="21.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.VentasServicioManufactura" Width="3.25" PointX="18.875" PointY="25.125" IsExpanded="true" />
@@ -50,7 +50,6 @@
         <AssociationConnector Association="Model.SYS_C0012625" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C0012627" ManuallyRouted="false" />
         <AssociationConnector Association="Model.CAT_ESTAB_CIIU" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.CAT_LINEA_PROD_UNIDAD_MEDIDA" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SEG_USUARIO_ROL" ManuallyRouted="false" />
         <InheritanceConnector EntityType="Model.EncuestaEstadistica" />
         <InheritanceConnector EntityType="Model.EncuestaEmpresarial" />
@@ -75,6 +74,10 @@
         <EntityTypeShape EntityType="Model.ImportacionHarinaTrigo" Width="1.5" PointX="10.25" PointY="2.5" />
         <EntityTypeShape EntityType="Model.MetodoCalculo" Width="1.5" PointX="12.625" PointY="2.75" />
         <AssociationConnector Association="Model.SYS_C008183" />
+        <EntityTypeShape EntityType="Model.LineaProductoUnidadMedida" Width="3.375" PointX="8.375" PointY="7.5" />
+        <AssociationConnector Association="Model.SYS_C008203" />
+        <AssociationConnector Association="Model.SYS_C008204" />
+        <AssociationConnector Association="Model.SYS_C008205" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
