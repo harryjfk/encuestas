@@ -70,5 +70,10 @@ namespace WebApplication.Controllers
             Manager.TipoCambioManager.Generate(int.Parse(criteria.Año));
             return base.Buscar(criteria);
         }
+
+        public override JsonResult CreatePost(TipoCambio element, params string[] properties)
+        {
+            return base.CreatePost(element, "fecha");
+        }
     }
 }

@@ -110,7 +110,7 @@ namespace Domain.Managers
                 {
                     SetValue("modificado", element, DateTime.Now);
                     SetValue("usuario_modificacion", element, Usuario);
-                    var lis = new List<string>();//properties.ToList();
+                    var lis =properties!=null? properties.ToList():new List<string>( );
                     lis.Add("creado");
                     lis.Add("usuario_creacion");
                     var entity = Repository.Modify(element,false,lis.ToArray());

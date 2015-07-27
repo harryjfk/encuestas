@@ -28,6 +28,7 @@
         @if (Model != null)
         {
             <input type="hidden" name="Id" value="@Model.Id" />
+           
         }
 
         <div class="form-group">
@@ -67,7 +68,7 @@
                 @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
                 @Html.ValidationMessageFor(model => model.Activado)
             </div>
-        </div>        
+        </div>
 
 
         <div class="modal-footer">

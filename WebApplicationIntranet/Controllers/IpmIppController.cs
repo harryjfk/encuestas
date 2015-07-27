@@ -72,6 +72,9 @@ namespace WebApplication.Controllers
             return base.Buscar(criteria);
         }
 
-        
+        public override JsonResult CreatePost(IpmIpp element, params string[] properties)
+        {
+            return base.CreatePost(element, "fecha", "id_ciiu", "ipp");
+        }
     }
 }

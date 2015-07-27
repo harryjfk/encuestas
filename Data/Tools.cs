@@ -75,7 +75,7 @@ namespace Data
                     }
                 },
                 {
-                    typeof (TipoCambio), 
+                    typeof (ConsumoHarinaFideo), 
                     new string[]
                     {
                         "Estado","fecha","Activado","Id","tonelada_tmb","Año"
@@ -96,7 +96,7 @@ namespace Data
                     }
                 },
                 {
-                    typeof (ConsumoHarinaFideo), 
+                    typeof (TipoCambio), 
                     new string[]
                     {
                         "Estado","fecha","Activado","Id","tipo_cambio_ventas","tipo_cambio_compra","Año"
