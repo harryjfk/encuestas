@@ -1,0 +1,44 @@
+﻿
+@model Entity.IpmIpp
+@{
+    ViewBag.Title = "Detalles del IpmIpp";
+}
+
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del IpmIpp</h3>
+<a href="/IpmIpp/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+<div class="info-child-screen-details">
+         <div>
+            <span class="bold">fecha: </span> <span>@Model.fecha</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">ipm: </span> <span>@Model.ipm</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">ipp: </span> <span>@Model.ipp</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">estado: </span> <span>@Model.estado</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">id_ciiu: </span> <span>@Model.id_ciiu</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">Año: </span> <span>@Model.Año</span>
+        </div>       
+         
+                    
+           </div>
+</div>
+
+

@@ -47,6 +47,30 @@ namespace WebApplication.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public override ActionResult Index()
+        {
+           
+            Query = Query ?? new Query<IpmIpp>();
+            Query.Criteria = Query.Criteria ?? new IpmIpp();
+            Query.Criteria.Año = Query.Criteria.Año ?? DateTime.Now.Year.ToString();
+            var idCiiu = Query.Criteria.id_ciiu > 0 ? Query.Criteria.id_ciiu : Manager.Ciiu.Get().FirstOrDefault().Id;
+            var año = DateTime.Now.Year;
+            if (Query.Criteria.Año != null)
+            {
+                año = int.Parse(Query.Criteria.Año);
+            }
+            Manager.IpmIppManager.Generate(idCiiu, año);
+            Query.Order = Query.Order ?? new Order<IpmIpp>();
+            Query.Criteria.id_ciiu =idCiiu ;
+            Query.Order.Func = t => t.fecha;
+            Query.BuildFilter();
+            return base.Index();
+        }
+        public override ActionResult Buscar(IpmIpp criteria)
+        {
+            Manager.IpmIppManager.Generate(criteria.id_ciiu,int.Parse(criteria.Año));
+            return base.Buscar(criteria);
+        }
 
         
     }
