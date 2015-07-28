@@ -70,7 +70,7 @@ namespace Data
                 {
                     typeof (LineaProducto), 
                     new string[]
-                    {
+                    { 
                         "Estado","Activado","Id","IdCiiu"
                     }
                 },

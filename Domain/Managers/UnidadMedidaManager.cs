@@ -32,14 +32,34 @@ namespace Domain.Managers
         {
         }
 
-        public void GetAsignadas(Query<UnidadMedida> query, long idLineaProducto)
+        public void GetAsignadas(Query<LineaProductoUnidadMedida> query, long idLineaProducto)
         {
-            query.Filter = query.Filter ?? new Func<UnidadMedida, bool>(t => true);
+            query.Filter = query.Filter ?? new Func<LineaProductoUnidadMedida, bool>(t => true);
            // Get(query);
             var lineaProd = Manager.LineaProducto.Find(idLineaProducto);
             if (lineaProd == null) return;
-            var all = Manager.UnidadMedida.Get(t => t.Activado == true).ToList();
-            query.Elements = all.Any() ? all.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage) : new PagedList<UnidadMedida>(all, 1, 1);
+            var primeros = lineaProd.LineasProductoUnidadMedida.ToList();
+            var ums = Manager.UnidadMedida.Get().ToList();
+            foreach (var unidadMedida in ums)
+            {
+                var it = primeros.FirstOrDefault(t => t.id_unidad_medida == unidadMedida.Id);
+                if (it == null)
+                {
+                    primeros.Add(new LineaProductoUnidadMedida()
+                    {
+                        id_linea_producto = idLineaProducto,
+                        id_unidad_medida = unidadMedida.Id,
+                        UnidadMedida = unidadMedida,
+                        Asignado = false
+                    });
+                }
+                else
+                {
+                    it.Asignado = true;
+                }
+            }
+            primeros = primeros.OrderBy(t => t.id_unidad_medida).ToList();
+            query.Elements = primeros.Any() ? primeros.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage) : new PagedList<LineaProductoUnidadMedida>(primeros, 1, 1);
             var list = lineaProd.LineasProductoUnidadMedida.Select(t => t.id_unidad_medida).ToList();
             foreach (var um in query.Elements.Where(um => list.Contains(um.Id)))
                 um.Asignado = true;

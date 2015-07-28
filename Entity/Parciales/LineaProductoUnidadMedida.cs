@@ -8,6 +8,6 @@ namespace Entity
 {
    public partial class LineaProductoUnidadMedida
     {
-       
+       public bool Asignado { get; set; }
     }
 }
