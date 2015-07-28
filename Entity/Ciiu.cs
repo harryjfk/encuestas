@@ -21,6 +21,7 @@ namespace Entity
             this.CAT_VALOR_PROD_MENSUAL = new HashSet<ValorProduccion>();
             this.CAT_VENTAS_PAIS_EXTRANJERO = new HashSet<VentasPaisExtranjero>();
             this.CAT_IPM_IPP = new HashSet<IpmIpp>();
+            this.CAT_AÑO_BASE = new HashSet<AñoBase>();
         }
     
         public string Codigo { get; set; }
@@ -42,5 +43,6 @@ namespace Entity
         public virtual ICollection<VentasPaisExtranjero> CAT_VENTAS_PAIS_EXTRANJERO { get; set; }
         public virtual ICollection<IpmIpp> CAT_IPM_IPP { get; set; }
         public virtual MetodoCalculo CAT_METODO_CALCULO { get; set; }
+        public virtual ICollection<AñoBase> CAT_AÑO_BASE { get; set; }
     }
 }
