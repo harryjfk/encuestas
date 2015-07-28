@@ -270,6 +270,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\function.tools\fast-functions.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -431,6 +432,10 @@
     <Content Include="Views\IpmIpp\_Table.cshtml" />
     <Content Include="Views\IpmIpp\Details.cshtml" />
     <Content Include="Views\IpmIpp\Index.cshtml" />
+    <Content Include="Views\ConsumoHarinaFideo\_Create.cshtml" />
+    <Content Include="Views\ConsumoHarinaFideo\_Table.cshtml" />
+    <Content Include="Views\ConsumoHarinaFideo\Details.cshtml" />
+    <Content Include="Views\ConsumoHarinaFideo\Index.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>

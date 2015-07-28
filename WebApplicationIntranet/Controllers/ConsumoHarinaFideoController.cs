@@ -48,6 +48,31 @@ namespace WebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        
+        public override ActionResult Buscar(ConsumoHarinaFideo criteria)
+        {
+            Manager.ConsumoHarinaFideoManager.Generate(int.Parse(criteria.Año));
+            return base.Buscar(criteria);
+        }
+
+        public override ActionResult Index()
+        {
+            var año = DateTime.Now.Year;
+            Query = Query ?? new Query<ConsumoHarinaFideo>();
+            Query.Criteria = Query.Criteria ?? new ConsumoHarinaFideo();
+            Query.Criteria.Año = Query.Criteria.Año ?? DateTime.Now.Year.ToString();
+            if (Query.Criteria.Año != null) 
+            {
+                año = int.Parse(Query.Criteria.Año);
+            }
+            Manager.ConsumoHarinaFideoManager.Generate(año);
+            Query.Order = Query.Order ?? new Order<ConsumoHarinaFideo>();
+            Query.Order.Func = t => t.fecha;
+            Query.BuildFilter();
+            return base.Index();
+        }
+        public override JsonResult CreatePost(ConsumoHarinaFideo element, params string[] properties)
+        {
+            return base.CreatePost(element, "fecha");
+        }
     }
 }
