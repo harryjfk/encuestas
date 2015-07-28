@@ -159,7 +159,7 @@ namespace WebApplication.Controllers
             }
         }
         
-        public virtual bool IsNew(T element)
+        public virtual bool IsNew(object element)
         {
             var value = Domain.Tools.GetKeyValue(element);
             return value == 0;

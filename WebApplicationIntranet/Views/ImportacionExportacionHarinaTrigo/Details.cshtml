@@ -1,0 +1,40 @@
+﻿
+@model Entity.ExportacionHarinaTrigo
+@{
+    ViewBag.Title = "Detalles del ExportacionHarinaTrigo";
+}
+
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del ExportacionHarinaTrigo</h3>
+<a href="/ExportacionHarinaTrigo/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+<div class="info-child-screen-details">
+         <div>
+            <span class="bold">fecha: </span> <span>@Model.fecha</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">fob_usd: </span> <span>@Model.fob_usd</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">fob_s: </span> <span>@Model.fob_s</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">estado: </span> <span>@Model.estado</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>       
+         
+                  <div>
+            <span class="bold">Año: </span> <span>@Model.Año</span>
+        </div>       
+         
+                    
+           </div>
+</div>
+
+

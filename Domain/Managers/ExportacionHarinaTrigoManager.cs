@@ -29,5 +29,23 @@ namespace Domain.Managers
             list.MaxLength(element,t=>t.fob_usd,50,"FOB USD");
             return list;
         }
+        public void Generate(int año)
+        {
+            for (int i = 1; i < 13; i++)
+            {
+                var element = Get(t => t.fecha.Month == i && t.fecha.Year == año).FirstOrDefault();
+                if (element == null)
+                {
+                    element = new ExportacionHarinaTrigo()
+                    {
+                        fecha = new DateTime(año, i, 1),
+                        Activado = true
+                    };
+                    Add(element);
+
+                }
+                SaveChanges();
+            }
+        }
     }
 }
