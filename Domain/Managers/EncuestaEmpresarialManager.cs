@@ -107,7 +107,9 @@ namespace Domain.Managers
                     {
                         IdPosibleRespuesta = r.Id,
                         Texto = v.Texto,
-                        IdPregunta = pId
+                        IdPregunta = pId,
+                        Personalizado=v.Personalizado,
+                        texto_personalizado = v.texto_personalizado
                     };
                     manager.Valor.Add(vt);
                     manager.Valor.SaveChanges();
