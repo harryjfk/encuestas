@@ -126,6 +126,7 @@
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="fecha_creacion_informante" Type="date" />
+          <Property Name="peso" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="CAT_ESTABLECIMIENTO">
           <Key>
@@ -1420,6 +1421,7 @@
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="fecha_creacion_informante" Type="DateTime" />
+          <Property Name="peso" Type="Decimal" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="Establecimiento">
           <Key>
@@ -2657,6 +2659,7 @@
           <EntitySetMapping Name="CAT_ESTAB_LINEA_PROD">
             <EntityTypeMapping TypeName="Model.LineaProductoEstablecimiento">
               <MappingFragment StoreEntitySet="CAT_ESTAB_LINEA_PROD">
+                <ScalarProperty Name="peso" ColumnName="peso" />
                 <ScalarProperty Name="fecha_creacion_informante" ColumnName="fecha_creacion_informante" />
                 <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
                 <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
