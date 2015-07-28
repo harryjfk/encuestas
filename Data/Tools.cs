@@ -68,6 +68,13 @@ namespace Data
                     }
                 },
                 {
+                    typeof (AñoBase), 
+                    new string[]
+                    {
+                        "Estado","Activado","Id","id_linea_producto","id_unidad_medida","produccion_anual","valor_produccion","precio"
+                    }
+                },
+                {
                     typeof (LineaProducto), 
                     new string[]
                     { 

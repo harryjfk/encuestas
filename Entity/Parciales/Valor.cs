@@ -13,6 +13,11 @@ namespace Entity
            get { return Estado == 1; }
            set { Estado = value ? 1 : 0; }
        }
+       public bool Personalizado
+       {
+           get { return es_personalizado == 1; }
+           set { es_personalizado = value ? 1 : 0; }
+       }
 
        public override string ToString()
        {

@@ -78,6 +78,11 @@
         <AssociationConnector Association="Model.SYS_C008203" />
         <AssociationConnector Association="Model.SYS_C008204" />
         <AssociationConnector Association="Model.SYS_C008205" />
+        <EntityTypeShape EntityType="Model.AñoBase" Width="1.5" PointX="19.625" PointY="10.5" />
+        <AssociationConnector Association="Model.SYS_C008222" />
+        <AssociationConnector Association="Model.SYS_C008223" />
+        <AssociationConnector Association="Model.SYS_C008224" />
+        <AssociationConnector Association="Model.SYS_C008225" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

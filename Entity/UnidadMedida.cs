@@ -20,6 +20,7 @@ namespace Entity
             this.MateriasTerceros = new HashSet<MateriaTerceros>();
             this.AsUnidadConversion = new HashSet<LineaProductoUnidadMedida>();
             this.LineasProductoUnidadMedida = new HashSet<LineaProductoUnidadMedida>();
+            this.CAT_AÑO_BASE = new HashSet<AñoBase>();
         }
     
         public string Descripcion { get; set; }
@@ -35,5 +36,6 @@ namespace Entity
         public virtual ICollection<MateriaTerceros> MateriasTerceros { get; set; }
         public virtual ICollection<LineaProductoUnidadMedida> AsUnidadConversion { get; set; }
         public virtual ICollection<LineaProductoUnidadMedida> LineasProductoUnidadMedida { get; set; }
+        public virtual ICollection<AñoBase> CAT_AÑO_BASE { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace Entity
             this.Encuestas = new HashSet<Encuesta>();
             this.LineasProductoEstablecimiento = new HashSet<LineaProductoEstablecimiento>();
             this.Ciius = new HashSet<Ciiu>();
+            this.CAT_AÑO_BASE = new HashSet<AñoBase>();
         }
     
         public long Id { get; set; }
@@ -47,5 +48,6 @@ namespace Entity
         public virtual Usuario Analista { get; set; }
         public virtual Usuario Informante { get; set; }
         public virtual ICollection<Ciiu> Ciius { get; set; }
+        public virtual ICollection<AñoBase> CAT_AÑO_BASE { get; set; }
     }
 }

@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AñoBase.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
     <Compile Include="Cargo.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
@@ -108,6 +111,7 @@
     <Compile Include="MetodoCalculo.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="Parciales\AñoBase.cs" />
     <Compile Include="Parciales\LineaProductoUnidadMedida.cs" />
     <Compile Include="Parciales\EnumRubro.cs" />
     <Compile Include="Parciales\EnumSubsector.cs" />

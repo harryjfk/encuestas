@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Filters.cs" />
+    <Compile Include="Managers\AñoBaseManager.cs" />
     <Compile Include="Managers\LineaProductoUnidadMedidaManager.cs" />
     <Compile Include="Managers\MetodoCalculoManager.cs" />
     <Compile Include="Managers\ExportacionHarinaTrigoManager.cs" />

@@ -11,7 +11,7 @@ namespace WebApplication.Controllers
 {
     public class LineaProductoController : BaseController<LineaProducto>
     {
-        public static Query<UnidadMedida> UmQuery { get; set; }
+        public static Query<LineaProductoUnidadMedida> UmQuery { get; set; }
         public static LineaProducto LineaProducto { get; set; }
 
         public ActionResult GetDorpDown(string id, string nombre = "IdLineaProducto", string @default = null)
@@ -58,9 +58,9 @@ namespace WebApplication.Controllers
             if (linea == null) return HttpNotFound("Linea de Producto no encontrada");
             LineaProducto = linea;
             ViewBag.LineaProducto = LineaProducto.Nombre;
-            UmQuery = UmQuery ?? new Query<UnidadMedida>();
+            UmQuery = UmQuery ?? new Query<LineaProductoUnidadMedida>();
             UmQuery = UmQuery.Validate();
-            UmQuery.Criteria = UmQuery.Criteria ?? new UnidadMedida();
+            UmQuery.Criteria = UmQuery.Criteria ?? new LineaProductoUnidadMedida();
             UmQuery.Paginacion.ItemsPerPage = 10;
             Manager.UnidadMedida.GetAsignadas(UmQuery,idLineaProducto);
             ViewBag.LineaProductoSeleccionada = LineaProducto.Nombre;
@@ -76,8 +76,8 @@ namespace WebApplication.Controllers
         public ActionResult PageUnidadesMedida(int page)
         {
             var linea = LineaProducto;
-            if (linea == null) return HttpNotFound("Linea de Producto no encontrada"); 
-            UmQuery = UmQuery ?? new Query<UnidadMedida>();
+            if (linea == null) return HttpNotFound("Linea de Producto no encontrada");
+            UmQuery = UmQuery ?? new Query<LineaProductoUnidadMedida>();
             UmQuery = UmQuery.Validate();
             UmQuery.Paginacion.Page = page;
             return RedirectToAction("GetUnidadesMedida",new {idLineaProducto = linea.Id});

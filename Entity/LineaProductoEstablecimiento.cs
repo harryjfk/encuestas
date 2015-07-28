@@ -22,6 +22,7 @@ namespace Entity
         public string usuario_creacion { get; set; }
         public string usuario_modificacion { get; set; }
         public Nullable<System.DateTime> fecha_creacion_informante { get; set; }
+        public Nullable<decimal> peso { get; set; }
     
         public virtual Establecimiento Establecimiento { get; set; }
         public virtual LineaProducto LineaProducto { get; set; }
