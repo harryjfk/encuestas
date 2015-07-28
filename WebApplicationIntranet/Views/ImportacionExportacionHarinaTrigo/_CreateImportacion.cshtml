@@ -93,7 +93,8 @@
                 success: function (data) {
                     $elem.removeClass("disabled");
                     if (data.Success) {
-                        $("#table-container").html(data.Data);
+                        console.log(data);
+                        $("#table-container-importacion").html(data.Data);
                         $("#editItem").modal("hide");
                         $.smallBox({
                             title: "Confirmación",

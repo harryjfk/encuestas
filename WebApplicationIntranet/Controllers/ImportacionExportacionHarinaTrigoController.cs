@@ -117,14 +117,12 @@ namespace WebApplication.Controllers
             {
                 QueryImportacion = QueryImportacion ?? new Query<ImportacionHarinaTrigo>().Validate();
                 var manager = Manager.ImportacionHarinaTrigoManager;
-                var op = IsNew(element) ?
-                    manager.Add(element) :
-                    manager.Modify(element, properties);
+                var op = manager.Modify(element,"fecha");
                 if (op.Success)
                 {
                     manager.SaveChanges();
                     //this.WriteMessage(string.Format("Actualizando datos del ciiu {0}", ciiu.Nombre));
-                    manager.Get(QueryImportacion);
+                    Manager.ImportacionHarinaTrigoManager.Get(QueryImportacion);
                     var c = RenderRazorViewToString("_TableImportacion", QueryImportacion);
                     var result = new
                     {
@@ -162,6 +160,15 @@ namespace WebApplication.Controllers
             var element = Manager.ImportacionHarinaTrigoManager.Find(id);
             element = element ?? new ImportacionHarinaTrigo();
             return PartialView("_CreateImportacion", element);
+        }
+        public  ActionResult DetailsImportaccion(long id)
+        {
+            var manager = Manager.ImportacionHarinaTrigoManager;
+            var element = manager.Find(id);
+            if (element != null)
+                return View("DetailsImportacion", element);
+            ModelState.AddModelError("Error", "No se pudo encontrar el elemento.");
+            return RedirectToAction("Index");
         }
     }
 }
