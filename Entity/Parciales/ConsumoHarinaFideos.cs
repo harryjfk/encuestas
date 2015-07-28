@@ -21,7 +21,7 @@ namespace Entity
        }
 
 
-       public Func<TipoCambio, bool> BuildFilter()
+       public Func<ConsumoHarinaFideo, bool> BuildFilter()
        {
            if (!string.IsNullOrEmpty(Año) && !string.IsNullOrWhiteSpace(Año))
            {

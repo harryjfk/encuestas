@@ -28,9 +28,14 @@
 
     origin: function () {
         return window.location.protocol + "//" + window.location.host;
+    },
+    changeModalName: function (title) {
+        var el = $(".modal-dialog .modal-content .modal-header h4")[0];
+        $(el).html(title);
     }
+    
 
 });
 $(document).ready(function () {
-   
+    
 });
