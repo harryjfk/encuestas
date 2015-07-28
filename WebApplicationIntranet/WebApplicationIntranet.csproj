@@ -444,6 +444,10 @@
     <Content Include="Views\ImportacionExportacionHarinaTrigo\_CreateImportacion.cshtml" />
     <Content Include="Views\ImportacionExportacionHarinaTrigo\_TableImportacion.cshtml" />
     <Content Include="Views\ImportacionExportacionHarinaTrigo\DetailsImportacion.cshtml" />
+    <Content Include="Views\MetodoCalculo\_Create.cshtml" />
+    <Content Include="Views\MetodoCalculo\_Table.cshtml" />
+    <Content Include="Views\MetodoCalculo\Details.cshtml" />
+    <Content Include="Views\MetodoCalculo\Index.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>

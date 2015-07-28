@@ -1,11 +1,8 @@
-﻿@model Entity.ImportacionHarinaTrigo
-@Scripts.Render("~/bundles/tools")
-@using System.Globalization
+﻿@model Entity.MetodoCalculo
 @{
     Layout = "";
-    var title = "Nuevo Importación de Harina de Trigo del mes " + Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper();
 }
-@using (Html.BeginForm("CreateImportacion", "ImportacionExportacionHarinaTrigo", FormMethod.Post, new { name = "Im-635736756422892342" }))
+@using (Html.BeginForm("Create", "MetodoCalculo", FormMethod.Post, new { name = "Me-635737043806718519" }))
 {
     @Html.AntiForgeryToken()
 
@@ -25,52 +22,25 @@
         {
             <input type="hidden" name="Id" value="@Model.Id" />
         }
-              
-        <div class="form-group">
-            <label for="ciiu" class="col-md-4 control-label"> CIIU</label>
-            <div class="col-md-7" data-toggle="tooltip" data-placement="top" title="" data-original-title="1071-ELABORACIÓN DE PRODUCTOS DE PANADERÍA">
 
-                <label class="form-control" for="" style="max-width: 280px;">1071-ELABORACIÓN DE PRODUCTOS...</label>
+        <div class="form-group">
+            <label for="nombre" class="col-md-4 control-label"> Nombre</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.nombre, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.nombre)
             </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
 
-        </div>
+
         <div class="form-group">
-            <label for="Año" class="col-md-4 control-label"> Año</label>
-            <div class="col-md-7">
-                @Html.Label(Model.fecha.Year.ToString(), new { @class = "form-control", style = "max-width:280px;" })
-               
-            </div>
-            
-        </div> 
-        <div class="form-group">
-            <label for="cif_usd" class="col-md-4 control-label"> CIF USD</label>
-            <div class="col-md-7">
-                @Html.TextBoxFor(t => t.cif_usd, new { @class = "form-control mask4", Value=Model.cif_usd.ToString("0.0000",CultureInfo.InvariantCulture) })
-                @Html.ValidationMessageFor(model => model.cif_usd)
-            </div>
-            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
-        </div>
-                
-        <div class="form-group">
-            <label for="cif_s" class="col-md-4 control-label">CIF S/.</label>
-            <div class="col-md-7">
-                @Html.Label(Model.cif_s.ToString("0.0000",CultureInfo.InvariantCulture), new { @class = "form-control mask4" })
-                
-            </div>
-            
-        </div>
-                
-       
-                <div class="form-group">
             <label for="Activado" class="col-md-4 control-label">Activado</label>
             <div class="col-md-1">
                 @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
                 @Html.ValidationMessageFor(model => model.Activado)
             </div>
         </div>
-                
-       
-         
+
 
         <div class="modal-footer">
             <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
@@ -88,13 +58,12 @@
             $.ajax({
                 cache: false,
                 type: "POST",
-                url: $.origin() + "/ImportacionExportacionHarinaTrigo/CreatePostImportacion/",
-                data: $("form[name='Im-635736756422892342']").serialize(),
+                url: $.origin() + "/MetodoCalculo/CreatePost/",
+                data: $("form[name='Me-635737043806718519']").serialize(),
                 success: function (data) {
                     $elem.removeClass("disabled");
                     if (data.Success) {
-                       
-                        $("#table-container-importacion").html(data.Data);
+                        $("#table-container").html(data.Data);
                         $("#editItem").modal("hide");
                         $.smallBox({
                             title: "Confirmación",
@@ -120,7 +89,7 @@
             });
 
         });
-        $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
-        $.changeModalName("@title");
+        $('#nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 20, statusText: 'caracteres restantes' });
+
     })
 </script>

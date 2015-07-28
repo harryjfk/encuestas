@@ -91,7 +91,7 @@
                 success: function (data) {
                     $elem.removeClass("disabled");
                     if (data.Success) {
-                        console.log(data);
+                       
                         $("#table-container-exportacion").html(data.Data);
                         $("#editItem").modal("hide");
                         $.smallBox({
