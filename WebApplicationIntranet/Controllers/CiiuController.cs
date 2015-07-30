@@ -10,9 +10,19 @@ namespace WebApplication.Controllers
 {
     public class CiiuController : BaseController<Ciiu>
     {
-        public ActionResult GetDorpDown(string id, string nombre = "IdCiiu", string @default = null)
+        public ActionResult GetDorpDown(string id, string nombre = "IdCiiu", string @default = null, long idEstablecimiento = 0)
         {
-            var list =OwnManager.Get(t => t.Activado).OrderBy(t=>t.ToString()).Select(t => new SelectListItem()
+
+           
+            Func<Ciiu, bool> filter = t => t.Activado;
+
+            if (idEstablecimiento > 0)
+            {
+                filter = t => t.Activado && t.Establecimientos.Any(e => e.Id == idEstablecimiento);
+            }
+
+
+            var list = OwnManager.Get(filter).OrderBy(t => t.ToString()).Select(t => new SelectListItem()
             {
                 Text = t.ToString(),
                 Value = t.Id.ToString(),
@@ -27,7 +37,7 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
-       
+
         public JsonResult Toggle(long id)
         {
             var manager = Manager.Ciiu;

@@ -448,6 +448,10 @@
     <Content Include="Views\MetodoCalculo\_Table.cshtml" />
     <Content Include="Views\MetodoCalculo\Details.cshtml" />
     <Content Include="Views\MetodoCalculo\Index.cshtml" />
+    <Content Include="Views\AñoBase\_Create.cshtml" />
+    <Content Include="Views\AñoBase\_Table.cshtml" />
+    <Content Include="Views\AñoBase\Details.cshtml" />
+    <Content Include="Views\AñoBase\Index.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>

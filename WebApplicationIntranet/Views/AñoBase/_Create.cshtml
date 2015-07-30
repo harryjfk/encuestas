@@ -1,0 +1,196 @@
+﻿@model Entity.AñoBase
+@Scripts.Render("~/bundles/tools")
+@{
+    Layout = "";
+}
+@using (Html.BeginForm("Create", "AñoBase", FormMethod.Post, new { name = "Añ-635737259557672154" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+        }
+              
+        <div class="form-group ">
+            <label for="id_establecimiento" class="col-md-4 control-label"> Establecimiento</label>
+            <div class="col-md-7">
+                
+                    @{Html.RenderAction("GetDorpDown", "Establecimiento", new { id = (Model != null ) ? Model.id_establecimiento : 0, nombre="id_establecimiento" });}
+
+                </div>
+            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
+        </div>
+                
+        <div class="form-group  ciiu-group">
+            <label for="id_ciiu" class="col-md-4 control-label"> CIIU</label>
+            <div class="col-md-7">
+                @{Html.RenderAction("GetDorpDown", "CIIU", new { id = (Model != null ) ? Model.id_ciiu : 0,  idEstablecimiento = (Model != null ) ? Model.id_establecimiento : 0,nombre="id_ciiu" });}
+            </div>
+            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
+        </div>
+                
+        <div class="form-group  linea-producto-group">
+            <label for="id_linea_producto" class="col-md-4 control-label"> Linea de Producto</label>
+            <div class="col-md-7">
+                @{Html.RenderAction("GetDorpDown", "LineaProducto", new { id = (Model != null) ? Model.id_linea_producto : 0, idCiiu = (Model != null) ? Model.id_ciiu : 0,nombre="id_linea_producto" });}
+            </div>
+            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
+        </div>
+
+        <div class="form-group">
+            <label for="produccion_anual" class="col-md-4 control-label"> Produccion Anual</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.produccion_anual, new { @class = "form-control mask0" })
+                @Html.ValidationMessageFor(model => model.produccion_anual)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>  
+        <div class="form-group">
+            <label for="valor_produccion" class="col-md-4 control-label"> Valor Pproducci&oacute;n</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.valor_produccion, new { @class = "form-control mask0" })
+                @Html.ValidationMessageFor(model => model.valor_produccion)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>  
+        <div class="form-group">
+            <label for="precio" class="col-md-4 control-label"> Precio</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.precio, new { @class = "form-control mask4" })
+                @Html.ValidationMessageFor(model => model.precio)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div> 
+        <div class="form-group unidad-medida-group">
+            <label for="id_unidad_medida" class="col-md-4 control-label"> Unidad Medida</label>
+            <div class="col-md-7">
+
+                @{Html.RenderAction("GetDorpDown", "UnidadMedida", new { idLineaProducto = (Model != null) ? Model.id_linea_producto : 0, id = (Model != null) ? Model.id_unidad_medida : 0, nombre = "id_unidad_medida" });}
+            </div>
+            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
+        </div>
+                
+        
+                <div class="form-group">
+            <label for="Activado" class="col-md-4 control-label">Activado</label>
+            <div class="col-md-1">
+                @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                @Html.ValidationMessageFor(model => model.Activado)
+            </div>
+        </div>
+         
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button[name='aceptarbtn']").click(function () {
+            var $elem = $(this);
+            $elem.addClass("disabled");
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/AñoBase/CreatePost/",
+                data: $("form[name='Añ-635737259557672154']").serialize(),
+                success: function (data) {
+                    $elem.removeClass("disabled");
+                    if (data.Success) {
+                        $("#table-container").html(data.Data);
+                        $("#editItem").modal("hide");
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
+        $.changeModalName("Nuevo Año Base");
+        showHidenDropDoxn = function () {
+            console.log("establecimiento");
+            console.log(@Model.id_establecimiento);
+            var slectE = $("#id_establecimiento_chosen").find("a span").html();
+            var slectC = $("#id_ciiu_chosen").find("a span").html();
+            var slectL = $("#id_linea_producto_chosen").find("a span").html();
+            
+            if (slectE == undefined || slectE == "") {
+                $(".ciiu-group").hide();
+                $(".linea-producto-group").hide();
+                $(".unidad-medida-group").hide();
+            } else {
+                $(".ciiu-group").show();
+                $(".linea-producto-group").show();
+                $(".unidad-medida-group").show();
+            }
+            if (slectC == undefined || slectC == "") {
+                $(".linea-producto-group").hide();
+                $(".unidad-medida-group").hide();
+               
+            }else
+            {
+                $(".linea-producto-group").show();
+                $(".unidad-medida-group").show();
+            }
+
+            if (slectL == undefined || slectL == "") {
+                $(".unidad-medida-group").hide();
+            } else {
+                $(".unidad-medida-group").show();
+            }
+        };
+        $("#editItem").on("shown.bs.modal", function () { showHidenDropDoxn(); });
+        $("#id_establecimiento").on("change", function () {
+            console.log("establecimiento");
+            console.log(@Model.id_establecimiento);
+            showHidenDropDoxn();
+        });
+        $("#id_ciiu").on("change", function () {
+            console.log("ciiu");
+            showHidenDropDoxn();
+        });
+        $("#id_linea_producto").on("change", function () {
+            console.log("producto");
+            showHidenDropDoxn();
+        });
+        $("#id_unidad_medida").on("change", function () {
+            console.log("medida");
+            showHidenDropDoxn();
+        });
+    })
+</script>

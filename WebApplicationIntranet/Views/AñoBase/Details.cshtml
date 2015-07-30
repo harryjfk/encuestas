@@ -1,0 +1,43 @@
+﻿@model Entity.AñoBase
+@using System.Globalization
+@{
+    ViewBag.Title = "Detalles del AñoBase";
+}
+
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del Año Base</h3>
+    <a href="/AñoBase/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold"> Establecimiento: </span> <span>@Model.CAT_ESTABLECIMIENTO.ToString()</span>
+        </div>
+
+        <div>
+            <span class="bold"> CIIU: </span> <span>@Model.CAT_CIIU.ToString()</span>
+        </div>
+
+        <div>
+            <span class="bold"> Linea de Producto: </span> <span>@Model.CAT_LINEA_PRODUCTO.ToString()</span>
+        </div>
+        <div>
+            <span class="bold">Producci&oacute;n Anual: </span> <span>@Model.produccion_anual.ToString("0", CultureInfo.InvariantCulture)</span>
+        </div>
+        <div>
+            <span class="bold">Valor Producci&oacute;n: </span> <span>@Model.valor_produccion.ToString("0", CultureInfo.InvariantCulture)</span>
+        </div>
+        <div>
+            <span class="bold">Precio: </span> <span>@Model.precio.ToString("0.0000", CultureInfo.InvariantCulture)</span>
+        </div>
+        <div>
+            <span class="bold">Unidad Medida: </span> <span>@Model.CAT_UNIDAD_MEDIDA.ToString()</span>
+        </div>
+
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>
+
+
+    </div>
+</div>
+

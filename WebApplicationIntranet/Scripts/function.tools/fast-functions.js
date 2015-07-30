@@ -8,6 +8,7 @@
 				$(e).val(val.toFixed(4));
 			});
 		});
+		$('.mask0').inputmask("9{1,20}");
 		$.InitTooltip();
 	
 })
