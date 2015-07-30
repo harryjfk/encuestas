@@ -57,10 +57,15 @@ namespace Domain.Managers
             return op;
         }
 
-        public override OperationResult<PosibleRespuesta> Modify(PosibleRespuesta el,params string [] properties)
+        public override OperationResult<PosibleRespuesta> Modify(PosibleRespuesta el, params string[] properties)
         {
             var manager = Manager;
-            var list = el.Valores != null ? el.Valores.Where(t => t != null).Select(t => new Valor() { Texto = t.Texto, IdPregunta = (t.IdPregunta != 0 ? t.IdPregunta : null) }).ToList() : new List<Valor>();
+            var list = el.Valores != null ? el.Valores.Where(t => t != null).Select(t => new Valor()
+            {
+                Personalizado = t.Personalizado, 
+                Texto = t.Texto, 
+                IdPregunta = (t.IdPregunta != 0 ? t.IdPregunta : null)
+            }).ToList() : new List<Valor>();
             var element = Find(el.Id);
             if (element == null) return new OperationResult<PosibleRespuesta>(element);
             element.TipoPosibleRespuesta = el.TipoPosibleRespuesta;
@@ -69,7 +74,7 @@ namespace Domain.Managers
                 manager.Valor.Delete(valor.Id);
             }
             manager.Valor.SaveChanges();
-            var op= base.Modify(element,properties);
+            var op = base.Modify(element, properties);
             SaveChanges();
             foreach (var valor in list)
             {

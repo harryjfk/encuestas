@@ -65,6 +65,12 @@
                                 @{Html.RenderAction("GetDorpDownAsociada", "Pregunta", new { id = 0, noIncluir = new List<long>() { Model.IdPregunta }, nombre = "PreguntaId", @default = "Ninguna" });}
                             </div>
                             <div class="form-group">
+                                <label for="Personalizado" class="col-md-4 control-label">Valor Personalizado</label>
+                                <div class="col-md-1">
+                                    <input type="checkbox" name="personalizado" class="form-control check-small" />
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <a href="javascript:void(0);" class="btn btn-primary pull-right btn-sm" id="btn-guardar-valor" style="margin-right: 63px;">Guardar</a>
                             </div>
 
@@ -78,6 +84,9 @@
                                     </th>
                                     <th>
                                         PREGUNTA
+                                    </th>
+                                    <th>
+                                        VALOR PERSONALIZADO
                                     </th>
                                     <th>
                                         ACCI&Oacute;N
@@ -104,6 +113,16 @@
                                             else
                                             {
                                                 <span>Ninguna</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.Personalizado)
+                                            {
+                                                <span>SI</span>
+                                            }
+                                            else
+                                            {
+                                                <span>NO</span>
                                             }
                                         </td>
                                         <td>
@@ -152,7 +171,7 @@
 
         @foreach (var v in Model.Valores)
         {
-            @Html.Raw("valores.push({IdPosResp:'" + v.IdPosibleRespuesta + "', Texto:'" + v.Texto + "', IdPregunta: '" + v.IdPregunta + "', PreguntaText: '" + (v.Pregunta != null ? v.Pregunta.Texto : "Ninguna") + "'});")
+            @Html.Raw("valores.push({   IdPosResp:'" + v.IdPosibleRespuesta + "',Texto:'" + v.Texto + "', IdPregunta: '" + v.IdPregunta + "', PreguntaText: '" + (v.Pregunta != null ? v.Pregunta.Texto : "Ninguna") + "',Personalizado:"+v.Personalizado.ToString().ToLower()+"});")
         }
         setTimeout(function () {
             $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
@@ -169,6 +188,7 @@
         $("#nuevoValor").click(function () {
             $("input[name='valortexto']").val("");
             $("select[name='PreguntaId']").val(0);
+            $("select[name='personalizado']")[0].checked = false;
             var cont = $(".create-value-container");
             if (cont.hasClass("hidden")) {
                 cont.removeClass("hidden");
@@ -179,13 +199,15 @@
             var idP = $("select[name='PreguntaId']").val();
             var texto = $("input[name='valortexto']").val();
             var idPosResp = $("input[name='Id']").val();
+            var personalizado = $("input[name='personalizado']")[0].checked;
             var preTexto = $($("select[name='PreguntaId']")[0]).find("option[value=" + idP + "]")[0].innerHTML;
             if (tempEdit == undefined) {
                 valores.push({
                     Texto: texto,
                     IdPregunta: idP,
                     PreguntaText: preTexto,
-                    IdPosResp: idPosResp
+                    IdPosResp: idPosResp,
+                    Personalizado:personalizado
                 });
             } else {
                 for (var i in valores) {
@@ -194,6 +216,7 @@
                         valores[i].IdPregunta = idP;
                         valores[i].PreguntaText = preTexto;
                         valores[i].IdPosResp = idPosResp;
+                        valores[i].Personalizado = personalizado;
                     }
                 }
             }
@@ -225,6 +248,7 @@
                 }
             }
             $("input[name='valortexto']").val(temp.Texto);
+            $("input[name='personalizado']")[0].checked=temp.Personalizado;
             $("select[name='PreguntaId']").val(temp.IdPregunta != "" ? temp.IdPregunta : 0);
             tempEdit = temp;
             $(".create-value-container").removeClass("hidden");
@@ -249,6 +273,7 @@
                 tbody.append("<tr>" +
                     "<td>" + temp.Texto + "</td>" +
                     "<td>" + temp.PreguntaText + "</td>" +
+                     "<td>" + (temp.Personalizado?"SI":"NO") + "</td>" +
                     "<td><a href='javascript:void(0);' data-toggle='tooltip' data-placement='top' data-original-title='Editar' title='' id='edit' role='" + temp.Texto + "' class='edit-btn-val'>" +
                                                 "<i class='color-yellow glyphicon glyphicon-pencil'></i>" +
                                             "</a>|" +
@@ -275,6 +300,7 @@
                     }
                 }
                 $("input[name='valortexto']").val(temp.Texto);
+                $("input[name='personalizado']")[0].checked = temp.Personalizado;
                 $("select[name='PreguntaId']").val(temp.IdPregunta != "" ? temp.IdPregunta : 0);
                 tempEdit = temp;
                 $(".create-value-container").removeClass("hidden");
