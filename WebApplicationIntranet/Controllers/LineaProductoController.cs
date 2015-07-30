@@ -14,9 +14,14 @@ namespace WebApplication.Controllers
         public static Query<LineaProductoUnidadMedida> UmQuery { get; set; }
         public static LineaProducto LineaProducto { get; set; }
 
-        public ActionResult GetDorpDown(string id, string nombre = "IdLineaProducto", string @default = null)
+        public ActionResult GetDorpDown(string id, string nombre = "IdLineaProducto", string @default = null,long idCiuu=0)
         {
-            var list = OwnManager.Get(t => t.Activado).Select(t => new SelectListItem()
+            Func<LineaProducto, bool> filter = t => t.Activado;
+            if (idCiuu > 0)
+            {
+                filter = t => t.Activado && t.IdCiiu==idCiuu;
+            }
+            var list = OwnManager.Get(filter).Select(t => new SelectListItem()
              {
                  Text = t.ToString(),
                  Value = t.Id.ToString(),
