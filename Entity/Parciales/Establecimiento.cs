@@ -13,6 +13,11 @@ namespace Entity
            get { return Estado == 1; }
            set { Estado = value ? 1 : 0; }
        }
+       public bool EnviarCorreo
+       {
+           get { return enviar_correo == 1; }
+           set { enviar_correo = value ? 1 : 0; }
+       }
 
        public bool IsNew
        {

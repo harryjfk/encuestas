@@ -192,7 +192,20 @@ namespace Domain.Managers
                             }
 
                         }
+                        var personalizado = false;
+                        var temp = Manager.Valor.Find(valor.Id);
+                        if (temp != null)
+                            personalizado = temp.Personalizado;
+                        if (personalizado)
+                        {
+                            if (string.IsNullOrEmpty(valor.texto_personalizado) ||
+                                string.IsNullOrWhiteSpace(valor.texto_personalizado))
+                            {
+                                list.Add(string.Format("Debe completar la pregunta {0}:{1}", pregunta.Texto, valor.Texto));
+                            }
+                        }
                     }
+                  
                 }
                
             }
@@ -215,6 +228,7 @@ namespace Domain.Managers
                     if (valor != null)
                     {
                         valor.Seleccionado = vl.Seleccionado;
+                        valor.texto_personalizado = vl.texto_personalizado;
                         if (vl.Pregunta != null)
                             GetValue(manager, vl.Pregunta);
                         manager.Valor.Modify(valor);

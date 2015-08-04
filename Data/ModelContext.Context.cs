@@ -22,7 +22,7 @@ namespace Data
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {   
+        {
             throw new UnintentionalCodeFirstException();
         }
     
@@ -57,5 +57,6 @@ namespace Data
         public DbSet<MetodoCalculo> CAT_METODO_CALCULO { get; set; }
         public DbSet<LineaProductoUnidadMedida> CAT_LINEA_PRODTO_UNIDAD_MEDIDA { get; set; }
         public DbSet<AñoBase> CAT_AÑO_BASE { get; set; }
+        public DbSet<ParametrizacionEnvio> CAT_PARAMETRIZACION_ENVIO { get; set; }
     }
 }

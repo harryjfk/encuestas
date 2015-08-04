@@ -45,7 +45,7 @@
 
 
         <h3 class="screen-title">
-            Encuesta de Manufactura Opci&oacute;n Empresarial
+            Encuesta de Manufactura Opini&oacute;n Empresarial
             <span class="label label-primary">
                 @Model.Fecha.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()
             </span>
@@ -53,7 +53,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">Preguntas</div>
             <div class="panel-body">
-                @foreach (var item in Model.Preguntas.Where(t => !t.Valores.Any()).OrderBy(t=>t.orden))
+                @foreach (var item in Model.Preguntas.Where(t => !t.Valores.Any()).OrderBy(t => t.orden))
                 {
                     if (item.PosiblesRespuestas.Any())
                     {
@@ -74,42 +74,65 @@
                                         <div class="valor-container">
                                             @if (pr.Tipo == TipoPosibleRespuesta.Alternativa)
                                             {
-												if (v.Seleccionado ||item.PreguntasObligatorias)
+                                                if (v.Seleccionado || item.PreguntasObligatorias)
                                                 {
-													if (!item.PreguntasObligatorias)
+                                                    if (!item.PreguntasObligatorias)
                                                     {
-                                                        @Html.CheckBox(v.Texto, new {@checked = "chequed", 
-                                                       datavalueasoc = "false",
-                                                       @class = "preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), 
-                                                       dataorigpregid = pr.Id, 
-                                                       datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto,
-                                                       datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta})
-                                                        
+                                                        @Html.CheckBox(v.Texto, new
+                                                               {
+                                                                   @checked = "chequed",
+                                                                   datavalueasoc = "false",
+                                                                   @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
+                                                                   dataorigpregid = pr.Id,
+                                                                   datavalorid = v.Id,
+                                                                   datanumero = v.Numero,
+                                                                   datatexto = v.Texto,
+                                                                   datapospregid = v.IdPosibleRespuesta,
+                                                                   datapregid = v.IdPregunta
+                                                               })
+
                                                     }
                                                     else
                                                     {
-                                                         @Html.CheckBox(v.Texto, new {disabled = "true",@checked = "chequed", 
-                                                       datavalueasoc = "false",
-                                                       @class = "preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), 
-                                                       dataorigpregid = pr.Id, 
-                                                       datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto,
-                                                       datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta})
+                                                        @Html.CheckBox(v.Texto, new
+                                                            {
+                                                                disabled = "true",
+                                                                @checked = "chequed",
+                                                                datavalueasoc = "false",
+                                                                @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
+                                                                dataorigpregid = pr.Id,
+                                                                datavalorid = v.Id,
+                                                                datanumero = v.Numero,
+                                                                datatexto = v.Texto,
+                                                                datapospregid = v.IdPosibleRespuesta,
+                                                                datapregid = v.IdPregunta
+                                                            })
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    @Html.CheckBox(v.Texto, new { datavalueasoc = "false", @class = "preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                    @Html.CheckBox(v.Texto, new
+                                                       {
+                                                           datavalueasoc = "false",
+                                                           @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
+                                                           dataorigpregid = pr.Id,
+                                                           datavalorid = v.Id,
+                                                           datanumero = v.Numero,
+                                                           datatexto = v.Texto,
+                                                           datapospregid = v.IdPosibleRespuesta,
+                                                           datapregid = v.IdPregunta
+                                                       });
                                                 }
                                             }
                                             else
                                             {
                                                 if (v.Seleccionado)
                                                 {
-                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { @checked = "chequed", datavalueasoc = "false", @class = "preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { @checked = "chequed", datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
                                                 }
                                                 else
                                                 {
-                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { datavalueasoc = "false", @class = "preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
                                                 }
                                             }
                                             @*@(
@@ -119,11 +142,11 @@
                                                                                               )*@
                                             <span class="valores-text">@v.Texto</span>
                                             @{
-                                                var hidden = "hidden";
-                                                if ((v.Seleccionado || item.PreguntasObligatorias) && pr.Tipo == TipoPosibleRespuesta.Alternativa)
-                                                {
-                                                    hidden = "";
-                                                }
+                                            var hidden = "hidden";
+                                            if ((v.Seleccionado || item.PreguntasObligatorias) && pr.Tipo == TipoPosibleRespuesta.Alternativa)
+                                            {
+                                                hidden = "";
+                                            }
                                             }
                                             @if (hasPrAso)
                                             {
@@ -141,32 +164,53 @@
                                                             {
                                                                 if (tv.Seleccionado)
                                                                 {
-                                                                    @Html.RadioButton("aa" + v.Id, tv.Texto, new { @checked = "checked", datavalueasoc = "true", name = "aa", datavalueasocid = tv.Id, datavalueasoctext = tv.Texto })
+                                                                    @Html.RadioButton("aa" + v.Id, tv.Texto, new { @checked = "checked", @class = "imp", datavalueasoc = "true", name = "aa", datavalueasocid = tv.Id,datavalorid=tv.Id, datavalueasoctext = tv.Texto })
                                                                 }
                                                                 else
                                                                 {
-                                                                    @Html.RadioButton("aa" + v.Id, tv.Texto, new { datavalueasoc = "true", name = "aa", datavalueasocid = tv.Id, datavalueasoctext = tv.Texto })
+                                                                    @Html.RadioButton("aa" + v.Id, tv.Texto, new { datavalueasoc = "true", @class = "imp", name = "aa", datavalueasocid = tv.Id,datavalorid=tv.Id, datavalueasoctext = tv.Texto })
                                                                 }
                                                             }
                                                             else
                                                             {
                                                                 if (tv.Seleccionado)
                                                                 {
-                                                                    @Html.CheckBox(tv.Texto, new { @checked = "checked", datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto })
+                                                                    @Html.CheckBox(tv.Texto, new { @checked = "checked", datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto, @class = "imp" })
                                                                 }
                                                                 else
                                                                 {
-                                                                    @Html.CheckBox(tv.Texto, new { datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto })
+                                                                    @Html.CheckBox(tv.Texto, new { datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto, @class = "imp" })
                                                                 }
 
                                                             }
                                                             <span class="margin-right-10">@tv.Texto</span>
+                                                            if (tv.Personalizado)
+                                                            {
+                                                                if (tv.Seleccionado)
+                                                                {
+                                                                    <input style="margin-left: 10px; width: 100%" type="text" class="personalizado" value="@tv.texto_personalizado" data-vid="@tv.Id" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input style="margin-left: 10px; width: 100%" type="text" class="hidden personalizado animated fadeInLeft fast" data-vid="@tv.Id" />
+                                                                }
+                                                            }
 
                                                         }
                                                     }
                                                 </span>
                                             }
-
+                                            @if (v.Personalizado)
+                                            {
+                                                if (v.Seleccionado)
+                                                {
+                                                    <input value="@v.texto_personalizado" style="margin-left: 10px;  width: 100%" type="text" class="personalizado" data-vid="@v.Id" />
+                                                }
+                                                else
+                                                {
+                                                    <input style="margin-left: 10px; width: 100%" type="text" class="hidden personalizado animated fadeInLeft fast" data-vid="@v.Id" />
+                                                }
+                                            }
 
                                         </div>
 
@@ -195,7 +239,23 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
+        $('.imp').each(function(i, e) {
+            $(e).change(function() {
+                if ($(e)[0].checked) {
+                    var id = $(e).attr('datavalorid');
+                    var personalizado = $("input[data-vid='" + id + "']")[0];
+                    if (personalizado) {
+                        $(personalizado).removeClass("hidden");
+                    }
+                } else {
+                    var id = $(e).attr('datavalorid');
+                    var personalizado = $("input[data-vid='" + id + "']")[0];
+                    if (personalizado) {
+                        $(personalizado).addClass("hidden");
+                    }
+                }
+            });
+        });
 
         $(".preg-asoc-input").click(function () {
             var pregId = $(this).attr("dataorigpregid");
@@ -268,6 +328,10 @@
                                 Valores: pregAsocValues
                             };
                         }
+                        var textPer = $('input[data-vid="' + tempValue.Id + '"]')[0];
+                        if (textPer) {
+                            tempValue.texto_personalizado = $(textPer).val();
+                        }
                         valores.push(tempValue);
                     });
                 }
@@ -297,6 +361,10 @@
                                 Id: $obj.attr("datapregid"),
                                 Valores: pregAsocValues
                             };
+                        }
+                        var textPer = $('input[data-vid="' + tempValue.Id + '"]')[0];
+                        if (textPer) {
+                            tempValue.texto_personalizado = $(textPer).val();
                         }
                         valores.push(tempValue);
                     });

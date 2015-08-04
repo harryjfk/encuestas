@@ -188,7 +188,7 @@
         $("#nuevoValor").click(function () {
             $("input[name='valortexto']").val("");
             $("select[name='PreguntaId']").val(0);
-            $("select[name='personalizado']")[0].checked = false;
+            $("select[name='personalizado']").checked = false;
             var cont = $(".create-value-container");
             if (cont.hasClass("hidden")) {
                 cont.removeClass("hidden");

@@ -150,6 +150,7 @@
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="tipo_establecimiento" Type="number" Precision="38" Scale="0" />
+          <Property Name="enviar_correo" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_EXPORTACION_HARINA_TRIGO">
           <Key>
@@ -285,6 +286,26 @@
           </Key>
           <Property Name="id_metodo" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="nombre" Type="varchar2" MaxLength="20" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TEST.CAT_PARAMETRIZACION_ENVIO' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="CAT_PARAMETRIZACION_ENVIO">
+          <Key>
+            <PropertyRef Name="id_parametrizacion" />
+            <PropertyRef Name="tipo_encuesta" />
+            <PropertyRef Name="mensaje" />
+            <PropertyRef Name="comienzo" />
+            <PropertyRef Name="envio_1" />
+            <PropertyRef Name="envio_2" />
+            <PropertyRef Name="estado" />
+          </Key>
+          <Property Name="id_parametrizacion" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="tipo_encuesta" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="mensaje" Type="varchar2" MaxLength="1000" Nullable="false" />
+          <Property Name="comienzo" Type="date" Nullable="false" />
+          <Property Name="envio_1" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="envio_2" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_POSIBLE_RESPUESTA">
@@ -1089,42 +1110,53 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ModelStoreContainer">
-          <EntitySet Name="CAT_AÑO_BASE" EntityType="Self.CAT_AÑO_BASE" store:Type="Tables" />
-          <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" store:Type="Tables" />
-          <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU" store:Type="Tables" />
-          <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Self.CAT_CONSUMO_HARINA_FIDEO" store:Type="Tables" />
-          <EntitySet Name="CAT_CONTACTO" EntityType="Self.CAT_CONTACTO" store:Type="Tables" />
-          <EntitySet Name="CAT_ENCUESTA" EntityType="Self.CAT_ENCUESTA" store:Type="Tables" />
-          <EntitySet Name="CAT_ENCUESTA_EMPRESARIAL" EntityType="Self.CAT_ENCUESTA_EMPRESARIAL" store:Type="Tables" />
-          <EntitySet Name="CAT_ENCUESTA_ESTADISTICA" EntityType="Self.CAT_ENCUESTA_ESTADISTICA" store:Type="Tables" />
-          <EntitySet Name="CAT_ESTAB_CIIU" EntityType="Self.CAT_ESTAB_CIIU" store:Type="Tables" />
-          <EntitySet Name="CAT_ESTAB_LINEA_PROD" EntityType="Self.CAT_ESTAB_LINEA_PROD" store:Type="Tables" />
-          <EntitySet Name="CAT_ESTABLECIMIENTO" EntityType="Self.CAT_ESTABLECIMIENTO" store:Type="Tables" />
-          <EntitySet Name="CAT_EXPORTACION_HARINA_TRIGO" EntityType="Self.CAT_EXPORTACION_HARINA_TRIGO" store:Type="Tables" />
-          <EntitySet Name="CAT_FACTOR" EntityType="Self.CAT_FACTOR" store:Type="Tables" />
-          <EntitySet Name="CAT_FACTOR_FACTOR_PROD" EntityType="Self.CAT_FACTOR_FACTOR_PROD" store:Type="Tables" />
-          <EntitySet Name="CAT_FACTOR_PRODUCCION" EntityType="Self.CAT_FACTOR_PRODUCCION" store:Type="Tables" />
-          <EntitySet Name="CAT_IMPORTACION_HARINA_TRIGO" EntityType="Self.CAT_IMPORTACION_HARINA_TRIGO" store:Type="Tables" />
-          <EntitySet Name="CAT_IPM_IPP" EntityType="Self.CAT_IPM_IPP" store:Type="Tables" />
-          <EntitySet Name="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntityType="Self.CAT_LINEA_PRODTO_UNIDAD_MEDIDA" store:Type="Tables" />
-          <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Self.CAT_LINEA_PRODUCTO" store:Type="Tables" />
-          <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Self.CAT_MATERIA_PROPIA" store:Type="Tables" />
-          <EntitySet Name="CAT_MATERIA_TERCEROS" EntityType="Self.CAT_MATERIA_TERCEROS" store:Type="Tables" />
-          <EntitySet Name="CAT_METODO_CALCULO" EntityType="Self.CAT_METODO_CALCULO" store:Type="Tables" />
-          <EntitySet Name="CAT_POSIBLE_RESPUESTA" EntityType="Self.CAT_POSIBLE_RESPUESTA" store:Type="Tables" />
-          <EntitySet Name="CAT_PREGUNTA" EntityType="Self.CAT_PREGUNTA" store:Type="Tables" />
-          <EntitySet Name="CAT_TIPO_CAMBIO" EntityType="Self.CAT_TIPO_CAMBIO" store:Type="Tables" />
-          <EntitySet Name="CAT_TRABAJADORES_DIAS_TRAB" EntityType="Self.CAT_TRABAJADORES_DIAS_TRAB" store:Type="Tables" />
-          <EntitySet Name="CAT_UNIDAD_MEDIDA" EntityType="Self.CAT_UNIDAD_MEDIDA" store:Type="Tables" />
-          <EntitySet Name="CAT_VALOR" EntityType="Self.CAT_VALOR" store:Type="Tables" />
-          <EntitySet Name="CAT_VALOR_PROD_MENSUAL" EntityType="Self.CAT_VALOR_PROD_MENSUAL" store:Type="Tables" />
-          <EntitySet Name="CAT_VENTA_SERV_MANUF" EntityType="Self.CAT_VENTA_SERV_MANUF" store:Type="Tables" />
-          <EntitySet Name="CAT_VENTAS_PAIS_EXTRANJERO" EntityType="Self.CAT_VENTAS_PAIS_EXTRANJERO" store:Type="Tables" />
-          <EntitySet Name="CAT_VENTAS_PROD_ESTAB" EntityType="Self.CAT_VENTAS_PROD_ESTAB" store:Type="Tables" />
-          <EntitySet Name="CAT_VOLUMEN_PRODUCCION" EntityType="Self.CAT_VOLUMEN_PRODUCCION" store:Type="Tables" />
-          <EntitySet Name="SEG_ROL" EntityType="Self.SEG_ROL" store:Type="Tables" />
-          <EntitySet Name="SEG_USUARIO" EntityType="Self.SEG_USUARIO" store:Type="Tables" />
-          <EntitySet Name="SEG_USUARIO_ROL" EntityType="Self.SEG_USUARIO_ROL" store:Type="Tables" />
+          <EntitySet Name="CAT_AÑO_BASE" EntityType="Self.CAT_AÑO_BASE" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Self.CAT_CONSUMO_HARINA_FIDEO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_CONTACTO" EntityType="Self.CAT_CONTACTO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA" EntityType="Self.CAT_ENCUESTA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA_EMPRESARIAL" EntityType="Self.CAT_ENCUESTA_EMPRESARIAL" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA_ESTADISTICA" EntityType="Self.CAT_ENCUESTA_ESTADISTICA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_CIIU" EntityType="Self.CAT_ESTAB_CIIU" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_LINEA_PROD" EntityType="Self.CAT_ESTAB_LINEA_PROD" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ESTABLECIMIENTO" EntityType="Self.CAT_ESTABLECIMIENTO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_EXPORTACION_HARINA_TRIGO" EntityType="Self.CAT_EXPORTACION_HARINA_TRIGO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR" EntityType="Self.CAT_FACTOR" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR_FACTOR_PROD" EntityType="Self.CAT_FACTOR_FACTOR_PROD" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR_PRODUCCION" EntityType="Self.CAT_FACTOR_PRODUCCION" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_IMPORTACION_HARINA_TRIGO" EntityType="Self.CAT_IMPORTACION_HARINA_TRIGO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_IPM_IPP" EntityType="Self.CAT_IPM_IPP" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntityType="Self.CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Self.CAT_LINEA_PRODUCTO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Self.CAT_MATERIA_PROPIA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_MATERIA_TERCEROS" EntityType="Self.CAT_MATERIA_TERCEROS" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_METODO_CALCULO" EntityType="Self.CAT_METODO_CALCULO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_POSIBLE_RESPUESTA" EntityType="Self.CAT_POSIBLE_RESPUESTA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_PREGUNTA" EntityType="Self.CAT_PREGUNTA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_TIPO_CAMBIO" EntityType="Self.CAT_TIPO_CAMBIO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_TRABAJADORES_DIAS_TRAB" EntityType="Self.CAT_TRABAJADORES_DIAS_TRAB" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_UNIDAD_MEDIDA" EntityType="Self.CAT_UNIDAD_MEDIDA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_VALOR" EntityType="Self.CAT_VALOR" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_VALOR_PROD_MENSUAL" EntityType="Self.CAT_VALOR_PROD_MENSUAL" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_VENTA_SERV_MANUF" EntityType="Self.CAT_VENTA_SERV_MANUF" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_VENTAS_PAIS_EXTRANJERO" EntityType="Self.CAT_VENTAS_PAIS_EXTRANJERO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_VENTAS_PROD_ESTAB" EntityType="Self.CAT_VENTAS_PROD_ESTAB" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_VOLUMEN_PRODUCCION" EntityType="Self.CAT_VOLUMEN_PRODUCCION" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="SEG_ROL" EntityType="Self.SEG_ROL" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="SEG_USUARIO" EntityType="Self.SEG_USUARIO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="SEG_USUARIO_ROL" EntityType="Self.SEG_USUARIO_ROL" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_PARAMETRIZACION_ENVIO" EntityType="Self.CAT_PARAMETRIZACION_ENVIO" store:Type="Tables" store:Schema="TEST">
+            <DefiningQuery>SELECT 
+"CAT_PARAMETRIZACION_ENVIO"."id_parametrizacion" AS "id_parametrizacion", 
+"CAT_PARAMETRIZACION_ENVIO"."tipo_encuesta" AS "tipo_encuesta", 
+"CAT_PARAMETRIZACION_ENVIO"."mensaje" AS "mensaje", 
+"CAT_PARAMETRIZACION_ENVIO"."comienzo" AS "comienzo", 
+"CAT_PARAMETRIZACION_ENVIO"."envio_1" AS "envio_1", 
+"CAT_PARAMETRIZACION_ENVIO"."envio_2" AS "envio_2", 
+"CAT_PARAMETRIZACION_ENVIO"."estado" AS "estado"
+FROM "TEST"."CAT_PARAMETRIZACION_ENVIO" "CAT_PARAMETRIZACION_ENVIO"</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="SYS_C007758" Association="Self.SYS_C007758">
             <End Role="CAT_CARGO" EntitySet="CAT_CARGO" />
             <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
@@ -1454,6 +1486,7 @@
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="tipo_establecimiento" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008222" FromRole="Establecimiento" ToRole="CAT_AÑO_BASE" />
+          <Property Name="enviar_correo" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="LineaProducto">
           <Key>
@@ -2185,6 +2218,7 @@
             <End Role="UnidadMedida" EntitySet="CAT_UNIDAD_MEDIDA" />
             <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
           </AssociationSet>
+          <EntitySet Name="CAT_PARAMETRIZACION_ENVIO" EntityType="Model.ParametrizacionEnvio" />
           </EntityContainer>
         <Association Name="SYS_C0012622">
           <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
@@ -2574,6 +2608,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParametrizacionEnvio">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="tipo_encuesta" />
+            <PropertyRef Name="mensaje" />
+            <PropertyRef Name="comienzo" />
+            <PropertyRef Name="envio_1" />
+            <PropertyRef Name="envio_2" />
+            <PropertyRef Name="estado" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="tipo_encuesta" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mensaje" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="comienzo" Type="DateTime" Nullable="false" />
+          <Property Name="envio_1" Type="Int64" Nullable="false" />
+          <Property Name="envio_2" Type="Int64" Nullable="false" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2678,6 +2730,7 @@
           <EntitySetMapping Name="CAT_ESTABLECIMIENTO">
             <EntityTypeMapping TypeName="Model.Establecimiento">
               <MappingFragment StoreEntitySet="CAT_ESTABLECIMIENTO">
+                <ScalarProperty Name="enviar_correo" ColumnName="enviar_correo" />
                 <ScalarProperty Name="tipo_establecimiento" ColumnName="tipo_establecimiento" />
                 <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
                 <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
@@ -3043,6 +3096,19 @@
                 <ScalarProperty Name="id_ciiu" ColumnName="id_ciiu" />
                 <ScalarProperty Name="id_establecimiento" ColumnName="id_establecimiento" />
                 <ScalarProperty Name="Id" ColumnName="id_año" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_PARAMETRIZACION_ENVIO">
+            <EntityTypeMapping TypeName="Model.ParametrizacionEnvio">
+              <MappingFragment StoreEntitySet="CAT_PARAMETRIZACION_ENVIO">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="envio_2" ColumnName="envio_2" />
+                <ScalarProperty Name="envio_1" ColumnName="envio_1" />
+                <ScalarProperty Name="comienzo" ColumnName="comienzo" />
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="tipo_encuesta" ColumnName="tipo_encuesta" />
+                <ScalarProperty Name="Id" ColumnName="id_parametrizacion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

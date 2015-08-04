@@ -51,6 +51,7 @@ namespace Domain.Managers
         public MetodoCalculoManager MetodoCalculoManager { get; set; }
         public LineaProductoUnidadMedidaManager LineaProductoUnidadMedidaManager { get; set; }
         public AñoBaseManager AñoBaseManager { get; set; }
+        public ParametrizacionEnvioManager ParametrizacionEnvioManager { get; set; }
 
         public Manager(IRepositorioUsuario repositorioUsuario,IRepositorioDepartamento departamentoRepository,IRepositorioProvincia provinciaRepository,IRepositorioDistrito distritoRepository,IRepositorioUbigeo ubigeoRepository)
         {
@@ -92,6 +93,7 @@ namespace Domain.Managers
             MetodoCalculoManager = new MetodoCalculoManager(context, this);
             LineaProductoUnidadMedidaManager = new LineaProductoUnidadMedidaManager(context, this);
             AñoBaseManager = new AñoBaseManager(context, this);
+            ParametrizacionEnvioManager = new ParametrizacionEnvioManager(context, this);
         }
 
         public void Seed()

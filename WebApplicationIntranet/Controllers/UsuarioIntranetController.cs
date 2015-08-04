@@ -17,10 +17,10 @@ namespace WebApplication.Controllers
         {
             get
             {
-                return new UsuarioIntranet();
+                //return new UsuarioIntranet();
                 //return Manager.Usuario.FindUsuarioIntranetByLogin(this.User.Identity.Name);
-                //var user = this.GetLogued();
-                //return user != null ? Manager.Usuario.FindUsuarioIntranet((int)user.Identificador) : null;
+                var user = this.GetLogued();
+                return user != null ? Manager.Usuario.FindUsuarioIntranet((int)user.Identificador) : null;
             }
         }
         public static Query<UsuarioIntranet> QueryAnalista { get; set; }
@@ -252,8 +252,8 @@ namespace WebApplication.Controllers
 
         public ActionResult EstablecimientosEncuestaEmpresarial(UserInformation user)
         {
-            //Analista = UsuarioActual;
-            Analista = Manager.Usuario.FindUsuarioIntranet(user.Id);         
+            Analista = UsuarioActual;
+            //Analista = Manager.Usuario.FindUsuarioIntranet(user.Id);         
             if (Analista == null) return this.HttpNotFound("No se pudo encontrar el analista");
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
@@ -267,7 +267,8 @@ namespace WebApplication.Controllers
                 var establecimiento = QueryEstablecimientosAsignados.Elements.FirstOrDefault();
                 return RedirectToAction("Encuestas", "EncuestaEmpresarialAnalista", new { id = establecimiento.Id });
             }
-            ViewBag.UserId = user.Id;            
+           // ViewBag.UserId = user.Id;
+            ViewBag.UserId = Analista.Identificador;          
             return View("EstablecimientosEncuestaEmpresarial", QueryEstablecimientosAsignados);
         }
         [HttpPost]

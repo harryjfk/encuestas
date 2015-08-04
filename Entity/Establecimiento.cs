@@ -41,6 +41,7 @@ namespace Entity
         public string usuario_creacion { get; set; }
         public string usuario_modificacion { get; set; }
         public Nullable<decimal> tipo_establecimiento { get; set; }
+        public decimal enviar_correo { get; set; }
     
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<Encuesta> Encuestas { get; set; }

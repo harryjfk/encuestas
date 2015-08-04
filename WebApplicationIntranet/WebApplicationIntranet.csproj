@@ -178,6 +178,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attributes\MultiButtonAttribute.cs" />
     <Compile Include="Binders\ModelBinder.cs" />
+    <Compile Include="Controllers\ParametrizacionEnvioController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AñoBaseController.cs" />
     <Compile Include="Controllers\MetodoCalculoController.cs" />

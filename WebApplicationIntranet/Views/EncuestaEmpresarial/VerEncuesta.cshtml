@@ -23,7 +23,7 @@
 {
     <h5>Enviada el @Model.fecha_ultimo_envio.GetValueOrDefault().ToString("D", CultureInfo.GetCultureInfo("es"))</h5>
 }
-<a href="/EncuestaEmpresarial/EncuestasAnalista/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+<a href="/EncuestaEmpresarial/Encuestas/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 @if (Model != null)
 {
     using (Html.BeginForm("Enviar", "EncuestaEmpresarial", FormMethod.Post, new { name = "cap1form" }))
@@ -44,7 +44,7 @@
             </div>
 
         }
-        
+
         <div class="panel panel-primary">
             <div class="panel-heading">Preguntas</div>
             <div class="panel-body">
@@ -70,14 +70,14 @@
                                             @if (v.Seleccionado)
                                             {
                                                 @(pr.Tipo == TipoPosibleRespuesta.Alternativa ?
-                                              Html.CheckBox(v.Texto, new { disabled = "true", @checked = "true" })
-                                                  : Html.RadioButton("valor" + pr.Id, v.Texto, new { disabled = "true", @checked = "true" }))
+                                                      Html.CheckBox(v.Texto, new { disabled = "true", @checked = "true" })
+                                                      : Html.RadioButton("valor" + pr.Id, v.Texto, new { disabled = "true", @checked = "true" }))
                                             }
                                             else
                                             {
                                                 @(pr.Tipo == TipoPosibleRespuesta.Alternativa ?
-                                              Html.CheckBox(v.Texto, new { disabled = "true" })
-                                                  : Html.RadioButton("valor" + pr.Id, v.Texto, new { disabled = "true" }))
+                                                      Html.CheckBox(v.Texto, new { disabled = "true" })
+                                                      : Html.RadioButton("valor" + pr.Id, v.Texto, new { disabled = "true" }))
                                             }
 
                                             <span class="valores-text">@v.Texto</span>
@@ -94,30 +94,43 @@
                                                             if (tv.Seleccionado)
                                                             {
                                                                 @(tv.PosibleRespuesta.Tipo == TipoPosibleRespuesta.Excluyente ?
-                                                            Html.RadioButton("aa" + v.Id, tv.Texto, new { disabled = "true", @checked="true" })
-                                                                : Html.CheckBox(tv.Texto, new { disabled = "true", @checked = "true" }))
+                                                                      Html.RadioButton("aa" + v.Id, tv.Texto, new { disabled = "true", @checked = "true" })
+                                                                      : Html.CheckBox(tv.Texto, new { disabled = "true", @checked = "true" }))
                                                             }
                                                             else
                                                             {
                                                                 @(tv.PosibleRespuesta.Tipo == TipoPosibleRespuesta.Excluyente ?
-                                                            Html.RadioButton("aa" + v.Id, tv.Texto, new { disabled = "true" })
-                                                            : Html.CheckBox(tv.Texto, new { disabled = "true" }))
+                                                                      Html.RadioButton("aa" + v.Id, tv.Texto, new { disabled = "true" })
+                                                                      : Html.CheckBox(tv.Texto, new { disabled = "true" }))
                                                             }
-
-
                                                             <span class="margin-right-10">@tv.Texto</span>
+                                                            if (tv.Personalizado)
+                                                            {
+                                                                if (tv.Seleccionado)
+                                                                {
+                                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="form-control">@tv.texto_personalizado</span>
+                                                                }
+                                                            }
 
                                                         }
                                                     }
                                                 </span>
                                             }
+                                            @if (v.Personalizado)
+                                            {
+                                                if (v.Seleccionado)
+                                                {
+                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="form-control">@v.texto_personalizado</span>
+                                                }
 
+                                            }
 
                                         </div>
 
 
 
                                     </div>
+
                                 }
 
 
@@ -132,7 +145,7 @@
         </div>
 
 
-        
+
 
     }
 }

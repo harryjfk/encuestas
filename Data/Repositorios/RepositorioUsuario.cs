@@ -52,12 +52,12 @@ namespace Data.Repositorios
 
         public IPagedList<UsuarioIntranet> GetUsuariosIntranetAnalista(Paginacion paginacion = null, Func<UsuarioIntranet, bool> filter = null)
         {
-            throw new NotImplementedException();
+            return GetUsuariosIntranet(paginacion, filter);
         }
 
         public IPagedList<UsuarioIntranet> GetUsuariosIntranetAdministrador(Paginacion paginacion = null, Func<UsuarioIntranet, bool> filter = null)
         {
-            throw new NotImplementedException();
+            return GetUsuariosIntranet(paginacion, filter);
         }
 
         public UsuarioIntranet FindUsuarioIntranet(int codigo)

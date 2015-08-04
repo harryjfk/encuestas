@@ -83,6 +83,7 @@
         <AssociationConnector Association="Model.SYS_C008223" />
         <AssociationConnector Association="Model.SYS_C008224" />
         <AssociationConnector Association="Model.SYS_C008225" />
+        <EntityTypeShape EntityType="Model.ParametrizacionEnvio" Width="1.5" PointX="0.75" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
