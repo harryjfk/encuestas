@@ -53,21 +53,13 @@
                 {
                     <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-
-                    @if (Session["pr"].ToString() == "Informante")
-                    {
-                        <li class="dropdown">
-                            @Html.ActionLink("Establecimientos", "EstablecimientosEncuestaEmpresarial", "UsuarioExtranet")
-                            @*<a href="#" class="dropdown-toggle" data-toggle="dropdown">Establecimientos <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Registro de Encuesta Estadística", "EstablecimientosEncuestaEstadistica", "UsuarioExtranet")</li>
-                                <li>@Html.ActionLink("Registro de Encuesta de Opinión", "EstablecimientosEncuestaEmpresarial", "UsuarioExtranet")</li>
-
-                            </ul>*@
-                        </li>
-                    }
-
-
+                    <li>@Html.ActionLink("Establecimientos", "EstablecimientosEncuestaEmpresarial", "UsuarioExtranet")</li>
+                    <li><a href="/Descargas/PRODUCE.Manual.Usuario.Informante.pdf" target="_blank">Manual de Ayuda</a></li>
+                    @*<a href="#" class="dropdown-toggle" data-toggle="dropdown">Establecimientos <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Registro de Encuesta Estadística", "EstablecimientosEncuestaEstadistica", "UsuarioExtranet")</li>
+                            <li>@Html.ActionLink("Registro de Encuesta de Opinión", "EstablecimientosEncuestaEmpresarial", "UsuarioExtranet")</li>
+                        </ul>*@
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")

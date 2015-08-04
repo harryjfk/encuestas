@@ -58,6 +58,7 @@ namespace Domain.Managers
         }
         public virtual T Find(params object[] keys)
         {
+            var a = typeof(T);
             return Repository.Find(keys);
         }
         public virtual OperationResult<T> Add(T element)
@@ -67,7 +68,12 @@ namespace Domain.Managers
             {
                 try
                 {
-                    UpdateKey(element);
+                    if (element is Encuesta) { }
+                    else
+                    {
+                        UpdateKey(element);
+                    }
+                    
                     SetValue("creado",element,DateTime.Now);
                     SetValue("usuario_creacion",element,Usuario);
                     var entity = Repository.Add(element);

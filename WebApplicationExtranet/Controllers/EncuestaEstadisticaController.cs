@@ -337,15 +337,15 @@ namespace WebApplication.Controllers
             return RedirectToAction("EncuestasAnalista", new { id = IdEstablecimiento });
         }
 
-        public ActionResult ContactosEncuesta()
+        public ActionResult ContactosEncuesta(long id)
         {
-            var id = IdEstablecimiento;
+            //var id = IdEstablecimiento;
             var manager = Manager;
             var establecimiento = manager.Establecimiento.Find(id);
             if (establecimiento == null) return HttpNotFound("Establecimiento no encontrado");
             QueryContacto = QueryContacto ?? new Query<Contacto>().Validate();
-            QueryContacto.Criteria = QueryContacto.Criteria ?? new Contacto();
-            QueryContacto.Criteria.IdEstablecimiento = IdEstablecimiento;
+            QueryContacto.Criteria = QueryContacto.Criteria ?? new Contacto();            
+            QueryContacto.Criteria.IdEstablecimiento = id;
             QueryContacto.Paginacion.ItemsPerPage = 5;
             QueryContacto.BuildFilter();
             Manager.Contacto.Get(QueryContacto);

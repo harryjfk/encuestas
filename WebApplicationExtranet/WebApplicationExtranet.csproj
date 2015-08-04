@@ -242,6 +242,7 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Descargas\PRODUCE.Manual.Usuario.Informante.pdf" />
     <None Include="Properties\PublishProfiles\IIS.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCE-EXTRANET.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCE-INTRANET.pubxml" />

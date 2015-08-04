@@ -50,6 +50,16 @@ namespace Data.Repositorios
             }
         }
 
+        public IPagedList<UsuarioIntranet> GetUsuariosIntranetAnalista(Paginacion paginacion = null, Func<UsuarioIntranet, bool> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPagedList<UsuarioIntranet> GetUsuariosIntranetAdministrador(Paginacion paginacion = null, Func<UsuarioIntranet, bool> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public UsuarioIntranet FindUsuarioIntranet(int codigo)
         {
             try
@@ -78,6 +88,16 @@ namespace Data.Repositorios
             {
                 return null;
             }
+        }
+
+        public UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UsuarioIntranet GetUsuarioIntranetById(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public IPagedList<UsuarioExtranet> GetUsuariosExtranet(Paginacion paginacion = null, Func<UsuarioExtranet, bool> filter = null)

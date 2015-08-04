@@ -57,8 +57,8 @@ namespace WebApplication.Controllers
             QueryAnalista = QueryAnalista ?? new Query<UsuarioIntranet>();
             QueryAnalista = QueryAnalista.Validate();
             //Query.Order = new Order<Ciiu>() { Func = t => t.Nombre };
-            Manager.Usuario.GetUsuariosIntranet(QueryAnalista);
-            //Manager.Usuario.GetUsuariosIntranetAnalista(QueryAnalista);
+            //Manager.Usuario.GetUsuariosIntranet(QueryAnalista);
+            Manager.Usuario.GetUsuariosIntranetAnalista(QueryAnalista);
             ModelState.Clear();
             return View("IndexAnalista", QueryAnalista);
         }
@@ -138,9 +138,9 @@ namespace WebApplication.Controllers
         //
         public ActionResult Establecimientos(int id, int idRol)
         {
-            //var user = Manager.Usuario.FindUsuarioIntranet(id);
-            //var user = Manager.Usuario.FindUsuarioIntranet(id, idRol);
             var user = Manager.Usuario.FindUsuarioIntranet(id);
+            //var user = Manager.Usuario.FindUsuarioIntranet(id, idRol);
+            
             if (user == null) return HttpNotFound("Analista no encontrado");
             Analista = user;
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
@@ -165,7 +165,7 @@ namespace WebApplication.Controllers
             QueryEstablecimientosAsignados.Paginacion = QueryEstablecimientosAsignados.Paginacion ?? new Paginacion();
             QueryEstablecimientosAsignados.Paginacion.Page = 1;
             QueryEstablecimientosAsignados.BuildFilter();
-            return RedirectToAction("Establecimientos", new { id = Analista.Identificador });
+            return RedirectToAction("Establecimientos", new { id = Analista.Identificador, idrol = Analista.IdRol });
         }
         public ActionResult PageEstablecimientosAsignados(int page)
         {
@@ -173,7 +173,7 @@ namespace WebApplication.Controllers
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
             QueryEstablecimientosAsignados.Paginacion.Page = page;
-            return RedirectToAction("Establecimientos", new { id = Analista.Identificador });
+            return RedirectToAction("Establecimientos", new { id = Analista.Identificador, idrol = Analista.IdRol });
         }
         public ActionResult EstablecimientosNoAsignados()
         {
@@ -196,7 +196,7 @@ namespace WebApplication.Controllers
                 return Json(new { Success = false, Errors = new List<string>() { "Analista no encontrado" } }, JsonRequestBehavior.AllowGet);
             }
 
-            //Manager.Usuario.AsignarEstablecimientoAnalista((int)usuarioIntranet.Identificador, id);
+            //Manager.Usuario.AsignarEstablecimientoAnalista(Analista, id);
             Manager.Usuario.AsignarEstablecimientoAnalista((int)Analista.Identificador, id);
 
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<Establecimiento>();
@@ -226,7 +226,7 @@ namespace WebApplication.Controllers
             if (Analista == null)
                 return Json(new { Success = false, Errors = new List<string>() { "Analista no encontrado" } }, JsonRequestBehavior.AllowGet);
             Manager.Usuario.EliminarEstablecimientoAnalista(id);
-            return RedirectToAction("Establecimientos", new { id = Analista.Identificador });
+            return RedirectToAction("Establecimientos", new { id = Analista.Identificador, idrol = Analista.IdRol });
 
         }
         public ActionResult PageEstablecimientosNoAsignados(int page)

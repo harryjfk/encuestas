@@ -57,6 +57,34 @@ namespace Domain.Managers
                     TrabajadoresDiasTrabajados = new TrabajadoresDiasTrabajados(),
                     FactorProduccion = new FactorProducccion()
                 };
+
+                var encuestaEstadisticaLast = this.Get().OrderBy(x => x.Id).LastOrDefault();
+                var encuestaEmpresarialLast = Manager.EncuestaEmpresarial.Get().OrderBy(x => x.Id).LastOrDefault();
+
+                if (encuestaEstadisticaLast == null && encuestaEmpresarialLast == null)
+                {
+                    encuesta.Id = 1;
+                }
+                else if (encuestaEstadisticaLast != null && encuestaEmpresarialLast == null)
+                {
+                    encuesta.Id = encuestaEstadisticaLast.Id + 1;
+                }
+                else if (encuestaEstadisticaLast == null && encuestaEmpresarialLast != null)
+                {
+                    encuesta.Id = encuestaEmpresarialLast.Id + 1;
+                }
+                else if (encuestaEstadisticaLast != null && encuestaEmpresarialLast != null)
+                {
+                    if (encuestaEstadisticaLast.Id > encuestaEmpresarialLast.Id)
+                    {
+                        encuesta.Id = encuestaEstadisticaLast.Id + 1;
+                    }
+                    else
+                    {
+                        encuesta.Id = encuestaEmpresarialLast.Id + 1;
+                    }
+                }
+
                 Add(encuesta);
                 SaveChanges();
                 var volumenP = new VolumenProduccion()

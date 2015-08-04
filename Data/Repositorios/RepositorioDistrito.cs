@@ -77,9 +77,5 @@ namespace Data.Repositorios
                 return null;
             }
         }
-
-
-
-
     }
 }

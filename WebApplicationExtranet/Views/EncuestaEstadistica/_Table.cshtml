@@ -19,7 +19,7 @@
 </thead>
 
     <tbody>
-        @foreach (var item in Model.Elements)
+        @foreach (var item in Model.Elements.OrderByDescending(t=>t.Fecha))
         {
             <tr>
                 <td>
