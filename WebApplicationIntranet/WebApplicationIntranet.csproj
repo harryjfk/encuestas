@@ -454,6 +454,10 @@
     <Content Include="Views\AñoBase\_Table.cshtml" />
     <Content Include="Views\AñoBase\Details.cshtml" />
     <Content Include="Views\AñoBase\Index.cshtml" />
+    <Content Include="Views\ParametrizacionEnvio\_Create.cshtml" />
+    <Content Include="Views\ParametrizacionEnvio\_Table.cshtml" />
+    <Content Include="Views\ParametrizacionEnvio\Index.cshtml" />
+    <Content Include="Views\ParametrizacionEnvio\Details.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>
