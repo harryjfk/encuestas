@@ -33,8 +33,10 @@
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">CIIU</span>
-                        @{Html.RenderAction("GetDorpDown", "CIIU", new { id = (Model != null && Model.Criteria != null) ? Model.Criteria.id_ciiu : 0, nombre = "Criteria.id_ciiu", @default = "Todos",idEstablecimiento=(Model != null && Model.Criteria != null)?Model.Criteria.id_establecimiento:0});}
-                    </div>
+                        <div id="drop-ciiu">
+                            @{Html.RenderAction("GetDorpDownEstablecimiento", "CIIU", new { id = (Model != null && Model.Criteria != null) ? Model.Criteria.id_ciiu : 0, nombre = "Criteria.id_ciiu", @default = "Todos", idEstablecimiento = (Model != null && Model.Criteria != null) ? Model.Criteria.id_establecimiento : 0 });}
+                            
+                        </div></div>
                 </div>
                 <div class="col-md-4">
                     <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
@@ -67,18 +69,21 @@
         </div>
     </div>
 </div>
+@{var idCiiu=(Model != null && Model.Criteria != null) ? Model.Criteria.id_ciiu : 0;}
 <script type="text/javascript">
+
     $(document).ready(function () {
         $.CreateItemOpenModal("add-btn", "editItem", "AñoBase");
-        $("#Criteria_id_establecimiento").on("change",function(){
-            @*console.log("entrando");
-            var input=$(".input-group")[1];
-            var child=input.childNodes[3];
-            input.removeChild(child);
-            input.html(@{Html.RenderAction("GetDorpDown", "CIIU", new { id = (Model != null && Model.Criteria != null) ? Model.Criteria.id_ciiu : 0, nombre = "Criteria.id_ciiu", @default = "Todos" });});*@
-           
-            });
-       
+        $("#Criteria_id_establecimiento").on("change", function (e) {
+
+            $.getDropDrown("/CIIU/GetDorpDownEstablecimiento/", { "id": "@idCiiu", "nombre": "Criteria.id_ciiu", "default": "Todos", "idEstablecimiento": $("#Criteria_id_establecimiento").val() }, "#drop-ciiu");
+
+
+
+        });
+
+
+
     })
 </script>
 
