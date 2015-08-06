@@ -47,7 +47,11 @@ namespace WebApplication.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        public override ActionResult Index()
+        {
+            Manager.ParametrizacionEnvioManager.Generate();
+            return base.Index();
+        }
         
     }
 }

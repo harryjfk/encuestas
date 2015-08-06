@@ -59,8 +59,7 @@ namespace Domain.Managers
 
         public override List<string> Validate(ParametrizacionEnvio element)
         {
-            var list= base.Validate(element);
-            list.Required(element, t => t.tipo_encuesta, "Tipo de Encuesta");
+            var list= base.Validate(element);           
             list.Required(element, t => t.mensaje, "Mensaje");
             list.Required(element, t => t.comienzo, "Comienzo");
             list.Required(element, t => t.envio_1, "Envío 1");
@@ -68,7 +67,9 @@ namespace Domain.Managers
             list.MaxLength(element,t=>t.mensaje,500,"Mensaje");
             return list;
         }
-
-
+        public override OperationResult<ParametrizacionEnvio> Modify(ParametrizacionEnvio element, params string[] properties)
+        {
+            return base.Modify(element, "tipo_encuesta");
+        }
     }
 }
