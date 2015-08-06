@@ -8,6 +8,7 @@ using Domain;
 using Domain.Managers;
 using Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SelectPdf;
 
 namespace WebApplication.Controllers
 {
@@ -163,6 +164,29 @@ namespace WebApplication.Controllers
         {
             var value = Domain.Tools.GetKeyValue(element);
             return value == 0;
+        }
+
+        public virtual FileResult ExportContent(string text)
+        {
+            var converter = new HtmlToPdf();
+            var doc = converter.ConvertHtmlString(text);
+            var stream = new MemoryStream();
+            doc.Save(stream);
+            doc.Close();
+            return File(stream, "application/pdf");
+        }
+        public virtual FileResult Export()
+        {
+            var url = Request.UrlReferrer.AbsoluteUri;
+            var converter = new HtmlToPdf();
+            converter.Options.CssMediaType=HtmlToPdfCssMediaType.Print;;
+            var doc = converter.ConvertUrl(url);
+           // var stream = new MemoryStream();
+            //doc.Save(stream);
+            var path = @"C:\Users\Hector\Desktop\SISTEMA\" + Guid.NewGuid().ToString() + ".pdf";
+            doc.Save(path);
+           doc.Close();
+            return File(path, "application/pdf");
         }
 
         

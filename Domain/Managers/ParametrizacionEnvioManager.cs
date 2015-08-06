@@ -68,5 +68,7 @@ namespace Domain.Managers
             list.MaxLength(element,t=>t.mensaje,500,"Mensaje");
             return list;
         }
+
+
     }
 }

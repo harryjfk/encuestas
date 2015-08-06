@@ -7,7 +7,7 @@
       <Diagram DiagramId="1f03eb695874409f99e263903709a433" Name="Diagram1" ZoomLevel="71" ShowGrid="true" DisplayType="true">
         <EntityTypeShape EntityType="Model.Cargo" Width="1.875" PointX="2.625" PointY="16.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Ciiu" Width="2" PointX="0.5" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Contacto" Width="1.875" PointX="5.625" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Contacto" Width="1.875" PointX="6.75" PointY="19.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Encuesta" Width="2" PointX="8.5" PointY="17.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.EncuestaEmpresarial" Width="1.5" PointX="10.375" PointY="21.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.EncuestaEstadistica" Width="2" PointX="8" PointY="22.875" IsExpanded="true" />
@@ -84,6 +84,8 @@
         <AssociationConnector Association="Model.SYS_C008224" />
         <AssociationConnector Association="Model.SYS_C008225" />
         <EntityTypeShape EntityType="Model.ParametrizacionEnvio" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.Auditoria" Width="1.5" PointX="11.25" PointY="32.125" />
+        <AssociationConnector Association="Model.SYS_C008297" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

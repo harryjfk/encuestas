@@ -19,6 +19,16 @@
           <Property Name="precio" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="CAT_AUDITORIA">
+          <Key>
+            <PropertyRef Name="id_auditoria" />
+          </Key>
+          <Property Name="id_auditoria" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_encuesta" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="accion" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="usuario" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="CAT_CARGO">
           <Key>
             <PropertyRef Name="id_cargo" />
@@ -1101,8 +1111,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SYS_C008297">
+          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="1" />
+          <End Role="CAT_AUDITORIA" Type="Self.CAT_AUDITORIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_AUDITORIA">
+              <PropertyRef Name="id_encuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CAT_AÑO_BASE" EntityType="Self.CAT_AÑO_BASE" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_AUDITORIA" EntityType="Self.CAT_AUDITORIA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Self.CAT_CONSUMO_HARINA_FIDEO" Schema="TEST" store:Type="Tables" />
@@ -1327,6 +1350,10 @@
             <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
             <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
           </AssociationSet>
+          <AssociationSet Name="SYS_C008297" Association="Self.SYS_C008297">
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1410,6 +1437,7 @@
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="fecha_ultimo_envio" Type="DateTime" />
+          <NavigationProperty Name="CAT_AUDITORIA" Relationship="Model.SYS_C008297" FromRole="Encuesta" ToRole="CAT_AUDITORIA" />
         </EntityType>
         <EntityType Name="EncuestaEmpresarial" BaseType="Model.Encuesta">
           <NavigationProperty Name="Preguntas" Relationship="Model.SYS_C0012622" FromRole="EncuestaEmpresarial" ToRole="Pregunta" />
@@ -2201,6 +2229,11 @@
             <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
           </AssociationSet>
           <EntitySet Name="CAT_PARAMETRIZACION_ENVIO" EntityType="Model.ParametrizacionEnvio" />
+          <EntitySet Name="CAT_AUDITORIA" EntityType="Model.Auditoria" />
+          <AssociationSet Name="SYS_C008297" Association="Model.SYS_C008297">
+            <End Role="Encuesta" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
+          </AssociationSet>
           </EntityContainer>
         <Association Name="SYS_C0012622">
           <End Type="Model.EncuestaEmpresarial" Role="EncuestaEmpresarial" Multiplicity="0..1">
@@ -2602,6 +2635,29 @@
           <Property Name="envio_2" Type="Int64" Nullable="false" />
           <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
         </EntityType>
+        <EntityType Name="Auditoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="id_encuesta" Type="Int64" Nullable="false" />
+          <Property Name="accion" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="usuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C008297" FromRole="CAT_AUDITORIA" ToRole="Encuesta" />
+        </EntityType>
+        <Association Name="SYS_C008297">
+          <End Type="Model.Encuesta" Role="Encuesta" Multiplicity="1" />
+          <End Type="Model.Auditoria" Role="CAT_AUDITORIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Encuesta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_AUDITORIA">
+              <PropertyRef Name="id_encuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3085,6 +3141,17 @@
                 <ScalarProperty Name="mensaje" ColumnName="mensaje" />
                 <ScalarProperty Name="tipo_encuesta" ColumnName="tipo_encuesta" />
                 <ScalarProperty Name="Id" ColumnName="id_parametrizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_AUDITORIA">
+            <EntityTypeMapping TypeName="Model.Auditoria">
+              <MappingFragment StoreEntitySet="CAT_AUDITORIA">
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="accion" ColumnName="accion" />
+                <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
+                <ScalarProperty Name="Id" ColumnName="id_auditoria" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -14,6 +14,11 @@ namespace Entity
     
     public partial class Encuesta
     {
+        public Encuesta()
+        {
+            this.CAT_AUDITORIA = new HashSet<Auditoria>();
+        }
+    
         public long Id { get; set; }
         public long IdEstablecimiento { get; set; }
         public decimal Estado { get; set; }
@@ -30,5 +35,6 @@ namespace Entity
         public virtual Usuario Analista { get; set; }
         public virtual Establecimiento Establecimiento { get; set; }
         public virtual Usuario Informante { get; set; }
+        public virtual ICollection<Auditoria> CAT_AUDITORIA { get; set; }
     }
 }

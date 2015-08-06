@@ -141,7 +141,7 @@ namespace Data
                     typeof (Establecimiento), 
                     new string[]
                     {
-                        "Estado","CiiuText","IsNew","Activado","Id","DesviacionDiasTrabajados","TrabajadoresProduccion","Administrativos"
+                        "enviar_correo","EnviarCorreo","Estado","CiiuText","IsNew","Activado","Id","DesviacionDiasTrabajados","TrabajadoresProduccion","Administrativos"
                     }
                 },
                 {

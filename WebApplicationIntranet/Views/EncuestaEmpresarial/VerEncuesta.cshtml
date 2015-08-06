@@ -24,6 +24,7 @@
     <h5>Enviada el @Model.fecha_ultimo_envio.GetValueOrDefault().ToString("D", CultureInfo.GetCultureInfo("es"))</h5>
 }
 <a href="/EncuestaEmpresarial/Encuestas/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
 @if (Model != null)
 {
     using (Html.BeginForm("Enviar", "EncuestaEmpresarial", FormMethod.Post, new { name = "cap1form" }))
