@@ -36,6 +36,25 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
+        public ActionResult GetDorpDownCiiu(string id, string nombre = "IdLineaProducto", string @default = null, long idCiuu = 0)
+        {
+            Func<LineaProducto, bool> filter =  t => t.Activado && t.IdCiiu == idCiuu;
+           
+            var list = OwnManager.Get(filter).Select(t => new SelectListItem()
+            {
+                Text = t.ToString(),
+                Value = t.Id.ToString(),
+                Selected = t.Id.ToString() == id
+            }).ToList();
+            if (@default != null)
+                list.Insert(0, new SelectListItem()
+                {
+                    Selected = id == "0",
+                    Value = "0",
+                    Text = @default
+                });
+            return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
+        }
 
         public JsonResult Toggle(long id)
         {
