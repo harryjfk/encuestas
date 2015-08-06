@@ -14,6 +14,17 @@ namespace Entity
            set { estado = value ? 1 : 0; }
        }
 
-      
+       public Func<AñoBase, bool> BuildFilter()
+       {
+           if (id_establecimiento>0)
+           {
+               return t => t.id_establecimiento == id_establecimiento;
+           }
+           if (id_ciiu > 0)
+           {
+               return t => t.id_ciiu == id_ciiu;
+           }
+           return null;
+       }
     }
 }
