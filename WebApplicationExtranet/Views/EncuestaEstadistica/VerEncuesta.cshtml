@@ -4,11 +4,16 @@
 @model EncuestaEstadistica
 
 @{
-
+    var hidden = Request.IsAuthenticated ? "" : "hidden";
 }
 
 @Scripts.Render("~/bundles/jquery")
-<a href="/EncuestaEstadistica/Encuestas/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+<a href="/EncuestaEmpresarial/Export" target="_blank" class="@hidden btn btn-primary pull-right" style="margin-left: 10px;">
+    <i class="glyphicon glyphicon-file">
+    </i> Reporte
+</a>
+
+<a href="/EncuestaEstadistica/Encuestas/@Model.IdEstablecimiento" class="@hidden btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 <div>
     <div class="row">
         <div class="col-md-5">

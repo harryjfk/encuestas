@@ -179,7 +179,9 @@ namespace WebApplication.Controllers
         {
             var url = Request.UrlReferrer.AbsoluteUri;
             var converter = new HtmlToPdf();
-            converter.Options.CssMediaType=HtmlToPdfCssMediaType.Print;;
+            converter.Options.AutoFitHeight=HtmlToPdfPageFitMode.NoAdjustment;
+            converter.Options.KeepTextsTogether = true;
+            
             var doc = converter.ConvertUrl(url);
            // var stream = new MemoryStream();
             //doc.Save(stream);
