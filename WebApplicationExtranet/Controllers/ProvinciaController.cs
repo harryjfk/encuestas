@@ -12,6 +12,7 @@ namespace WebApplication.Controllers
         public Manager Manager {
             get { return Tools.GetManager(); }
         }
+
         public ActionResult GetDropDown(string id="",string nombre="IdProvincia",string @default=null,string idDepartamento=null)
         {
             var list = (idDepartamento == null ? Manager.Provincia.Get() : Manager.Departamento.GetProvincias(idDepartamento)).OrderBy(t => t.Nombre).Select(t => new SelectListItem()
@@ -30,7 +31,6 @@ namespace WebApplication.Controllers
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
 
-        
         public ActionResult GetNombreProvincia(string idProvincia)
         {
             var provincia = Manager.Provincia.Find(idProvincia);

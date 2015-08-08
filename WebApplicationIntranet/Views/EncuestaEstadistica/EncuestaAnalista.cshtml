@@ -6,8 +6,12 @@
 
 
 @{
-
+    var hidden = Request.IsAuthenticated ? "" : "hidden";
 }
+<a href="/EncuestaEstadistica/Export" target="_blank" class="@hidden btn btn-primary pull-right" style="margin-left: 10px;">
+    <i class="glyphicon glyphicon-file">
+    </i> Imprimir
+</a>
 <a href="/EncuestaEstadistica/EncuestasAnalista/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 <div>
     <div class="row">

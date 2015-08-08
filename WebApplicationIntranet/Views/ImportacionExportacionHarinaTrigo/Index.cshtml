@@ -1,0 +1,81 @@
+﻿@using Entity
+
+@model WebApplication.Models.ImportacionExportacionHarinaTrigo
+@{
+    ViewBag.Title = "Manteniminto de Importación y Exportación de Harina de Trigo";
+}
+@Scripts.Render("~/bundles/jquery")
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+<h3 class="screen-title">Manteniminto de Importaci&oacute;n y Exportaci&oacute;n de Harina de Trigo</h3>
+@using (Html.BeginForm("Buscar", "ImportacionExportacionHarinaTrigo", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+
+        <div class="panel-body">
+            <div class="row">
+	<div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">Año</span>                       
+                        <select name="Criteria.Año" class="form-control">
+                            @for (int i = 2012; i <= DateTime.Now.Year; i++)
+                            {
+                                var selected = (Model.ExportacionHarinaTrigo.Criteria != null && Model.ExportacionHarinaTrigo.Criteria.Año == i.ToString() || ((Model.ExportacionHarinaTrigo.Criteria == null || Model.ExportacionHarinaTrigo.Criteria.Año == null) && i == DateTime.Now.Year)) ? "selected" : "";
+                                <option @selected value="@i">@i.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+		<div class="col-md-4">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+
+@*<p>
+    <a href="javascript:void(0);" id="add-btn" class="btn btn-primary btn-custom-add">Nuevo ExportacionHarinaTrigo</a>
+</p>*@
+<h3 class="screen-title">Exportaci&oacute;n de Harina de Trigo</h3>
+<div id="table-container-exportacion">
+    @Html.Partial("_Table", Model.ExportacionHarinaTrigo)
+</div>
+<h3 class="screen-title">Importaci&oacute;n de Harina de Trigo</h3>
+<div id="table-container-importacion">
+   @Html.Partial("_TableImportacion", Model.ImportacionHarinaTrigo)
+</div>
+@*MODALS*@
+<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.CreateItemOpenModal("add-btn", "editItem", "ImportacionExportacionHarinaTrigo");
+        $.CreateItemOpenModal("add-btn-imp", "editItem-imp", "ImportacionExportacionHarinaTrigo","EditImportacion");
+    })
+</script>	
+
+

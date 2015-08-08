@@ -22,6 +22,7 @@ namespace WebApplication.Controllers
 
         public ActionResult Index(UserInformation user)
         {
+            //brb
             user = new UserInformation()
             {
                 Id = 1,
@@ -38,10 +39,9 @@ namespace WebApplication.Controllers
                         R = "Informante"
                     }
                 }
-                
+
             };
 
-            Session["uid"] = null;
             Session["uid"] = user.Id;
             Session["ulogin"] = null;
             var userTemp = Manager.Usuario.FindUsuarioExtranet(user.Id);

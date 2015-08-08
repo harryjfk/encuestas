@@ -65,7 +65,7 @@ namespace WebApplication.Controllers
             return PartialView("_Create", element);
         }
 
-        public override JsonResult CreatePost(Establecimiento element)
+        public override JsonResult CreatePost(Establecimiento element, params string[] properties)
         {
             var old = Manager.Establecimiento.Find(element.Id);
             

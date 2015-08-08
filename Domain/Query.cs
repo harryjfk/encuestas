@@ -33,7 +33,7 @@ namespace Domain
             var type = typeof(T);
             var method = type.GetMethod("BuildFilter");
             Func<T, bool> temp = null;
-            if (method != null&&Criteria!=null)
+            if (method != null && Criteria != null)
             {
                 temp = (Func<T, bool>)method.Invoke(Criteria, null);
             }

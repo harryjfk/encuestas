@@ -31,17 +31,17 @@ namespace Domain.Managers
             return list;
         }
 
-        public void Generate()
+        public void Generate(int año)
         {
-            var now = DateTime.Now;
+            
             for (int i = 1; i < 13; i++)
             {
-                var element = Get(t => t.fecha.Month == i && t.fecha.Year == now.Year).FirstOrDefault();
+                var element = Get(t => t.fecha.Month == i && t.fecha.Year == año).FirstOrDefault();
                 if (element == null)
                 {
                     element = new TipoCambio()
                     {
-                        fecha = new DateTime(now.Year,i,1),
+                        fecha = new DateTime(año, i, 1),
                         Activado = true
                     };
                     Add(element);

@@ -47,6 +47,7 @@ namespace Data.Repositorios
                 return new PagedList<Provincia>( new List<Provincia>(),1,1);
             }
         }
+
         public Entity.Provincia Find(string codigo)
         {
             try
@@ -74,6 +75,7 @@ namespace Data.Repositorios
                 return null;
             }
         }
+
         public IPagedList<Distrito> GetDistritos(string codigoProvincia, Paginacion paginacion = null)
         {
             try

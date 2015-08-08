@@ -19,7 +19,8 @@ namespace Entity
             this.LineasProductoEstablecimiento = new HashSet<LineaProductoEstablecimiento>();
             this.MateriasPropia = new HashSet<MateriaPropia>();
             this.MateriaTercero = new HashSet<MateriaTerceros>();
-            this.UnidadesMedida = new HashSet<UnidadMedida>();
+            this.LineasProductoUnidadMedida = new HashSet<LineaProductoUnidadMedida>();
+            this.CAT_AÑO_BASE = new HashSet<AñoBase>();
         }
     
         public long Id { get; set; }
@@ -36,6 +37,7 @@ namespace Entity
         public virtual ICollection<LineaProductoEstablecimiento> LineasProductoEstablecimiento { get; set; }
         public virtual ICollection<MateriaPropia> MateriasPropia { get; set; }
         public virtual ICollection<MateriaTerceros> MateriaTercero { get; set; }
-        public virtual ICollection<UnidadMedida> UnidadesMedida { get; set; }
+        public virtual ICollection<LineaProductoUnidadMedida> LineasProductoUnidadMedida { get; set; }
+        public virtual ICollection<AñoBase> CAT_AÑO_BASE { get; set; }
     }
 }

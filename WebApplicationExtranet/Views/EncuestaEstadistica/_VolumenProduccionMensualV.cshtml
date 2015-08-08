@@ -59,15 +59,7 @@
                                 //Html.RenderPartial("_ProductoMateriaPrimaPropia", item);
                                 <tr class="@clase">
                                     <td>
-                                        @if (User.IsInRole("Informante"))
-                                        {
-                                            <span>@item.LineaProducto.Ciiu.Codigo-@item.LineaProducto.Nombre</span>
-                                        }
-                                        @if (User.IsInRole("Analista"))
-                                        {
-                                            <span>@item.LineaProducto.Ciiu.Codigo-@item.LineaProducto.Codigo-@item.LineaProducto.Nombre</span>
-                                        }
-
+                                        <span>@item.LineaProducto.Ciiu.Codigo-@item.LineaProducto.Nombre</span>
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.UnidadMedida.Abreviatura)

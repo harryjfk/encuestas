@@ -1,0 +1,127 @@
+﻿@model Entity.IpmIpp
+@using System.Globalization
+@Scripts.Render("~/bundles/tools")
+@{
+    Layout = "";
+    var title = "Nuevo Indice de precio: " + Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper();
+    var ciuuName = Model.Ciiu.ToString();
+    if (ciuuName.Length > 34)
+    {
+        ciuuName = ciuuName.Substring(0, 31) + "...";
+    }
+}
+@using (Html.BeginForm("Create", "IpmIpp", FormMethod.Post, new { name = "Ip-635735146899438972" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+           
+        }
+
+        <div class="form-group">
+            <label for="Año" class="col-md-4 control-label"> Año</label>
+            <div class="col-md-7">
+                @Html.Label(Model.fecha.Year.ToString(), new { @class = "form-control", style = "max-width: 280px;" })
+                @Html.ValidationMessageFor(model => model.fecha)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="CIUU" class="col-md-4 control-label"> CIIU</label>
+            <div class="col-md-7" data-toggle="tooltip" data-placement="top" title="" data-original-title="@Model.Ciiu.ToString()">
+                <label class="form-control" for="" style="max-width: 280px;">@ciuuName</label>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label for="IPM" class="col-md-4 control-label"> IPM</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.ipm, new { @class = "form-control mask4", Value = Model.ipm.ToString("0.0000",CultureInfo.InvariantCulture) })
+                @Html.ValidationMessageFor(model => model.ipm)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+
+        <div class="form-group">
+            <label for="IPP" class="col-md-4 control-label"> IPP</label>
+            <div class="col-md-7">
+                @Html.Label(Model.ipp.ToString("0.0000", CultureInfo.InvariantCulture), new { @class = "form-control mask4", style = "max-width: 280px;" })
+                @Html.ValidationMessageFor(model => model.ipp)
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label for="Activado" class="col-md-4 control-label">Activado</label>
+            <div class="col-md-1">
+                @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                @Html.ValidationMessageFor(model => model.Activado)
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button[name='aceptarbtn']").click(function () {
+            var $elem = $(this);
+            $elem.addClass("disabled");
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/IpmIpp/CreatePost/",
+                data: $("form[name='Ip-635735146899438972']").serialize(),
+                success: function (data) {
+                    $elem.removeClass("disabled");
+                    if (data.Success) {
+                        $("#table-container").html(data.Data);
+                        $("#editItem").modal("hide");
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
+        $.changeModalName('@title');
+       
+       
+    })
+</script>

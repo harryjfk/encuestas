@@ -24,6 +24,8 @@ namespace Entity
         public Nullable<System.DateTime> modificado { get; set; }
         public string usuario_creacion { get; set; }
         public string usuario_modificacion { get; set; }
+        public decimal es_personalizado { get; set; }
+        public string texto_personalizado { get; set; }
     
         public virtual PosibleRespuesta PosibleRespuesta { get; set; }
         public virtual Pregunta Pregunta { get; set; }

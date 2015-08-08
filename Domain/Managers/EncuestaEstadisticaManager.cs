@@ -57,6 +57,34 @@ namespace Domain.Managers
                     TrabajadoresDiasTrabajados = new TrabajadoresDiasTrabajados(),
                     FactorProduccion = new FactorProducccion()
                 };
+
+                var encuestaEstadisticaLast = this.Get().OrderBy(x => x.Id).LastOrDefault();
+                var encuestaEmpresarialLast = Manager.EncuestaEmpresarial.Get().OrderBy(x => x.Id).LastOrDefault();
+
+                if (encuestaEstadisticaLast == null && encuestaEmpresarialLast == null)
+                {
+                    encuesta.Id = 1;
+                }
+                else if (encuestaEstadisticaLast != null && encuestaEmpresarialLast == null)
+                {
+                    encuesta.Id = encuestaEstadisticaLast.Id + 1;
+                }
+                else if (encuestaEstadisticaLast == null && encuestaEmpresarialLast != null)
+                {
+                    encuesta.Id = encuestaEmpresarialLast.Id + 1;
+                }
+                else if (encuestaEstadisticaLast != null && encuestaEmpresarialLast != null)
+                {
+                    if (encuestaEstadisticaLast.Id > encuestaEmpresarialLast.Id)
+                    {
+                        encuesta.Id = encuestaEstadisticaLast.Id + 1;
+                    }
+                    else
+                    {
+                        encuesta.Id = encuestaEmpresarialLast.Id + 1;
+                    }
+                }
+
                 Add(encuesta);
                 SaveChanges();
                 var volumenP = new VolumenProduccion()
@@ -67,13 +95,13 @@ namespace Domain.Managers
                 Manager.VolumenProduccionManager.SaveChanges();
                 foreach (var lp in establecimiento.LineasProductoEstablecimiento)
                 {
-                    var um = lp.LineaProducto.UnidadesMedida.FirstOrDefault();
+                    var um = lp.LineaProducto.LineasProductoUnidadMedida.FirstOrDefault();
                     if (um != null)
                     {
                         var mp = new MateriaPropia()
                         {
                             IdLineaProducto = lp.LineaProducto.Id,
-                            IdUnidadMedida = um.Id,
+                            IdUnidadMedida = um.id_unidad_medida.GetValueOrDefault(),
                             IdVolumenProduccion = volumenP.Identificador
                         };
                         var old = establecimiento.Encuestas.Where(t => t.Id != encuesta.Id && t.Fecha < encuesta.Fecha).OfType<EncuestaEstadistica>().OrderBy(t => t.Fecha).ToList();
@@ -301,8 +329,8 @@ namespace Domain.Managers
             if (ciiu != null && encuesta != null && lineaprod!=null)
             {
                 long idUM = 0;
-                var first = lineaprod.UnidadesMedida.FirstOrDefault();
-                idUM = first != null ? first.Id : 0;
+                var first = lineaprod.LineasProductoUnidadMedida.FirstOrDefault();
+                idUM = first != null ? first.id_unidad_medida.GetValueOrDefault() : 0;
                 var establecimiento = encuesta.Establecimiento;
                 if (establecimiento.Ciius.Any(t => t.Id == ciiu.Id))
                 {

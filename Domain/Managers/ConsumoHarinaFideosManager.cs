@@ -29,5 +29,22 @@ namespace Domain.Managers
             list.Required(element,t=>t.tonelada_tmb,"Toneladas TMB");
             return list;
         }
+        public void Generate(int año)
+        {
+            for (int i = 1; i < 13; i++)
+            {
+                var element = Get(t => t.fecha.Month == i && t.fecha.Year == año).FirstOrDefault();
+                if (element == null)
+                {
+                    element = new ConsumoHarinaFideo() { 
+                    fecha=new DateTime(año,i,1),
+                    Activado=true
+                    };
+                    Add(element);
+
+                }
+                SaveChanges();
+            }
+        }
     }
 }

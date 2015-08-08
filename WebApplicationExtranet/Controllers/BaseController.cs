@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ using Domain;
 using Domain.Managers;
 using Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SelectPdf;
 
 namespace WebApplication.Controllers
 {
@@ -57,7 +59,7 @@ namespace WebApplication.Controllers
             {
                 Query = Query ?? new Query<T>().Validate();
                 var manager = OwnManager;
-                var op = IsNew(element)?
+                var op = IsNew(element) ?
                     manager.Add(element) :
                     manager.Modify(element);
                 if (op.Success)
@@ -78,7 +80,7 @@ namespace WebApplication.Controllers
                     var result = new
                     {
                         Success = false,
-                        Errors = op.Errors.Select(t=>t).ToList()
+                        Errors = op.Errors.Select(t => t).ToList()
                     };
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
@@ -158,13 +160,55 @@ namespace WebApplication.Controllers
                 return sw.GetStringBuilder().ToString();
             }
         }
-        
+
         public virtual bool IsNew(T element)
         {
             var value = Domain.Tools.GetKeyValue(element);
             return value == 0;
         }
 
-        
+        public virtual FileResult ExportContent(string text)
+        {
+            var converter = new HtmlToPdf();
+            var doc = converter.ConvertHtmlString(text);
+            var stream = new MemoryStream();
+            doc.Save(stream);
+            doc.Close();
+            return File(stream, "application/pdf");
+        }
+        public virtual FileResult Export()
+        {
+            if (Request.UrlReferrer == null)
+            {
+                throw new FileNotFoundException("Operación Inválida");
+            }
+            var downloads = ConfigurationManager.AppSettings["Downloads"];
+            var name = Guid.NewGuid().ToString() + ".pdf";
+            var path = Path.Combine(downloads, name);
+            var now = DateTime.Now;
+            var files =
+                Directory.GetFiles(downloads)
+                    .Select(t => new FileInfo(t))
+                    .Where(t => now.Subtract(t.CreationTime).TotalMinutes > 1)
+                    .Select(t=>t.FullName);
+            foreach (var file in files)
+            {
+              System.IO.File.Delete(file);
+            } 
+
+            var url = Request.UrlReferrer.AbsoluteUri;
+            var converter = new HtmlToPdf();
+            converter.Options.AutoFitHeight = HtmlToPdfPageFitMode.NoAdjustment;
+            converter.Options.KeepTextsTogether = true;
+
+            var doc = converter.ConvertUrl(url);
+            
+            doc.Save(path);
+            doc.Close();
+
+            return File(path, "application/pdf");
+        }
+
+
     }
 }

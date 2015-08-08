@@ -27,14 +27,14 @@
                 <div>
                     <div class="col-md-6 ">
                         <div class="input-group padding-5">
-                            <span class="input-group-addon">Razón Social</span>
-                           @if (string.IsNullOrEmpty(Model.Establecimiento.RazonSocial))
+                           <span class="input-group-addon">Razón Social</span>
+                           @if (string.IsNullOrEmpty(Model.Establecimiento.Nombre))
                            {
                                <span class="form-control">Sin Establecer</span>
                            }
                            else
                            {
-                                @Html.Label("", Model.Establecimiento.RazonSocial, new { @class = "form-control reset-max-width" })
+                                @Html.Label("", Model.Establecimiento.Nombre, new { @class = "form-control reset-max-width" })
                            }
                         </div>
                         <div class="input-group padding-5">

@@ -11,7 +11,6 @@ using WebApplication.Models;
 using Seguridad.PRODUCE;
 //using Data.UsuarioIntranetService;
 
-
 namespace WebApplication.Controllers
 {
     
@@ -22,9 +21,10 @@ namespace WebApplication.Controllers
         public Manager Manager {
             get { return Tools.GetManager(); }
         }
+
         public ActionResult Index(UserInformation user)
         {
-
+            //brb
             user = new UserInformation()
             {
                 Id = 2,
@@ -38,7 +38,7 @@ namespace WebApplication.Controllers
                     new Aplicaciones()
                     {
                         A = 123,
-                        R = "Administrativo"
+                        R = "Administrador"
                     }
                 }
 
@@ -77,14 +77,16 @@ namespace WebApplication.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult Login(Credenciales model)
         {
+            var a = Manager.Establecimiento.Get();
 
             if (ModelState.IsValid)
             {
                 //var user = Manager.Usuario.AutenticateIntranet(model.Login, model.Password);
-                if (Membership.ValidateUser(model.Login,model.Password))
+                if (Membership.ValidateUser(model.Login, model.Password))
                 {
                     var user = Manager.Usuario.Autenticate(model.Login, model.Password);
                     FormsAuthentication.SetAuthCookie(model.Login, false);

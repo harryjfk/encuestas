@@ -20,6 +20,7 @@ namespace Entity
             this.Encuestas = new HashSet<Encuesta>();
             this.LineasProductoEstablecimiento = new HashSet<LineaProductoEstablecimiento>();
             this.Ciius = new HashSet<Ciiu>();
+            this.CAT_AÑO_BASE = new HashSet<AñoBase>();
         }
     
         public long Id { get; set; }
@@ -40,6 +41,8 @@ namespace Entity
         public string usuario_creacion { get; set; }
         public string usuario_modificacion { get; set; }
         public Nullable<decimal> tipo_establecimiento { get; set; }
+        public decimal enviar_correo { get; set; }
+        public Nullable<System.DateTime> ultima_notificacion { get; set; }
     
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<Encuesta> Encuestas { get; set; }
@@ -47,5 +50,6 @@ namespace Entity
         public virtual Usuario Analista { get; set; }
         public virtual Usuario Informante { get; set; }
         public virtual ICollection<Ciiu> Ciius { get; set; }
+        public virtual ICollection<AñoBase> CAT_AÑO_BASE { get; set; }
     }
 }

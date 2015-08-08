@@ -50,14 +50,30 @@ namespace WebApplication.Controllers
 
         public override ActionResult Index()
         {
-            Manager.TipoCambioManager.Generate();
+            var año=DateTime.Now.Year;
+            
             Query = Query ?? new Query<TipoCambio>();
             Query.Criteria = Query.Criteria ?? new TipoCambio();
             Query.Criteria.Año = Query.Criteria.Año ?? DateTime.Now.Year.ToString();
+            if (Query.Criteria.Año != null)
+            {
+                año = int.Parse(Query.Criteria.Año);
+            }
+            Manager.TipoCambioManager.Generate(año);
             Query.Order = Query.Order ?? new Order<TipoCambio>();
             Query.Order.Func = t => t.fecha;
             Query.BuildFilter();
             return base.Index();
+        }
+        public override ActionResult Buscar(TipoCambio criteria)
+        {
+            Manager.TipoCambioManager.Generate(int.Parse(criteria.Año));
+            return base.Buscar(criteria);
+        }
+
+        public override JsonResult CreatePost(TipoCambio element, params string[] properties)
+        {
+            return base.CreatePost(element, "fecha");
         }
     }
 }

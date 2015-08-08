@@ -192,7 +192,7 @@ namespace WebApplication.Controllers
         public ActionResult EstablecimientosEncuestaEmpresarial(UserInformation user)
         {
             Informante = UsuarioActual;
-            //Informante = Manager.Usuario.FindUsuarioExtranet(user.Id);
+           // Informante = Manager.Usuario.FindUsuarioExtranet(user.Id);
             if (Informante == null) return this.HttpNotFound("No se pudo encontrar el informante");
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +14,25 @@ namespace Data
 {
     public static class Tools
     {
+
+        public static void EnviarCorreo(this string[] to, string subject, string content)
+        {
+            var user = ConfigurationManager.AppSettings["SmtpUser"];
+            var password = ConfigurationManager.AppSettings["SmtpPassword"];
+            var host = ConfigurationManager.AppSettings["SmtpHost"];
+            var port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
+            var useSsl = bool.Parse(ConfigurationManager.AppSettings["SmtpSsl"]);
+            var credential = new NetworkCredential(user, password);
+            var server = new SmtpClient(host, port)
+            {
+                EnableSsl = useSsl,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = credential
+            };
+            var message = new MailMessage(user, to.Aggregate((t, h) => t + "," + h), subject, content) { IsBodyHtml = true };
+            server.Send(message);
+        }
 
         public static Func<T, string> GetDefault<T>()
         {
@@ -68,14 +90,21 @@ namespace Data
                     }
                 },
                 {
-                    typeof (LineaProducto), 
+                    typeof (AñoBase), 
                     new string[]
                     {
+                        "estado","Activado","Id","id_linea_producto","id_unidad_medida","produccion_anual","valor_produccion","precio","id_establecimiento","id_ciiu"
+                    }
+                },
+                {
+                    typeof (LineaProducto), 
+                    new string[]
+                    { 
                         "Estado","Activado","Id","IdCiiu"
                     }
                 },
                 {
-                    typeof (TipoCambio), 
+                    typeof (ConsumoHarinaFideo), 
                     new string[]
                     {
                         "Estado","fecha","Activado","Id","tonelada_tmb","Año"
@@ -96,7 +125,7 @@ namespace Data
                     }
                 },
                 {
-                    typeof (ConsumoHarinaFideo), 
+                    typeof (TipoCambio), 
                     new string[]
                     {
                         "Estado","fecha","Activado","Id","tipo_cambio_ventas","tipo_cambio_compra","Año"
@@ -134,7 +163,7 @@ namespace Data
                     typeof (Establecimiento), 
                     new string[]
                     {
-                        "Estado","CiiuText","IsNew","Activado","Id","DesviacionDiasTrabajados","TrabajadoresProduccion","Administrativos"
+                        "enviar_correo","EnviarCorreo","Estado","CiiuText","IsNew","Activado","Id","DesviacionDiasTrabajados","TrabajadoresProduccion","Administrativos"
                     }
                 },
                 {

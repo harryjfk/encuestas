@@ -29,6 +29,38 @@ namespace Domain.Managers
             Repositorio = repositorio;
         }
 
+        public UsuarioIntranet AutenticateIntranetPRODUCE(string id, string login, string rol, string nombre)
+        {
+            var manager = Manager;
+            Usuario user = new Usuario();
+            user.Identificador = int.Parse(id);
+            user.Login = login;
+            user.Nombres = nombre;
+            Usuario usr = manager.Usuario.Find(user.Identificador);
+
+            if (usr == null)
+            {
+                usr = new Usuario()
+                {
+                    Login = user.Login,
+                    Identificador = user.Identificador,
+                    Nombres = user.Nombres
+                };
+                manager.Usuario.Add(usr);
+                manager.Usuario.SaveChanges();
+                usr.Roles = manager.Rol.Get(t => t.Nombre.Equals(rol)).ToList();
+                manager.Usuario.SaveChanges();
+            }
+            UsuarioIntranet usuarioIntranet = new UsuarioIntranet()
+            {
+                Identificador = usr.Identificador,
+                Nombres = usr.Nombres,
+                Apellidos = "",
+                Login = usr.Login
+            };
+
+            return usuarioIntranet;
+        }
 
         public UsuarioIntranet AutenticateIntranet(string login, string password)
         {
@@ -124,6 +156,34 @@ namespace Domain.Managers
             return list;
         }
 
+        public IPagedList<UsuarioIntranet> GetUsuariosIntranetAnalista(Query<UsuarioIntranet> query)
+        {
+            var list = Repositorio.GetUsuariosIntranetAnalista(query.Paginacion, query.Filter);
+            foreach (var usr in list)
+            {
+                var te = Find(usr.Identificador);
+                if (te == null) continue;
+                usr.Roles = te.Roles.ToList();
+                usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+            }
+            query.Elements = list;
+            return list;
+        }
+
+        public IPagedList<UsuarioIntranet> GetUsuariosIntranetAdministrador(Query<UsuarioIntranet> query)
+        {
+            var list = Repositorio.GetUsuariosIntranetAdministrador(query.Paginacion, query.Filter);
+            foreach (var usr in list)
+            {
+                var te = Find(usr.Identificador);
+                if (te == null) continue;
+                usr.Roles = te.Roles.ToList();
+                usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+            }
+            query.Elements = list;
+            return list;
+        }
+
         public IPagedList<UsuarioIntranet> GetUsuariosIntranet(Paginacion paginacion = null)
         {
             var list = Repositorio.GetUsuariosIntranet(paginacion);
@@ -208,6 +268,16 @@ namespace Domain.Managers
             return usr;
         }
 
+        public UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol)
+        {
+            var usr = Repositorio.FindUsuarioIntranet(codigo, idRol);
+            var te = Find(usr.Identificador);
+            if (te == null) return usr;
+            usr.Roles = te.Roles.ToList();
+            usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+            return usr;
+        }
+
         public void MarcarAdministrador(int codigo)
         {
             var manager = Manager;
@@ -274,6 +344,42 @@ namespace Domain.Managers
             }
             manager.Encuesta.SaveChanges();
         }
+
+        public void AsignarEstablecimientoAnalista(UsuarioIntranet usuario, long idEstablecimiento)
+        {
+            int idUsuario = (int)usuario.Identificador;
+            int idRol = (int)usuario.IdRol;
+            var manager = Manager;
+            var se = manager.Usuario.FindUsuarioIntranet(idUsuario, idRol);
+            var establecimiento = manager.Establecimiento.Find(idEstablecimiento);
+            if (se == null || establecimiento == null) return;
+            var user = manager.Usuario.Find(idUsuario);
+            if (user == null)
+            {
+                user = new Usuario()
+                {
+                    Login = se.Login,
+                    Identificador = se.Identificador
+                };
+                manager.Usuario.Add(user);
+                manager.Usuario.SaveChanges();
+                user = manager.Usuario.Find(idUsuario);
+            }
+            establecimiento.Analista = user;
+            establecimiento.IdAnalista = idUsuario;
+            manager.Establecimiento.SaveChanges();
+
+            foreach (var enc in establecimiento.Encuestas)
+            {
+                if (enc.IdAnalista == null)
+                {
+                    enc.IdAnalista = idUsuario;
+                    manager.Encuesta.Modify(enc);
+                }
+            }
+            manager.Encuesta.SaveChanges();
+        }
+
         public void EliminarEstablecimientoAnalista(long idEstablecimiento)
         {
             var manager = Manager;

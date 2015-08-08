@@ -6,8 +6,7 @@
         <tr class="cabecera">
             <th> IDENTIFICADOR </th>
             <th> RUC </th>
-            <th> RAZON SOCIAL </th>
-            <th> NOMBRE </th>
+            <th> RAZ&Oacute;N SOCIAL </th>
             <th> DIRECCI&Oacute;N </th>
             <th>ACCI&Oacute;N</th>
     </thead>
@@ -15,10 +14,9 @@
     <tbody>
         @foreach (var item in Model.Elements)
         {
-            <tr>
+           <tr>
                 <td>@Html.DisplayFor(modelItem => item.IdentificadorInterno)</td>
                 <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
-                <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
                 <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
                 <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
                 <td>

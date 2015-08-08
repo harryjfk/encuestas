@@ -17,8 +17,10 @@ namespace WebApplication.Binders
             {
                 object result = null;
                 var modelName = bindingContext.ModelName;
+                var ttt = bindingContext.ValueProvider.GetValue(modelName);
+                if (ttt == null) return null;
                 var attemptedValue =
-                    bindingContext.ValueProvider.GetValue(modelName).AttemptedValue;
+                    ttt.AttemptedValue;
                 var wantedSeperator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
                 var alternateSeperator = (wantedSeperator == "," ? "." : ",");
                 if (attemptedValue.IndexOf(wantedSeperator) == -1

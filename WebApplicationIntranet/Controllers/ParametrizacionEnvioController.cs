@@ -8,9 +8,9 @@ using Entity;
 
 namespace WebApplication.Controllers
 {
-    public class ImportacionHarinaTrigoController : BaseController<ImportacionHarinaTrigo>
+    public class ParametrizacionEnvioController : BaseController<ParametrizacionEnvio>
     {
-        public ActionResult GetDorpDown(string id, string nombre = "IdImportacion", string @default = null)
+        public ActionResult GetDorpDown(string id, string nombre = "IdParametrizacion", string @default = null)
         {
            var list =OwnManager.Get(t => t.Activado).Select(t => new SelectListItem()
             {
@@ -47,7 +47,11 @@ namespace WebApplication.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        public override ActionResult Index()
+        {
+            Manager.ParametrizacionEnvioManager.Generate();
+            return base.Index();
+        }
         
     }
 }

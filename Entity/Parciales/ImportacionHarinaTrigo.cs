@@ -19,7 +19,7 @@ namespace Entity
             get;
             set;
         }
-        public Func<TipoCambio, bool> BuildFilter()
+        public Func<ImportacionHarinaTrigo, bool> BuildFilter()
         {
             if (!string.IsNullOrEmpty(Año) && !string.IsNullOrWhiteSpace(Año))
             {

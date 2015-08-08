@@ -1,0 +1,45 @@
+﻿@model Entity.IpmIpp
+@using System.Globalization
+@{
+    ViewBag.Title = "Detalles del Indice de Precio x Mayor – Indice de Precio Promedio";
+}
+
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del Indice de Precio x Mayor – Indice de Precio Promedio</h3>
+    <a href="/IpmIpp/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold">Año: </span> <span>@Model.fecha.ToString("yyyy", CultureInfo.GetCultureInfo("ES"))</span>
+        </div>
+
+        <div>
+            <span class="bold">Mes: </span> <span>@Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper()</span>
+        </div>
+        <div>
+            <span class="bold">CIIU: </span> <span>@Model.Ciiu.ToString()</span>
+        </div>
+        <div>
+            <span class="bold">IPM: </span> <span>@Model.ipm.ToString("0.0000", CultureInfo.InvariantCulture)</span>
+        </div>
+
+        <div>
+            <span class="bold">IPP: </span> <span>@Model.ipp.ToString("0.0000", CultureInfo.InvariantCulture)</span>
+        </div>
+
+        @*<div>
+                <span class="bold">estado: </span> <span>@Model.estado</span>
+            </div>*@
+
+
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+

@@ -1,0 +1,34 @@
+﻿@model Entity.ParametrizacionEnvio
+@{
+    ViewBag.Title = "Detalles del Parametrización de Envío";
+}
+
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del Parametrización de Envío</h3>
+    <a href="/ParametrizacionEnvio/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold">Tipo de Encuesta: </span> <span>@Model.tipo_encuesta</span>
+        </div>
+        <div>
+            <span class="bold">Comienzo: </span> <span>@Model.comienzo.ToString("dd-MM-yyyy")</span>
+        </div>
+        <div>
+            <span class="bold">Env&iacute;o 1: </span> <span>@Model.envio_1</span>
+        </div>
+
+        <div>
+            <span class="bold">Env&iacute;o 2: </span> <span>@Model.envio_2</span>
+        </div>
+        <div>
+            <span class="bold">Mensaje: </span> <span>@Model.mensaje</span>
+        </div>
+        <div>
+            <span class="bold">Enviar correo si no se ha llenado encuesta: </span> <span>@Model.Activado</span>
+        </div>
+
+    </div>
+</div>
+
+

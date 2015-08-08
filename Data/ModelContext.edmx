@@ -5,6 +5,30 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CAT_AÑO_BASE">
+          <Key>
+            <PropertyRef Name="id_año" />
+          </Key>
+          <Property Name="id_año" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_establecimiento" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_linea_producto" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_unidad_medida" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="produccion_anual" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="valor_produccion" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="precio" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAT_AUDITORIA">
+          <Key>
+            <PropertyRef Name="id_auditoria" />
+          </Key>
+          <Property Name="id_auditoria" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_encuesta" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="accion" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="usuario" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="CAT_CARGO">
           <Key>
             <PropertyRef Name="id_cargo" />
@@ -112,6 +136,7 @@
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="fecha_creacion_informante" Type="date" />
+          <Property Name="peso" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="CAT_ESTABLECIMIENTO">
           <Key>
@@ -135,6 +160,8 @@
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="tipo_establecimiento" Type="number" Precision="38" Scale="0" />
+          <Property Name="enviar_correo" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ultima_notificacion" Type="date" />
         </EntityType>
         <EntityType Name="CAT_EXPORTACION_HARINA_TRIGO">
           <Key>
@@ -201,13 +228,15 @@
           <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="CAT_LINEA_PROD_UNIDAD_MEDIDA">
+        <EntityType Name="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
           <Key>
-            <PropertyRef Name="id_linea_prod" />
-            <PropertyRef Name="id_unidad_medida" />
+            <PropertyRef Name="id_linea_producto_um" />
           </Key>
-          <Property Name="id_linea_prod" Type="number" Precision="11" Scale="0" Nullable="false" />
-          <Property Name="id_unidad_medida" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_linea_producto_um" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_unidad_conversion" Type="number" Precision="11" Scale="0" />
+          <Property Name="factor_conversion" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_unidad_medida" Type="number" Precision="11" Scale="0" />
+          <Property Name="id_linea_producto" Type="number" Precision="11" Scale="0" />
         </EntityType>
         <EntityType Name="CAT_LINEA_PRODUCTO">
           <Key>
@@ -268,6 +297,18 @@
           </Key>
           <Property Name="id_metodo" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="nombre" Type="varchar2" MaxLength="20" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAT_PARAMETRIZACION_ENVIO">
+          <Key>
+            <PropertyRef Name="id_parametrizacion" />
+          </Key>
+          <Property Name="id_parametrizacion" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="tipo_encuesta" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="mensaje" Type="varchar2" MaxLength="1000" Nullable="false" />
+          <Property Name="comienzo" Type="date" Nullable="false" />
+          <Property Name="envio_1" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="envio_2" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_POSIBLE_RESPUESTA">
@@ -345,6 +386,8 @@
           <Property Name="modificado" Type="date" />
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
+          <Property Name="texto_personalizado" Type="varchar2" MaxLength="255" />
+          <Property Name="es_personalizado" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_VALOR_PROD_MENSUAL">
           <Key>
@@ -650,34 +693,6 @@
             </Principal>
             <Dependent Role="CAT_FACTOR_PRODUCCION">
               <PropertyRef Name="id_factor_produccion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SYS_C007775">
-          <End Role="CAT_LINEA_PRODUCTO" Type="Self.CAT_LINEA_PRODUCTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CAT_LINEA_PROD_UNIDAD_MEDIDA" Type="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CAT_LINEA_PRODUCTO">
-              <PropertyRef Name="id_linea_prod" />
-            </Principal>
-            <Dependent Role="CAT_LINEA_PROD_UNIDAD_MEDIDA">
-              <PropertyRef Name="id_linea_prod" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SYS_C007776">
-          <End Role="CAT_UNIDAD_MEDIDA" Type="Self.CAT_UNIDAD_MEDIDA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CAT_LINEA_PROD_UNIDAD_MEDIDA" Type="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CAT_UNIDAD_MEDIDA">
-              <PropertyRef Name="Id_unidad_medida" />
-            </Principal>
-            <Dependent Role="CAT_LINEA_PROD_UNIDAD_MEDIDA">
-              <PropertyRef Name="id_unidad_medida" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1001,7 +1016,117 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SYS_C008203">
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Self.CAT_UNIDAD_MEDIDA" Multiplicity="0..1" />
+          <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Type="Self.CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_UNIDAD_MEDIDA">
+              <PropertyRef Name="Id_unidad_medida" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
+              <PropertyRef Name="id_unidad_conversion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008204">
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Self.CAT_UNIDAD_MEDIDA" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Type="Self.CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_UNIDAD_MEDIDA">
+              <PropertyRef Name="Id_unidad_medida" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
+              <PropertyRef Name="id_unidad_medida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008205">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Self.CAT_LINEA_PRODUCTO" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Type="Self.CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="id_linea_prod" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
+              <PropertyRef Name="id_linea_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008222">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_AÑO_BASE" Type="Self.CAT_AÑO_BASE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_establecimiento" />
+            </Principal>
+            <Dependent Role="CAT_AÑO_BASE">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008223">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_AÑO_BASE" Type="Self.CAT_AÑO_BASE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_AÑO_BASE">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008224">
+          <End Role="CAT_LINEA_PRODUCTO" Type="Self.CAT_LINEA_PRODUCTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_AÑO_BASE" Type="Self.CAT_AÑO_BASE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_LINEA_PRODUCTO">
+              <PropertyRef Name="id_linea_prod" />
+            </Principal>
+            <Dependent Role="CAT_AÑO_BASE">
+              <PropertyRef Name="id_linea_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008225">
+          <End Role="CAT_UNIDAD_MEDIDA" Type="Self.CAT_UNIDAD_MEDIDA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_AÑO_BASE" Type="Self.CAT_AÑO_BASE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_UNIDAD_MEDIDA">
+              <PropertyRef Name="Id_unidad_medida" />
+            </Principal>
+            <Dependent Role="CAT_AÑO_BASE">
+              <PropertyRef Name="id_unidad_medida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008297">
+          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="1" />
+          <End Role="CAT_AUDITORIA" Type="Self.CAT_AUDITORIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_AUDITORIA">
+              <PropertyRef Name="id_encuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="CAT_AÑO_BASE" EntityType="Self.CAT_AÑO_BASE" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_AUDITORIA" EntityType="Self.CAT_AUDITORIA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Self.CAT_CONSUMO_HARINA_FIDEO" Schema="TEST" store:Type="Tables" />
@@ -1018,11 +1143,12 @@
           <EntitySet Name="CAT_FACTOR_PRODUCCION" EntityType="Self.CAT_FACTOR_PRODUCCION" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_IMPORTACION_HARINA_TRIGO" EntityType="Self.CAT_IMPORTACION_HARINA_TRIGO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_IPM_IPP" EntityType="Self.CAT_IPM_IPP" Schema="TEST" store:Type="Tables" />
-          <EntitySet Name="CAT_LINEA_PROD_UNIDAD_MEDIDA" EntityType="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntityType="Self.CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Self.CAT_LINEA_PRODUCTO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Self.CAT_MATERIA_PROPIA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_MATERIA_TERCEROS" EntityType="Self.CAT_MATERIA_TERCEROS" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_METODO_CALCULO" EntityType="Self.CAT_METODO_CALCULO" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_PARAMETRIZACION_ENVIO" EntityType="Self.CAT_PARAMETRIZACION_ENVIO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_POSIBLE_RESPUESTA" EntityType="Self.CAT_POSIBLE_RESPUESTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_PREGUNTA" EntityType="Self.CAT_PREGUNTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_TIPO_CAMBIO" EntityType="Self.CAT_TIPO_CAMBIO" Schema="TEST" store:Type="Tables" />
@@ -1104,14 +1230,6 @@
           <AssociationSet Name="SYS_C007774" Association="Self.SYS_C007774">
             <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
             <End Role="CAT_FACTOR_PRODUCCION" EntitySet="CAT_FACTOR_PRODUCCION" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_C007775" Association="Self.SYS_C007775">
-            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
-            <End Role="CAT_LINEA_PROD_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PROD_UNIDAD_MEDIDA" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_C007776" Association="Self.SYS_C007776">
-            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
-            <End Role="CAT_LINEA_PROD_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PROD_UNIDAD_MEDIDA" />
           </AssociationSet>
           <AssociationSet Name="SYS_C007777" Association="Self.SYS_C007777">
             <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
@@ -1205,6 +1323,38 @@
             <End Role="CAT_METODO_CALCULO" EntitySet="CAT_METODO_CALCULO" />
             <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
           </AssociationSet>
+          <AssociationSet Name="SYS_C008203" Association="Self.SYS_C008203">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008204" Association="Self.SYS_C008204">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008205" Association="Self.SYS_C008205">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008222" Association="Self.SYS_C008222">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008223" Association="Self.SYS_C008223">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008224" Association="Self.SYS_C008224">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008225" Association="Self.SYS_C008225">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008297" Association="Self.SYS_C008297">
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1245,6 +1395,7 @@
           <Property Name="sub_sector" Type="Int64" Nullable="false" />
           <Property Name="rubro" Type="Int64" Nullable="false" />
           <NavigationProperty Name="CAT_METODO_CALCULO" Relationship="Model.SYS_C008183" FromRole="Ciiu" ToRole="MetodoCalculo" />
+          <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008223" FromRole="Ciiu" ToRole="CAT_AÑO_BASE" />
         </EntityType>
         <EntityType Name="Contacto">
           <Key>
@@ -1287,6 +1438,7 @@
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="fecha_ultimo_envio" Type="DateTime" />
+          <NavigationProperty Name="CAT_AUDITORIA" Relationship="Model.SYS_C008297" FromRole="Encuesta" ToRole="CAT_AUDITORIA" />
         </EntityType>
         <EntityType Name="EncuestaEmpresarial" BaseType="Model.Encuesta">
           <NavigationProperty Name="Preguntas" Relationship="Model.SYS_C0012622" FromRole="EncuestaEmpresarial" ToRole="Pregunta" />
@@ -1314,6 +1466,7 @@
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="fecha_creacion_informante" Type="DateTime" />
+          <Property Name="peso" Type="Decimal" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="Establecimiento">
           <Key>
@@ -1343,6 +1496,9 @@
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="tipo_establecimiento" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008222" FromRole="Establecimiento" ToRole="CAT_AÑO_BASE" />
+          <Property Name="enviar_correo" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ultima_notificacion" Type="DateTime" />
         </EntityType>
         <EntityType Name="LineaProducto">
           <Key>
@@ -1357,11 +1513,12 @@
           <NavigationProperty Name="LineasProductoEstablecimiento" Relationship="Self.SYS_C0012607" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_ESTAB_LINEA_PROD" />
           <NavigationProperty Name="MateriasPropia" Relationship="Self.SYS_C0012615" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_MATERIA_PROPIA" />
           <NavigationProperty Name="MateriaTercero" Relationship="Self.SYS_C0012618" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_MATERIA_TERCEROS" />
-          <NavigationProperty Name="UnidadesMedida" Relationship="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" FromRole="CAT_LINEA_PRODUCTO" ToRole="CAT_UNIDAD_MEDIDA" />
           <Property Name="creado" Type="DateTime" />
           <Property Name="modificado" Type="DateTime" />
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LineasProductoUnidadMedida" Relationship="Model.SYS_C008205" FromRole="LineaProducto" ToRole="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008224" FromRole="LineaProducto" ToRole="CAT_AÑO_BASE" />
         </EntityType>
         <EntityType Name="MateriaPropia">
           <Key>
@@ -1463,11 +1620,13 @@
           <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="MateriasPropias" Relationship="Self.SYS_C0012616" FromRole="CAT_UNIDAD_MEDIDA" ToRole="CAT_MATERIA_PROPIA" />
           <NavigationProperty Name="MateriasTerceros" Relationship="Self.SYS_C0012619" FromRole="CAT_UNIDAD_MEDIDA" ToRole="CAT_MATERIA_TERCEROS" />
-          <NavigationProperty Name="LineasProducto" Relationship="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA" FromRole="CAT_UNIDAD_MEDIDA" ToRole="CAT_LINEA_PRODUCTO" />
           <Property Name="creado" Type="DateTime" />
           <Property Name="modificado" Type="DateTime" />
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AsUnidadConversion" Relationship="Model.SYS_C008203" FromRole="UnidadMedida" ToRole="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          <NavigationProperty Name="LineasProductoUnidadMedida" Relationship="Model.SYS_C008204" FromRole="UnidadMedida" ToRole="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008225" FromRole="UnidadMedida" ToRole="CAT_AÑO_BASE" />
         </EntityType>
         <EntityType Name="Valor">
           <Key>
@@ -1485,6 +1644,8 @@
           <Property Name="modificado" Type="DateTime" />
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="es_personalizado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="texto_personalizado" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ValorProduccion">
           <Key>
@@ -1861,10 +2022,6 @@
           <End Role="CAT_CIIU" Type="Model.Ciiu" Multiplicity="*" />
           <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="*" />
         </Association>
-        <Association Name="CAT_LINEA_PROD_UNIDAD_MEDIDA">
-          <End Role="CAT_LINEA_PRODUCTO" Type="Model.LineaProducto" Multiplicity="*" />
-          <End Role="CAT_UNIDAD_MEDIDA" Type="Model.UnidadMedida" Multiplicity="*" />
-        </Association>
         <Association Name="SEG_USUARIO_ROL">
           <End Role="SEG_ROL" Type="Model.Rol" Multiplicity="*" />
           <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="*" />
@@ -1979,10 +2136,6 @@
             <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
             <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
           </AssociationSet>
-          <AssociationSet Name="CAT_LINEA_PROD_UNIDAD_MEDIDA" Association="Self.CAT_LINEA_PROD_UNIDAD_MEDIDA">
-            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
-            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
-          </AssociationSet>
           <AssociationSet Name="SEG_USUARIO_ROL" Association="Self.SEG_USUARIO_ROL">
             <End Role="SEG_ROL" EntitySet="SEG_ROL" />
             <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
@@ -2046,6 +2199,42 @@
           <AssociationSet Name="SYS_C008183" Association="Model.SYS_C008183">
             <End Role="MetodoCalculo" EntitySet="CAT_METODO_CALCULO" />
             <End Role="Ciiu" EntitySet="CAT_CIIU" />
+          </AssociationSet>
+          <EntitySet Name="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntityType="Model.LineaProductoUnidadMedida" />
+          <AssociationSet Name="SYS_C008203" Association="Model.SYS_C008203">
+            <End Role="UnidadMedida" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008204" Association="Model.SYS_C008204">
+            <End Role="UnidadMedida" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008205" Association="Model.SYS_C008205">
+            <End Role="LineaProducto" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <EntitySet Name="CAT_AÑO_BASE" EntityType="Model.AñoBase" />
+          <AssociationSet Name="SYS_C008222" Association="Model.SYS_C008222">
+            <End Role="Establecimiento" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008223" Association="Model.SYS_C008223">
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008224" Association="Model.SYS_C008224">
+            <End Role="LineaProducto" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008225" Association="Model.SYS_C008225">
+            <End Role="UnidadMedida" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <EntitySet Name="CAT_PARAMETRIZACION_ENVIO" EntityType="Model.ParametrizacionEnvio" />
+          <EntitySet Name="CAT_AUDITORIA" EntityType="Model.Auditoria" />
+          <AssociationSet Name="SYS_C008297" Association="Model.SYS_C008297">
+            <End Role="Encuesta" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
           </AssociationSet>
           </EntityContainer>
         <Association Name="SYS_C0012622">
@@ -2309,6 +2498,168 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="LineaProductoUnidadMedida">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="id_unidad_conversion" Type="Int64" />
+          <Property Name="factor_conversion" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="id_unidad_medida" Type="Int64" />
+          <Property Name="id_linea_producto" Type="Int64" />
+          <NavigationProperty Name="UnidadConversion" Relationship="Model.SYS_C008203" FromRole="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" ToRole="UnidadMedida" />
+          <NavigationProperty Name="UnidadMedida" Relationship="Model.SYS_C008204" FromRole="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" ToRole="UnidadMedida" />
+          <NavigationProperty Name="LineaProducto" Relationship="Model.SYS_C008205" FromRole="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" ToRole="LineaProducto" />
+        </EntityType>
+        <Association Name="SYS_C008203">
+          <End Type="Model.UnidadMedida" Role="UnidadMedida" Multiplicity="0..1" />
+          <End Type="Model.LineaProductoUnidadMedida" Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMedida">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
+              <PropertyRef Name="id_unidad_conversion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008204">
+          <End Type="Model.UnidadMedida" Role="UnidadMedida" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.LineaProductoUnidadMedida" Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMedida">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
+              <PropertyRef Name="id_unidad_medida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008205">
+          <End Type="Model.LineaProducto" Role="LineaProducto" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.LineaProductoUnidadMedida" Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LineaProducto">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
+              <PropertyRef Name="id_linea_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AñoBase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="id_establecimiento" Type="Int64" Nullable="false" />
+          <Property Name="id_ciiu" Type="Int64" Nullable="false" />
+          <Property Name="id_linea_producto" Type="Int64" Nullable="false" />
+          <Property Name="id_unidad_medida" Type="Int64" Nullable="false" />
+          <Property Name="produccion_anual" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="valor_produccion" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="precio" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CAT_ESTABLECIMIENTO" Relationship="Model.SYS_C008222" FromRole="CAT_AÑO_BASE" ToRole="Establecimiento" />
+          <NavigationProperty Name="CAT_CIIU" Relationship="Model.SYS_C008223" FromRole="CAT_AÑO_BASE" ToRole="Ciiu" />
+          <NavigationProperty Name="CAT_LINEA_PRODUCTO" Relationship="Model.SYS_C008224" FromRole="CAT_AÑO_BASE" ToRole="LineaProducto" />
+          <NavigationProperty Name="CAT_UNIDAD_MEDIDA" Relationship="Model.SYS_C008225" FromRole="CAT_AÑO_BASE" ToRole="UnidadMedida" />
+        </EntityType>
+        <Association Name="SYS_C008222">
+          <End Type="Model.Establecimiento" Role="Establecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.AñoBase" Role="CAT_AÑO_BASE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Establecimiento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_AÑO_BASE">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008223">
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.AñoBase" Role="CAT_AÑO_BASE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciiu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_AÑO_BASE">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008224">
+          <End Type="Model.LineaProducto" Role="LineaProducto" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.AñoBase" Role="CAT_AÑO_BASE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LineaProducto">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_AÑO_BASE">
+              <PropertyRef Name="id_linea_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008225">
+          <End Type="Model.UnidadMedida" Role="UnidadMedida" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.AñoBase" Role="CAT_AÑO_BASE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMedida">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_AÑO_BASE">
+              <PropertyRef Name="id_unidad_medida" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ParametrizacionEnvio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="tipo_encuesta" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mensaje" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="comienzo" Type="DateTime" Nullable="false" />
+          <Property Name="envio_1" Type="Int64" Nullable="false" />
+          <Property Name="envio_2" Type="Int64" Nullable="false" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="Auditoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="id_encuesta" Type="Int64" Nullable="false" />
+          <Property Name="accion" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="usuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C008297" FromRole="CAT_AUDITORIA" ToRole="Encuesta" />
+        </EntityType>
+        <Association Name="SYS_C008297">
+          <End Type="Model.Encuesta" Role="Encuesta" Multiplicity="1" />
+          <End Type="Model.Auditoria" Role="CAT_AUDITORIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Encuesta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_AUDITORIA">
+              <PropertyRef Name="id_encuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2398,6 +2749,7 @@
           <EntitySetMapping Name="CAT_ESTAB_LINEA_PROD">
             <EntityTypeMapping TypeName="Model.LineaProductoEstablecimiento">
               <MappingFragment StoreEntitySet="CAT_ESTAB_LINEA_PROD">
+                <ScalarProperty Name="peso" ColumnName="peso" />
                 <ScalarProperty Name="fecha_creacion_informante" ColumnName="fecha_creacion_informante" />
                 <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
                 <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
@@ -2412,6 +2764,8 @@
           <EntitySetMapping Name="CAT_ESTABLECIMIENTO">
             <EntityTypeMapping TypeName="Model.Establecimiento">
               <MappingFragment StoreEntitySet="CAT_ESTABLECIMIENTO">
+                <ScalarProperty Name="ultima_notificacion" ColumnName="ultima_notificacion" />
+                <ScalarProperty Name="enviar_correo" ColumnName="enviar_correo" />
                 <ScalarProperty Name="tipo_establecimiento" ColumnName="tipo_establecimiento" />
                 <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
                 <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
@@ -2533,6 +2887,8 @@
           <EntitySetMapping Name="CAT_VALOR">
             <EntityTypeMapping TypeName="Model.Valor">
               <MappingFragment StoreEntitySet="CAT_VALOR">
+                <ScalarProperty Name="texto_personalizado" ColumnName="texto_personalizado" />
+                <ScalarProperty Name="es_personalizado" ColumnName="es_personalizado" />
                 <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
                 <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
                 <ScalarProperty Name="modificado" ColumnName="modificado" />
@@ -2628,14 +2984,6 @@
             </EndProperty>
             <EndProperty Name="CAT_ESTABLECIMIENTO">
               <ScalarProperty Name="Id" ColumnName="id_establecimiento" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="CAT_LINEA_PROD_UNIDAD_MEDIDA" TypeName="Model.CAT_LINEA_PROD_UNIDAD_MEDIDA" StoreEntitySet="CAT_LINEA_PROD_UNIDAD_MEDIDA">
-            <EndProperty Name="CAT_LINEA_PRODUCTO">
-              <ScalarProperty Name="Id" ColumnName="id_linea_prod" />
-            </EndProperty>
-            <EndProperty Name="CAT_UNIDAD_MEDIDA">
-              <ScalarProperty Name="Id" ColumnName="id_unidad_medida" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="SEG_USUARIO_ROL" TypeName="Model.SEG_USUARIO_ROL" StoreEntitySet="SEG_USUARIO_ROL">
@@ -2757,6 +3105,56 @@
                 <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="Id" ColumnName="id_metodo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
+            <EntityTypeMapping TypeName="Model.LineaProductoUnidadMedida">
+              <MappingFragment StoreEntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA">
+                <ScalarProperty Name="id_linea_producto" ColumnName="id_linea_producto" />
+                <ScalarProperty Name="id_unidad_medida" ColumnName="id_unidad_medida" />
+                <ScalarProperty Name="factor_conversion" ColumnName="factor_conversion" />
+                <ScalarProperty Name="id_unidad_conversion" ColumnName="id_unidad_conversion" />
+                <ScalarProperty Name="Id" ColumnName="id_linea_producto_um" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_AÑO_BASE">
+            <EntityTypeMapping TypeName="Model.AñoBase">
+              <MappingFragment StoreEntitySet="CAT_AÑO_BASE">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="valor_produccion" ColumnName="valor_produccion" />
+                <ScalarProperty Name="produccion_anual" ColumnName="produccion_anual" />
+                <ScalarProperty Name="id_unidad_medida" ColumnName="id_unidad_medida" />
+                <ScalarProperty Name="id_linea_producto" ColumnName="id_linea_producto" />
+                <ScalarProperty Name="id_ciiu" ColumnName="id_ciiu" />
+                <ScalarProperty Name="id_establecimiento" ColumnName="id_establecimiento" />
+                <ScalarProperty Name="Id" ColumnName="id_año" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_PARAMETRIZACION_ENVIO">
+            <EntityTypeMapping TypeName="Model.ParametrizacionEnvio">
+              <MappingFragment StoreEntitySet="CAT_PARAMETRIZACION_ENVIO">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="envio_2" ColumnName="envio_2" />
+                <ScalarProperty Name="envio_1" ColumnName="envio_1" />
+                <ScalarProperty Name="comienzo" ColumnName="comienzo" />
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="tipo_encuesta" ColumnName="tipo_encuesta" />
+                <ScalarProperty Name="Id" ColumnName="id_parametrizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_AUDITORIA">
+            <EntityTypeMapping TypeName="Model.Auditoria">
+              <MappingFragment StoreEntitySet="CAT_AUDITORIA">
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="accion" ColumnName="accion" />
+                <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
+                <ScalarProperty Name="Id" ColumnName="id_auditoria" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -40,6 +40,34 @@ namespace Domain.Managers
                     IdAnalista = establecimiento.IdAnalista,
                     Fecha = now
                 };
+
+                var encuestaEstadisticaLast = Manager.EncuestaEstadistica.Get().OrderBy(x => x.Id).LastOrDefault();
+                var encuestaEmpresarialLast = this.Get().OrderBy(x => x.Id).LastOrDefault();
+
+                if (encuestaEstadisticaLast == null && encuestaEmpresarialLast == null)
+                {
+                    encuesta.Id = 1;
+                }
+                else if (encuestaEstadisticaLast != null && encuestaEmpresarialLast == null)
+                {
+                    encuesta.Id = encuestaEstadisticaLast.Id + 1;
+                }
+                else if (encuestaEstadisticaLast == null && encuestaEmpresarialLast != null)
+                {
+                    encuesta.Id = encuestaEmpresarialLast.Id + 1;
+                }
+                else if (encuestaEstadisticaLast != null && encuestaEmpresarialLast != null)
+                {
+                    if (encuestaEstadisticaLast.Id > encuestaEmpresarialLast.Id)
+                    {
+                        encuesta.Id = encuestaEstadisticaLast.Id + 1;
+                    }
+                    else
+                    {
+                        encuesta.Id = encuestaEmpresarialLast.Id + 1;
+                    }
+                }
+
                 manager.EncuestaEmpresarial.Add(encuesta);
                 manager.EncuestaEmpresarial.SaveChanges();
                 var pregunats = manager.Pregunta.Get(t => t.Activado && t.IdEncuestaEmpresarial == null && !t.Valores.Any()).ToList();
@@ -107,7 +135,9 @@ namespace Domain.Managers
                     {
                         IdPosibleRespuesta = r.Id,
                         Texto = v.Texto,
-                        IdPregunta = pId
+                        IdPregunta = pId,
+                        Personalizado=v.Personalizado,
+                        texto_personalizado = v.texto_personalizado
                     };
                     manager.Valor.Add(vt);
                     manager.Valor.SaveChanges();
@@ -162,7 +192,20 @@ namespace Domain.Managers
                             }
 
                         }
+                        var personalizado = false;
+                        var temp = Manager.Valor.Find(valor.Id);
+                        if (temp != null)
+                            personalizado = temp.Personalizado;
+                        if (personalizado)
+                        {
+                            if (string.IsNullOrEmpty(valor.texto_personalizado) ||
+                                string.IsNullOrWhiteSpace(valor.texto_personalizado))
+                            {
+                                list.Add(string.Format("Debe completar la pregunta {0}:{1}", pregunta.Texto, valor.Texto));
+                            }
+                        }
                     }
+                  
                 }
                
             }
@@ -185,6 +228,7 @@ namespace Domain.Managers
                     if (valor != null)
                     {
                         valor.Seleccionado = vl.Seleccionado;
+                        valor.texto_personalizado = vl.texto_personalizado;
                         if (vl.Pregunta != null)
                             GetValue(manager, vl.Pregunta);
                         manager.Valor.Modify(valor);
