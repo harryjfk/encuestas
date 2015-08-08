@@ -161,6 +161,7 @@
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="tipo_establecimiento" Type="number" Precision="38" Scale="0" />
           <Property Name="enviar_correo" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ultima_notificacion" Type="date" />
         </EntityType>
         <EntityType Name="CAT_EXPORTACION_HARINA_TRIGO">
           <Key>
@@ -1497,6 +1498,7 @@
           <Property Name="tipo_establecimiento" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008222" FromRole="Establecimiento" ToRole="CAT_AÑO_BASE" />
           <Property Name="enviar_correo" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ultima_notificacion" Type="DateTime" />
         </EntityType>
         <EntityType Name="LineaProducto">
           <Key>
@@ -2762,6 +2764,7 @@
           <EntitySetMapping Name="CAT_ESTABLECIMIENTO">
             <EntityTypeMapping TypeName="Model.Establecimiento">
               <MappingFragment StoreEntitySet="CAT_ESTABLECIMIENTO">
+                <ScalarProperty Name="ultima_notificacion" ColumnName="ultima_notificacion" />
                 <ScalarProperty Name="enviar_correo" ColumnName="enviar_correo" />
                 <ScalarProperty Name="tipo_establecimiento" ColumnName="tipo_establecimiento" />
                 <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />

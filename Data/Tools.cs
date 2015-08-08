@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +14,25 @@ namespace Data
 {
     public static class Tools
     {
+
+        public static void EnviarCorreo(this string[] to, string subject, string content)
+        {
+            var user = ConfigurationManager.AppSettings["SmtpUser"];
+            var password = ConfigurationManager.AppSettings["SmtpPassword"];
+            var host = ConfigurationManager.AppSettings["SmtpHost"];
+            var port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
+            var useSsl = bool.Parse(ConfigurationManager.AppSettings["SmtpSsl"]);
+            var credential = new NetworkCredential(user, password);
+            var server = new SmtpClient(host, port)
+            {
+                EnableSsl = useSsl,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = credential
+            };
+            var message = new MailMessage(user, to.Aggregate((t, h) => t + "," + h), subject, content) { IsBodyHtml = true };
+            server.Send(message);
+        }
 
         public static Func<T, string> GetDefault<T>()
         {

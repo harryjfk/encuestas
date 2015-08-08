@@ -237,6 +237,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="libraries\Devart.Data.Oracle.Entity.dll" />
     <Content Include="libraries\Devart.Data.Oracle.Entity.Spatials.dll" />
     <Content Include="fonts\fontawesome-webfont.eot" />
