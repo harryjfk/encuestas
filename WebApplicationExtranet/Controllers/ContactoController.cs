@@ -68,7 +68,7 @@ namespace WebApplication.Controllers
             return RedirectToAction("Index");
         }
 
-        public override JsonResult CreatePost(Contacto element)
+        public override JsonResult CreatePost(Contacto element,params string [] properties)
         {
             element.IdEstablecimiento = IdEstablecimiento;
             return base.CreatePost(element);

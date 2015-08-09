@@ -53,7 +53,7 @@ namespace WebApplication.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public virtual JsonResult CreatePost(T element)
+        public virtual JsonResult CreatePost(T element, params string[] properties)
         {
             if (ModelState.IsValid)
             {
@@ -61,7 +61,7 @@ namespace WebApplication.Controllers
                 var manager = OwnManager;
                 var op = IsNew(element) ?
                     manager.Add(element) :
-                    manager.Modify(element);
+                    manager.Modify(element,properties);
                 if (op.Success)
                 {
                     manager.SaveChanges();
