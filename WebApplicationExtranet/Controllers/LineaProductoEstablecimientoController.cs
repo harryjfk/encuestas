@@ -70,7 +70,7 @@ namespace WebApplication.Controllers
             Query.Criteria.Establecimiento = establecimiento;
             return RedirectToAction("Index");
         }
-        public override JsonResult CreatePost(LineaProductoEstablecimiento element)
+        public override JsonResult CreatePost(LineaProductoEstablecimiento element, params string[] properties)
         {
             element.IdEstablecimiento = IdEstablecimiento;
             return base.CreatePost(element);
