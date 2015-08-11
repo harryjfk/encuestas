@@ -102,16 +102,16 @@
             });
 
         });
-        setTimeout(function() {
-            $("#IdCiiu").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
-            $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
-            var a = $("a[class*='chosen-single']");
-            if (a != null) {
-                a.css("border", "0");
-                a.css("background", "white");
-                a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-            }
-        }, 1000);
+        //setTimeout(function() {
+            //$("#IdCiiu").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+        //    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+        //    var a = $("a[class*='chosen-single']");
+        //    if (a != null) {
+        //        a.css("border", "0");
+        //        a.css("background", "white");
+        //        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+        //    }
+        //}, 1000);
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 250, statusText: 'caracteres restantes' });
         $('#Codigo').maxlength({ events: ['blur'], slider: true, maxCharacters: 20, statusText: 'caracteres restantes' });
     })
