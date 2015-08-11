@@ -37,7 +37,7 @@ namespace Domain.Managers
                     IdEstablecimiento = idEstablecimiento,
                     EstadoEncuesta = EstadoEncuesta.NoEnviada,
                     IdInformante = establecimiento.IdInformante,
-                    IdAnalista = establecimiento.IdAnalista,
+                    //IdAnalista = establecimiento.IdAnalista,
                     Fecha = now
                 };
 

@@ -21,6 +21,7 @@ namespace Entity
             this.LineasProductoEstablecimiento = new HashSet<LineaProductoEstablecimiento>();
             this.Ciius = new HashSet<Ciiu>();
             this.CAT_AÑO_BASE = new HashSet<AñoBase>();
+            this.CAT_ESTAB_ANALISTA = new HashSet<EstablecimientoAnalista>();
         }
     
         public long Id { get; set; }
@@ -33,7 +34,6 @@ namespace Entity
         public string Telefono { get; set; }
         public string Fax { get; set; }
         public decimal Estado { get; set; }
-        public Nullable<decimal> IdAnalista { get; set; }
         public Nullable<decimal> IdInformante { get; set; }
         public string Observaciones { get; set; }
         public Nullable<System.DateTime> creado { get; set; }
@@ -47,9 +47,9 @@ namespace Entity
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<Encuesta> Encuestas { get; set; }
         public virtual ICollection<LineaProductoEstablecimiento> LineasProductoEstablecimiento { get; set; }
-        public virtual Usuario Analista { get; set; }
         public virtual Usuario Informante { get; set; }
         public virtual ICollection<Ciiu> Ciius { get; set; }
         public virtual ICollection<AñoBase> CAT_AÑO_BASE { get; set; }
+        public virtual ICollection<EstablecimientoAnalista> CAT_ESTAB_ANALISTA { get; set; }
     }
 }

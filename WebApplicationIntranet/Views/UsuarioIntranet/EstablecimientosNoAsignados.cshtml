@@ -1,6 +1,6 @@
 ﻿@using Entity
 @using PagedList.Mvc
-@model Domain.Query<Entity.Establecimiento>
+@model Domain.Query<Entity.EstablecimientoAnalista>
 @*@using (Html.BeginForm("BuscarEstablecimientosNoAsignados", "UsuarioIntranet", FormMethod.Post,new{id="formSearchEstNoAsig",name="formSearch"}))
 {
     <div class="panel panel-primary">
@@ -36,8 +36,8 @@
         @foreach (var item in Model.Elements)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
+                <td>@Html.DisplayFor(modelItem => item.CAT_ESTABLECIMIENTO.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.CAT_ESTABLECIMIENTO.Ruc)</td>
                 <td>
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Asignar" id="edit-@item.Id" role="@item.Id" class="asign-btn">
                         <i class="color-black glyphicon glyphicon-ok"></i>

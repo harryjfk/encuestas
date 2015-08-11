@@ -173,6 +173,13 @@ namespace Data
                         "Estado","Activado","Id","IdCargo"
                     }
                 },
+                 {
+                    typeof (EstablecimientoAnalista), 
+                    new string[]
+                    {
+                        "Id","orden","id_ciiu"
+                    }
+                },
                 {
                     typeof (UsuarioIntranet), 
                     new string[]

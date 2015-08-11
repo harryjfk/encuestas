@@ -70,7 +70,7 @@ namespace WebApplication.Controllers
             var old = Manager.Establecimiento.Find(element.Id);
             
             if (old == null) return base.CreatePost(element);
-            element.IdAnalista = old.IdAnalista;
+            //element.IdAnalista = old.IdAnalista;
             element.IdInformante = old.IdInformante;
             return base.CreatePost(element);
         }
