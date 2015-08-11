@@ -44,7 +44,7 @@ namespace Domain.Managers
                     EstadoEncuesta = EstadoEncuesta.NoEnviada,
                     Fecha = now,
                     IdInformante = establecimiento.Informante.Identificador,
-                    IdAnalista = establecimiento.IdAnalista,
+                    //IdAnalista = establecimiento.IdAnalista,
                     VolumenProduccionMensual = new VolumenProduccion()
                     {
 

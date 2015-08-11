@@ -59,5 +59,6 @@ namespace Data
         public DbSet<AñoBase> CAT_AÑO_BASE { get; set; }
         public DbSet<ParametrizacionEnvio> CAT_PARAMETRIZACION_ENVIO { get; set; }
         public DbSet<Auditoria> CAT_AUDITORIA { get; set; }
+        public DbSet<EstablecimientoAnalista> CAT_ESTAB_ANALISTA { get; set; }
     }
 }

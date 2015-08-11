@@ -164,7 +164,7 @@ namespace Domain.Managers
                 var te = Find(usr.Identificador);
                 if (te == null) continue;
                 usr.Roles = te.Roles.ToList();
-                usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+                //usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
             }
             query.Elements = list;
             return list;
@@ -178,7 +178,7 @@ namespace Domain.Managers
                 var te = Find(usr.Identificador);
                 if (te == null) continue;
                 usr.Roles = te.Roles.ToList();
-                usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+                //usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
             }
             query.Elements = list;
             return list;
@@ -192,7 +192,7 @@ namespace Domain.Managers
                 var te = Find(usr.Identificador);
                 if (te == null) continue;
                 usr.Roles = te.Roles.ToList();
-                usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+                //usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
             }
             return list;
         }
@@ -205,7 +205,7 @@ namespace Domain.Managers
                 var te = Find(usr.Identificador);
                 if (te == null) continue;
                 usr.Roles = te.Roles.ToList();
-                usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+               // usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
             }
             query.Elements = list;
             return list;
@@ -264,7 +264,7 @@ namespace Domain.Managers
             var te = Find(usr.Identificador);
             if (te == null) return usr;
             usr.Roles = te.Roles.ToList();
-            usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+            //usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
             return usr;
         }
 
@@ -274,7 +274,7 @@ namespace Domain.Managers
             var te = Find(usr.Identificador);
             if (te == null) return usr;
             usr.Roles = te.Roles.ToList();
-            usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+           // usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
             return usr;
         }
 
@@ -330,8 +330,8 @@ namespace Domain.Managers
                 manager.Usuario.SaveChanges();
                 user = manager.Usuario.Find(idUsuario);
             }
-            establecimiento.Analista = user;
-            establecimiento.IdAnalista = idUsuario;
+            //establecimiento.Analista = user;
+            //establecimiento.IdAnalista = idUsuario;
             manager.Establecimiento.SaveChanges();
 
             foreach (var enc in establecimiento.Encuestas)
@@ -365,8 +365,8 @@ namespace Domain.Managers
                 manager.Usuario.SaveChanges();
                 user = manager.Usuario.Find(idUsuario);
             }
-            establecimiento.Analista = user;
-            establecimiento.IdAnalista = idUsuario;
+            //establecimiento.Analista = user;
+            //establecimiento.IdAnalista = idUsuario;
             manager.Establecimiento.SaveChanges();
 
             foreach (var enc in establecimiento.Encuestas)
@@ -385,7 +385,7 @@ namespace Domain.Managers
             var manager = Manager;
             var establecimiento = manager.Establecimiento.Find(idEstablecimiento);
             if (establecimiento == null) return;
-            establecimiento.IdAnalista = null;
+            //establecimiento.IdAnalista = null;
             manager.Establecimiento.Modify(establecimiento);
             manager.Establecimiento.SaveChanges();
         }

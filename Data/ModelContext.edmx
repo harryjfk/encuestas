@@ -116,6 +116,16 @@
           <Property Name="id_ENCUESTA" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="fecha_validacion" Type="date" />
         </EntityType>
+        <EntityType Name="CAT_ESTAB_ANALISTA">
+          <Key>
+            <PropertyRef Name="id_establecimiento_analista" />
+          </Key>
+          <Property Name="id_establecimiento_analista" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="orden" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_establecimiento" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_analista" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CAT_ESTAB_CIIU">
           <Key>
             <PropertyRef Name="id_establecimiento" />
@@ -152,7 +162,6 @@
           <Property Name="telefono" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="fax" Type="varchar2" MaxLength="100" />
           <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="id_analista" Type="number" Precision="38" Scale="0" />
           <Property Name="id_informante" Type="number" Precision="38" Scale="0" />
           <Property Name="observaciones" Type="varchar2" MaxLength="1000" />
           <Property Name="creado" Type="date" />
@@ -627,18 +636,6 @@
             </Principal>
             <Dependent Role="CAT_ESTAB_LINEA_PROD">
               <PropertyRef Name="id_linea_prod" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SYS_C007770">
-          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="0..1" />
-          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SEG_USUARIO">
-              <PropertyRef Name="id_usuario" />
-            </Principal>
-            <Dependent Role="CAT_ESTABLECIMIENTO">
-              <PropertyRef Name="id_analista" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1124,7 +1121,49 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ModelStoreContainer">
+        <Association Name="SYS_C008348">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_ANALISTA" Type="Self.CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_establecimiento" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008349">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_ANALISTA" Type="Self.CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008350">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_ANALISTA" Type="Self.CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      <!--<EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CAT_AÑO_BASE" EntityType="Self.CAT_AÑO_BASE" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_AUDITORIA" EntityType="Self.CAT_AUDITORIA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO" Schema="TEST" store:Type="Tables" />
@@ -1134,6 +1173,7 @@
           <EntitySet Name="CAT_ENCUESTA" EntityType="Self.CAT_ENCUESTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ENCUESTA_EMPRESARIAL" EntityType="Self.CAT_ENCUESTA_EMPRESARIAL" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ENCUESTA_ESTADISTICA" EntityType="Self.CAT_ENCUESTA_ESTADISTICA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_ANALISTA" EntityType="Self.CAT_ESTAB_ANALISTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ESTAB_CIIU" EntityType="Self.CAT_ESTAB_CIIU" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ESTAB_LINEA_PROD" EntityType="Self.CAT_ESTAB_LINEA_PROD" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ESTABLECIMIENTO" EntityType="Self.CAT_ESTABLECIMIENTO" Schema="TEST" store:Type="Tables" />
@@ -1210,10 +1250,6 @@
           <AssociationSet Name="SYS_C007769" Association="Self.SYS_C007769">
             <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
             <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_C007770" Association="Self.SYS_C007770">
-            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
-            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
           </AssociationSet>
           <AssociationSet Name="SYS_C007771" Association="Self.SYS_C007771">
             <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
@@ -1355,6 +1391,259 @@
             <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
             <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
           </AssociationSet>
+          <AssociationSet Name="SYS_C008348" Association="Self.SYS_C008348">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008349" Association="Self.SYS_C008349">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008350" Association="Self.SYS_C008350">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+        </EntityContainer>-->
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="CAT_AÑO_BASE" EntityType="Self.CAT_AÑO_BASE"  store:Type="Tables" />
+          <EntitySet Name="CAT_AUDITORIA" EntityType="Self.CAT_AUDITORIA"  store:Type="Tables" />
+          <EntitySet Name="CAT_CARGO" EntityType="Self.CAT_CARGO"  store:Type="Tables" />
+          <EntitySet Name="CAT_CIIU" EntityType="Self.CAT_CIIU"  store:Type="Tables" />
+          <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Self.CAT_CONSUMO_HARINA_FIDEO"  store:Type="Tables" />
+          <EntitySet Name="CAT_CONTACTO" EntityType="Self.CAT_CONTACTO"  store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA" EntityType="Self.CAT_ENCUESTA"  store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA_EMPRESARIAL" EntityType="Self.CAT_ENCUESTA_EMPRESARIAL"  store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA_ESTADISTICA" EntityType="Self.CAT_ENCUESTA_ESTADISTICA"  store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_ANALISTA" EntityType="Self.CAT_ESTAB_ANALISTA"  store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_CIIU" EntityType="Self.CAT_ESTAB_CIIU"  store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_LINEA_PROD" EntityType="Self.CAT_ESTAB_LINEA_PROD"  store:Type="Tables" />
+          <EntitySet Name="CAT_ESTABLECIMIENTO" EntityType="Self.CAT_ESTABLECIMIENTO"  store:Type="Tables" />
+          <EntitySet Name="CAT_EXPORTACION_HARINA_TRIGO" EntityType="Self.CAT_EXPORTACION_HARINA_TRIGO"  store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR" EntityType="Self.CAT_FACTOR"  store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR_FACTOR_PROD" EntityType="Self.CAT_FACTOR_FACTOR_PROD"  store:Type="Tables" />
+          <EntitySet Name="CAT_FACTOR_PRODUCCION" EntityType="Self.CAT_FACTOR_PRODUCCION"  store:Type="Tables" />
+          <EntitySet Name="CAT_IMPORTACION_HARINA_TRIGO" EntityType="Self.CAT_IMPORTACION_HARINA_TRIGO"  store:Type="Tables" />
+          <EntitySet Name="CAT_IPM_IPP" EntityType="Self.CAT_IPM_IPP"  store:Type="Tables" />
+          <EntitySet Name="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntityType="Self.CAT_LINEA_PRODTO_UNIDAD_MEDIDA"  store:Type="Tables" />
+          <EntitySet Name="CAT_LINEA_PRODUCTO" EntityType="Self.CAT_LINEA_PRODUCTO"  store:Type="Tables" />
+          <EntitySet Name="CAT_MATERIA_PROPIA" EntityType="Self.CAT_MATERIA_PROPIA"  store:Type="Tables" />
+          <EntitySet Name="CAT_MATERIA_TERCEROS" EntityType="Self.CAT_MATERIA_TERCEROS"  store:Type="Tables" />
+          <EntitySet Name="CAT_METODO_CALCULO" EntityType="Self.CAT_METODO_CALCULO"  store:Type="Tables" />
+          <EntitySet Name="CAT_PARAMETRIZACION_ENVIO" EntityType="Self.CAT_PARAMETRIZACION_ENVIO"  store:Type="Tables" />
+          <EntitySet Name="CAT_POSIBLE_RESPUESTA" EntityType="Self.CAT_POSIBLE_RESPUESTA"  store:Type="Tables" />
+          <EntitySet Name="CAT_PREGUNTA" EntityType="Self.CAT_PREGUNTA"  store:Type="Tables" />
+          <EntitySet Name="CAT_TIPO_CAMBIO" EntityType="Self.CAT_TIPO_CAMBIO"  store:Type="Tables" />
+          <EntitySet Name="CAT_TRABAJADORES_DIAS_TRAB" EntityType="Self.CAT_TRABAJADORES_DIAS_TRAB"  store:Type="Tables" />
+          <EntitySet Name="CAT_UNIDAD_MEDIDA" EntityType="Self.CAT_UNIDAD_MEDIDA"  store:Type="Tables" />
+          <EntitySet Name="CAT_VALOR" EntityType="Self.CAT_VALOR"  store:Type="Tables" />
+          <EntitySet Name="CAT_VALOR_PROD_MENSUAL" EntityType="Self.CAT_VALOR_PROD_MENSUAL"  store:Type="Tables" />
+          <EntitySet Name="CAT_VENTA_SERV_MANUF" EntityType="Self.CAT_VENTA_SERV_MANUF"  store:Type="Tables" />
+          <EntitySet Name="CAT_VENTAS_PAIS_EXTRANJERO" EntityType="Self.CAT_VENTAS_PAIS_EXTRANJERO"  store:Type="Tables" />
+          <EntitySet Name="CAT_VENTAS_PROD_ESTAB" EntityType="Self.CAT_VENTAS_PROD_ESTAB"  store:Type="Tables" />
+          <EntitySet Name="CAT_VOLUMEN_PRODUCCION" EntityType="Self.CAT_VOLUMEN_PRODUCCION"  store:Type="Tables" />
+          <EntitySet Name="SEG_ROL" EntityType="Self.SEG_ROL"  store:Type="Tables" />
+          <EntitySet Name="SEG_USUARIO" EntityType="Self.SEG_USUARIO"  store:Type="Tables" />
+          <EntitySet Name="SEG_USUARIO_ROL" EntityType="Self.SEG_USUARIO_ROL"  store:Type="Tables" />
+          <AssociationSet Name="SYS_C007758" Association="Self.SYS_C007758">
+            <End Role="CAT_CARGO" EntitySet="CAT_CARGO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007759" Association="Self.SYS_C007759">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007760" Association="Self.SYS_C007760">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007761" Association="Self.SYS_C007761">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007762" Association="Self.SYS_C007762">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007763" Association="Self.SYS_C007763">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007764" Association="Self.SYS_C007764">
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_ENCUESTA_EMPRESARIAL" EntitySet="CAT_ENCUESTA_EMPRESARIAL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007765" Association="Self.SYS_C007765">
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007766" Association="Self.SYS_C007766">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_ESTAB_CIIU" EntitySet="CAT_ESTAB_CIIU" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007767" Association="Self.SYS_C007767">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_CIIU" EntitySet="CAT_ESTAB_CIIU" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007768" Association="Self.SYS_C007768">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007769" Association="Self.SYS_C007769">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007771" Association="Self.SYS_C007771">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007772" Association="Self.SYS_C007772">
+            <End Role="CAT_FACTOR" EntitySet="CAT_FACTOR" />
+            <End Role="CAT_FACTOR_FACTOR_PROD" EntitySet="CAT_FACTOR_FACTOR_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007773" Association="Self.SYS_C007773">
+            <End Role="CAT_FACTOR_PRODUCCION" EntitySet="CAT_FACTOR_PRODUCCION" />
+            <End Role="CAT_FACTOR_FACTOR_PROD" EntitySet="CAT_FACTOR_FACTOR_PROD" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007774" Association="Self.SYS_C007774">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_FACTOR_PRODUCCION" EntitySet="CAT_FACTOR_PRODUCCION" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007777" Association="Self.SYS_C007777">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007778" Association="Self.SYS_C007778">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007779" Association="Self.SYS_C007779">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007780" Association="Self.SYS_C007780">
+            <End Role="CAT_VOLUMEN_PRODUCCION" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+            <End Role="CAT_MATERIA_PROPIA" EntitySet="CAT_MATERIA_PROPIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007781" Association="Self.SYS_C007781">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007782" Association="Self.SYS_C007782">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007783" Association="Self.SYS_C007783">
+            <End Role="CAT_VOLUMEN_PRODUCCION" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+            <End Role="CAT_MATERIA_TERCEROS" EntitySet="CAT_MATERIA_TERCEROS" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007784" Association="Self.SYS_C007784">
+            <End Role="CAT_PREGUNTA" EntitySet="CAT_PREGUNTA" />
+            <End Role="CAT_POSIBLE_RESPUESTA" EntitySet="CAT_POSIBLE_RESPUESTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007785" Association="Self.SYS_C007785">
+            <End Role="CAT_ENCUESTA_EMPRESARIAL" EntitySet="CAT_ENCUESTA_EMPRESARIAL" />
+            <End Role="CAT_PREGUNTA" EntitySet="CAT_PREGUNTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007786" Association="Self.SYS_C007786">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_TRABAJADORES_DIAS_TRAB" EntitySet="CAT_TRABAJADORES_DIAS_TRAB" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007787" Association="Self.SYS_C007787">
+            <End Role="CAT_POSIBLE_RESPUESTA" EntitySet="CAT_POSIBLE_RESPUESTA" />
+            <End Role="CAT_VALOR" EntitySet="CAT_VALOR" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007788" Association="Self.SYS_C007788">
+            <End Role="CAT_PREGUNTA" EntitySet="CAT_PREGUNTA" />
+            <End Role="CAT_VALOR" EntitySet="CAT_VALOR" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007789" Association="Self.SYS_C007789">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_VALOR_PROD_MENSUAL" EntitySet="CAT_VALOR_PROD_MENSUAL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007790" Association="Self.SYS_C007790">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_VALOR_PROD_MENSUAL" EntitySet="CAT_VALOR_PROD_MENSUAL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007791" Association="Self.SYS_C007791">
+            <End Role="CAT_VENTAS_PROD_ESTAB" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+            <End Role="CAT_VENTA_SERV_MANUF" EntitySet="CAT_VENTA_SERV_MANUF" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007792" Association="Self.SYS_C007792">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_VENTAS_PAIS_EXTRANJERO" EntitySet="CAT_VENTAS_PAIS_EXTRANJERO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007793" Association="Self.SYS_C007793">
+            <End Role="CAT_VENTAS_PROD_ESTAB" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+            <End Role="CAT_VENTAS_PAIS_EXTRANJERO" EntitySet="CAT_VENTAS_PAIS_EXTRANJERO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007794" Association="Self.SYS_C007794">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_VENTAS_PROD_ESTAB" EntitySet="CAT_VENTAS_PROD_ESTAB" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007795" Association="Self.SYS_C007795">
+            <End Role="CAT_ENCUESTA_ESTADISTICA" EntitySet="CAT_ENCUESTA_ESTADISTICA" />
+            <End Role="CAT_VOLUMEN_PRODUCCION" EntitySet="CAT_VOLUMEN_PRODUCCION" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007796" Association="Self.SYS_C007796">
+            <End Role="SEG_ROL" EntitySet="SEG_ROL" />
+            <End Role="SEG_USUARIO_ROL" EntitySet="SEG_USUARIO_ROL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C007797" Association="Self.SYS_C007797">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="SEG_USUARIO_ROL" EntitySet="SEG_USUARIO_ROL" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008155" Association="Self.SYS_C008155">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_IPM_IPP" EntitySet="CAT_IPM_IPP" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008183" Association="Self.SYS_C008183">
+            <End Role="CAT_METODO_CALCULO" EntitySet="CAT_METODO_CALCULO" />
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008203" Association="Self.SYS_C008203">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008204" Association="Self.SYS_C008204">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008205" Association="Self.SYS_C008205">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" EntitySet="CAT_LINEA_PRODTO_UNIDAD_MEDIDA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008222" Association="Self.SYS_C008222">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008223" Association="Self.SYS_C008223">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008224" Association="Self.SYS_C008224">
+            <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008225" Association="Self.SYS_C008225">
+            <End Role="CAT_UNIDAD_MEDIDA" EntitySet="CAT_UNIDAD_MEDIDA" />
+            <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008297" Association="Self.SYS_C008297">
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008348" Association="Self.SYS_C008348">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008349" Association="Self.SYS_C008349">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008350" Association="Self.SYS_C008350">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1396,6 +1685,7 @@
           <Property Name="rubro" Type="Int64" Nullable="false" />
           <NavigationProperty Name="CAT_METODO_CALCULO" Relationship="Model.SYS_C008183" FromRole="Ciiu" ToRole="MetodoCalculo" />
           <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008223" FromRole="Ciiu" ToRole="CAT_AÑO_BASE" />
+          <NavigationProperty Name="CAT_ESTAB_ANALISTA" Relationship="Model.SYS_C008349" FromRole="Ciiu" ToRole="EstablecimientoAnalista" />
         </EntityType>
         <EntityType Name="Contacto">
           <Key>
@@ -1482,13 +1772,11 @@
           <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IdAnalista" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IdInformante" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="Observaciones" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Contactos" Relationship="Self.SYS_C0012597" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_CONTACTO" />
           <NavigationProperty Name="Encuestas" Relationship="Self.SYS_C0012600" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_ENCUESTA" />
           <NavigationProperty Name="LineasProductoEstablecimiento" Relationship="Self.SYS_C0012606" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_ESTAB_LINEA_PROD" />
-          <NavigationProperty Name="Analista" Relationship="Self.SYS_C0012608" FromRole="CAT_ESTABLECIMIENTO" ToRole="SEG_USUARIO" />
           <NavigationProperty Name="Informante" Relationship="Self.SYS_C0012609" FromRole="CAT_ESTABLECIMIENTO" ToRole="SEG_USUARIO" />
           <NavigationProperty Name="Ciius" Relationship="Self.CAT_ESTAB_CIIU" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_CIIU" />
           <Property Name="creado" Type="DateTime" />
@@ -1499,7 +1787,8 @@
           <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008222" FromRole="Establecimiento" ToRole="CAT_AÑO_BASE" />
           <Property Name="enviar_correo" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ultima_notificacion" Type="DateTime" />
-        </EntityType>
+          <NavigationProperty Name="CAT_ESTAB_ANALISTA" Relationship="Model.SYS_C008338" FromRole="Establecimiento" ToRole="CAT_ESTAB_ANALISTA" />
+          </EntityType>
         <EntityType Name="LineaProducto">
           <Key>
             <PropertyRef Name="Id" />
@@ -1726,13 +2015,13 @@
           <NavigationProperty Name="Contactos" Relationship="Self.SYS_C0012598" FromRole="SEG_USUARIO" ToRole="CAT_CONTACTO" />
           <NavigationProperty Name="EncuestasAsAnalista" Relationship="Self.SYS_C0012599" FromRole="SEG_USUARIO" ToRole="CAT_ENCUESTA" />
           <NavigationProperty Name="EncuestasAsInformante" Relationship="Self.SYS_C0012601" FromRole="SEG_USUARIO" ToRole="CAT_ENCUESTA" />
-          <NavigationProperty Name="EstablecimientosAnalista" Relationship="Self.SYS_C0012608" FromRole="SEG_USUARIO" ToRole="CAT_ESTABLECIMIENTO" />
           <NavigationProperty Name="EstablecimientosInformante" Relationship="Self.SYS_C0012609" FromRole="SEG_USUARIO" ToRole="CAT_ESTABLECIMIENTO" />
           <NavigationProperty Name="Roles" Relationship="Self.SEG_USUARIO_ROL" FromRole="SEG_USUARIO" ToRole="SEG_ROL" />
           <Property Name="creado" Type="DateTime" />
           <Property Name="modificado" Type="DateTime" />
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CAT_ESTAB_ANALISTA" Relationship="Model.SYS_C008339" FromRole="Usuario" ToRole="CAT_ESTAB_ANALISTA" />
         </EntityType>
         <Association Name="SYS_C0012596">
           <End Role="CAT_CARGO" Type="Model.Cargo" Multiplicity="0..1" />
@@ -1856,18 +2145,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0012608">
-          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1" />
-          <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SEG_USUARIO">
-              <PropertyRef Name="Identificador" />
-            </Principal>
-            <Dependent Role="CAT_ESTABLECIMIENTO">
-              <PropertyRef Name="IdAnalista" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+      
         <Association Name="SYS_C0012609">
           <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1" />
           <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="*" />
@@ -2084,10 +2362,7 @@
             <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
             <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0012608" Association="Self.SYS_C0012608">
-            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
-            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
-          </AssociationSet>
+      
           <AssociationSet Name="SYS_C0012609" Association="Self.SYS_C0012609">
             <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
             <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
@@ -2235,6 +2510,19 @@
           <AssociationSet Name="SYS_C008297" Association="Model.SYS_C008297">
             <End Role="Encuesta" EntitySet="CAT_ENCUESTA" />
             <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
+          </AssociationSet>
+          <EntitySet Name="CAT_ESTAB_ANALISTA" EntityType="Model.EstablecimientoAnalista" />
+          <AssociationSet Name="SYS_C008338" Association="Model.SYS_C008338">
+            <End Role="Establecimiento" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008339" Association="Model.SYS_C008339">
+            <End Role="Usuario" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008349" Association="Model.SYS_C008349">
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+            <End Role="EstablecimientoAnalista" EntitySet="CAT_ESTAB_ANALISTA" />
           </AssociationSet>
           </EntityContainer>
         <Association Name="SYS_C0012622">
@@ -2660,6 +2948,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EstablecimientoAnalista">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="orden" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="id_establecimiento" Type="Int64" Nullable="false" />
+          <Property Name="id_analista" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CAT_ESTABLECIMIENTO" Relationship="Model.SYS_C008338" FromRole="CAT_ESTAB_ANALISTA" ToRole="Establecimiento" />
+          <NavigationProperty Name="SEG_USUARIO" Relationship="Model.SYS_C008339" FromRole="CAT_ESTAB_ANALISTA" ToRole="Usuario" />
+          <Property Name="id_ciiu" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="CAT_CIIU" Relationship="Model.SYS_C008349" FromRole="EstablecimientoAnalista" ToRole="Ciiu" />
+        </EntityType>
+        <Association Name="SYS_C008338">
+          <End Type="Model.Establecimiento" Role="Establecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EstablecimientoAnalista" Role="CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Establecimiento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008339">
+          <End Type="Model.Usuario" Role="Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EstablecimientoAnalista" Role="CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008349">
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EstablecimientoAnalista" Role="EstablecimientoAnalista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciiu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EstablecimientoAnalista">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2781,7 +3124,6 @@
                 <ScalarProperty Name="Telefono" ColumnName="telefono" />
                 <ScalarProperty Name="Fax" ColumnName="fax" />
                 <ScalarProperty Name="Estado" ColumnName="estado" />
-                <ScalarProperty Name="IdAnalista" ColumnName="id_analista" />
                 <ScalarProperty Name="IdInformante" ColumnName="id_informante" />
                 <ScalarProperty Name="Observaciones" ColumnName="observaciones" />
               </MappingFragment>
@@ -3155,6 +3497,17 @@
                 <ScalarProperty Name="accion" ColumnName="accion" />
                 <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
                 <ScalarProperty Name="Id" ColumnName="id_auditoria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_ESTAB_ANALISTA">
+            <EntityTypeMapping TypeName="Model.EstablecimientoAnalista">
+              <MappingFragment StoreEntitySet="CAT_ESTAB_ANALISTA">
+                <ScalarProperty Name="id_ciiu" ColumnName="id_ciiu" />
+                <ScalarProperty Name="id_analista" ColumnName="id_analista" />
+                <ScalarProperty Name="id_establecimiento" ColumnName="id_establecimiento" />
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="Id" ColumnName="id_establecimiento_analista" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

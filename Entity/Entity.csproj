@@ -81,6 +81,9 @@
     <Compile Include="Establecimiento.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="EstablecimientoAnalista.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
     <Compile Include="ExportacionHarinaTrigo.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
@@ -119,6 +122,7 @@
     </Compile>
     <Compile Include="Parciales\AccionEnum.cs" />
     <Compile Include="Parciales\Auditoria.cs" />
+    <Compile Include="Parciales\EstablecimientoAnalista.cs" />
     <Compile Include="Parciales\AñoBase.cs" />
     <Compile Include="Parciales\ParametrizacionEnvio.cs" />
     <Compile Include="Parciales\LineaProductoUnidadMedida.cs" />
