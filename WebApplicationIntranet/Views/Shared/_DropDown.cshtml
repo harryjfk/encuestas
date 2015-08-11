@@ -11,7 +11,7 @@
         setTimeout(function () {
             $.search("#@Model.Item2.Replace(".","_")");
             $("#@Model.Item2.Replace(".","_")").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione un elemento" });
-            $("div[class*='chosen-container chosen-container-single chosen-container-single-nosearch']").addClass("form-control");
+            $("div[class*='chosen-container chosen-container-single']").each(function () { $(this).addClass("form-control"); });
             var a = $("a[class*='chosen-single']");
             if (a != null) {
                 a.css("border", "0");

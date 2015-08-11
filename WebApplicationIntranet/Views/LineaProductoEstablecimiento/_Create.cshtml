@@ -66,12 +66,18 @@
                 <div class="col-md-1 txt-color-red"><span >(*)</span></div>
             }
         </div>
-        <div class="modal-footer">
-            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <div class="form-group">
+            <label for="Peso" class="col-md-4 control-label">Peso</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.peso, new { @class = "form-control disabled" })
+                @Html.ValidationMessageFor(model => model.peso)
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
         </div>
-
-    </div>
 }
 
 <script type="text/javascript">
@@ -118,14 +124,14 @@
         });
         if ($("#isNew").val()=='true') {
         setTimeout(function () {
-            $("#IdCIIU").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
-            $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
-            var a = $("a[class*='chosen-single']");
-            if (a != null) {
-                a.css("border", "0");
-                a.css("background", "white");
-                a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-            }
+            //$("#IdCIIU").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+            //$("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+            //var a = $("a[class*='chosen-single']");
+            //if (a != null) {
+            //    a.css("border", "0");
+            //    a.css("background", "white");
+            //    a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+            //}
             loadLineaProducto();
             }, 500);
          }   
@@ -142,16 +148,16 @@
                 },
                 success: function (data) {
                     $("#idLineaProdDiv").html(data);
-                    setTimeout(function () {
-                        $("#IdLineaProducto").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " ,placeholder_text_single: "Seleccione una opción"});
-                        $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
-                        var a = $("a[class*='chosen-single']");
-                        if (a != null) {
-                            a.css("border", "0");
-                            a.css("background", "white");
-                            a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-                        }
-                    }, 500);
+                    //setTimeout(function () {
+                    //    $("#IdLineaProducto").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " ,placeholder_text_single: "Seleccione una opción"});
+                    //    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+                    //    var a = $("a[class*='chosen-single']");
+                    //    if (a != null) {
+                    //        a.css("border", "0");
+                    //        a.css("background", "white");
+                    //        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                    //    }
+                    //}, 500);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Failed to retrieve data.');

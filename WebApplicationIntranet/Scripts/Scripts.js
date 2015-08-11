@@ -40,16 +40,16 @@
         $("div[class*='chosen-container chosen-container-single chosen-container-single-nosearch']").addClass("form-control");
         var a = $("a[class*='chosen-single chosen-default']");
         var a1 = $("a[class*='chosen-single']");
-        if (a != null) {
-            a.css("border", "0");
-            a.css("background", "white");
-            a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-        }
-        if (a1 != null) {
-            a1.css("border", "0");
-            a1.css("background", "white");
-            a1.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-        }
+        //if (a != null) {
+        //    a.css("border", "0");
+        //    a.css("background", "white");
+        //    a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+        //}
+        //if (a1 != null) {
+        //    a1.css("border", "0");
+        //    a1.css("background", "white");
+        //    a1.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+        //}
        
     },
     getDropDrown: function (path, data, idContainer,succesFunc) {
