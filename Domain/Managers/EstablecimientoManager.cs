@@ -49,19 +49,19 @@ namespace Domain.Managers
 
         public IPagedList GetNoAsignadosAnalistas(Query<Establecimiento> query)
         {
-            var temp1 = Manager.EstablecimientoAnalistaManager.Get(query.Filter, null, query.Order);
-            var temp=Manager.Establecimiento.Get()
+            var temp1 = Manager.Establecimiento.Get(query.Filter, null, query.Order);
+            var temp = Manager.Establecimiento.Get();
             if (query.Paginacion != null)
             {
                 var list = temp.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
-                query.Elements = list;
+                //query.Elements = list;
                 return list;
             }
             else
             {
                 var establecimientos = temp.ToArray();
                 var list = establecimientos.ToPagedList(1, establecimientos.Any() ? establecimientos.Count() : 1);
-                query.Elements = list;
+               // query.Elements = list;
                 return list;
             }
 

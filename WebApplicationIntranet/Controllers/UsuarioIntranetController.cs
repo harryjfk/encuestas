@@ -26,7 +26,7 @@ namespace WebApplication.Controllers
         public static Query<UsuarioIntranet> QueryAnalista { get; set; }
         public static Query<UsuarioIntranet> QueryAdministrador { get; set; }
         public static Query<EstablecimientoAnalista> QueryEstablecimientosAsignados { get; set; }
-        public static Query<EstablecimientoAnalista> QueryEstablecimientosNoAsignados { get; set; }
+        public static Query<Establecimiento> QueryEstablecimientosNoAsignados { get; set; }
         public static UsuarioIntranet Analista { get; set; }
         public virtual Manager Manager
         {
@@ -179,7 +179,7 @@ namespace WebApplication.Controllers
         {
             var user = Analista;
             if (user == null) return HttpNotFound("Analista no encontrado");
-            QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<EstablecimientoAnalista>();
+            QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados.Validate();
             QueryEstablecimientosNoAsignados.BuildFilter();
             QueryEstablecimientosNoAsignados.Paginacion.ItemsPerPage = 10;
@@ -199,7 +199,7 @@ namespace WebApplication.Controllers
             //Manager.Usuario.AsignarEstablecimientoAnalista(Analista, id);
             Manager.Usuario.AsignarEstablecimientoAnalista((int)Analista.Identificador, id);
 
-            QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<EstablecimientoAnalista>();
+            QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados.Validate();
             QueryEstablecimientosNoAsignados.BuildFilter();
             Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados);
@@ -231,16 +231,16 @@ namespace WebApplication.Controllers
         }
         public ActionResult PageEstablecimientosNoAsignados(int page)
         {
-            QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<EstablecimientoAnalista>();
+            QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados.Validate();
             QueryEstablecimientosNoAsignados.Paginacion.Page = page;
             return RedirectToAction("EstablecimientosNoAsignados");
         }
         [HttpPost]
-        public virtual ActionResult BuscarEstablecimientosNoAsignados(EstablecimientoAnalista criteria)
+        public virtual ActionResult BuscarEstablecimientosNoAsignados(Establecimiento criteria)
         {
             if (Analista == null) return HttpNotFound("Analista no encontrado");
-            QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<EstablecimientoAnalista>();
+            QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados.Validate();
             QueryEstablecimientosNoAsignados.Criteria = criteria;
             QueryEstablecimientosNoAsignados.Paginacion = QueryEstablecimientosNoAsignados.Paginacion ?? new Paginacion();
