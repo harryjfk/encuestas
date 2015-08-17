@@ -27,7 +27,7 @@
                     <div class="input-group">
                         <span class="input-group-addon">AÑO</span>
                         <select id="selct-ano" name="Criteria.Año" class="form-control">
-                            @for (int i = 2012; i <= 2030; i++)
+                            @for (int i = 2012; i <= DateTime.Now.Year; i++)
                             {
                                 var selected = (Model.Criteria != null && Model.Criteria.Año == i.ToString() || ((Model.Criteria == null || Model.Criteria.Año == null) && i == DateTime.Now.Year)) ? "selected" : "";
                                 <option @selected value="@i">@i.ToString()</option>
