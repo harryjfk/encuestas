@@ -1,9 +1,13 @@
 ﻿@model Entity.ExportacionHarinaTrigo
 @Scripts.Render("~/bundles/tools")
+@using System.Threading
 @using System.Globalization
 @{
     Layout = "";
-    var title = "Nuevo Exportación de Harina de Trigo del mes " + Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper();
+    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+    TextInfo textInfo = cultureInfo.TextInfo;
+    var mes=Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
+    var title = "Nuevo Exportación de Harina de Trigo del mes " + textInfo.ToTitleCase(mes);
 }
 @using (Html.BeginForm("Create", "ImportacionExportacionHarinaTrigo", FormMethod.Post, new { name = "Ex-635736754188769006" }))
 {
@@ -53,7 +57,8 @@
         <div class="form-group">
             <label for="fob_s" class="col-md-4 control-label"> FOB S/.</label>
             <div class="col-md-7">
-                @Html.Label(Model.fob_s.ToString("0.0000", CultureInfo.InvariantCulture), new { @class = "form-control mask4" })
+               
+                <span class="form-control mask4" style="max-width:280px;">@Model.fob_s.ToString("0.0000", CultureInfo.InvariantCulture)</span>
             </div>
 
         </div>
@@ -80,42 +85,49 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("form[name='Ex-635736754188769006']").submit(function (e) { e.preventDefault();});
         $("button[name='aceptarbtn']").click(function () {
-            var $elem = $(this);
-            $elem.addClass("disabled");
-            $.ajax({
-                cache: false,
-                type: "POST",
-                url: $.origin() + "/ImportacionExportacionHarinaTrigo/CreatePost/",
-                data: $("form[name='Ex-635736754188769006']").serialize(),
-                success: function (data) {
-                    $elem.removeClass("disabled");
-                    if (data.Success) {
-                       
-                        $("#table-container-exportacion").html(data.Data);
-                        $("#editItem").modal("hide");
-                        $.smallBox({
-                            title: "Confirmación",
-                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
-                            color: "#659265",
-                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                            timeout: 4000
-                        });
-                    } else {
-                        var errors = "";
-                        for (var i = 0; i < data.Errors.length; i++) {
-                            errors += "<li>" + data.Errors[i] + "</li>";
+            var fobUsd = $("#fob_usd");
+            if (fobUsd && fobUsd.val() != "") {
+                var $elem = $(this);
+                $elem.addClass("disabled");
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/ImportacionExportacionHarinaTrigo/CreatePost/",
+                    data: $("form[name='Ex-635736754188769006']").serialize(),
+                    success: function (data) {
+                        $elem.removeClass("disabled");
+                        if (data.Success) {
+
+                            $("#table-container-exportacion").html(data.Data);
+                            $("#editItem").modal("hide");
+                            $.smallBox({
+                                title: "Confirmación",
+                                content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                                color: "#659265",
+                                iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                timeout: 4000
+                            });
+                        } else {
+                            var errors = "";
+                            for (var i = 0; i < data.Errors.length; i++) {
+                                errors += "<li>" + data.Errors[i] + "</li>";
+                            }
+                            $("#errors-container").removeClass("hidden").find("ul").html(errors);
                         }
-                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                        //$("#editItem .modal-body").html(data);
+                        //$("#editItem").modal("show");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $elem.removeClass("disabled");
+                        alert('Failed to retrieve data.');
                     }
-                    //$("#editItem .modal-body").html(data);
-                    //$("#editItem").modal("show");
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    $elem.removeClass("disabled");
-                    alert('Failed to retrieve data.');
-                }
-            });
+                });
+            } else {
+                $.errorIsRequired();
+            }
+            
 
         });
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });

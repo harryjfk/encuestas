@@ -7,7 +7,7 @@
     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
     TextInfo textInfo = cultureInfo.TextInfo;
     var mes=Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
-    var title = "IPM-IPP del mes: " +textInfo.ToTitleCase(mes) ;
+    var title = "IPM-IPP del mes " +textInfo.ToTitleCase(mes) ;
     var ciuuName = Model.Ciiu.ToString();
     if (ciuuName.Length > 34)
     {
@@ -129,8 +129,7 @@
                     }
                 });
             } else {
-                var errors = "<li> Debe llenar los campos requeridos </li>";
-                $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                $.errorIsRequired();
             }
             
 

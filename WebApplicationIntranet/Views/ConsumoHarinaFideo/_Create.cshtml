@@ -1,9 +1,13 @@
 ﻿@model Entity.ConsumoHarinaFideo
 @using System.Globalization
+@using System.Threading
 @Scripts.Render("~/bundles/tools")
 @{
     Layout = "";
-    var title = "Nuevo Consumo de Harina de Fideos del mes " + Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper();
+    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+    TextInfo textInfo = cultureInfo.TextInfo;
+    var mes=Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
+    var title = "Consumo de Harina de Fideos del mes  " + textInfo.ToTitleCase(mes);
 }
 @using (Html.BeginForm("Create", "ConsumoHarinaFideo", FormMethod.Post, new { name = "Co-635736154576131709" }))
 {
@@ -72,41 +76,48 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("form[name='Co-635736154576131709']").submit(function (e) { e.preventDefault(); });
         $("button[name='aceptarbtn']").click(function () {
-            var $elem = $(this);
-            $elem.addClass("disabled");
-            $.ajax({
-                cache: false,
-                type: "POST",
-                url: $.origin() + "/ConsumoHarinaFideo/CreatePost/",
-                data: $("form[name='Co-635736154576131709']").serialize(),
-                success: function (data) {
-                    $elem.removeClass("disabled");
-                    if (data.Success) {
-                        $("#table-container").html(data.Data);
-                        $("#editItem").modal("hide");
-                        $.smallBox({
-                            title: "Confirmación",
-                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
-                            color: "#659265",
-                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                            timeout: 4000
-                        });
-                    } else {
-                        var errors = "";
-                        for (var i = 0; i < data.Errors.length; i++) {
-                            errors += "<li>" + data.Errors[i] + "</li>";
+            var tonelada = $("#tonelada_tmb");
+            if (tonelada && tonelada.val() != "") {
+                var $elem = $(this);
+                $elem.addClass("disabled");
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/ConsumoHarinaFideo/CreatePost/",
+                    data: $("form[name='Co-635736154576131709']").serialize(),
+                    success: function (data) {
+                        $elem.removeClass("disabled");
+                        if (data.Success) {
+                            $("#table-container").html(data.Data);
+                            $("#editItem").modal("hide");
+                            $.smallBox({
+                                title: "Confirmación",
+                                content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                                color: "#659265",
+                                iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                timeout: 4000
+                            });
+                        } else {
+                            var errors = "";
+                            for (var i = 0; i < data.Errors.length; i++) {
+                                errors += "<li>" + data.Errors[i] + "</li>";
+                            }
+                            $("#errors-container").removeClass("hidden").find("ul").html(errors);
                         }
-                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                        //$("#editItem .modal-body").html(data);
+                        //$("#editItem").modal("show");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $elem.removeClass("disabled");
+                        alert('Failed to retrieve data.');
                     }
-                    //$("#editItem .modal-body").html(data);
-                    //$("#editItem").modal("show");
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    $elem.removeClass("disabled");
-                    alert('Failed to retrieve data.');
-                }
-            });
+                });
+            } else {
+                $.errorIsRequired();
+            }
+            
 
         });
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });

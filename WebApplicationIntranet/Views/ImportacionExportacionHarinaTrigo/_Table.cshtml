@@ -33,7 +33,7 @@
                     }
                 </td>
                 <td>1071 – Elaboración de productos de panadería.</td>
-                <td>@item.fecha.ToString("MMMM",CultureInfo.GetCultureInfo("ES")).ToUpper()</td>
+                <td class="text-capitalize">@item.fecha.ToString("MMMM",CultureInfo.GetCultureInfo("ES"))</td>
                 <td>@item.fob_usd.ToString("0.0000",CultureInfo.InvariantCulture)</td>
                 <td>@item.fob_s.ToString("0.0000",CultureInfo.InvariantCulture)</td>
                 
@@ -61,7 +61,7 @@
         No hay elementos para mostrar
     </div>
 }
-@Html.PagedListPager(Model.Elements, page => Url.Action("Page", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+@*@Html.PagedListPager(Model.Elements, page => Url.Action("Page", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)*@
 
 <script type="text/javascript">
     $(document).ready(function () {
