@@ -17,11 +17,11 @@ namespace Entity
         public Usuario()
         {
             this.Contactos = new HashSet<Contacto>();
-            this.EncuestasAsAnalista = new HashSet<Encuesta>();
             this.EncuestasAsInformante = new HashSet<Encuesta>();
             this.EstablecimientosInformante = new HashSet<Establecimiento>();
             this.Roles = new HashSet<Rol>();
             this.CAT_ESTAB_ANALISTA = new HashSet<EstablecimientoAnalista>();
+            this.CAT_ENCUESTA_ANALISTA = new HashSet<EncuestaAnalista>();
         }
     
         public decimal Identificador { get; set; }
@@ -32,10 +32,10 @@ namespace Entity
         public string usuario_modificacion { get; set; }
     
         public virtual ICollection<Contacto> Contactos { get; set; }
-        public virtual ICollection<Encuesta> EncuestasAsAnalista { get; set; }
         public virtual ICollection<Encuesta> EncuestasAsInformante { get; set; }
         public virtual ICollection<Establecimiento> EstablecimientosInformante { get; set; }
         public virtual ICollection<Rol> Roles { get; set; }
         public virtual ICollection<EstablecimientoAnalista> CAT_ESTAB_ANALISTA { get; set; }
+        public virtual ICollection<EncuestaAnalista> CAT_ENCUESTA_ANALISTA { get; set; }
     }
 }

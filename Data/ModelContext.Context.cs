@@ -60,5 +60,6 @@ namespace Data
         public DbSet<ParametrizacionEnvio> CAT_PARAMETRIZACION_ENVIO { get; set; }
         public DbSet<Auditoria> CAT_AUDITORIA { get; set; }
         public DbSet<EstablecimientoAnalista> CAT_ESTAB_ANALISTA { get; set; }
+        public DbSet<EncuestaAnalista> CAT_ENCUESTA_ANALISTA { get; set; }
     }
 }

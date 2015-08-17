@@ -115,7 +115,7 @@ namespace WebApplication.Controllers
         {
             var estab = Manager.Establecimiento.Find(id);
             ViewBag.Establecimiento = estab;
-            return View("_AnalistaInfo",null /*estab.Analista*/);
+            return View("_AnalistaInfo",estab.CAT_ESTAB_ANALISTA);
         }
 
         public ActionResult GetCiiuNoAsignados()

@@ -66,8 +66,8 @@ namespace WebApplication.Controllers
         }
         public ActionResult EncuestasAnalista(long id)
         {
-            //var user = this.GetLogued();
-            var user = Manager.Usuario.FindUsuarioIntranet(4600);
+            var user = this.GetLogued();
+            //var user = Manager.Usuario.FindUsuarioIntranet(4600);
             if (user == null) return HttpNotFound("Usuario no encontrado");
             var manager = Manager;
             IdEstablecimiento = id;
@@ -80,11 +80,11 @@ namespace WebApplication.Controllers
             Query = Query.Validate();
             Query.Criteria = Query.Criteria ?? new EncuestaEstadistica();
             Query.Criteria.IdEstablecimiento = IdEstablecimiento;
-            Query.Criteria.IdAnalista = user.Identificador;
+            //Query.Criteria.id = user.Identificador;
             Query.Paginacion = Query.Paginacion ?? new Paginacion();
             Query.Paginacion.Page = 1;
             Query.BuildFilter();
-            Manager.EncuestaEstadistica.GetAsignadosAnalista(Query);
+            Manager.EncuestaEstadistica.GetAsignadosAnalista(Query, (long)user.Identificador);
             ModelState.Clear();
             return View("IndexAnalista", Query);
         }
@@ -107,11 +107,16 @@ namespace WebApplication.Controllers
 
         public ActionResult EncuestaAnalista(long idEncuesta = 0)
         {
+           
+
             var manager = Manager;
             var encuesta = manager.EncuestaEstadistica.FindById(idEncuesta);
             if (encuesta == null) return HttpNotFound("Encuesta No encontrada");
-            Session["idEncuesta"] = idEncuesta;
-            if (encuesta.EstadoEncuesta == EstadoEncuesta.Enviada)
+            var user = this.GetLogued();
+            if (user == null) return View("VerEncuesta", encuesta);
+            var analist = encuesta.CAT_ENCUESTA_ANALISTA.FirstOrDefault(t => t.id_analista == user.Identificador);
+            if (analist == null || analist.IsWaiting) return HttpNotFound("Encuesta No encontrada");
+            if (encuesta.EstadoEncuesta == EstadoEncuesta.Enviada && analist.IsCurrent)
                 return View("EncuestaAnalista", encuesta);
             return View("VerEncuesta", encuesta);
         }

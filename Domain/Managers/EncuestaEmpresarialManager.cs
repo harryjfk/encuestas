@@ -268,20 +268,20 @@ namespace Domain.Managers
 
         }
 
-        public IPagedList GetAsignadosAnalista(Query<EncuestaEmpresarial> query)
+        public IPagedList GetAsignadosAnalista(Query<EncuestaEmpresarial> query,long idAnalista)
         {
             var estab = new long?();
-            var ana = new long?();
+            
             if (query.Criteria != null)
             {
                 if (query.Criteria.IdEstablecimiento != 0)
                     estab = query.Criteria.IdEstablecimiento;
-                if (query.Criteria.IdAnalista != 0)
-                    if (query.Criteria.IdAnalista != null) ana = (long)query.Criteria.IdAnalista;
+                //if (query.Criteria.IdAnalista != 0)
+                //    if (query.Criteria.IdAnalista != null) ana = (long)query.Criteria.IdAnalista;
             }
             var temp = Repository.Get(query.Filter, null, query.Order)
                 .Where(t => t.IdEstablecimiento == estab
-                && t.IdAnalista == ana && (t.EstadoEncuesta != EstadoEncuesta.NoEnviada));
+                && t.Establecimiento.CAT_ESTAB_ANALISTA.Any(h => h.id_analista == idAnalista) && (t.EstadoEncuesta != EstadoEncuesta.NoEnviada));
             if (query.Paginacion != null)
             {
                 var list = temp.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);

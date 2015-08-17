@@ -17,6 +17,7 @@ namespace Entity
         public Encuesta()
         {
             this.CAT_AUDITORIA = new HashSet<Auditoria>();
+            this.CAT_ENCUESTA_ANALISTA = new HashSet<EncuestaAnalista>();
         }
     
         public long Id { get; set; }
@@ -24,7 +25,6 @@ namespace Entity
         public decimal Estado { get; set; }
         public System.DateTime Fecha { get; set; }
         public string Justificacion { get; set; }
-        public Nullable<decimal> IdAnalista { get; set; }
         public Nullable<decimal> IdInformante { get; set; }
         public Nullable<System.DateTime> creado { get; set; }
         public Nullable<System.DateTime> modificado { get; set; }
@@ -32,9 +32,9 @@ namespace Entity
         public string usuario_modificacion { get; set; }
         public Nullable<System.DateTime> fecha_ultimo_envio { get; set; }
     
-        public virtual Usuario Analista { get; set; }
         public virtual Establecimiento Establecimiento { get; set; }
         public virtual Usuario Informante { get; set; }
         public virtual ICollection<Auditoria> CAT_AUDITORIA { get; set; }
+        public virtual ICollection<EncuestaAnalista> CAT_ENCUESTA_ANALISTA { get; set; }
     }
 }

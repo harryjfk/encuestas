@@ -95,11 +95,11 @@ namespace WebApplication.Controllers
             Query = Query.Validate();
             Query.Criteria = Query.Criteria ?? new EncuestaEmpresarial();
             Query.Criteria.IdEstablecimiento = IdEstablecimiento;
-            Query.Criteria.IdAnalista = user.Identificador;
+           // Query.Criteria.IdAnalista = user.Identificador;
             Query.Paginacion = Query.Paginacion ?? new Paginacion();
             Query.Paginacion.Page = 1;
             Query.BuildFilter();
-            Manager.EncuestaEmpresarial.GetAsignadosAnalista(Query);
+            Manager.EncuestaEmpresarial.GetAsignadosAnalista(Query, s_userId);
             ModelState.Clear();
             return View("IndexAnalista", Query);
         }

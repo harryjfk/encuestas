@@ -34,17 +34,21 @@
 </div>
 
 
+
 @if (Model != null)
 {
     using (Html.BeginForm("Enviar", "EncuestaEstadistica", FormMethod.Post, new { name = "encuestaEstadisticaForm" }))
     {
         @Html.HiddenFor(t => t.Id)
         @*<h3 class="screen-title">
-            Encuesta de Manufactura Estad&iacute;stica
-            <span class="label label-primary">
-                @Model.Fecha.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()
-            </span>
-        </h3>*@
+                Encuesta de Manufactura Estad&iacute;stica
+                <span class="label label-primary">
+                    @Model.Fecha.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()
+                </span>
+            </h3>*@
+        <div>
+            @{ Html.RenderPartial("_InfoAnalistas", Model.CAT_ENCUESTA_ANALISTA); }
+        </div>
         <div id="cap1">
             @{ Html.RenderPartial("_IdentificacionEstablecimiento", Model); }
         </div>
@@ -65,17 +69,17 @@
         </div>
         <div class="row text-align-center">
             <h4 class="col-md-12">Agradecemos su valiosa colaboración con las estadísticas oficiales del país</h4>
-        <span class="col-md-12 text-align-left">El  formulario debera remitirse : </span>
-        <span class="col-md-12 text-align-left">Via WEB  en forma virtual a través de la ruta de acceso https://extranet.produce.gob.pe utilizando su clave de acceso</span>
-        <span class="col-md-12 text-align-left">Correo electronico : est_manufactura@produce.gob.pe</span>
-        <span class="col-md-12 text-align-left">Coordinaciones en Lima y Callao,  Ministerio de la Producción al 616-2222 anexos 1651,1636,1414,1839, 1832, 1847</span>
-        <span class="col-md-12 text-align-left">Regiones,  Direcciones Regionales de PRODUCE</span>
-        <span class="col-md-12 text-align-left"> La presentación tardía, el suministro de datos falsos y la negativa a dar información solicitada dan lugar a las sanciones establecidas en el Artículo 89° del D.S. N° 043-2001-PCM, publicado en El Peruano del día 25/04/2001 </span>
+            <span class="col-md-12 text-align-left">El  formulario debera remitirse : </span>
+            <span class="col-md-12 text-align-left">Via WEB  en forma virtual a través de la ruta de acceso https://extranet.produce.gob.pe utilizando su clave de acceso</span>
+            <span class="col-md-12 text-align-left">Correo electronico : est_manufactura@produce.gob.pe</span>
+            <span class="col-md-12 text-align-left">Coordinaciones en Lima y Callao,  Ministerio de la Producción al 616-2222 anexos 1651,1636,1414,1839, 1832, 1847</span>
+            <span class="col-md-12 text-align-left">Regiones,  Direcciones Regionales de PRODUCE</span>
+            <span class="col-md-12 text-align-left"> La presentación tardía, el suministro de datos falsos y la negativa a dar información solicitada dan lugar a las sanciones establecidas en el Artículo 89° del D.S. N° 043-2001-PCM, publicado en El Peruano del día 25/04/2001 </span>
         </div>
 
         <div class="modal-footer">
-            <a id="btnEncuestaEnviar" class="btn btn-primary pull-right" >Enviar a evaluaci&oacute;n</a>
-            
+            <a id="btnEncuestaEnviar" class="btn btn-primary pull-right">Enviar a evaluaci&oacute;n</a>
+
         </div>
 
     }

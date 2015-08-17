@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Filters.cs" />
     <Compile Include="Managers\AuditoriaManager.cs" />
+    <Compile Include="Managers\EncuestaAnalistaManager.cs" />
     <Compile Include="Managers\EstablecimientoAnalistaManager.cs" />
     <Compile Include="Managers\AñoBaseManager.cs" />
     <Compile Include="Managers\ParametrizacionEnvioManager.cs" />

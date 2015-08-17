@@ -38,11 +38,12 @@
     </div>
 </div>
 
-
+<br/>
 @if (Model != null)
 {
     using (Html.BeginForm("Enviar", "EncuestaEstadistica", FormMethod.Post, new { name = "encuestaEstadisticaForm" }))
     {
+       
         @Html.HiddenFor(t => t.Id)
         @*<h3 class="screen-title">
                 Encuesta de Manufactura Estad&iacute;stica
@@ -50,6 +51,9 @@
                     @Model.Fecha.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()
                 </span>
             </h3>*@
+        <div>
+            @{ Html.RenderPartial("_InfoAnalistas", Model.CAT_ENCUESTA_ANALISTA); }
+        </div>
         <div id="cap1">
             @{ Html.RenderPartial("_IdentificacionEstablecimientoV", Model); }
         </div>

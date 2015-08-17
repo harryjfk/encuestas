@@ -15,6 +15,10 @@ namespace WebApplication.Controllers
 {
     public class BaseController<T> : Controller where T : class, new()
     {
+        public void Test()
+        {
+            Manager.ParametrizacionEnvioManager.EnviarNotificaciones();
+        }
         public static Query<T> Query { get; set; }
 
         public virtual Manager Manager

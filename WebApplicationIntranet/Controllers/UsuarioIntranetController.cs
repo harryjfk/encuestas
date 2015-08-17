@@ -183,10 +183,10 @@ namespace WebApplication.Controllers
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados.Validate();
             QueryEstablecimientosNoAsignados.BuildFilter();
             QueryEstablecimientosNoAsignados.Paginacion.ItemsPerPage = 10;
-            Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados);
+            Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados,(long)user.Identificador);
             return PartialView("EstablecimientosNoAsignados", QueryEstablecimientosNoAsignados);
         }
-        public JsonResult AsignarEstablecimiento(long id)
+        public JsonResult AsignarEstablecimiento(long id,long idCiiu,int orden)
         {
             //UsuarioIntranet usuarioIntranet = new UsuarioIntranet();
             //usuarioIntranet = Manager.Usuario.FindUsuarioIntranetByLogin(this.User.Identity.Name.ToString());
@@ -197,12 +197,12 @@ namespace WebApplication.Controllers
             }
 
             //Manager.Usuario.AsignarEstablecimientoAnalista(Analista, id);
-            Manager.Usuario.AsignarEstablecimientoAnalista((int)Analista.Identificador, id);
+            Manager.Usuario.AsignarEstablecimientoAnalista((int)Analista.Identificador, id,idCiiu,orden);
 
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados.Validate();
             QueryEstablecimientosNoAsignados.BuildFilter();
-            Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados);
+            Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados, (int)Analista.Identificador);
             var noAsignados = this.RenderRazorViewToString("EstablecimientosNoAsignados", QueryEstablecimientosNoAsignados);
 
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
@@ -258,7 +258,7 @@ namespace WebApplication.Controllers
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
             QueryEstablecimientosAsignados.Criteria = QueryEstablecimientosAsignados.Criteria ?? new EstablecimientoAnalista();
-            //QueryEstablecimientosAsignados.Criteria.IdAnalista = Analista.Identificador;
+            QueryEstablecimientosAsignados.Criteria.id_analista = Analista.Identificador;
             QueryEstablecimientosAsignados.BuildFilter();
             QueryEstablecimientosAsignados.Paginacion.ItemsPerPage = 10;
             Manager.EstablecimientoAnalistaManager.Get(QueryEstablecimientosAsignados);

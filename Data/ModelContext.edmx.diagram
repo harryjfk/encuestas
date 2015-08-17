@@ -32,7 +32,6 @@
         <AssociationConnector Association="Model.SYS_C0012614" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C0012597" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C0012598" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.SYS_C0012599" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C0012600" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C0012601" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C0012606" ManuallyRouted="false" />
@@ -89,6 +88,10 @@
         <AssociationConnector Association="Model.SYS_C008338" />
         <AssociationConnector Association="Model.SYS_C008339" />
         <AssociationConnector Association="Model.SYS_C008349" />
+        <EntityTypeShape EntityType="Model.EncuestaAnalista" Width="1.5" PointX="16.75" PointY="17.25" />
+        <AssociationConnector Association="Model.SYS_C008374" />
+        <AssociationConnector Association="Model.SYS_C008373" />
+        <AssociationConnector Association="Model.SYS_C008375" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

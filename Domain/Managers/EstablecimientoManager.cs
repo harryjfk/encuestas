@@ -47,21 +47,25 @@ namespace Domain.Managers
             element.IdentificadorInterno = n.ToString().PadLeft(10, '0');
         }
 
-        public IPagedList GetNoAsignadosAnalistas(Query<Establecimiento> query)
+        public IPagedList GetNoAsignadosAnalistas(Query<Establecimiento> query,long idAnalista)
         {
-            var temp1 = Manager.Establecimiento.Get(query.Filter, null, query.Order);
-            var temp = Manager.Establecimiento.Get();
+            var all = Manager.EstablecimientoAnalistaManager.Get(t => t.id_analista == idAnalista).Select(t=>t.id_establecimiento);
+            Func<Establecimiento, bool> filter = 
+                t => (query.Filter == null || query.Filter(t)) 
+                    && t.Activado && all.All(h => h != t.Id) && t.Ciius.Count>t.CAT_ESTAB_ANALISTA.Count;
+            var temp = Manager.Establecimiento.Get(filter, null, query.Order);
+            
             if (query.Paginacion != null)
             {
                 var list = temp.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
-                //query.Elements = list;
+                query.Elements = list;
                 return list;
             }
             else
             {
                 var establecimientos = temp.ToArray();
                 var list = establecimientos.ToPagedList(1, establecimientos.Any() ? establecimientos.Count() : 1);
-               // query.Elements = list;
+               query.Elements = list;
                 return list;
             }
 

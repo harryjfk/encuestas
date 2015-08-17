@@ -399,6 +399,7 @@
     <Content Include="Views\Seguridad\AccesoDenegado.cshtml" />
     <Content Include="Views\Establecimiento\_AnalistaInfo.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_NuevaMateriaPropia.cshtml" />
+    <Content Include="Views\EncuestaEstadistica\_InfoAnalistas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

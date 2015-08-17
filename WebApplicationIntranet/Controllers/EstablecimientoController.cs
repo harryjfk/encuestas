@@ -11,11 +11,11 @@ namespace WebApplication.Controllers
     public class EstablecimientoController : BaseController<Establecimiento>
     {
         ServiceSunat.WCFSistemasService miserviciosunat;
-        
+
         public static Establecimiento Establecimiento { get; set; }
         public static Query<Ciiu> QueryCiiuAsignados { get; set; }
         public static Query<Ciiu> QueryCiiuNoAsignados { get; set; }
-        
+
         public ActionResult GetDorpDown(string id, string nombre = "IdEstablecimiento", string @default = null)
         {
             var list = OwnManager.Get(t => t.Activado).Select(t => new SelectListItem()
@@ -33,7 +33,56 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
-        
+        public ActionResult GetOrden(string id, long idEstablecimiento, string nombre = "orden", string @default = null)
+        {
+            var establecimiento = Manager.Establecimiento.Find(idEstablecimiento);
+            var included = establecimiento.CAT_ESTAB_ANALISTA.Select(t => t.orden);
+            var count = establecimiento.Ciius.Count;
+            var list = new List<SelectListItem>();
+            for (int i = 1; i <= count; i++)
+            {
+                if (!included.Contains(i))
+                {
+                    list.Add(new SelectListItem()
+
+                    {
+                        Text = i.ToString(),
+                        Value = i.ToString(),
+                        Selected = i.ToString() == id
+                    });
+                }
+            }
+
+            if (@default != null)
+                list.Insert(0, new SelectListItem()
+                {
+                    Selected = id == "0",
+                    Value = "0",
+                    Text = @default
+                });
+            return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
+        }
+
+        public ActionResult GetCiiuAsignarAnalista(string id, long idEstablecimiento, string nombre = "IdCiiu", string @default = null)
+        {
+            var est = Manager.Establecimiento.Find(idEstablecimiento);
+            var included = est.CAT_ESTAB_ANALISTA.Select(t => t.id_ciiu);
+            var list = est.Ciius.Where(t => !included.Contains(t.Id)).Select(t => new SelectListItem()
+            {
+                Text = t.ToString(),
+                Value = t.Id.ToString(),
+                Selected = t.Id.ToString() == id
+            }).ToList();
+            if (@default != null)
+                list.Insert(0, new SelectListItem()
+                {
+                    Selected = id == "0",
+                    Value = "0",
+                    Text = @default
+                });
+            return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
+        }
+
         public JsonResult Toggle(long id)
         {
             var manager = OwnManager;
@@ -68,7 +117,7 @@ namespace WebApplication.Controllers
         public override JsonResult CreatePost(Establecimiento element, params string[] properties)
         {
             var old = Manager.Establecimiento.Find(element.Id);
-            
+
             if (old == null) return base.CreatePost(element);
             //element.IdAnalista = old.IdAnalista;
             element.IdInformante = old.IdInformante;
@@ -86,7 +135,7 @@ namespace WebApplication.Controllers
             ViewBag.Establecimiento = establecimiento;
             QueryCiiuAsignados.BuildFilter();
             QueryCiiuAsignados.Paginacion.ItemsPerPage = 10;
-            Manager.Establecimiento.GetAllCiiu(QueryCiiuAsignados,id);
+            Manager.Establecimiento.GetAllCiiu(QueryCiiuAsignados, id);
             return View("Ciiu", QueryCiiuAsignados);
         }
 
@@ -108,7 +157,7 @@ namespace WebApplication.Controllers
             QueryCiiuAsignados.Paginacion = Query.Paginacion ?? new Paginacion();
             QueryCiiuAsignados.Paginacion.Page = 1;
             QueryCiiuAsignados.BuildFilter();
-            return RedirectToAction("GetCiiu",new{id=Establecimiento.Id});
+            return RedirectToAction("GetCiiu", new { id = Establecimiento.Id });
         }
 
         public virtual ActionResult PageCiiu(int page)

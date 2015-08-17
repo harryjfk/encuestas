@@ -312,7 +312,7 @@ namespace Domain.Managers
 
         }
 
-        public void AsignarEstablecimientoAnalista(int idUsuario, long idEstablecimiento)
+        public void AsignarEstablecimientoAnalista(int idUsuario, long idEstablecimiento,long idCiiu,int orden)
         {
             var manager = Manager;
             var se = manager.Usuario.FindUsuarioIntranet(idUsuario);
@@ -330,25 +330,32 @@ namespace Domain.Managers
                 manager.Usuario.SaveChanges();
                 user = manager.Usuario.Find(idUsuario);
             }
-            //establecimiento.Analista = user;
-            //establecimiento.IdAnalista = idUsuario;
-            manager.Establecimiento.SaveChanges();
-
-            foreach (var enc in establecimiento.Encuestas)
+            var estabecimientoAnalista = new EstablecimientoAnalista()
             {
-                if (enc.IdAnalista == null)
-                {
-                    enc.IdAnalista = idUsuario;
-                    manager.Encuesta.Modify(enc);
-                }
-            }
+                id_ciiu = idCiiu,
+                id_analista = user.Identificador,
+                id_establecimiento = idEstablecimiento,
+                orden=orden
+            };
+
+            manager.EstablecimientoAnalistaManager.Add(estabecimientoAnalista);
+            manager.EstablecimientoAnalistaManager.SaveChanges();
+
+            //foreach (var enc in establecimiento.Encuestas)
+            //{
+            //    if (enc.IdAnalista == null)
+            //    {
+            //        enc.IdAnalista = idUsuario;
+            //        manager.Encuesta.Modify(enc);
+            //    }
+            //}
             manager.Encuesta.SaveChanges();
         }
 
-        public void AsignarEstablecimientoAnalista(UsuarioIntranet usuario, long idEstablecimiento)
+        public void AsignarEstablecimientoAnalista(UsuarioIntranet usuario, long idEstablecimiento,long idCiiu,int orden)
         {
-            int idUsuario = (int)usuario.Identificador;
-            int idRol = (int)usuario.IdRol;
+            var idUsuario = (int)usuario.Identificador;
+            var idRol = (int)usuario.IdRol;
             var manager = Manager;
             var se = manager.Usuario.FindUsuarioIntranet(idUsuario, idRol);
             var establecimiento = manager.Establecimiento.Find(idEstablecimiento);
@@ -365,28 +372,35 @@ namespace Domain.Managers
                 manager.Usuario.SaveChanges();
                 user = manager.Usuario.Find(idUsuario);
             }
-            //establecimiento.Analista = user;
-            //establecimiento.IdAnalista = idUsuario;
-            manager.Establecimiento.SaveChanges();
-
-            foreach (var enc in establecimiento.Encuestas)
+            var estabecimientoAnalista = new EstablecimientoAnalista()
             {
-                if (enc.IdAnalista == null)
-                {
-                    enc.IdAnalista = idUsuario;
-                    manager.Encuesta.Modify(enc);
-                }
-            }
+                id_ciiu = idCiiu,
+                id_analista = user.Identificador,
+                id_establecimiento = idEstablecimiento,
+                orden = orden
+            };
+         
+            manager.EstablecimientoAnalistaManager.Add(estabecimientoAnalista);
+            manager.EstablecimientoAnalistaManager.SaveChanges();
+
+            //foreach (var enc in establecimiento.Encuestas)
+            //{
+            //    if (enc.IdAnalista == null)
+            //    {
+            //        enc.IdAnalista = idUsuario;
+            //        manager.Encuesta.Modify(enc);
+            //    }
+            //}
             manager.Encuesta.SaveChanges();
         }
 
         public void EliminarEstablecimientoAnalista(long idEstablecimiento)
         {
             var manager = Manager;
-            var establecimiento = manager.Establecimiento.Find(idEstablecimiento);
+            var establecimiento = manager.EstablecimientoAnalistaManager.Find(idEstablecimiento);
             if (establecimiento == null) return;
             //establecimiento.IdAnalista = null;
-            manager.Establecimiento.Modify(establecimiento);
+            manager.EstablecimientoAnalistaManager.Delete(establecimiento);
             manager.Establecimiento.SaveChanges();
         }
         public void AsignarEstablecimientoInformante(int idUsuario, long idEstablecimiento)
