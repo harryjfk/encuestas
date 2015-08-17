@@ -13,7 +13,7 @@
             <span class="bold">Año: </span> <span>@Model.fecha.ToString("yyyy", CultureInfo.GetCultureInfo("ES"))</span>
         </div>
         <div>
-            <span class="bold">Mes: </span> <span>@Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"))</span>
+            <span class="bold">Mes: </span> <span class="text-capitalize">@Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"))</span>
         </div>
         <div>
             <span class="bold">Tipo de Cambio Venta: </span> <span>@Model.tipo_cambio_ventas.ToString("0.0000")</span>

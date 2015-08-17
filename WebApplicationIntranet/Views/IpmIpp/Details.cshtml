@@ -5,7 +5,7 @@
 }
 
 <div class="title-container-details">
-    <h3 class="screen-title">Detalles del Indice de Precio x Mayor – Indice de Precio Promedio</h3>
+    <h3 class="screen-title">Detalles del &Iacute;ndice de Precio x Mayor – &Iacute;ndice de Precio Promedio</h3>
     <a href="/IpmIpp/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 
     <div class="info-child-screen-details">
@@ -14,7 +14,7 @@
         </div>
 
         <div>
-            <span class="bold">Mes: </span> <span>@Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper()</span>
+            <span class="bold">Mes: </span> <span class="text-capitalize">@Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"))</span>
         </div>
         <div>
             <span class="bold">CIIU: </span> <span>@Model.Ciiu.ToString()</span>

@@ -10,7 +10,7 @@
     <thead>
         <tr class="cabecera">
             <th style="width: 20px;"></th>
-            <th> Mes </th>
+            <th> MES </th>
             <th> CIIU </th>
             <th> IPM </th>
             <th> IPP </th>
@@ -31,7 +31,7 @@
                         <a href="javascript:void(0);" class="toogleStatus" data-toggle="tooltip" data-placement="top" data-original-title="Activar" title="" data-id="@item.Id"><i class="glyphicon glyphicon-remove-sign"></i></a>
                     }
                 </td>
-                <td>@item.fecha.ToString("MMMM",CultureInfo.GetCultureInfo("ES")).ToUpper()</td>
+                <td class="text-capitalize">@item.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"))</td>
                 <td>@item.Ciiu.ToString()</td>
                 <td>@item.ipm.ToString("0.0000", CultureInfo.InvariantCulture)</td>
                 <td>@item.ipp.ToString("0.0000", CultureInfo.InvariantCulture)</td>                

@@ -1,9 +1,13 @@
 ﻿@model Entity.IpmIpp
 @using System.Globalization
+@using System.Threading
 @Scripts.Render("~/bundles/tools")
 @{
     Layout = "";
-    var title = "Nuevo Indice de precio: " + Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper();
+    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+    TextInfo textInfo = cultureInfo.TextInfo;
+    var mes=Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
+    var title = "Nuevo Índice de precio: " +textInfo.ToTitleCase(mes) ;
     var ciuuName = Model.Ciiu.ToString();
     if (ciuuName.Length > 34)
     {
@@ -58,8 +62,10 @@
         <div class="form-group">
             <label for="IPP" class="col-md-4 control-label"> IPP</label>
             <div class="col-md-7">
-                @Html.Label(Model.ipp.ToString("0.0000", CultureInfo.InvariantCulture), new { @class = "form-control mask4", style = "max-width: 280px;" })
-                @Html.ValidationMessageFor(model => model.ipp)
+               
+                <span class="form-control mask4" style="max-width: 280px;">@Model.ipp.ToString("0.0000", CultureInfo.InvariantCulture)</span>
+                
+                
             </div>
 
         </div>
