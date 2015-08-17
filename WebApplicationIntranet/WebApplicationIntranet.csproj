@@ -246,6 +246,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap1.css" />
     <Content Include="Content\bootstrap.min1.css" />
+    <Content Include="Content\chosen-sprite.png" />
     <Content Include="Content\chosen.css" />
     <Content Include="Content\darkly.css" />
     <Content Include="Content\flatly.css" />
