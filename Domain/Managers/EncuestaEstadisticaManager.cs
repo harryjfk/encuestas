@@ -30,6 +30,34 @@ namespace Domain.Managers
             return Repository.Get(t => t.Id == idEncuesta).FirstOrDefault();
         }
 
+        public override OperationResult<EncuestaEstadistica> Add(EncuestaEstadistica element)
+        {
+            var result = base.Add(element);
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = element.Id,
+                accion = "Nuevo Registro",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
+            return result;
+        }
+        public override OperationResult<EncuestaEstadistica> Modify(EncuestaEstadistica element, params string[] properties)
+        {
+            var result = base.Modify(element, properties);
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = element.Id,
+                accion = "Modificación",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
+            return result;
+        }
         public bool GenerateCurrent(long idEstablecimiento,DateTime? date=null)
         {
             var now =date?? DateTime.Now.Subtract(TimeSpan.FromDays(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)));
@@ -552,6 +580,15 @@ namespace Domain.Managers
             encuesta.Justificacion = observacion;
             Manager.EncuestaEstadistica.Modify(encuesta);
             Manager.EncuestaEstadistica.SaveChanges();
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = encuesta.Id,
+                accion = "Observada",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
         }
         public void Validar(long id)
         {
@@ -569,6 +606,15 @@ namespace Domain.Managers
             {
                 next.current = 1;
                 Manager.EncuestaAnalistaManager.Modify(next);
+                var auditoria = new Auditoria()
+                {
+                    id_encuesta = encuesta.Id,
+                    accion = "Validada",
+                    fecha = DateTime.Now,
+                    usuario = Usuario
+                };
+                Manager.AuditoriaManager.Add(auditoria);
+                Manager.AuditoriaManager.SaveChanges();
             }
             else
             {
@@ -576,6 +622,15 @@ namespace Domain.Managers
                 encuesta.fecha_validacion = DateTime.Now;
                 Manager.EncuestaEstadistica.Modify(encuesta);
                 Manager.EncuestaEstadistica.SaveChanges();
+                var auditoria = new Auditoria()
+                {
+                    id_encuesta = encuesta.Id,
+                    accion = "Validada",
+                    fecha = DateTime.Now,
+                    usuario = Usuario
+                };
+                Manager.AuditoriaManager.Add(auditoria);
+                Manager.AuditoriaManager.SaveChanges();
             }
             Manager.EncuestaAnalistaManager.SaveChanges();
         }

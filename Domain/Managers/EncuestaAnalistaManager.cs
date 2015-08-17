@@ -23,8 +23,9 @@ namespace Domain.Managers
         {
         }
 
+       
 
-
+        
         public override List<string> Validate(EncuestaAnalista element)
         {
             var list= base.Validate(element);

@@ -25,9 +25,9 @@
           </Key>
           <Property Name="id_auditoria" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="id_encuesta" Type="number" Precision="11" Scale="0" Nullable="false" />
-          <Property Name="accion" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="usuario" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="accion" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CAT_CARGO">
           <Key>
@@ -330,6 +330,7 @@
           <Property Name="envio_1" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="envio_2" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="frecuencia" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CAT_POSIBLE_RESPUESTA">
           <Key>
@@ -1534,8 +1535,8 @@
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="fecha_ultimo_envio" Type="DateTime" />
-          <NavigationProperty Name="CAT_AUDITORIA" Relationship="Model.SYS_C008297" FromRole="Encuesta" ToRole="CAT_AUDITORIA" />
           <NavigationProperty Name="CAT_ENCUESTA_ANALISTA" Relationship="Model.SYS_C008373" FromRole="Encuesta" ToRole="CAT_ENCUESTA_ANALISTA" />
+          <NavigationProperty Name="CAT_AUDITORIA" Relationship="Model.SYS_C008297" FromRole="Encuesta" ToRole="CAT_AUDITORIA" />
         </EntityType>
         <EntityType Name="EncuestaEmpresarial" BaseType="Model.Encuesta">
           <NavigationProperty Name="Preguntas" Relationship="Model.SYS_C0012622" FromRole="EncuestaEmpresarial" ToRole="Pregunta" />
@@ -2295,11 +2296,6 @@
             <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
           </AssociationSet>
           <EntitySet Name="CAT_PARAMETRIZACION_ENVIO" EntityType="Model.ParametrizacionEnvio" />
-          <EntitySet Name="CAT_AUDITORIA" EntityType="Model.Auditoria" />
-          <AssociationSet Name="SYS_C008297" Association="Model.SYS_C008297">
-            <End Role="Encuesta" EntitySet="CAT_ENCUESTA" />
-            <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
-          </AssociationSet>
           <EntitySet Name="CAT_ESTAB_ANALISTA" EntityType="Model.EstablecimientoAnalista" />
           <AssociationSet Name="SYS_C008338" Association="Model.SYS_C008338">
             <End Role="Establecimiento" EntitySet="CAT_ESTABLECIMIENTO" />
@@ -2325,6 +2321,11 @@
           <AssociationSet Name="SYS_C008375" Association="Model.SYS_C008375">
             <End Role="Usuario" EntitySet="SEG_USUARIO" />
             <End Role="CAT_ENCUESTA_ANALISTA" EntitySet="CAT_ENCUESTA_ANALISTA" />
+          </AssociationSet>
+          <EntitySet Name="CAT_AUDITORIA" EntityType="Model.Auditoria" />
+          <AssociationSet Name="SYS_C008297" Association="Model.SYS_C008297">
+            <End Role="Encuesta" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
           </AssociationSet>
           </EntityContainer>
         <Association Name="SYS_C0012622">
@@ -2726,30 +2727,8 @@
           <Property Name="envio_1" Type="Int64" Nullable="false" />
           <Property Name="envio_2" Type="Int64" Nullable="false" />
           <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="frecuencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Auditoria">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="id_encuesta" Type="Int64" Nullable="false" />
-          <Property Name="accion" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="usuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="fecha" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C008297" FromRole="CAT_AUDITORIA" ToRole="Encuesta" />
-        </EntityType>
-        <Association Name="SYS_C008297">
-          <End Type="Model.Encuesta" Role="Encuesta" Multiplicity="1" />
-          <End Type="Model.Auditoria" Role="CAT_AUDITORIA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Encuesta">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CAT_AUDITORIA">
-              <PropertyRef Name="id_encuesta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="EstablecimientoAnalista">
           <Key>
             <PropertyRef Name="Id" />
@@ -2859,6 +2838,29 @@
             </Principal>
             <Dependent Role="CAT_ENCUESTA_ANALISTA">
               <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Auditoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="id_encuesta" Type="Int64" Nullable="false" />
+          <Property Name="usuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <Property Name="accion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C008297" FromRole="CAT_AUDITORIA" ToRole="Encuesta" />
+        </EntityType>
+        <Association Name="SYS_C008297">
+          <End Type="Model.Encuesta" Role="Encuesta" Multiplicity="1" />
+          <End Type="Model.Auditoria" Role="CAT_AUDITORIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Encuesta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_AUDITORIA">
+              <PropertyRef Name="id_encuesta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3337,6 +3339,7 @@
           <EntitySetMapping Name="CAT_PARAMETRIZACION_ENVIO">
             <EntityTypeMapping TypeName="Model.ParametrizacionEnvio">
               <MappingFragment StoreEntitySet="CAT_PARAMETRIZACION_ENVIO">
+                <ScalarProperty Name="frecuencia" ColumnName="frecuencia" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="envio_2" ColumnName="envio_2" />
                 <ScalarProperty Name="envio_1" ColumnName="envio_1" />
@@ -3344,17 +3347,6 @@
                 <ScalarProperty Name="mensaje" ColumnName="mensaje" />
                 <ScalarProperty Name="tipo_encuesta" ColumnName="tipo_encuesta" />
                 <ScalarProperty Name="Id" ColumnName="id_parametrizacion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CAT_AUDITORIA">
-            <EntityTypeMapping TypeName="Model.Auditoria">
-              <MappingFragment StoreEntitySet="CAT_AUDITORIA">
-                <ScalarProperty Name="fecha" ColumnName="fecha" />
-                <ScalarProperty Name="usuario" ColumnName="usuario" />
-                <ScalarProperty Name="accion" ColumnName="accion" />
-                <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
-                <ScalarProperty Name="Id" ColumnName="id_auditoria" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3379,6 +3371,17 @@
                 <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
                 <ScalarProperty Name="orden" ColumnName="orden" />
                 <ScalarProperty Name="Id" ColumnName="id_encuesta_analista" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_AUDITORIA">
+            <EntityTypeMapping TypeName="Model.Auditoria">
+              <MappingFragment StoreEntitySet="CAT_AUDITORIA">
+                <ScalarProperty Name="accion" ColumnName="accion" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
+                <ScalarProperty Name="Id" ColumnName="id_auditoria" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

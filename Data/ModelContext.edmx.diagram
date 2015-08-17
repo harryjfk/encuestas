@@ -82,8 +82,6 @@
         <AssociationConnector Association="Model.SYS_C008224" />
         <AssociationConnector Association="Model.SYS_C008225" />
         <EntityTypeShape EntityType="Model.ParametrizacionEnvio" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Model.Auditoria" Width="1.5" PointX="11.25" PointY="32.125" />
-        <AssociationConnector Association="Model.SYS_C008297" />
         <EntityTypeShape EntityType="Model.EstablecimientoAnalista" Width="2.25" PointX="8" PointY="15.625" />
         <AssociationConnector Association="Model.SYS_C008338" />
         <AssociationConnector Association="Model.SYS_C008339" />
@@ -92,6 +90,8 @@
         <AssociationConnector Association="Model.SYS_C008374" />
         <AssociationConnector Association="Model.SYS_C008373" />
         <AssociationConnector Association="Model.SYS_C008375" />
+        <EntityTypeShape EntityType="Model.Auditoria" Width="1.5" PointX="12.75" PointY="32.125" />
+        <AssociationConnector Association="Model.SYS_C008297" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

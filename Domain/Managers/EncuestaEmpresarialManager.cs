@@ -90,6 +90,34 @@ namespace Domain.Managers
             }
         }
 
+        public override OperationResult<EncuestaEmpresarial> Add(EncuestaEmpresarial element)
+        {
+            var result = base.Add(element);
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = element.Id,
+                accion = "Nuevo Registro",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
+            return result;
+        }
+        public override OperationResult<EncuestaEmpresarial> Modify(EncuestaEmpresarial element, params string[] properties)
+        {
+            var result = base.Modify(element, properties);
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = element.Id,
+                accion = "Modificación",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
+            return result;
+        }
         public override void UpdateKey(EncuestaEmpresarial element)
         {
             long id = 1;

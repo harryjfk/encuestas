@@ -48,7 +48,7 @@ namespace WindowsService
                 DateTime.Now.ToString("hh:mm:ss tt"));
             LogEvent(message, EventLogEntryType.Information);
            
-            Timer = new Timer(/*72000000*/5000) { AutoReset = true };
+            Timer = new Timer(72000000) { AutoReset = true };
             Timer.Elapsed += Timer_Elapsed;
             Timer.Start();
         }

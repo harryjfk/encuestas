@@ -192,6 +192,7 @@ namespace WebApplication.Controllers
             entidad = miserviciosunat.BuscarSunatProduccionParametro(id);
 
             return Json(entidad.ddp_nombreField, JsonRequestBehavior.AllowGet);
+            //return Json("", JsonRequestBehavior.AllowGet);
         }
     }
 }

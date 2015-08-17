@@ -16,8 +16,8 @@ namespace Entity
     {
         public Encuesta()
         {
-            this.CAT_AUDITORIA = new HashSet<Auditoria>();
             this.CAT_ENCUESTA_ANALISTA = new HashSet<EncuestaAnalista>();
+            this.CAT_AUDITORIA = new HashSet<Auditoria>();
         }
     
         public long Id { get; set; }
@@ -34,7 +34,7 @@ namespace Entity
     
         public virtual Establecimiento Establecimiento { get; set; }
         public virtual Usuario Informante { get; set; }
-        public virtual ICollection<Auditoria> CAT_AUDITORIA { get; set; }
         public virtual ICollection<EncuestaAnalista> CAT_ENCUESTA_ANALISTA { get; set; }
+        public virtual ICollection<Auditoria> CAT_AUDITORIA { get; set; }
     }
 }

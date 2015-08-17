@@ -1,6 +1,7 @@
 ﻿@model Entity.ParametrizacionEnvio
 @{
     Layout = "";
+    var cont = 0;
 }
 @using (Html.BeginForm("Create", "Parametrización de Envío", FormMethod.Post, new { name = "Pa-635744606616650796" }))
 {
@@ -21,7 +22,9 @@
         @if (Model != null)
         {
             @Html.HiddenFor(t => t.tipo_encuesta);
+            @Html.HiddenFor(t => t.frecuencia);
             <input type="hidden" name="Id" value="@Model.Id" />
+            
         }
 
         <div class="form-group">
@@ -32,67 +35,99 @@
             </div>
            
         </div>
-
+       
         <div class="form-group">
-            <label for="mensaje" class="col-md-4 control-label"> Mensaje</label>
+            <label for="tipo_encuesta" class="col-md-4 control-label"> Frecuencia</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.mensaje, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.mensaje)
+                @foreach (var item in Model.FrecuenciaDic())
+                {
+                    var check = item.Value ? "checked='checked'" : "";
+                    <div class="col-md-4">
+                        <div>
+                            <input class="frec" type="checkbox" value="@item.Key" @check />
+                            <span>@item.Key</span>
+                        </div>
+                    </div>
+                    cont++;
+                }
             </div>
-            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-        </div>
-
-        <div class="form-group">
-            <label for="comienzo" class="col-md-4 control-label"> Comienzo</label>
-            <div class="col-md-7">
-                <input type="text" value="@Model.comienzo.ToString("dd-MM-yyyy")" class="form-control" name="Comienzo" id="datetimepicker1" />
-                <span class="input-group-addon input-group-addon-datetimepicker">
-                    <span style="margin-top: 2px;" class="fa fa-calendar"></span>
-                </span>
-
             </div>
-            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-        </div>
 
-        <div class="form-group">
-            <label for="envio_1" class="col-md-4 control-label"> Env&iacute;on 1</label>
-            <div class="col-md-7">
-                @Html.TextBoxFor(t => t.envio_1, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.envio_1)
+            <div class="form-group">
+                <label for="mensaje" class="col-md-4 control-label"> Mensaje</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.mensaje, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.mensaje)
+                </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
             </div>
-            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-        </div>
 
-        <div class="form-group">
-            <label for="envio_2" class="col-md-4 control-label"> Env&iacute;o 2</label>
-            <div class="col-md-7">
-                @Html.TextBoxFor(t => t.envio_2, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.envio_2)
+            <div class="form-group">
+                <label for="comienzo" class="col-md-4 control-label"> Comienzo</label>
+                <div class="col-md-7">
+                    <input type="text" value="@Model.comienzo.ToString("dd-MM-yyyy")" class="form-control" name="Comienzo" id="datetimepicker1" />
+                    <span class="input-group-addon input-group-addon-datetimepicker">
+                        <span style="margin-top: 2px;" class="fa fa-calendar"></span>
+                    </span>
+
+                </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
             </div>
-            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-        </div>
-        <div class="form-group">
-            <label for="Activado" class="col-md-4 control-label">Enviar correo si no se ha llenado encuesta</label>
-            <div class="col-md-1">
-                @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
-                @Html.ValidationMessageFor(model => model.Activado)
+
+            <div class="form-group">
+                <label for="envio_1" class="col-md-4 control-label"> Env&iacute;on 1</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.envio_1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.envio_1)
+                </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
             </div>
+
+            <div class="form-group">
+                <label for="envio_2" class="col-md-4 control-label"> Env&iacute;o 2</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.envio_2, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.envio_2)
+                </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+            </div>
+            <div class="form-group">
+                <label  class="col-md-4 control-label">Enviar correo si no se ha llenado encuesta</label>
+                <div class="col-md-1">
+                    @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                    
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+
         </div>
-
-
-        <div class="modal-footer">
-            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        </div>
-
-    </div>
 }
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $(".frec").each(function(i, e) {
+            var elem = $(e);
+           
+            elem.change(function (h) {
+                var res = "";
+                $(".frec").each(function(i1,e1) {
+                    if (e1.checked) {
+                        res += " " + $(e1).val();
+                    }
+                });
+                res = res.trim();
+                $("#frecuencia").val(res);
+            });
+        });
         $("button[name='aceptarbtn']").click(function () {
             var $elem = $(this);
             $elem.addClass("disabled");
+            console.log($("form[name='Pa-635744606616650796']").serialize());
             $.ajax({
                 cache: false,
                 type: "POST",
@@ -123,6 +158,7 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     $elem.removeClass("disabled");
                     alert('Failed to retrieve data.');
+                    //console.log(arguments);
                 }
             });
 
