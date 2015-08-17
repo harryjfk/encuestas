@@ -1,8 +1,12 @@
 ﻿@using System.Globalization
+@using System.Threading
 @model Entity.TipoCambio
 @{
     Layout = "";
-    var title = "Tipo de Cambio del mes de " + Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
+    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+    TextInfo textInfo = cultureInfo.TextInfo;
+    var mes = Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
+    var title = "Tipo de Cambio del Mes: " +textInfo.ToTitleCase(mes);
 }
 @using (Html.BeginForm("Create", "TipoCambio", FormMethod.Post, new { name = "Ti-635733798421580056" }))
 {
@@ -37,7 +41,7 @@
         <div class="form-group">
             <label for="tipo_cambio_ventas" class="col-md-4 control-label"> Tipo de Cambio Venta</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.tipo_cambio_ventas, new { @class = "form-control mask4" , Value = String.Format("{0:0.0000}", Model.tipo_cambio_ventas)})
+                @Html.TextBoxFor(t => t.tipo_cambio_ventas, new { @class = "form-control mask4" , Value =Model.tipo_cambio_ventas.ToString("0.0000", CultureInfo.InvariantCulture)})
                 @Html.ValidationMessageFor(model => model.tipo_cambio_ventas)
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
@@ -46,7 +50,7 @@
         <div class="form-group">
             <label for="tipo_cambio_compra" class="col-md-4 control-label"> Tipo de Cambio Compra</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.tipo_cambio_compra, new { @class = "form-control mask4", Value = String.Format("{0:0.0000}", Model.tipo_cambio_compra) })
+                @Html.TextBoxFor(t => t.tipo_cambio_compra, new { @class = "form-control mask4", Value =Model.tipo_cambio_compra.ToString("0.0000",CultureInfo.InvariantCulture)})
                 @Html.ValidationMessageFor(model => model.tipo_cambio_compra)
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
