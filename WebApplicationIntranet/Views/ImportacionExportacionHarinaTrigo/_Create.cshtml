@@ -6,7 +6,7 @@
     Layout = "";
     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
     TextInfo textInfo = cultureInfo.TextInfo;
-    var mes=Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
+    var mes = Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
     var title = "Exportación de Harina de Trigo del mes " + textInfo.ToTitleCase(mes);
 }
 @using (Html.BeginForm("Create", "ImportacionExportacionHarinaTrigo", FormMethod.Post, new { name = "Ex-635736754188769006" }))
@@ -28,6 +28,7 @@
         @if (Model != null)
         {
             <input type="hidden" name="Id" value="@Model.Id" />
+            @Html.HiddenFor(t => t.fecha)
         }
 
         <div class="form-group">
@@ -43,12 +44,12 @@
             <div class="col-md-7">
                 @Html.Label(Model.fecha.Year.ToString(), new { @class = "form-control", style = "max-width: 280px;" })
             </div>
-           
+
         </div>
         <div class="form-group">
             <label for="fob_usd" class="col-md-4 control-label"> FOB USD</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.fob_usd, new { @class = "form-control mask4", Value=Model.fob_usd.ToString("0.0000",CultureInfo.InvariantCulture) })
+                @Html.TextBoxFor(t => t.fob_usd, new { @class = "form-control mask4", Value = Model.fob_usd.ToString("0.0000", CultureInfo.InvariantCulture) })
                 @Html.ValidationMessageFor(model => model.fob_usd)
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
@@ -57,10 +58,14 @@
         <div class="form-group">
             <label for="fob_s" class="col-md-4 control-label"> FOB S/.</label>
             <div class="col-md-7">
-               
-                <span class="form-control mask4" style="max-width:280px;">@Model.fob_s.ToString("0.0000", CultureInfo.InvariantCulture)</span>
-            </div>
+                <span id="fob_s" class="form-control mask4" style="max-width:280px;">@Model.fob_s.ToString("0.0000", CultureInfo.InvariantCulture)</span>
 
+            </div>
+            @*<div style="margin-top: 10px;" class="col-md-1 txt-color-red">
+                <a id="search-fob" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Calcular ">
+                    <i class="glyphicon glyphicon-search"></i>
+                </a>
+            </div>*@
         </div>
 
 
@@ -84,8 +89,35 @@
 }
 
 <script type="text/javascript">
+    var tipoCambioVenta = 0;
     $(document).ready(function () {
-        $("form[name='Ex-635736754188769006']").submit(function (e) { e.preventDefault();});
+        $('#fob_usd').on('input', function (e) {
+            var elem = $('#fob_usd');
+            var v1 = parseFloat(elem.val());
+            var v2 = parseFloat(tipoCambioVenta);
+            var value = v1 * v2;
+             $('#fob_s').html(value.toFixed(4));
+        });
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/ImportacionExportacionHarinaTrigo/GetTipoCambioVenta/",
+                data: { "id": "@Model.Id" },
+                success: function (data) {
+                    tipoCambioVenta = data;
+                    if (tipoCambioVenta == 0) {
+                        var error = "<li>" + "No se ha establecido el valor de tipo de cambio venta para el mes de @mes del @Model.fecha.Year.ToString()" + "</li>";
+                        $("#errors-container").removeClass("hidden").find("ul").html(error);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+      
+        $("form[name='Ex-635736754188769006']").submit(function (e) { e.preventDefault(); });
         $("button[name='aceptarbtn']").click(function () {
             var fobUsd = $("#fob_usd");
             if (fobUsd && fobUsd.val() != "") {
@@ -127,10 +159,11 @@
             } else {
                 $.errorIsRequired();
             }
-            
+
 
         });
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
         $.changeModalName("@title");
+
     })
 </script>

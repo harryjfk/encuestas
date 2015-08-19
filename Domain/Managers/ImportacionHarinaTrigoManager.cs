@@ -22,6 +22,13 @@ namespace Domain.Managers
             : base(context, manager)
         {
         }
+
+        public override OperationResult<ImportacionHarinaTrigo> Modify(ImportacionHarinaTrigo element, params string[] properties)
+        {
+            var res = base.Modify(element, properties);
+            CalcularFobSoles(element.Id);
+            return res;
+        }
         public override List<string> Validate(ImportacionHarinaTrigo element)
         {
             var list= base.Validate(element);
@@ -45,6 +52,37 @@ namespace Domain.Managers
                 }
                 SaveChanges();
             }
+        }
+
+        public decimal CalcularFobSoles(long id)
+        {
+            var element = Find(id);
+            if (element == null) return 0;
+            var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
+            if (tipocambio == null || tipocambio.tipo_cambio_compra == 0) return 0;
+            var result = tipocambio.tipo_cambio_compra * element.cif_usd;
+            element.cif_s = result;
+            base.Modify(element);
+            SaveChanges();
+            return result;
+        }
+        public decimal CalcularFobSoles(long id, decimal value)
+        {
+            var element = Find(id);
+            if (element == null) return 0;
+            var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
+            if (tipocambio == null || tipocambio.tipo_cambio_compra == 0) return 0;
+            var result = tipocambio.tipo_cambio_compra * value;
+            return result;
+        }
+        public decimal GetTipoCambioVenta(long id)
+        {
+            var element = Find(id);
+            if (element == null) return 0;
+            var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
+            if (tipocambio == null || tipocambio.tipo_cambio_compra == 0) return 0;
+            var result = tipocambio.tipo_cambio_compra;
+            return result;
         }
     }
 }
