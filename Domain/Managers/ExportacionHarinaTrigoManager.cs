@@ -11,7 +11,7 @@ using Entity;
 
 namespace Domain.Managers
 {
-    public class ExportacionHarinaTrigoManager:GenericManager<ExportacionHarinaTrigo>
+    public class ExportacionHarinaTrigoManager : GenericManager<ExportacionHarinaTrigo>
     {
         public ExportacionHarinaTrigoManager(GenericRepository<ExportacionHarinaTrigo> repository, Manager manager)
             : base(repository, manager)
@@ -22,11 +22,19 @@ namespace Domain.Managers
             : base(context, manager)
         {
         }
+
+        public override OperationResult<ExportacionHarinaTrigo> Modify(ExportacionHarinaTrigo element, params string[] properties)
+        {
+            var res = base.Modify(element, properties);
+            CalcularFobSoles(element.Id);
+            return res;
+        }
+
         public override List<string> Validate(ExportacionHarinaTrigo element)
         {
-            var list= base.Validate(element);
+            var list = base.Validate(element);
             list.RequiredAndNotZero(element, t => t.fob_usd, "FOB USD");
-           
+
             return list;
         }
         public void Generate(int año)
@@ -46,6 +54,37 @@ namespace Domain.Managers
                 }
                 SaveChanges();
             }
+        }
+
+        public decimal CalcularFobSoles(long id)
+        {
+            var element = Find(id);
+            if (element == null) return 0;
+            var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
+            if (tipocambio == null || tipocambio.tipo_cambio_ventas == 0) return 0;
+            var result = tipocambio.tipo_cambio_ventas * element.fob_usd;
+            element.fob_s = result;
+            base.Modify(element);
+            SaveChanges();
+            return result;
+        }
+        public decimal CalcularFobSoles(long id,decimal value)
+        {
+            var element = Find(id);
+            if (element == null) return 0;
+            var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
+            if (tipocambio == null || tipocambio.tipo_cambio_ventas == 0) return 0;
+            var result = tipocambio.tipo_cambio_ventas * value;
+            return result;
+        }
+        public decimal GetTipoCambioVenta(long id)
+        {
+            var element = Find(id);
+            if (element == null) return 0;
+            var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
+            if (tipocambio == null || tipocambio.tipo_cambio_ventas == 0) return 0;
+            var result = tipocambio.tipo_cambio_ventas;
+            return result;
         }
     }
 }
