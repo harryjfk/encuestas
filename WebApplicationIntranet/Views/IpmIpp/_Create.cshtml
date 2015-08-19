@@ -7,7 +7,7 @@
     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
     TextInfo textInfo = cultureInfo.TextInfo;
     var mes=Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
-    var title = "Nuevo Índice de precio: " +textInfo.ToTitleCase(mes) ;
+    var title = "IPM-IPP del mes " +textInfo.ToTitleCase(mes) ;
     var ciuuName = Model.Ciiu.ToString();
     if (ciuuName.Length > 34)
     {
@@ -88,41 +88,50 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("form[name='Ip-635735146899438972']").submit(function (e) {
+            e.preventDefault();          
+        });
         $("button[name='aceptarbtn']").click(function () {
-            var $elem = $(this);
-            $elem.addClass("disabled");
-            $.ajax({
-                cache: false,
-                type: "POST",
-                url: $.origin() + "/IpmIpp/CreatePost/",
-                data: $("form[name='Ip-635735146899438972']").serialize(),
-                success: function (data) {
-                    $elem.removeClass("disabled");
-                    if (data.Success) {
-                        $("#table-container").html(data.Data);
-                        $("#editItem").modal("hide");
-                        $.smallBox({
-                            title: "Confirmación",
-                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
-                            color: "#659265",
-                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                            timeout: 4000
-                        });
-                    } else {
-                        var errors = "";
-                        for (var i = 0; i < data.Errors.length; i++) {
-                            errors += "<li>" + data.Errors[i] + "</li>";
+            var ipm = $("#ipm");
+            if (ipm.val() != "") {
+                var $elem = $(this);
+                $elem.addClass("disabled");
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/IpmIpp/CreatePost/",
+                    data: $("form[name='Ip-635735146899438972']").serialize(),
+                    success: function (data) {
+                        $elem.removeClass("disabled");
+                        if (data.Success) {
+                            $("#table-container").html(data.Data);
+                            $("#editItem").modal("hide");
+                            $.smallBox({
+                                title: "Confirmación",
+                                content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                                color: "#659265",
+                                iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                timeout: 4000
+                            });
+                        } else {
+                            var errors = "";
+                            for (var i = 0; i < data.Errors.length; i++) {
+                                errors += "<li>" + data.Errors[i] + "</li>";
+                            }
+                            $("#errors-container").removeClass("hidden").find("ul").html(errors);
                         }
-                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                        //$("#editItem .modal-body").html(data);
+                        //$("#editItem").modal("show");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $elem.removeClass("disabled");
+                        alert('Failed to retrieve data.');
                     }
-                    //$("#editItem .modal-body").html(data);
-                    //$("#editItem").modal("show");
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    $elem.removeClass("disabled");
-                    alert('Failed to retrieve data.');
-                }
-            });
+                });
+            } else {
+                $.errorIsRequired();
+            }
+            
 
         });
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });

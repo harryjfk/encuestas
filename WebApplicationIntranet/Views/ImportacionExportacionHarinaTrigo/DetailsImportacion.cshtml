@@ -5,7 +5,7 @@
 }
 
 <div class="title-container-details">
-    <h3 class="screen-title">Detalles del Importacion de Harina de Trigo</h3>
+    <h3 class="screen-title">Detalle de Importaci&oacute;n de Harina de Trigo</h3>
     <a href="/ImportacionExportacionHarinaTrigo/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 
     <div class="info-child-screen-details">
@@ -16,7 +16,7 @@
             <span class="bold">Año: </span> <span>@Model.fecha.ToString("yyyy", CultureInfo.GetCultureInfo("ES"))</span>
         </div>
         <div>
-            <span class="bold">Mes: </span> <span>@Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"))</span>
+            <span class="bold">Mes: </span> <span class="text-capitalize">@Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"))</span>
         </div>
         <div>
             <span class="bold">CIF USD: </span> <span>@Model.cif_usd.ToString("0.0000", CultureInfo.GetCultureInfo("ES"))</span>

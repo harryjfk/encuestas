@@ -97,6 +97,7 @@
                 data: { "id": id },
                 success: function (data) {
                     $("#editItem .modal-body").html(data);
+                    $.changeModalName("Línea de Producto");
                     $("#editItem").modal("show");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {

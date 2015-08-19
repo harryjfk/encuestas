@@ -75,40 +75,52 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("button[name='aceptarbtn']").click(function () {
-            var $elem = $(this);
-            $elem.addClass("disabled");
-            $.ajax({
-                cache: false,
-                type: "POST",
-                url: $.origin() + "/TipoCambio/CreatePost/",
-                data: $("form[name='Ti-635733798421580056']").serialize(),
-                success: function (data) {
-                    $elem.removeClass("disabled");
-                    if (data.Success) {
-                        $("#table-container").html(data.Data);
-                        $("#editItem").modal("hide");
-                        $.smallBox({
-                            title: "Confirmación",
-                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
-                            color: "#659265",
-                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                            timeout: 4000
-                        });
-                    } else {
-                        var errors = "";
-                        for (var i = 0; i < data.Errors.length; i++) {
-                            errors += "<li>" + data.Errors[i] + "</li>";
+            var tipoCambioV = $("#tipo_cambio_ventas");
+            var tipoCambioC = $("#tipo_cambio_compra");
+            if (tipoCambioV.val() != "" && tipoCambioC != "") {
+                var $elem = $(this);
+                $elem.addClass("disabled");
+
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/TipoCambio/CreatePost/",
+                    data: $("form[name='Ti-635733798421580056']").serialize(),
+                    success: function (data) {
+                        $elem.removeClass("disabled");
+                        if (data.Success) {
+                            $("#table-container").html(data.Data);
+                            $("#editItem").modal("hide");
+                            $.smallBox({
+                                title: "Confirmación",
+                                content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                                color: "#659265",
+                                iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                timeout: 4000
+                            });
+                        } else {
+                            var errors = "";
+                            for (var i = 0; i < data.Errors.length; i++) {
+                                errors += "<li>" + data.Errors[i] + "</li>";
+                            }
+                            $("#errors-container").removeClass("hidden").find("ul").html(errors);
                         }
-                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                        //$("#editItem .modal-body").html(data);
+                        //$("#editItem").modal("show");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $elem.removeClass("disabled");
+                        alert('Failed to retrieve data.');
                     }
-                    //$("#editItem .modal-body").html(data);
-                    //$("#editItem").modal("show");
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    $elem.removeClass("disabled");
-                    alert('Failed to retrieve data.');
-                }
-            });
+                });
+            } else            
+            {
+
+               
+                $.errorIsRequired();
+               
+            }
+            
 
         });
         var el = $('.modal-dialog .modal-content .modal-header h4')[0];

@@ -7,7 +7,7 @@ namespace Entity.Parciales
 {
     public enum EnumSubsector
     {
-        ManufacturaPrimaria=1,
-        ManufacturaNoPrimaria=2
+        Manufactura_Primaria=1,
+        Manufactura_No_Primaria=2
     }
 }
