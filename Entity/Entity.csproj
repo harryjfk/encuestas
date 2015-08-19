@@ -216,6 +216,9 @@
     <Compile Include="VentasServicioManufactura.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewProcentajeEncuestaExtadistica.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
     <Compile Include="VolumenProduccion.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>

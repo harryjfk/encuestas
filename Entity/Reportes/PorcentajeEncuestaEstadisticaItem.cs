@@ -9,17 +9,29 @@ namespace Entity.Reportes
     {
         public string Analista { get; set; }
         public long IdAnalista { get; set; }
-        public IList<MonthData> Month { get; set; }
-        public IList<CiiuData> Ciius { get; set; }
+        public List<MonthData> Month { get; set; }
+        public List<CiiuData> Ciius { get; set; }
+        public int Total { get; set; }
 
-       
+        public PorcentajeEncuestaEstadisticaItem()
+        {
+            Month = new List<MonthData>();
+            Ciius = new List<CiiuData>();
+        }
+
     }
 
     public class MonthData
     {
         public string Name { get; set; }
         public int Number { get; set; }
-        public int Value { get; set; }
+        public int MonthlyValue { get; set; }
+        public int Total { get; set; }
+
+        public double Percent
+        {
+            get { return MonthlyValue * 100.0 / Total; }
+        }
     }
 
     public class CiiuData
@@ -27,6 +39,11 @@ namespace Entity.Reportes
         public string Name { get; set; }
         public long Id { get; set; }
         public IList<MonthData> Month { get; set; }
+
+        public CiiuData()
+        {
+            Month = new List<MonthData>();
+        }
     }
 
 

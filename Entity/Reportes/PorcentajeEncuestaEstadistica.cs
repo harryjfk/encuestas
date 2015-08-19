@@ -8,6 +8,11 @@ namespace Entity.Reportes
 {
     public class PorcentajeEncuestaEstadistica
     {
-        public IEnumerable<PorcentajeEncuestaEstadisticaItem> Elements { get; set; }
+        public List<PorcentajeEncuestaEstadisticaItem> Elements { get; set; }
+
+        public PorcentajeEncuestaEstadistica()
+        {
+            Elements = new List<PorcentajeEncuestaEstadisticaItem>();
+        }
     }
 }

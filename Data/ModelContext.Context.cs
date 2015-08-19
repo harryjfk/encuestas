@@ -61,5 +61,6 @@ namespace Data
         public DbSet<EstablecimientoAnalista> CAT_ESTAB_ANALISTA { get; set; }
         public DbSet<EncuestaAnalista> CAT_ENCUESTA_ANALISTA { get; set; }
         public DbSet<Auditoria> CAT_AUDITORIA { get; set; }
+        public DbSet<ViewProcentajeEncuestaExtadistica> CAT_PORCENTAJE_ENC_EST { get; set; }
     }
 }

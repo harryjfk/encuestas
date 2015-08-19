@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using Data.Contratos;
 using Entity;
 using System;
@@ -62,6 +63,16 @@ namespace Domain
             if (varianza <= 0) return 0;
             
             return Math.Sqrt(varianza);
+        }
+
+        public static string GetMonthText(this int number)
+        {
+            var now = DateTime.Now;
+            var date = new DateTime(now.Year, number, now.Day);
+            var cInfo = CultureInfo.GetCultureInfo("es");
+            var textInfo = cInfo.TextInfo;
+            var month= date.ToString("MMMM", cInfo);
+            return textInfo.ToTitleCase(month);
         }
 
         //public static Func<T, bool> GetFilter<T>(this string text) where T : class
