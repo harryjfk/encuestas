@@ -9,6 +9,8 @@
 			});
 		});
 		$('.mask0').inputmask("9{1,20}");
+		$('.maskEnvio').inputmask('integer', { min: 1, max: 28,placeholder:"",rightAlign:0,allowMinus:1 });;
+		
 		$.InitTooltip();
 	
 })
