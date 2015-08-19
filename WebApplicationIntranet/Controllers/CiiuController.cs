@@ -28,12 +28,12 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
-        public ActionResult GetDorpDownEstablecimiento(string id, string nombre = "IdCiiu", string @default = null, long idEstablecimiento = 0)
+        public ActionResult GetDorpDownEstablecimiento(string id, string nombre = "IdCiiu", string @default = null, long idEstablecimiento = 0,bool showAllCollection=true)
         {
             Func<Ciiu, bool> filter = t => t.Activado;
             Func<Ciiu, bool> filter2 = t => t.Activado;
 
-            if (idEstablecimiento > 0)
+            if (idEstablecimiento > 0||!showAllCollection)
             {                
                 filter2 = t => filter(t) && t.Establecimientos.Any(h => h.Id == idEstablecimiento);
             }

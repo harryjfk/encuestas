@@ -66,16 +66,25 @@
         //}
        
     },
-    getDropDrown: function (path, data, idContainer,succesFunc) {
+    getDropDrown: function (path, parameters, idContainer,succesFunc,onchangeFunc) {
         $.ajax({
             cache: false,
             type: "POST",
             url: $.origin() + path,
-            data: data,
+            data: parameters,
             success: function (data) {
                 $(idContainer).html(data);
                 
-                if(succesFunc){succesFunc();}
+                if (onchangeFunc) {
+                    if (parameters.nombre) {
+                       
+                        $("#" + parameters.nombre).on("change", function () { onchangeFunc(); });
+                    }
+                }
+                if (succesFunc) {
+                    succesFunc();
+                }
+
                 
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -84,7 +93,7 @@
             }
         });
     },
-
+    //para especificar al usuario que le faltan campos requeridos por poner su valor
     errorIsRequired: function () {
         var errors = "<li> Debe llenar los campos requeridos</li>";
         $("#errors-container").removeClass("hidden").find("ul").html(errors);
