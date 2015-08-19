@@ -7,9 +7,9 @@ namespace Entity.Parciales
 {
     public enum EnumRubro
     {
-        BienesDeConsumo=1,
-        BienesIntermedios=2,
-        BienesDeCapital=3,
+        Bienes_De_Consumo=1,
+        Bienes_Intermedios=2,
+        Bienes_DeCapital=3,
         Servicios=4
     }
 }

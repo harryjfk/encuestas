@@ -816,9 +816,15 @@ namespace Domain.Managers
             list.Required(element, t => t.Codigo, "Codigo");
             list.Required(element, t => t.sub_sector, "Sub Sector");
             list.Required(element, t => t.id_metodo_calculo, "Tipo de Cálculo");
+            if(element.id_metodo_calculo==0)            
+                list.Add("Debe seleccionar un método de cálculo");
+            if (element.sub_sector == 0)
+                list.Add("Debe seleccionar un sub-sector");
+            
             if (element.sub_sector == 2)
             {
-                list.Required(element, t => t.rubro, "Rubro");
+                if (element.rubro == 0)
+                    list.Add("Debe seleccionar un rubro");               
             }
 
             list.MaxLength(element, t => t.Codigo,4, "Codigo");

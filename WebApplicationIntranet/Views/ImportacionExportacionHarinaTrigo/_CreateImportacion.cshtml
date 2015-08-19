@@ -7,7 +7,7 @@
     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
     TextInfo textInfo = cultureInfo.TextInfo;
     var mes=Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
-    var title = "Nuevo Importación de Harina de Trigo del mes " + textInfo.ToTitleCase(mes);
+    var title = "Importación de Harina de Trigo del mes " + textInfo.ToTitleCase(mes);
 }
 @using (Html.BeginForm("CreateImportacion", "ImportacionExportacionHarinaTrigo", FormMethod.Post, new { name = "Im-635736756422892342" }))
 {

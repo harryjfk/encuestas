@@ -4,10 +4,11 @@
         $("*[data-toggle='tooltip']").tooltip();
     },
 
-    CreateItemOpenModal: function (idCreateBtn, idModalElement, entityName,action) {
+    CreateItemOpenModal: function (idCreateBtn, idModalElement, entityName,action,modalName) {
         //idCreateBtn: id del boton de crear un nuevo elemento del CRUD
         //idModalElement: id del elemento html del modal
         //entityName: nombre de la entidad del CRUD
+        //El nombre con el que se quiere mostrar el modal
         action = action ? action : "Edit";
         $("#" + idCreateBtn).click(function () {
             $.ajax({
@@ -18,6 +19,9 @@
                 success: function (data) {
                     $("#" + idModalElement + " .modal-body").html(data);
                     $("#" + idModalElement).modal("show");
+                    if (modalName) {
+                        $.changeModalName(modalName);
+                    }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Ocurrió un error.');
