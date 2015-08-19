@@ -205,6 +205,7 @@
     <Compile Include="Controllers\EncuestaEmpresarialController.cs" />
     <Compile Include="Controllers\IpmIppController.cs" />
     <Compile Include="Controllers\LineaProductoEstablecimientoController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\PreguntaController.cs" />
     <Compile Include="Controllers\ProvinciaController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
@@ -476,6 +477,7 @@
     <Content Include="Views\Auditoria\Index.cshtml" />
     <Content Include="Views\Auditoria\_Table.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_InfoAnalistas.cshtml" />
+    <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\Index.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>
