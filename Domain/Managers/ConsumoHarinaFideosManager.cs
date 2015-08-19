@@ -26,7 +26,7 @@ namespace Domain.Managers
         public override List<string> Validate(ConsumoHarinaFideo element)
         {
             var list= base.Validate(element);
-            list.Required(element,t=>t.tonelada_tmb,"Toneladas TMB");
+            list.RequiredAndNotZero(element, t => t.tonelada_tmb, "Toneladas TMB");
             return list;
         }
         public void Generate(int año)

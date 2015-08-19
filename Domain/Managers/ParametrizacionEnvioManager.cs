@@ -65,9 +65,14 @@ namespace Domain.Managers
             var list = base.Validate(element);
             list.Required(element, t => t.mensaje, "Mensaje");
             list.Required(element, t => t.comienzo, "Comienzo");
-            list.Required(element, t => t.envio_1, "Envío 1");
-            list.Required(element, t => t.envio_1, "Envío 2");
+            list.RequiredAndNotZero(element, t => t.envio_1, "Envío 1");
+            list.RequiredAndNotZero(element, t => t.envio_2, "Envío 2");
+            list.Range(element, t => t.envio_1, 1, 28, "Envío 1");
+            list.Range(element, t => t.envio_2, 1, 28, "Envío 2");
             list.MaxLength(element, t => t.mensaje, 500, "Mensaje");
+            if (list.Count == 0 && element.envio_1>=element.envio_2)
+                list.Add("El parámetro \"Envío 1\" debe ser menor que el parámetro \"Envío 2\"");
+            
             return list;
         }
         public override OperationResult<ParametrizacionEnvio> Modify(ParametrizacionEnvio element, params string[] properties)
@@ -87,6 +92,7 @@ namespace Domain.Managers
             if (parametro != null && parametro.Activado)
             {
                 var now = DateTime.Now;
+                if (parametro.comienzo > now) return;
                 if (parametro.Frecuencia().Count > 0)
                 {
                     var day = now.DayOfWeek.ToString(CultureInfo.GetCultureInfo("es")).Substring(0, 3).ToUpper();
@@ -141,11 +147,11 @@ namespace Domain.Managers
                             t =>
                                 t.Encuestas.OfType<EncuestaEstadistica>()
                                     .Any(h => h.EstadoEncuesta == EstadoEncuesta.NoEnviada && (h.Fecha.Year == temp.Year && h.Fecha.Month == temp.Month))).ToList();
-                 
+
                     foreach (var s in establecimientos)
                     {
                         var predeterminado = s.ContactoPredeterminado;
-                        if(predeterminado==null || predeterminado.Correo==null)continue;
+                        if (predeterminado == null || predeterminado.Correo == null) continue;
                         var s1 = predeterminado.Correo;
                         var s2 = s;
                         ThreadPool.QueueUserWorkItem(state =>
@@ -167,9 +173,10 @@ namespace Domain.Managers
             if (parametro != null && parametro.Activado)
             {
                 var now = DateTime.Now;
+                if (parametro.comienzo > now) return;
                 if (parametro.Frecuencia().Count > 0)
                 {
-                   var day= now.DayOfWeek.ToString(CultureInfo.GetCultureInfo("es")).Substring(0, 3).ToUpper();
+                    var day = now.DayOfWeek.ToString(CultureInfo.GetCultureInfo("es")).Substring(0, 3).ToUpper();
                     if (parametro.Frecuencia().Any(t => t.ToUpper().Equals(day)))
                     {
                         var establecimientos = Manager.Establecimiento.Get(t => t.EnviarCorreo
@@ -221,7 +228,7 @@ namespace Domain.Managers
                             t =>
                                 t.Encuestas.OfType<EncuestaEmpresarial>()
                                     .Any(h => h.EstadoEncuesta == EstadoEncuesta.NoEnviada && (h.Fecha.Year == temp.Year && h.Fecha.Month == temp.Month))).ToList();
-                  
+
 
                     foreach (var s in establecimientos)
                     {

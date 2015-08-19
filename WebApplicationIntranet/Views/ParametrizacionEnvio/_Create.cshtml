@@ -75,7 +75,7 @@
             </div>
 
             <div class="form-group">
-                <label for="envio_1" class="col-md-4 control-label"> Env&iacute;on 1</label>
+                <label for="envio_1" class="col-md-4 control-label"> Env&iacute;o 1</label>
                 <div class="col-md-7">
                     @Html.TextBoxFor(t => t.envio_1, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.envio_1)
@@ -127,7 +127,7 @@
         $("button[name='aceptarbtn']").click(function () {
             var $elem = $(this);
             $elem.addClass("disabled");
-            console.log($("form[name='Pa-635744606616650796']").serialize());
+            //console.log($("form[name='Pa-635744606616650796']").serialize());
             $.ajax({
                 cache: false,
                 type: "POST",

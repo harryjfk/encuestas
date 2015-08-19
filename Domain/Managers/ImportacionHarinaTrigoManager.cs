@@ -25,8 +25,7 @@ namespace Domain.Managers
         public override List<string> Validate(ImportacionHarinaTrigo element)
         {
             var list= base.Validate(element);
-            list.Required(element,t=>t.cif_s,"CIF S/.");
-            list.MaxLength(element,t=>t.cif_usd,50,"CIF USD");
+            list.RequiredAndNotZero(element, t => t.cif_usd, "CIF USD");
             return list;
         }
         public void Generate(int año)

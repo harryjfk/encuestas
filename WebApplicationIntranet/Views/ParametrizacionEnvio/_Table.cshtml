@@ -33,7 +33,11 @@
                 </td>
                 <td>@Html.DisplayFor(modelItem => item.tipo_encuesta)</td>
                 <td>@item.comienzo.ToString("dd-MM-yyyy")</td>
-                <td>@item.frecuencia</td>
+                <td>@foreach (var f in item.Frecuencia())
+                    {
+                        <span class="label label-primary">@f</span>
+                    }
+                </td>
                 <td>@Html.DisplayFor(modelItem => item.envio_1)</td>
                 <td>@Html.DisplayFor(modelItem => item.envio_2)</td>
                 <td>@Html.DisplayFor(modelItem => item.mensaje)</td>
