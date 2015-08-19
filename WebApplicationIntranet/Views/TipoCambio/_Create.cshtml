@@ -77,7 +77,8 @@
         $("button[name='aceptarbtn']").click(function () {
             var tipoCambioV = $("#tipo_cambio_ventas");
             var tipoCambioC = $("#tipo_cambio_compra");
-            if (tipoCambioV.val() != "" && tipoCambioC != "") {
+            console.log(tipoCambioC);
+            if (tipoCambioV.val() != "" && tipoCambioC.val() != "") {
                 var $elem = $(this);
                 $elem.addClass("disabled");
 
@@ -115,10 +116,7 @@
                 });
             } else            
             {
-
-               
                 $.errorIsRequired();
-               
             }
             
 
