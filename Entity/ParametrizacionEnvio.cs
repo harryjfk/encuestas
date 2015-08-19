@@ -21,5 +21,6 @@ namespace Entity
         public long envio_1 { get; set; }
         public long envio_2 { get; set; }
         public decimal estado { get; set; }
+        public string frecuencia { get; set; }
     }
 }

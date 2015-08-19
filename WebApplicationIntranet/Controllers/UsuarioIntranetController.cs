@@ -25,7 +25,7 @@ namespace WebApplication.Controllers
         }
         public static Query<UsuarioIntranet> QueryAnalista { get; set; }
         public static Query<UsuarioIntranet> QueryAdministrador { get; set; }
-        public static Query<Establecimiento> QueryEstablecimientosAsignados { get; set; }
+        public static Query<EstablecimientoAnalista> QueryEstablecimientosAsignados { get; set; }
         public static Query<Establecimiento> QueryEstablecimientosNoAsignados { get; set; }
         public static UsuarioIntranet Analista { get; set; }
         public virtual Manager Manager
@@ -143,23 +143,23 @@ namespace WebApplication.Controllers
             
             if (user == null) return HttpNotFound("Analista no encontrado");
             Analista = user;
-            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
+            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
-            QueryEstablecimientosAsignados.Criteria = QueryEstablecimientosAsignados.Criteria ?? new Establecimiento();
-            QueryEstablecimientosAsignados.Criteria.IdAnalista = id;
+            QueryEstablecimientosAsignados.Criteria = QueryEstablecimientosAsignados.Criteria ?? new EstablecimientoAnalista();
+            QueryEstablecimientosAsignados.Criteria.id_analista = id;
             ViewBag.NombreAnalista = user.Trabajador;
             QueryEstablecimientosAsignados.BuildFilter();
             QueryEstablecimientosAsignados.Paginacion.ItemsPerPage = 10;
-            Manager.Establecimiento.Get(QueryEstablecimientosAsignados);
+            Manager.EstablecimientoAnalistaManager.Get(QueryEstablecimientosAsignados);
             return View("Establecimientos", QueryEstablecimientosAsignados);
         }
         //
 
         [HttpPost]
-        public virtual ActionResult BuscarEstablecimientosAsignados(Establecimiento criteria)
+        public virtual ActionResult BuscarEstablecimientosAsignados(EstablecimientoAnalista criteria)
         {
             if (Analista == null) return HttpNotFound("Analista no encontrado");
-            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
+            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
             QueryEstablecimientosAsignados.Criteria = criteria;
             QueryEstablecimientosAsignados.Paginacion = QueryEstablecimientosAsignados.Paginacion ?? new Paginacion();
@@ -170,7 +170,7 @@ namespace WebApplication.Controllers
         public ActionResult PageEstablecimientosAsignados(int page)
         {
             if (Analista == null) return HttpNotFound("Analista no encontrado");
-            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
+            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
             QueryEstablecimientosAsignados.Paginacion.Page = page;
             return RedirectToAction("Establecimientos", new { id = Analista.Identificador, idrol = Analista.IdRol });
@@ -183,10 +183,10 @@ namespace WebApplication.Controllers
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados.Validate();
             QueryEstablecimientosNoAsignados.BuildFilter();
             QueryEstablecimientosNoAsignados.Paginacion.ItemsPerPage = 10;
-            Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados);
+            Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados,(long)user.Identificador);
             return PartialView("EstablecimientosNoAsignados", QueryEstablecimientosNoAsignados);
         }
-        public JsonResult AsignarEstablecimiento(long id)
+        public JsonResult AsignarEstablecimiento(long id,long idCiiu,int orden)
         {
             //UsuarioIntranet usuarioIntranet = new UsuarioIntranet();
             //usuarioIntranet = Manager.Usuario.FindUsuarioIntranetByLogin(this.User.Identity.Name.ToString());
@@ -197,20 +197,20 @@ namespace WebApplication.Controllers
             }
 
             //Manager.Usuario.AsignarEstablecimientoAnalista(Analista, id);
-            Manager.Usuario.AsignarEstablecimientoAnalista((int)Analista.Identificador, id);
+            Manager.Usuario.AsignarEstablecimientoAnalista((int)Analista.Identificador, id,idCiiu,orden);
 
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosNoAsignados = QueryEstablecimientosNoAsignados.Validate();
             QueryEstablecimientosNoAsignados.BuildFilter();
-            Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados);
+            Manager.Establecimiento.GetNoAsignadosAnalistas(QueryEstablecimientosNoAsignados, (int)Analista.Identificador);
             var noAsignados = this.RenderRazorViewToString("EstablecimientosNoAsignados", QueryEstablecimientosNoAsignados);
 
-            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
+            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
-            QueryEstablecimientosAsignados.Criteria = QueryEstablecimientosAsignados.Criteria ?? new Establecimiento();
-            QueryEstablecimientosAsignados.Criteria.IdAnalista = Analista.Identificador;
+            QueryEstablecimientosAsignados.Criteria = QueryEstablecimientosAsignados.Criteria ?? new EstablecimientoAnalista();
+            //QueryEstablecimientosAsignados.Criteria.IdAnalista = Analista.Identificador;
             QueryEstablecimientosAsignados.BuildFilter();
-            Manager.Establecimiento.Get(QueryEstablecimientosAsignados);
+            Manager.EstablecimientoAnalistaManager.Get(QueryEstablecimientosAsignados);
             var asignados = this.RenderRazorViewToString("_TableEstablecimientosAsignados", QueryEstablecimientosAsignados);
 
             var result = new
@@ -255,27 +255,27 @@ namespace WebApplication.Controllers
             Analista = UsuarioActual;
             //Analista = Manager.Usuario.FindUsuarioIntranet(user.Id);         
             if (Analista == null) return this.HttpNotFound("No se pudo encontrar el analista");
-            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
+            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
-            QueryEstablecimientosAsignados.Criteria = QueryEstablecimientosAsignados.Criteria ?? new Establecimiento();
-            QueryEstablecimientosAsignados.Criteria.IdAnalista = Analista.Identificador;
+            QueryEstablecimientosAsignados.Criteria = QueryEstablecimientosAsignados.Criteria ?? new EstablecimientoAnalista();
+            QueryEstablecimientosAsignados.Criteria.id_analista = Analista.Identificador;
             QueryEstablecimientosAsignados.BuildFilter();
             QueryEstablecimientosAsignados.Paginacion.ItemsPerPage = 10;
-            Manager.Establecimiento.Get(QueryEstablecimientosAsignados);
+            Manager.EstablecimientoAnalistaManager.Get(QueryEstablecimientosAsignados);
             if (QueryEstablecimientosAsignados.Elements.Count == 1 && QueryEstablecimientosAsignados.Filter == null)
             {
                 var establecimiento = QueryEstablecimientosAsignados.Elements.FirstOrDefault();
-                return RedirectToAction("Encuestas", "EncuestaEmpresarialAnalista", new { id = establecimiento.Id });
+                return RedirectToAction("Encuestas", "EncuestaEmpresarialAnalista", new { id = establecimiento.id_establecimiento });
             }
            // ViewBag.UserId = user.Id;
             ViewBag.UserId = Analista.Identificador;          
             return View("EstablecimientosEncuestaEmpresarial", QueryEstablecimientosAsignados);
         }
         [HttpPost]
-        public virtual ActionResult BuscarEstablecimientosEncuestaEmpresarial(Establecimiento criteria)
+        public virtual ActionResult BuscarEstablecimientosEncuestaEmpresarial(EstablecimientoAnalista criteria)
         {
             if (Analista == null) return HttpNotFound("Analista no encontrado");
-            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
+            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
             QueryEstablecimientosAsignados.Criteria = criteria;
             QueryEstablecimientosAsignados.Paginacion = QueryEstablecimientosAsignados.Paginacion ?? new Paginacion();
@@ -286,7 +286,7 @@ namespace WebApplication.Controllers
         public ActionResult PageEstablecimientosEncuestaEmpresarial(int page)
         {
             if (Analista == null) return HttpNotFound("Analista no encontrado");
-            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
+            QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<EstablecimientoAnalista>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
             QueryEstablecimientosAsignados.Paginacion.Page = page;
             return RedirectToAction("EstablecimientosEncuestaEmpresarial", new { id = Analista.Identificador });

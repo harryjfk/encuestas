@@ -17,21 +17,53 @@ namespace Data
 
         public static void EnviarCorreo(this string[] to, string subject, string content)
         {
-            var user = ConfigurationManager.AppSettings["SmtpUser"];
-            var password = ConfigurationManager.AppSettings["SmtpPassword"];
-            var host = ConfigurationManager.AppSettings["SmtpHost"];
-            var port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
-            var useSsl = bool.Parse(ConfigurationManager.AppSettings["SmtpSsl"]);
-            var credential = new NetworkCredential(user, password);
-            var server = new SmtpClient(host, port)
+            try
             {
-                EnableSsl = useSsl,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = credential
-            };
-            var message = new MailMessage(user, to.Aggregate((t, h) => t + "," + h), subject, content) { IsBodyHtml = true };
-            server.Send(message);
+                var user = ConfigurationManager.AppSettings["SmtpUser"];
+                var password = ConfigurationManager.AppSettings["SmtpPassword"];
+                var host = ConfigurationManager.AppSettings["SmtpHost"];
+                var port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
+                var useSsl = bool.Parse(ConfigurationManager.AppSettings["SmtpSsl"]);
+                var credential = new NetworkCredential(user, password);
+                var server = new SmtpClient(host, port)
+                {
+                    EnableSsl = useSsl,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = credential
+                };
+                var message = new MailMessage(user, to.Aggregate((t, h) => t + "," + h), subject, content) { IsBodyHtml = true };
+                server.Send(message);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+        public static void EnviarCorreo(this string to, string subject, string content)
+        {
+            try
+            {
+                var user = ConfigurationManager.AppSettings["SmtpUser"];
+                var password = ConfigurationManager.AppSettings["SmtpPassword"];
+                var host = ConfigurationManager.AppSettings["SmtpHost"];
+                var port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
+                var useSsl = bool.Parse(ConfigurationManager.AppSettings["SmtpSsl"]);
+                var credential = new NetworkCredential(user, password);
+                var server = new SmtpClient(host, port)
+                {
+                    EnableSsl = useSsl,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = credential
+                };
+                var message = new MailMessage(user, to, subject, content) { IsBodyHtml = true };
+                server.Send(message);
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
 
         public static Func<T, string> GetDefault<T>()
@@ -171,6 +203,13 @@ namespace Data
                     new string[]
                     {
                         "Estado","Activado","Id","IdCargo"
+                    }
+                },
+                 {
+                    typeof (EstablecimientoAnalista), 
+                    new string[]
+                    {
+                        "Id","orden","id_ciiu","id_establecimiento"
                     }
                 },
                 {

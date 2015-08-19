@@ -2,33 +2,35 @@
 @using PagedList.Mvc
 @model Domain.Query<Entity.Establecimiento>
 @*@using (Html.BeginForm("BuscarEstablecimientosNoAsignados", "UsuarioIntranet", FormMethod.Post,new{id="formSearchEstNoAsig",name="formSearch"}))
-{
-    <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">B&Uacute;SQUEDA</div>
 
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <span class="input-group-addon">RAZ&Oacute;N SOCIAL</span>
-                        @*<input type="text" class="form-control">*@
-                        @*@Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <input type="button" value="Buscar" name="buscarbtn" class="btn btn-default send" />
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-addon">RAZ&Oacute;N SOCIAL</span>
+                            @*<input type="text" class="form-control">*@
+@*@Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
                 </div>
             </div>
-        </div>*@
+            <div class="col-md-4">
+                <input type="button" value="Buscar" name="buscarbtn" class="btn btn-default send" />
+            </div>
+        </div>
+    </div>*@
 
 
-    @*</div>
-}*@
+@*</div>
+    }*@
 <table class="table table-striped table-hover table-bordered table-condensed tabla small">
     <thead>
         <tr class="cabecera">
             <th>RAZ&Oacute;N SOCIAL</th>
             <th>RUC</th>
+            <th>CIIU</th>
+           <th style="width: 100px">ORDEN</th>
             <th>ACCI&Oacute;N</th>
     </thead>
 
@@ -38,6 +40,8 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
                 <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
+                <td>@{Html.RenderAction("GetCiiuAsignarAnalista", "Establecimiento", new { nombre = "ciiu_" + item.Id, IdEstablecimiento = item.Id });}</td>
+                <td>@{Html.RenderAction("GetOrden", "Establecimiento", new { nombre = "orden_"+item.Id, IdEstablecimiento = item.Id});}</td>
                 <td>
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Asignar" id="edit-@item.Id" role="@item.Id" class="asign-btn">
                         <i class="color-black glyphicon glyphicon-ok"></i>
@@ -63,11 +67,13 @@
         $(".asign-btn").click(function () {
             var $elem = $(this);
             var id = $elem.attr("role");
+            var idCiiu = $('#ciiu_' + id).val();
+            var orden = $('#orden_' + id).val();
             $.ajax({
                 cache: false,
                 type: "GET",
                 url: $.origin() + "/UsuarioIntranet/AsignarEstablecimiento/",
-                data: { "id": id },
+                data: { "id": id,"idCiiu": idCiiu, "orden":orden},
                 success: function (data) {
                     if (data.Success) {
                         $("#editItem .modal-body").html(data.NoAsignados);
@@ -91,7 +97,7 @@
         });
         var pag = $(".modal-body .pagination-container");
         pag.removeClass("pagination-container");
-        $("#formSearchEstNoAsig .send").click(function() {
+        $("#formSearchEstNoAsig .send").click(function () {
             $.ajax({
                 cache: false,
                 type: "POST",
@@ -100,7 +106,7 @@
                 success: function (data) {
                     if (data.Success) {
                         $("#editItem .modal-body").html(data)
-                       
+
                     } else {
 
                     }

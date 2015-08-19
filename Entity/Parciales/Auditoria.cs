@@ -21,17 +21,7 @@ namespace Entity
             }
         }
 
-        public AccionEnum AccionEnum
-        {
-            get
-            {
-                return (AccionEnum) Enum.Parse(typeof(AccionEnum), accion.ToString());
-            }
-            set
-            {
-                accion = (int) value;
-            }
-        }
+       
 
         public Func<Auditoria, bool> BuildFilter()
         {

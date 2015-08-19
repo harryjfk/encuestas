@@ -173,17 +173,17 @@
         {
             @Html.Raw("valores.push({   IdPosResp:'" + v.IdPosibleRespuesta + "',Texto:'" + v.Texto + "', IdPregunta: '" + v.IdPregunta + "', PreguntaText: '" + (v.Pregunta != null ? v.Pregunta.Texto : "Ninguna") + "',Personalizado:"+v.Personalizado.ToString().ToLower()+"});")
         }
-        setTimeout(function () {
-            $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
-            $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
-            $('#PreguntaId_chosen').css('width', '280px');
-            var a = $("a[class*='chosen-single']");
-            if (a != null) {
-                a.css("border", "0");
-                a.css("background", "white");
-                a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-            }
-        }, 500);
+        //setTimeout(function () {
+        //    $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+        //    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+        //    $('#PreguntaId_chosen').css('width', '280px');
+        //    var a = $("a[class*='chosen-single']");
+        //    if (a != null) {
+        //        a.css("border", "0");
+        //        a.css("background", "white");
+        //        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+        //    }
+        //}, 500);
 
         $("#nuevoValor").click(function () {
             $("input[name='valortexto']").val("");
@@ -252,18 +252,18 @@
             $("select[name='PreguntaId']").val(temp.IdPregunta != "" ? temp.IdPregunta : 0);
             tempEdit = temp;
             $(".create-value-container").removeClass("hidden");
-            setTimeout(function () {
-                $("#PreguntaId").chosen('destroy');
-                $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
-                $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
-                $('#PreguntaId_chosen').css('width', '280px');
-                var a = $("a[class*='chosen-single']");
-                if (a != null) {
-                    a.css("border", "0");
-                    a.css("background", "white");
-                    a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-                }
-            }, 1);
+            //setTimeout(function () {
+            //    $("#PreguntaId").chosen('destroy');
+            //    $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+            //    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+            //    $('#PreguntaId_chosen').css('width', '280px');
+            //    var a = $("a[class*='chosen-single']");
+            //    if (a != null) {
+            //        a.css("border", "0");
+            //        a.css("background", "white");
+            //        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+            //    }
+            //}, 1);
         });
 
         function refresh() {
@@ -304,18 +304,18 @@
                 $("select[name='PreguntaId']").val(temp.IdPregunta != "" ? temp.IdPregunta : 0);
                 tempEdit = temp;
                 $(".create-value-container").removeClass("hidden");
-                setTimeout(function () {
-                    $("#PreguntaId").chosen('destroy');
-                    $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
-                    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
-                    $('#PreguntaId_chosen').css('width', '280px');
-                    var a = $("a[class*='chosen-single']");
-                    if (a != null) {
-                        a.css("border", "0");
-                        a.css("background", "white");
-                        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-                    }
-                }, 1);
+                //setTimeout(function () {
+                //    $("#PreguntaId").chosen('destroy');
+                //    $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+                //    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+                //    $('#PreguntaId_chosen').css('width', '280px');
+                //    var a = $("a[class*='chosen-single']");
+                //    if (a != null) {
+                //        a.css("border", "0");
+                //        a.css("background", "white");
+                //        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                //    }
+                //}, 1);
             });
             $.InitTooltip();
         }

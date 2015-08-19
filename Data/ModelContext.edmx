@@ -25,9 +25,9 @@
           </Key>
           <Property Name="id_auditoria" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="id_encuesta" Type="number" Precision="11" Scale="0" Nullable="false" />
-          <Property Name="accion" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="usuario" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="accion" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CAT_CARGO">
           <Key>
@@ -95,13 +95,24 @@
           <Property Name="estado_ENCUESTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="fecha" Type="date" Nullable="false" />
           <Property Name="justificacion" Type="varchar2" MaxLength="1000" />
-          <Property Name="id_analista" Type="number" Precision="38" Scale="0" />
           <Property Name="id_informante" Type="number" Precision="38" Scale="0" />
           <Property Name="creado" Type="date" />
           <Property Name="modificado" Type="date" />
           <Property Name="usuario_creacion" Type="varchar2" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar2" MaxLength="50" />
           <Property Name="fecha_ultimo_envio" Type="date" />
+        </EntityType>
+        <EntityType Name="CAT_ENCUESTA_ANALISTA">
+          <Key>
+            <PropertyRef Name="id_encuesta_analista" />
+          </Key>
+          <Property Name="id_encuesta_analista" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="orden" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_encuesta" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_analista" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="current" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_ENCUESTA_EMPRESARIAL">
           <Key>
@@ -115,6 +126,16 @@
           </Key>
           <Property Name="id_ENCUESTA" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="fecha_validacion" Type="date" />
+        </EntityType>
+        <EntityType Name="CAT_ESTAB_ANALISTA">
+          <Key>
+            <PropertyRef Name="id_establecimiento_analista" />
+          </Key>
+          <Property Name="id_establecimiento_analista" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="orden" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_establecimiento" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="id_analista" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="id_ciiu" Type="number" Precision="11" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_ESTAB_CIIU">
           <Key>
@@ -152,7 +173,6 @@
           <Property Name="telefono" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="fax" Type="varchar2" MaxLength="100" />
           <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="id_analista" Type="number" Precision="38" Scale="0" />
           <Property Name="id_informante" Type="number" Precision="38" Scale="0" />
           <Property Name="observaciones" Type="varchar2" MaxLength="1000" />
           <Property Name="creado" Type="date" />
@@ -310,6 +330,7 @@
           <Property Name="envio_1" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="envio_2" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="estado" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="frecuencia" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CAT_POSIBLE_RESPUESTA">
           <Key>
@@ -504,20 +525,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C007761">
-          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SEG_USUARIO">
-              <PropertyRef Name="id_usuario" />
-            </Principal>
-            <Dependent Role="CAT_ENCUESTA">
-              <PropertyRef Name="id_analista" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="SYS_C007762">
           <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -627,18 +634,6 @@
             </Principal>
             <Dependent Role="CAT_ESTAB_LINEA_PROD">
               <PropertyRef Name="id_linea_prod" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SYS_C007770">
-          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="0..1" />
-          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SEG_USUARIO">
-              <PropertyRef Name="id_usuario" />
-            </Principal>
-            <Dependent Role="CAT_ESTABLECIMIENTO">
-              <PropertyRef Name="id_analista" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1124,6 +1119,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SYS_C008348">
+          <End Role="CAT_ESTABLECIMIENTO" Type="Self.CAT_ESTABLECIMIENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_ANALISTA" Type="Self.CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ESTABLECIMIENTO">
+              <PropertyRef Name="id_establecimiento" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008349">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_ANALISTA" Type="Self.CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008350">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ESTAB_ANALISTA" Type="Self.CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008373">
+          <End Role="CAT_ENCUESTA" Type="Self.CAT_ENCUESTA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA_ANALISTA" Type="Self.CAT_ENCUESTA_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_ENCUESTA">
+              <PropertyRef Name="id_ENCUESTA" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA_ANALISTA">
+              <PropertyRef Name="id_encuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008374">
+          <End Role="CAT_CIIU" Type="Self.CAT_CIIU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA_ANALISTA" Type="Self.CAT_ENCUESTA_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAT_CIIU">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA_ANALISTA">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008375">
+          <End Role="SEG_USUARIO" Type="Self.SEG_USUARIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAT_ENCUESTA_ANALISTA" Type="Self.CAT_ENCUESTA_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEG_USUARIO">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CAT_AÑO_BASE" EntityType="Self.CAT_AÑO_BASE" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_AUDITORIA" EntityType="Self.CAT_AUDITORIA" Schema="TEST" store:Type="Tables" />
@@ -1132,8 +1211,10 @@
           <EntitySet Name="CAT_CONSUMO_HARINA_FIDEO" EntityType="Self.CAT_CONSUMO_HARINA_FIDEO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_CONTACTO" EntityType="Self.CAT_CONTACTO" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ENCUESTA" EntityType="Self.CAT_ENCUESTA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ENCUESTA_ANALISTA" EntityType="Self.CAT_ENCUESTA_ANALISTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ENCUESTA_EMPRESARIAL" EntityType="Self.CAT_ENCUESTA_EMPRESARIAL" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ENCUESTA_ESTADISTICA" EntityType="Self.CAT_ENCUESTA_ESTADISTICA" Schema="TEST" store:Type="Tables" />
+          <EntitySet Name="CAT_ESTAB_ANALISTA" EntityType="Self.CAT_ESTAB_ANALISTA" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ESTAB_CIIU" EntityType="Self.CAT_ESTAB_CIIU" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ESTAB_LINEA_PROD" EntityType="Self.CAT_ESTAB_LINEA_PROD" Schema="TEST" store:Type="Tables" />
           <EntitySet Name="CAT_ESTABLECIMIENTO" EntityType="Self.CAT_ESTABLECIMIENTO" Schema="TEST" store:Type="Tables" />
@@ -1175,10 +1256,6 @@
             <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
             <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C007761" Association="Self.SYS_C007761">
-            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
-            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
-          </AssociationSet>
           <AssociationSet Name="SYS_C007762" Association="Self.SYS_C007762">
             <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
             <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
@@ -1210,10 +1287,6 @@
           <AssociationSet Name="SYS_C007769" Association="Self.SYS_C007769">
             <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
             <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_C007770" Association="Self.SYS_C007770">
-            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
-            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
           </AssociationSet>
           <AssociationSet Name="SYS_C007771" Association="Self.SYS_C007771">
             <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
@@ -1355,6 +1428,30 @@
             <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
             <End Role="CAT_AUDITORIA" EntitySet="CAT_AUDITORIA" />
           </AssociationSet>
+          <AssociationSet Name="SYS_C008348" Association="Self.SYS_C008348">
+            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008349" Association="Self.SYS_C008349">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008350" Association="Self.SYS_C008350">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008373" Association="Self.SYS_C008373">
+            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_ENCUESTA_ANALISTA" EntitySet="CAT_ENCUESTA_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008374" Association="Self.SYS_C008374">
+            <End Role="CAT_CIIU" EntitySet="CAT_CIIU" />
+            <End Role="CAT_ENCUESTA_ANALISTA" EntitySet="CAT_ENCUESTA_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008375" Association="Self.SYS_C008375">
+            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ENCUESTA_ANALISTA" EntitySet="CAT_ENCUESTA_ANALISTA" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1396,6 +1493,8 @@
           <Property Name="rubro" Type="Int64" Nullable="false" />
           <NavigationProperty Name="CAT_METODO_CALCULO" Relationship="Model.SYS_C008183" FromRole="Ciiu" ToRole="MetodoCalculo" />
           <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008223" FromRole="Ciiu" ToRole="CAT_AÑO_BASE" />
+          <NavigationProperty Name="CAT_ESTAB_ANALISTA" Relationship="Model.SYS_C008349" FromRole="Ciiu" ToRole="EstablecimientoAnalista" />
+          <NavigationProperty Name="CAT_ENCUESTA_ANALISTA" Relationship="Model.SYS_C008374" FromRole="Ciiu" ToRole="CAT_ENCUESTA_ANALISTA" />
         </EntityType>
         <EntityType Name="Contacto">
           <Key>
@@ -1428,9 +1527,7 @@
           <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="Fecha" Type="DateTime" Nullable="false" />
           <Property Name="Justificacion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="IdAnalista" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IdInformante" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="Analista" Relationship="Self.SYS_C0012599" FromRole="CAT_ENCUESTA" ToRole="SEG_USUARIO" />
           <NavigationProperty Name="Establecimiento" Relationship="Self.SYS_C0012600" FromRole="CAT_ENCUESTA" ToRole="CAT_ESTABLECIMIENTO" />
           <NavigationProperty Name="Informante" Relationship="Self.SYS_C0012601" FromRole="CAT_ENCUESTA" ToRole="SEG_USUARIO" />
           <Property Name="creado" Type="DateTime" />
@@ -1438,6 +1535,7 @@
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="fecha_ultimo_envio" Type="DateTime" />
+          <NavigationProperty Name="CAT_ENCUESTA_ANALISTA" Relationship="Model.SYS_C008373" FromRole="Encuesta" ToRole="CAT_ENCUESTA_ANALISTA" />
           <NavigationProperty Name="CAT_AUDITORIA" Relationship="Model.SYS_C008297" FromRole="Encuesta" ToRole="CAT_AUDITORIA" />
         </EntityType>
         <EntityType Name="EncuestaEmpresarial" BaseType="Model.Encuesta">
@@ -1482,13 +1580,11 @@
           <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Estado" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IdAnalista" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IdInformante" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="Observaciones" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Contactos" Relationship="Self.SYS_C0012597" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_CONTACTO" />
           <NavigationProperty Name="Encuestas" Relationship="Self.SYS_C0012600" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_ENCUESTA" />
           <NavigationProperty Name="LineasProductoEstablecimiento" Relationship="Self.SYS_C0012606" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_ESTAB_LINEA_PROD" />
-          <NavigationProperty Name="Analista" Relationship="Self.SYS_C0012608" FromRole="CAT_ESTABLECIMIENTO" ToRole="SEG_USUARIO" />
           <NavigationProperty Name="Informante" Relationship="Self.SYS_C0012609" FromRole="CAT_ESTABLECIMIENTO" ToRole="SEG_USUARIO" />
           <NavigationProperty Name="Ciius" Relationship="Self.CAT_ESTAB_CIIU" FromRole="CAT_ESTABLECIMIENTO" ToRole="CAT_CIIU" />
           <Property Name="creado" Type="DateTime" />
@@ -1499,7 +1595,8 @@
           <NavigationProperty Name="CAT_AÑO_BASE" Relationship="Model.SYS_C008222" FromRole="Establecimiento" ToRole="CAT_AÑO_BASE" />
           <Property Name="enviar_correo" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ultima_notificacion" Type="DateTime" />
-        </EntityType>
+          <NavigationProperty Name="CAT_ESTAB_ANALISTA" Relationship="Model.SYS_C008338" FromRole="Establecimiento" ToRole="CAT_ESTAB_ANALISTA" />
+          </EntityType>
         <EntityType Name="LineaProducto">
           <Key>
             <PropertyRef Name="Id" />
@@ -1724,15 +1821,15 @@
           <Property Name="Identificador" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="Login" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Contactos" Relationship="Self.SYS_C0012598" FromRole="SEG_USUARIO" ToRole="CAT_CONTACTO" />
-          <NavigationProperty Name="EncuestasAsAnalista" Relationship="Self.SYS_C0012599" FromRole="SEG_USUARIO" ToRole="CAT_ENCUESTA" />
           <NavigationProperty Name="EncuestasAsInformante" Relationship="Self.SYS_C0012601" FromRole="SEG_USUARIO" ToRole="CAT_ENCUESTA" />
-          <NavigationProperty Name="EstablecimientosAnalista" Relationship="Self.SYS_C0012608" FromRole="SEG_USUARIO" ToRole="CAT_ESTABLECIMIENTO" />
           <NavigationProperty Name="EstablecimientosInformante" Relationship="Self.SYS_C0012609" FromRole="SEG_USUARIO" ToRole="CAT_ESTABLECIMIENTO" />
           <NavigationProperty Name="Roles" Relationship="Self.SEG_USUARIO_ROL" FromRole="SEG_USUARIO" ToRole="SEG_ROL" />
           <Property Name="creado" Type="DateTime" />
           <Property Name="modificado" Type="DateTime" />
           <Property Name="usuario_creacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CAT_ESTAB_ANALISTA" Relationship="Model.SYS_C008339" FromRole="Usuario" ToRole="CAT_ESTAB_ANALISTA" />
+          <NavigationProperty Name="CAT_ENCUESTA_ANALISTA" Relationship="Model.SYS_C008375" FromRole="Usuario" ToRole="CAT_ENCUESTA_ANALISTA" />
         </EntityType>
         <Association Name="SYS_C0012596">
           <End Role="CAT_CARGO" Type="Model.Cargo" Multiplicity="0..1" />
@@ -1783,20 +1880,6 @@
             </Principal>
             <Dependent Role="CAT_CONTACTO">
               <PropertyRef Name="IdUsuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SYS_C0012599">
-          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CAT_ENCUESTA" Type="Model.Encuesta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SEG_USUARIO">
-              <PropertyRef Name="Identificador" />
-            </Principal>
-            <Dependent Role="CAT_ENCUESTA">
-              <PropertyRef Name="IdAnalista" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1856,18 +1939,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0012608">
-          <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1" />
-          <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SEG_USUARIO">
-              <PropertyRef Name="Identificador" />
-            </Principal>
-            <Dependent Role="CAT_ESTABLECIMIENTO">
-              <PropertyRef Name="IdAnalista" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+      
         <Association Name="SYS_C0012609">
           <End Role="SEG_USUARIO" Type="Model.Usuario" Multiplicity="0..1" />
           <End Role="CAT_ESTABLECIMIENTO" Type="Model.Establecimiento" Multiplicity="*" />
@@ -2064,10 +2136,6 @@
             <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
             <End Role="CAT_CONTACTO" EntitySet="CAT_CONTACTO" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0012599" Association="Self.SYS_C0012599">
-            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
-            <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
-          </AssociationSet>
           <AssociationSet Name="SYS_C0012600" Association="Self.SYS_C0012600">
             <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
             <End Role="CAT_ENCUESTA" EntitySet="CAT_ENCUESTA" />
@@ -2084,10 +2152,7 @@
             <End Role="CAT_LINEA_PRODUCTO" EntitySet="CAT_LINEA_PRODUCTO" />
             <End Role="CAT_ESTAB_LINEA_PROD" EntitySet="CAT_ESTAB_LINEA_PROD" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0012608" Association="Self.SYS_C0012608">
-            <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
-            <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
-          </AssociationSet>
+      
           <AssociationSet Name="SYS_C0012609" Association="Self.SYS_C0012609">
             <End Role="SEG_USUARIO" EntitySet="SEG_USUARIO" />
             <End Role="CAT_ESTABLECIMIENTO" EntitySet="CAT_ESTABLECIMIENTO" />
@@ -2231,6 +2296,32 @@
             <End Role="CAT_AÑO_BASE" EntitySet="CAT_AÑO_BASE" />
           </AssociationSet>
           <EntitySet Name="CAT_PARAMETRIZACION_ENVIO" EntityType="Model.ParametrizacionEnvio" />
+          <EntitySet Name="CAT_ESTAB_ANALISTA" EntityType="Model.EstablecimientoAnalista" />
+          <AssociationSet Name="SYS_C008338" Association="Model.SYS_C008338">
+            <End Role="Establecimiento" EntitySet="CAT_ESTABLECIMIENTO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008339" Association="Model.SYS_C008339">
+            <End Role="Usuario" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ESTAB_ANALISTA" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008349" Association="Model.SYS_C008349">
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+            <End Role="EstablecimientoAnalista" EntitySet="CAT_ESTAB_ANALISTA" />
+          </AssociationSet>
+          <EntitySet Name="CAT_ENCUESTA_ANALISTA" EntityType="Model.EncuestaAnalista" />
+          <AssociationSet Name="SYS_C008374" Association="Model.SYS_C008374">
+            <End Role="Ciiu" EntitySet="CAT_CIIU" />
+            <End Role="CAT_ENCUESTA_ANALISTA" EntitySet="CAT_ENCUESTA_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008373" Association="Model.SYS_C008373">
+            <End Role="Encuesta" EntitySet="CAT_ENCUESTA" />
+            <End Role="CAT_ENCUESTA_ANALISTA" EntitySet="CAT_ENCUESTA_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008375" Association="Model.SYS_C008375">
+            <End Role="Usuario" EntitySet="SEG_USUARIO" />
+            <End Role="CAT_ENCUESTA_ANALISTA" EntitySet="CAT_ENCUESTA_ANALISTA" />
+          </AssociationSet>
           <EntitySet Name="CAT_AUDITORIA" EntityType="Model.Auditoria" />
           <AssociationSet Name="SYS_C008297" Association="Model.SYS_C008297">
             <End Role="Encuesta" EntitySet="CAT_ENCUESTA" />
@@ -2636,16 +2727,129 @@
           <Property Name="envio_1" Type="Int64" Nullable="false" />
           <Property Name="envio_2" Type="Int64" Nullable="false" />
           <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="frecuencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="EstablecimientoAnalista">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="orden" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="id_establecimiento" Type="Int64" Nullable="false" />
+          <Property Name="id_analista" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CAT_ESTABLECIMIENTO" Relationship="Model.SYS_C008338" FromRole="CAT_ESTAB_ANALISTA" ToRole="Establecimiento" />
+          <NavigationProperty Name="SEG_USUARIO" Relationship="Model.SYS_C008339" FromRole="CAT_ESTAB_ANALISTA" ToRole="Usuario" />
+          <Property Name="id_ciiu" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="CAT_CIIU" Relationship="Model.SYS_C008349" FromRole="EstablecimientoAnalista" ToRole="Ciiu" />
+        </EntityType>
+        <Association Name="SYS_C008338">
+          <End Type="Model.Establecimiento" Role="Establecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EstablecimientoAnalista" Role="CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Establecimiento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008339">
+          <End Type="Model.Usuario" Role="Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EstablecimientoAnalista" Role="CAT_ESTAB_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_ESTAB_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008349">
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EstablecimientoAnalista" Role="EstablecimientoAnalista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciiu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EstablecimientoAnalista">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EncuestaAnalista">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="orden" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="id_encuesta" Type="Int64" Nullable="false" />
+          <Property Name="id_analista" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="id_ciiu" Type="Int64" Nullable="false" />
+          <Property Name="estado" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CAT_CIIU" Relationship="Model.SYS_C008374" FromRole="CAT_ENCUESTA_ANALISTA" ToRole="Ciiu" />
+          <NavigationProperty Name="CAT_ENCUESTA" Relationship="Model.SYS_C008373" FromRole="CAT_ENCUESTA_ANALISTA" ToRole="Encuesta" />
+          <NavigationProperty Name="SEG_USUARIO" Relationship="Model.SYS_C008375" FromRole="CAT_ENCUESTA_ANALISTA" ToRole="Usuario" />
+          <Property Name="current" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+        </EntityType>
+        <Association Name="SYS_C008374">
+          <End Type="Model.Ciiu" Role="Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EncuestaAnalista" Role="CAT_ENCUESTA_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciiu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA_ANALISTA">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008373">
+          <End Type="Model.Encuesta" Role="Encuesta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EncuestaAnalista" Role="CAT_ENCUESTA_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Encuesta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA_ANALISTA">
+              <PropertyRef Name="id_encuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008375">
+          <End Type="Model.Usuario" Role="Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.EncuestaAnalista" Role="CAT_ENCUESTA_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Identificador" />
+            </Principal>
+            <Dependent Role="CAT_ENCUESTA_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="Auditoria">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="id_encuesta" Type="Int64" Nullable="false" />
-          <Property Name="accion" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="usuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <Property Name="accion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Encuesta" Relationship="Model.SYS_C008297" FromRole="CAT_AUDITORIA" ToRole="Encuesta" />
         </EntityType>
         <Association Name="SYS_C008297">
@@ -2727,7 +2931,6 @@
                 <ScalarProperty Name="creado" ColumnName="creado" />
                 <ScalarProperty Name="Id" ColumnName="id_ENCUESTA" />
                 <ScalarProperty Name="IdInformante" ColumnName="id_informante" />
-                <ScalarProperty Name="IdAnalista" ColumnName="id_analista" />
                 <ScalarProperty Name="Justificacion" ColumnName="justificacion" />
                 <ScalarProperty Name="Fecha" ColumnName="fecha" />
                 <ScalarProperty Name="Estado" ColumnName="estado_ENCUESTA" />
@@ -2781,7 +2984,6 @@
                 <ScalarProperty Name="Telefono" ColumnName="telefono" />
                 <ScalarProperty Name="Fax" ColumnName="fax" />
                 <ScalarProperty Name="Estado" ColumnName="estado" />
-                <ScalarProperty Name="IdAnalista" ColumnName="id_analista" />
                 <ScalarProperty Name="IdInformante" ColumnName="id_informante" />
                 <ScalarProperty Name="Observaciones" ColumnName="observaciones" />
               </MappingFragment>
@@ -3137,6 +3339,7 @@
           <EntitySetMapping Name="CAT_PARAMETRIZACION_ENVIO">
             <EntityTypeMapping TypeName="Model.ParametrizacionEnvio">
               <MappingFragment StoreEntitySet="CAT_PARAMETRIZACION_ENVIO">
+                <ScalarProperty Name="frecuencia" ColumnName="frecuencia" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="envio_2" ColumnName="envio_2" />
                 <ScalarProperty Name="envio_1" ColumnName="envio_1" />
@@ -3147,12 +3350,36 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CAT_ESTAB_ANALISTA">
+            <EntityTypeMapping TypeName="Model.EstablecimientoAnalista">
+              <MappingFragment StoreEntitySet="CAT_ESTAB_ANALISTA">
+                <ScalarProperty Name="id_ciiu" ColumnName="id_ciiu" />
+                <ScalarProperty Name="id_analista" ColumnName="id_analista" />
+                <ScalarProperty Name="id_establecimiento" ColumnName="id_establecimiento" />
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="Id" ColumnName="id_establecimiento_analista" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAT_ENCUESTA_ANALISTA">
+            <EntityTypeMapping TypeName="Model.EncuestaAnalista">
+              <MappingFragment StoreEntitySet="CAT_ENCUESTA_ANALISTA">
+                <ScalarProperty Name="current" ColumnName="current" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="id_ciiu" ColumnName="id_ciiu" />
+                <ScalarProperty Name="id_analista" ColumnName="id_analista" />
+                <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="Id" ColumnName="id_encuesta_analista" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CAT_AUDITORIA">
             <EntityTypeMapping TypeName="Model.Auditoria">
               <MappingFragment StoreEntitySet="CAT_AUDITORIA">
+                <ScalarProperty Name="accion" ColumnName="accion" />
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="usuario" ColumnName="usuario" />
-                <ScalarProperty Name="accion" ColumnName="accion" />
                 <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
                 <ScalarProperty Name="Id" ColumnName="id_auditoria" />
               </MappingFragment>

@@ -56,7 +56,7 @@
 </div>
 
 @*MODALS*@
-<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" acction="new">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -73,7 +73,8 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $.CreateItemOpenModal("add-btn", "editItem", "AñoBase");
+        $("#add-btn").click(function () { $("#editItem").attr("acction", "new"); });
+        $.CreateItemOpenModal("add-btn", "editItem", "AñoBase","","Nuevo Año Base");
         $("#Criteria_id_establecimiento").on("change", function (e) {
 
             $.getDropDrown("/CIIU/GetDorpDownEstablecimiento/", { "id": "@idCiiu", "nombre": "Criteria.id_ciiu", "default": "Todos", "idEstablecimiento": $("#Criteria_id_establecimiento").val() }, "#drop-ciiu");

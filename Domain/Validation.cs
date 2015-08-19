@@ -15,7 +15,25 @@ namespace Domain
         {
             var temp = new List<T>() {element};
             var value = temp.Select(property).FirstOrDefault();
-            if (value == null) list.Add(string.Format("El campo {0} es obligatorio",name));
+            if (value == null) list.Add(string.Format("El campo \"{0}\" es obligatorio", name));
+        }
+        public static void RequiredAndNotZero<T, TK>(this List<string> list, T element, Func<T, TK> property, string name)
+        {
+            var temp = new List<T>() { element };
+            var value = temp.Select(property).FirstOrDefault();
+            if (value == null)
+            {
+                list.Add(string.Format("El campo \"{0}\" es obligatorio", name));
+                return;
+            }
+            double vTemp;
+            if (double.TryParse(value.ToString(), out vTemp) && Math.Abs(vTemp) < 0.00001)
+            {
+                list.Add(string.Format("El campo \"{0}\" no puede ser cero", name));
+                return;
+            }
+
+
         }
         public static void PhoneNumber<T, TK>(this List<string> list, T element, Func<T, TK> property, string name)
         {
@@ -24,7 +42,23 @@ namespace Domain
             if (value == null) return;
             var text = value.ToString().Trim().Trim('+').Replace(" ","").Replace("(","").Replace(")","");
             if (text.All(char.IsDigit)) return;
-            list.Add(string.Format("El campo {0} no es un número de telefono válido", name));
+            list.Add(string.Format("El campo \"{0}\" no es un número de telefono válido", name));
+        }
+        public static void Range<T, TK>(this List<string> list, T element, Func<T, TK> property,double min,double max, string name)
+        {
+            var temp = new List<T>() { element };
+            var value = temp.Select(property).FirstOrDefault();
+            if (value == null)
+            {
+                list.Add(string.Format("El campo \"{0}\" debe estar entre {1} y {2}", name,min,max));
+                return;
+            };
+            double vTemp;
+            if (!double.TryParse(value.ToString(), out vTemp) || vTemp>max || vTemp<min)
+            {
+                list.Add(string.Format("El campo \"{0}\" debe estar entre {1} y {2}", name, min, max));
+                return;
+            }
         }
         public static void Number<T, TK>(this List<string> list, T element, Func<T, TK> property, string name)
         {
@@ -33,7 +67,7 @@ namespace Domain
             if (value == null) return;
             var text = value.ToString();
             if (text.All(char.IsDigit)) return;
-            list.Add(string.Format("El campo {0} no es un número válido", name));
+            list.Add(string.Format("El campo \"{0}\" no es un número válido", name));
         }
         public static void Email<T, TK>(this List<string> list, T element, Func<T, TK> property, string name)
         {
@@ -42,7 +76,7 @@ namespace Domain
             if (value == null) return;
             var text = value.ToString().Trim().Replace(" ", "");
             if (text.Contains("@")) return;
-            list.Add(string.Format("El campo {0} no es un correo válido", name));
+            list.Add(string.Format("El campo \"{0}\" no es un correo válido", name));
         }
         public static void MaxLength<T, TK>(this List<string> list, T element, Func<T, TK> property, int length,string name)
         {
@@ -52,7 +86,7 @@ namespace Domain
             if (value == null) return;
             var plength = value.ToString().Length;
             if(plength>length)
-                list.Add(string.Format("El campo {0} tiene un máximo de {1} caracteres", name,length));
+                list.Add(string.Format("El campo \"{0}\" tiene un máximo de {1} caracteres", name, length));
         }
 
         public static void ValidRUC<T, TK>(this List<string> list, T element, Func<T, TK> property, string name)
@@ -63,7 +97,7 @@ namespace Domain
             var text = value.ToString().Trim().Replace(" ", "");
             if (text.Length != 11 || text.Any(t=>!char.IsDigit(t)))
             {
-                list.Add(string.Format("El campo {0} no es un RUC válido", name));
+                list.Add(string.Format("El campo \"{0}\" no es un RUC válido", name));
                 return;
             }
             var dic = new Dictionary<int, int>
@@ -91,7 +125,7 @@ namespace Domain
             res = res == 10 ? 0 : res;
             res = res == 11 ? 1 : res;
             if(last!=res)
-                list.Add(string.Format("El campo {0} no es un RUC válido", name));
+                list.Add(string.Format("El campo \"{0}\" no es un RUC válido", name));
 
         }
     }

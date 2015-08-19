@@ -30,6 +30,34 @@ namespace Domain.Managers
             return Repository.Get(t => t.Id == idEncuesta).FirstOrDefault();
         }
 
+        public override OperationResult<EncuestaEstadistica> Add(EncuestaEstadistica element)
+        {
+            var result = base.Add(element);
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = element.Id,
+                accion = "Nuevo Registro",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
+            return result;
+        }
+        public override OperationResult<EncuestaEstadistica> Modify(EncuestaEstadistica element, params string[] properties)
+        {
+            var result = base.Modify(element, properties);
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = element.Id,
+                accion = "Modificación",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
+            return result;
+        }
         public bool GenerateCurrent(long idEstablecimiento,DateTime? date=null)
         {
             var now =date?? DateTime.Now.Subtract(TimeSpan.FromDays(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)));
@@ -44,7 +72,7 @@ namespace Domain.Managers
                     EstadoEncuesta = EstadoEncuesta.NoEnviada,
                     Fecha = now,
                     IdInformante = establecimiento.Informante.Identificador,
-                    IdAnalista = establecimiento.IdAnalista,
+                    //IdAnalista = establecimiento.IdAnalista,
                     VolumenProduccionMensual = new VolumenProduccion()
                     {
 
@@ -57,6 +85,7 @@ namespace Domain.Managers
                     TrabajadoresDiasTrabajados = new TrabajadoresDiasTrabajados(),
                     FactorProduccion = new FactorProducccion()
                 };
+                
 
                 var encuestaEstadisticaLast = this.Get().OrderBy(x => x.Id).LastOrDefault();
                 var encuestaEmpresarialLast = Manager.EncuestaEmpresarial.Get().OrderBy(x => x.Id).LastOrDefault();
@@ -87,6 +116,21 @@ namespace Domain.Managers
 
                 Add(encuesta);
                 SaveChanges();
+                var first = establecimiento.CAT_ESTAB_ANALISTA.Select(t => t.orden).OrderBy(t => t).FirstOrDefault();
+                foreach (var analista in establecimiento.CAT_ESTAB_ANALISTA)
+                {
+                    var ne = new EncuestaAnalista()
+                    {
+                        orden = analista.orden,
+                        id_ciiu = analista.id_ciiu,
+                        id_analista = analista.id_analista,
+                        id_encuesta = encuesta.Id,
+                        EstadoEncuesta = EstadoEncuesta.NoEnviada,
+                        current = (analista.orden == first)?1:0
+                    };
+                    Manager.EncuestaAnalistaManager.Add(ne);
+                    Manager.EncuestaAnalistaManager.SaveChanges();
+                }
                 var volumenP = new VolumenProduccion()
                 {
                     Identificador = encuesta.Id,
@@ -498,20 +542,21 @@ namespace Domain.Managers
             }
 
         }
-        public IPagedList GetAsignadosAnalista(Query<EncuestaEstadistica> query)
+        public IPagedList GetAsignadosAnalista(Query<EncuestaEstadistica> query,long idAnalista)
         {
             var estab = new long?();
-            var ana = new long?();
+           // var ana = new long?();
             if (query.Criteria != null)
             {
                 if (query.Criteria.IdEstablecimiento != 0)
                     estab = query.Criteria.IdEstablecimiento;
-                if (query.Criteria.IdAnalista != 0)
-                    if (query.Criteria.IdAnalista != null) ana = (long)query.Criteria.IdAnalista;
+                //if (query.Criteria.IdAnalista != 0)
+                //    if (query.Criteria.IdAnalista != null) ana = (long)query.Criteria.IdAnalista;
             }
             var temp = Repository.Get(query.Filter, null, query.Order)
                 .Where(t => t.IdEstablecimiento == estab
-                && t.IdAnalista == ana && (t.EstadoEncuesta != EstadoEncuesta.NoEnviada));
+                && t.CAT_ENCUESTA_ANALISTA.Any(h => h.id_analista == idAnalista && (h.IsCurrent||h.IsPast)) 
+                && (t.EstadoEncuesta != EstadoEncuesta.NoEnviada));
             if (query.Paginacion != null)
             {
                 var list = temp.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
@@ -535,15 +580,59 @@ namespace Domain.Managers
             encuesta.Justificacion = observacion;
             Manager.EncuestaEstadistica.Modify(encuesta);
             Manager.EncuestaEstadistica.SaveChanges();
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = encuesta.Id,
+                accion = "Observada",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
         }
         public void Validar(long id)
         {
             var encuesta = Manager.EncuestaEstadistica.Find(id);
             if (encuesta == null) return;
-            encuesta.EstadoEncuesta = EstadoEncuesta.Validada;
-            encuesta.fecha_validacion = DateTime.Now;
-            Manager.EncuestaEstadistica.Modify(encuesta);
-            Manager.EncuestaEstadistica.SaveChanges();
+
+            var analistas = encuesta.CAT_ENCUESTA_ANALISTA.OrderBy(t => t.current);
+            var tt = analistas.FirstOrDefault(t => t.IsCurrent);
+            if (tt == null) return ;
+            tt.current = 2;
+            tt.EstadoEncuesta=EstadoEncuesta.Validada;
+            Manager.EncuestaAnalistaManager.Modify(tt);
+            var next = analistas.FirstOrDefault(t => t.orden > tt.orden);
+            if (next != null)
+            {
+                next.current = 1;
+                Manager.EncuestaAnalistaManager.Modify(next);
+                var auditoria = new Auditoria()
+                {
+                    id_encuesta = encuesta.Id,
+                    accion = "Validada",
+                    fecha = DateTime.Now,
+                    usuario = Usuario
+                };
+                Manager.AuditoriaManager.Add(auditoria);
+                Manager.AuditoriaManager.SaveChanges();
+            }
+            else
+            {
+                encuesta.EstadoEncuesta = EstadoEncuesta.Validada;
+                encuesta.fecha_validacion = DateTime.Now;
+                Manager.EncuestaEstadistica.Modify(encuesta);
+                Manager.EncuestaEstadistica.SaveChanges();
+                var auditoria = new Auditoria()
+                {
+                    id_encuesta = encuesta.Id,
+                    accion = "Validada",
+                    fecha = DateTime.Now,
+                    usuario = Usuario
+                };
+                Manager.AuditoriaManager.Add(auditoria);
+                Manager.AuditoriaManager.SaveChanges();
+            }
+            Manager.EncuestaAnalistaManager.SaveChanges();
         }
     }
 }

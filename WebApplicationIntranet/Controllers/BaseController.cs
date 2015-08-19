@@ -15,6 +15,7 @@ namespace WebApplication.Controllers
 {
     public class BaseController<T> : Controller where T : class, new()
     {
+       
         public static Query<T> Query { get; set; }
 
         public virtual Manager Manager
@@ -55,8 +56,8 @@ namespace WebApplication.Controllers
         [HttpPost]
         public virtual JsonResult CreatePost(T element, params string[] properties)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 Query = Query ?? new Query<T>().Validate();
                 var manager = OwnManager;
                 var op = IsNew(element) ?
@@ -84,20 +85,20 @@ namespace WebApplication.Controllers
                     };
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
-            }
-            else
-            {
-                var list = new List<string>();
-                foreach (var v in ModelState.Values)
-                    list.AddRange(v.Errors.Select(t => t.ErrorMessage));
-                var result = new
-                {
-                    Success = false,
-                    Errors = list
-                };
-                return Json(result, JsonRequestBehavior.AllowGet);
+            //}
+            //else
+            //{
+            //    var list = new List<string>();
+            //    foreach (var v in ModelState.Values)
+            //        list.AddRange(v.Errors.Select(t => t.ErrorMessage));
+            //    var result = new
+            //    {
+            //        Success = false,
+            //        Errors = list
+            //    };
+            //    return Json(result, JsonRequestBehavior.AllowGet);
 
-            }
+            //}
         }
         public virtual JsonResult Delete(long id)
         {

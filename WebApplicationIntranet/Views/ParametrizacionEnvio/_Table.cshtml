@@ -9,8 +9,9 @@
     <thead>
         <tr class="cabecera">
             <th style="width: 20px;"></th>
-            <th> TIPO ENCUESTA </th>           
+            <th> TIPO ENCUESTA </th>
             <th> COMIENZO </th>
+            <th> FRECUENCIA </th>
             <th> ENV&Iacute;O 1 </th>
             <th> ENV&Iacute;O 2 </th>
             <th> MENSAJE </th>
@@ -23,15 +24,20 @@
                 <td>
                     @if (item.Activado)
                     {
-                        <a href="javascript:void(0);" class="toogleStatus txt-color-green" data-toggle="tooltip" data-placement="top" data-original-title="Desactivar el Envío de correo"  title="" data-id="@item.Id"><i class="glyphicon glyphicon-ok"></i></a>
+                        <a href="javascript:void(0);" class="toogleStatus txt-color-green" data-toggle="tooltip" data-placement="top" data-original-title="Desactivar el Envío de correo" title="" data-id="@item.Id"><i class="glyphicon glyphicon-ok"></i></a>
                     }
                     else
                     {
                         <a href="javascript:void(0);" class="toogleStatus" data-toggle="tooltip" data-placement="top" data-original-title="Activar el Envío de correo" title="" data-id="@item.Id"><i class="glyphicon glyphicon-remove-sign"></i></a>
                     }
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.tipo_encuesta)</td>               
+                <td>@Html.DisplayFor(modelItem => item.tipo_encuesta)</td>
                 <td>@item.comienzo.ToString("dd-MM-yyyy")</td>
+                <td>@foreach (var f in item.Frecuencia())
+                    {
+                        <span class="label label-primary">@f</span>
+                    }
+                </td>
                 <td>@Html.DisplayFor(modelItem => item.envio_1)</td>
                 <td>@Html.DisplayFor(modelItem => item.envio_2)</td>
                 <td>@Html.DisplayFor(modelItem => item.mensaje)</td>
@@ -43,7 +49,7 @@
                     <a href="/ParametrizacionEnvio/Details/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visualizar" id="details-@item.Id">
                         <i class="color-black glyphicon glyphicon-eye-open"></i>
                     </a>
-                   
+
                 </td>
 
             </tr>
@@ -80,7 +86,7 @@
             });
 
         });
-      
+
         $(".toogleStatus").click(function () {
             var $elem = $(this);
             var id = $elem.attr("data-id");

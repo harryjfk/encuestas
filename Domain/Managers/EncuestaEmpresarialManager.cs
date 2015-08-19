@@ -37,7 +37,7 @@ namespace Domain.Managers
                     IdEstablecimiento = idEstablecimiento,
                     EstadoEncuesta = EstadoEncuesta.NoEnviada,
                     IdInformante = establecimiento.IdInformante,
-                    IdAnalista = establecimiento.IdAnalista,
+                    //IdAnalista = establecimiento.IdAnalista,
                     Fecha = now
                 };
 
@@ -90,6 +90,34 @@ namespace Domain.Managers
             }
         }
 
+        public override OperationResult<EncuestaEmpresarial> Add(EncuestaEmpresarial element)
+        {
+            var result = base.Add(element);
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = element.Id,
+                accion = "Nuevo Registro",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
+            return result;
+        }
+        public override OperationResult<EncuestaEmpresarial> Modify(EncuestaEmpresarial element, params string[] properties)
+        {
+            var result = base.Modify(element, properties);
+            var auditoria = new Auditoria()
+            {
+                id_encuesta = element.Id,
+                accion = "Modificación",
+                fecha = DateTime.Now,
+                usuario = Usuario
+            };
+            Manager.AuditoriaManager.Add(auditoria);
+            Manager.AuditoriaManager.SaveChanges();
+            return result;
+        }
         public override void UpdateKey(EncuestaEmpresarial element)
         {
             long id = 1;
@@ -268,20 +296,20 @@ namespace Domain.Managers
 
         }
 
-        public IPagedList GetAsignadosAnalista(Query<EncuestaEmpresarial> query)
+        public IPagedList GetAsignadosAnalista(Query<EncuestaEmpresarial> query,long idAnalista)
         {
             var estab = new long?();
-            var ana = new long?();
+            
             if (query.Criteria != null)
             {
                 if (query.Criteria.IdEstablecimiento != 0)
                     estab = query.Criteria.IdEstablecimiento;
-                if (query.Criteria.IdAnalista != 0)
-                    if (query.Criteria.IdAnalista != null) ana = (long)query.Criteria.IdAnalista;
+                //if (query.Criteria.IdAnalista != 0)
+                //    if (query.Criteria.IdAnalista != null) ana = (long)query.Criteria.IdAnalista;
             }
             var temp = Repository.Get(query.Filter, null, query.Order)
                 .Where(t => t.IdEstablecimiento == estab
-                && t.IdAnalista == ana && (t.EstadoEncuesta != EstadoEncuesta.NoEnviada));
+                && t.Establecimiento.CAT_ESTAB_ANALISTA.Any(h => h.id_analista == idAnalista) && (t.EstadoEncuesta != EstadoEncuesta.NoEnviada));
             if (query.Paginacion != null)
             {
                 var list = temp.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);

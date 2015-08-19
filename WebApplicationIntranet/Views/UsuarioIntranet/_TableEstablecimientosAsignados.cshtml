@@ -1,13 +1,14 @@
 ﻿@using Entity
 @using PagedList.Mvc
-@model Domain.Query<Entity.Establecimiento>
+@model Domain.Query<Entity.EstablecimientoAnalista>
 <table class="table table-striped table-hover table-bordered table-condensed tabla small">
     <thead>
         <tr class="cabecera">
             <th> IDENTIFICADOR </th>
             <th> RUC </th>
             <th> RAZ&Oacute;N SOCIAL </th>
-            <th> DIRECCI&Oacute;N </th>
+            <th> CIIU </th>
+            <th> ORDEN </th>
             <th>ACCI&Oacute;N</th>
     </thead>
 
@@ -15,10 +16,11 @@
         @foreach (var item in Model.Elements)
         {
            <tr>
-                <td>@Html.DisplayFor(modelItem => item.IdentificadorInterno)</td>
-                <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
-                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                <td>@Html.DisplayFor(modelItem => item.CAT_ESTABLECIMIENTO.IdentificadorInterno)</td>
+                <td>@Html.DisplayFor(modelItem => item.CAT_ESTABLECIMIENTO.Ruc)</td>
+                <td>@Html.DisplayFor(modelItem => item.CAT_ESTABLECIMIENTO.Nombre)</td>
+               <td> @item.CAT_CIIU.ToString()</td>
+                <td>@item.orden.ToString("####")</td>
                 <td>
                     <a href="/UsuarioIntranet/EliminarEstablecimiento/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Asignar" id="quitar-@item.Id" role="@item.Id" class="quitarw-btn">
                         <i class="color-red glyphicon glyphicon-remove"></i>

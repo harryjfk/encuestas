@@ -43,20 +43,20 @@ namespace WebApplication
             manager.UsuarioAutenticado = usuario;
             return manager;
         }
-        public static void WriteMessage(this Controller controller,string message,string user=null)
+        public static void WriteMessage(this Controller controller,string message,long idEncuesta,string user=null)
         {
-            //var manager = new Manager();
-            //if (controller.User.Identity.IsAuthenticated||user!=null)
-            //{
-            //    manager.Traza.Add(new Traza()
-            //    {
-            //        Fecha = DateTime.Now,
-            //        Texto = message,
-            //        Usuario = user??controller.User.Identity.Name,
-            //        Tipo = TipoTraza.Informacion
-            //    });
-            //    manager.Traza.SaveChanges();
-            //}
+            var manager = GetManager("system");
+            if (controller.User.Identity.IsAuthenticated || user != null)
+            {
+                manager.AuditoriaManager.Add(new Auditoria()
+                {
+                    fecha = DateTime.Now,
+                    accion = message,
+                    usuario = user ?? controller.User.Identity.Name,
+                    id_encuesta = idEncuesta
+                });
+                manager.AuditoriaManager.SaveChanges();
+            }
         }
 
         public static Usuario GetLogued(this Controller controller)

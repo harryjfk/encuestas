@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ExpertPdfHtmlToPdf</id>
+    <version>9.5.0</version>
+    <title>ExpertPdf Html To Pdf Converter</title>
+    <authors>Outside Software Inc.</authors>
+    <owners>Outside Software Inc.</owners>
+    <licenseUrl>http://www.html-to-pdf.net/EULA.aspx</licenseUrl>
+    <projectUrl>http://www.html-to-pdf.net/</projectUrl>
+    <iconUrl>http://www.html-to-pdf.net/banners/banner3.jpg</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ExpertPdf Html To Pdf Converter is a .NET library that can be used in any .NET application to offer support for converting web pages to pdf documents.
+
+ExpertPdf HtmlToPdf Converter has full support for HTML5, CSS3, web fonts, modern javascript.
+
+ExpertPdf does not have any external dependencies. It works on any .NET platform, starting with .NET 2.0 and on any Windows operating system (32bit or 64bit) starting with Windows XP.</description>
+    <summary>ExpertPdf HtmlToPdf offers the possibility to convert html to pdf in any .NET application.</summary>
+    <releaseNotes />
+    <copyright>Outside Software Inc.</copyright>
+    <tags>html-to-pdf pdf-generation pdf html-to-pdf-converter converter pdf-library pdf-tool</tags>
+    <references>
+      <reference file="ephtmltopdf.dll" />
+    </references>
+  </metadata>
+</package>

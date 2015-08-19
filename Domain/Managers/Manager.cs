@@ -53,6 +53,8 @@ namespace Domain.Managers
         public AñoBaseManager AñoBaseManager { get; set; }
         public ParametrizacionEnvioManager ParametrizacionEnvioManager { get; set; }
         public AuditoriaManager AuditoriaManager { get; set; }
+        public EstablecimientoAnalistaManager EstablecimientoAnalistaManager { get; set; }
+        public EncuestaAnalistaManager EncuestaAnalistaManager { get; set; }
 
         public Manager(IRepositorioUsuario repositorioUsuario,IRepositorioDepartamento departamentoRepository,IRepositorioProvincia provinciaRepository,IRepositorioDistrito distritoRepository,IRepositorioUbigeo ubigeoRepository)
         {
@@ -96,6 +98,8 @@ namespace Domain.Managers
             AñoBaseManager = new AñoBaseManager(context, this);
             ParametrizacionEnvioManager = new ParametrizacionEnvioManager(context, this);
             AuditoriaManager = new AuditoriaManager(context, this);
+            EstablecimientoAnalistaManager = new EstablecimientoAnalistaManager(context, this);
+            EncuestaAnalistaManager = new EncuestaAnalistaManager(context, this);
         }
 
         public void Seed()

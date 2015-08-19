@@ -30,7 +30,7 @@
                         <a href="javascript:void(0);" class="toogleStatus" data-toggle="tooltip" data-placement="top" data-original-title="Activar" title="" data-id="@item.Id"><i class="glyphicon glyphicon-remove-sign"></i></a>
                     }
                 </td>
-                <td>@item.fecha.ToString("MMMM",CultureInfo.GetCultureInfo("ES")).ToUpper()</td>
+                <td class="text-capitalize">@item.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"))  </td>
                 <td>1071-ELABORACIÓN DE PRODUCTOS DE PANADERÍA</td>
                 <td>@item.tonelada_tmb.ToString("0.0000", CultureInfo.InvariantCulture)</td>
                 
@@ -60,7 +60,7 @@
         No hay elementos para mostrar
     </div>
 }
-@Html.PagedListPager(Model.Elements, page => Url.Action("Page", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+@*@Html.PagedListPager(Model.Elements, page => Url.Action("Page", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)*@
 
 <script type="text/javascript">
     $(document).ready(function () {

@@ -1,5 +1,5 @@
 ﻿@using Entity
-@model Domain.Query<Entity.Establecimiento>
+@model Domain.Query<Entity.EstablecimientoAnalista>
 
 @{
     ViewBag.Title = "Establecimiento Asignados";
@@ -33,21 +33,21 @@
                     <div class="input-group">
                         <span class="input-group-addon">RAZ&Oacute;N SOCIAL</span>
                         @*<input type="text" class="form-control">*@
-                        @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
+                        @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.Nombre, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">IDENTIFICADOR</span>
                         @*<input type="text" class="form-control">*@
-                        @Html.TextBoxFor(t => t.Criteria.IdentificadorInterno, new { @class = "form-control" })
+                        @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.IdentificadorInterno, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
                         <span class="input-group-addon">RUC</span>
                         @*<input type="text" class="form-control">*@
-                        @Html.TextBoxFor(t => t.Criteria.Ruc, new { @class = "form-control" })
+                        @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.Ruc, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -68,7 +68,7 @@
 
 @*MODALS*@
 <div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

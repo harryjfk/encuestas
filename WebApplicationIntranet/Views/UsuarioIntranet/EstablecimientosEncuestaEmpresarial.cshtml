@@ -1,5 +1,5 @@
 ﻿@using Entity
-@model Domain.Query<Entity.Establecimiento>
+@model Domain.Query<Entity.EstablecimientoAnalista>
 
 @{
     ViewBag.Title = "Establecimiento";
@@ -33,7 +33,7 @@
                     <div class="input-group">
                         <span class="input-group-addon">NOMBRE</span>
                         @*<input type="text" class="form-control">*@
-                        @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control", style = "max-width: inherit;" })
+                        @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.Nombre, new { @class = "form-control", style = "max-width: inherit;" })
                     </div>
                 </div>
                 <div class="col-md-2">

@@ -16,9 +16,9 @@ namespace Entity
     {
         public long Id { get; set; }
         public long id_encuesta { get; set; }
-        public decimal accion { get; set; }
         public string usuario { get; set; }
         public System.DateTime fecha { get; set; }
+        public string accion { get; set; }
     
         public virtual Encuesta Encuesta { get; set; }
     }

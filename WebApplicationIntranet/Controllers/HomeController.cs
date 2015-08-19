@@ -90,7 +90,7 @@ namespace WebApplication.Controllers
                 {
                     var user = Manager.Usuario.Autenticate(model.Login, model.Password);
                     FormsAuthentication.SetAuthCookie(model.Login, false);
-                    this.WriteMessage("Iniciando sesion", model.Login);
+                    //this.WriteMessage("Iniciando sesion", model.Login);
                     //ViewData.Add("user",Manager.Usuario.FindRol(user.Id));
                     if (user.Roles.Any(t => t.Nombre.Equals("Informante")))
                         return RedirectToAction("EstablecimientosEncuestaEmpresarial", "UsuarioExtranet");
@@ -104,7 +104,7 @@ namespace WebApplication.Controllers
         }
         public ActionResult SignOut()
         {
-            this.WriteMessage("Cerrando sesion");
+            //this.WriteMessage("Cerrando sesion");
             FormsAuthentication.SignOut();;
             return RedirectToAction("Index", "Home");
         }

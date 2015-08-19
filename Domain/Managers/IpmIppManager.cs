@@ -25,8 +25,8 @@ namespace Domain.Managers
         public override List<string> Validate(IpmIpp element)
         {
             var list = base.Validate(element);
-            list.Required(element, t => t.ipm, "IPM");
-            list.Required(element, t => t.ipp, "IPP");
+            list.RequiredAndNotZero(element, t => t.ipm, "IPM");
+            //list.Required(element, t => t.ipp, "IPP");
             return list;
         }
 

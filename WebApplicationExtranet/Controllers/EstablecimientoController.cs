@@ -64,7 +64,7 @@ namespace WebApplication.Controllers
         {
             var old = Manager.Establecimiento.Find(element.Id);
             if (old == null) return base.CreatePost(element);
-            element.IdAnalista = old.IdAnalista;
+            //element.IdAnalista = old.IdAnalista;
             element.IdInformante = old.IdInformante;
             return base.CreatePost(element);
         }
@@ -115,7 +115,7 @@ namespace WebApplication.Controllers
         {
             var estab = Manager.Establecimiento.Find(id);
             ViewBag.Establecimiento = estab;
-            return View("_AnalistaInfo", estab.Analista);
+            return View("_AnalistaInfo",estab.CAT_ESTAB_ANALISTA);
         }
 
         public ActionResult GetCiiuNoAsignados()
