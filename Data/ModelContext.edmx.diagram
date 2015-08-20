@@ -92,6 +92,7 @@
         <AssociationConnector Association="Model.SYS_C008375" />
         <EntityTypeShape EntityType="Model.Auditoria" Width="1.5" PointX="12.75" PointY="32.125" />
         <AssociationConnector Association="Model.SYS_C008297" />
+        <EntityTypeShape EntityType="Model.ViewProcentajeEncuestaExtadistica" Width="1.5" PointX="0.75" PointY="6.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

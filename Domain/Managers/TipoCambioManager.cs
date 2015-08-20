@@ -26,6 +26,7 @@ namespace Domain.Managers
         public override List<string> Validate(TipoCambio element)
         {
             var list= base.Validate(element);
+            if (element.Id == 0) return list;
             list.RequiredAndNotZero(element, t => t.tipo_cambio_compra, "Tipo de Cambio Compra");
             list.RequiredAndNotZero(element, t => t.tipo_cambio_ventas, "Tipo de Cambio Venta");
             return list;

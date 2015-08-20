@@ -1,0 +1,56 @@
+﻿@using Entity
+@model Entity.Reportes.PorcentajeEncuestaEstadistica
+@{
+    ViewBag.Title = "Porcentaje de Encuestas Estadísticas";
+}
+@Scripts.Render("~/bundles/jquery")
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("Buscar", "TipoCambio", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 margin-bottom-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">AÑO</span>
+                        <select id="select-ano" name="Año" class="form-control">
+                            @for (int i = 2012; i <= DateTime.Now.Year; i++)
+                            {
+                                //var selected = (Model.Criteria != null && Model.Criteria.Año == i.ToString() || ((Model.Criteria == null || Model.Criteria.Año == null) && i == DateTime.Now.Year)) ? "selected" : "";
+                                @*<option @selected value="@i">@i.ToString()</option>*@
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                
+            </div>
+            <div class="row margin-top-5" >
+            <div class="col-md-4">
+    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+    <input type="submit" value="Excel" name="buscarbtn" class="btn btn-default" />
+    <input type="submit" value="PDF" name="buscarbtn" class="btn btn-default" />
+    <input type="submit" value="Gráfico" name="buscarbtn" class="btn btn-default" />
+</div></div>
+        </div>
+
+
+    </div>
+}
+<div id="table-container">
+@Html.Partial("PorcentajeEncuestaEstadistica/_Table", Model)
+</div>
+

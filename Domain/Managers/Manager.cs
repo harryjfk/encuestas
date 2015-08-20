@@ -55,6 +55,7 @@ namespace Domain.Managers
         public AuditoriaManager AuditoriaManager { get; set; }
         public EstablecimientoAnalistaManager EstablecimientoAnalistaManager { get; set; }
         public EncuestaAnalistaManager EncuestaAnalistaManager { get; set; }
+        public ViewProcentajeEncuestaExtadisticaManager ViewProcentajeEncuestaExtadisticaManager { get; set; }
 
         public Manager(IRepositorioUsuario repositorioUsuario,IRepositorioDepartamento departamentoRepository,IRepositorioProvincia provinciaRepository,IRepositorioDistrito distritoRepository,IRepositorioUbigeo ubigeoRepository)
         {
@@ -100,6 +101,7 @@ namespace Domain.Managers
             AuditoriaManager = new AuditoriaManager(context, this);
             EstablecimientoAnalistaManager = new EstablecimientoAnalistaManager(context, this);
             EncuestaAnalistaManager = new EncuestaAnalistaManager(context, this);
+            ViewProcentajeEncuestaExtadisticaManager = new ViewProcentajeEncuestaExtadisticaManager(context, this);
         }
 
         public void Seed()

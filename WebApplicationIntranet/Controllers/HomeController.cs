@@ -24,7 +24,7 @@ namespace WebApplication.Controllers
 
         public ActionResult Index(UserInformation user)
         {
-            //brb
+            
             user = new UserInformation()
             {
                 Id = 2,

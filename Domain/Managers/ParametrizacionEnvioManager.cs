@@ -36,9 +36,9 @@ namespace Domain.Managers
                     tipo_encuesta = "Estadistica",
                     Activado = false,
                     comienzo = DateTime.Now,
-                    envio_1 = 5,
-                    envio_2 = 25,
-                    mensaje = "Tiene encuestas estadísticas sin llenar"
+                    envio_1 = 0,
+                    envio_2 = 0,
+                    mensaje = " "
                 };
                 Add(estadistica);
                 SaveChanges();
@@ -50,9 +50,9 @@ namespace Domain.Managers
                     tipo_encuesta = "Empresarial",
                     Activado = false,
                     comienzo = DateTime.Now,
-                    envio_1 = 5,
-                    envio_2 = 25,
-                    mensaje = "Tiene encuestas de opinión empresarial sin llenar"
+                    envio_1 = 0,
+                    envio_2 = 0,
+                    mensaje = " "
                 };
                 Add(empresarial);
                 SaveChanges();
@@ -63,15 +63,21 @@ namespace Domain.Managers
         public override List<string> Validate(ParametrizacionEnvio element)
         {
             var list = base.Validate(element);
+            if (element.Id == 0) return list;
+
             list.Required(element, t => t.mensaje, "Mensaje");
             list.Required(element, t => t.comienzo, "Comienzo");
-            list.RequiredAndNotZero(element, t => t.envio_1, "Envío 1");
-            list.RequiredAndNotZero(element, t => t.envio_2, "Envío 2");
-            list.Range(element, t => t.envio_1, 1, 28, "Envío 1");
-            list.Range(element, t => t.envio_2, 1, 28, "Envío 2");
+            if (!element.Frecuencia().Any())
+            {
+                list.RequiredAndNotZero(element, t => t.envio_1, "Envío 1");
+                list.RequiredAndNotZero(element, t => t.envio_2, "Envío 2");
+                list.Range(element, t => t.envio_1, 1, 28, "Envío 1");
+                list.Range(element, t => t.envio_2, 1, 28, "Envío 2");
+                if (list.Count == 0 && element.envio_1 >= element.envio_2)
+                    list.Add("El parámetro \"Envío 1\" debe ser menor que el parámetro \"Envío 2\"");
+            }
             list.MaxLength(element, t => t.mensaje, 500, "Mensaje");
-            if (list.Count == 0 && element.envio_1>=element.envio_2)
-                list.Add("El parámetro \"Envío 1\" debe ser menor que el parámetro \"Envío 2\"");
+
             
             return list;
         }
