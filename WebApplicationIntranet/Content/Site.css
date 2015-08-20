@@ -118,6 +118,10 @@ footer {
     background: #eb6864 !important;
     color: #f9f9f9;
 }
+    .cabecera2 {
+    background: #dddddd !important;
+    color: #666464;
+}
 
 .btn-custom-add {
     margin: 10px 0;

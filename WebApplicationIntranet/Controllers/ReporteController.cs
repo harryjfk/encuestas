@@ -13,7 +13,8 @@ namespace WebApplication.Controllers
         // GET: /PorcentajeEncuestaEstadistica/
         public ActionResult PorcentajeEncuestaEstadistica()
         {
-            return View("PorcentajeEncuestaEstadistica/Index");
+            var report = Manager.EncuestaEstadistica.PorcentajeEncuestaEstadistica();
+            return View("PorcentajeEncuestaEstadistica/Index",report);
         }
 	}
 }

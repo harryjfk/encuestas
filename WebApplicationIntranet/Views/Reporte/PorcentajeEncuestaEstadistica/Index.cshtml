@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Porcentaje de Encuestas Estadísticas";
 }
-
+@Scripts.Render("~/bundles/jquery")
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger fade in">
@@ -51,6 +51,6 @@
     </div>
 }
 <div id="table-container">
-@Html.Partial("_Table", Model)
+@Html.Partial("PorcentajeEncuestaEstadistica/_Table", Model)
 </div>
 
