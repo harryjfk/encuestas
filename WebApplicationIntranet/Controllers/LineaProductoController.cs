@@ -14,13 +14,34 @@ namespace WebApplication.Controllers
         public static Query<LineaProductoUnidadMedida> UmQuery { get; set; }
         public static LineaProducto LineaProducto { get; set; }
 
-        public ActionResult GetDorpDown(string id, string nombre = "IdLineaProducto", string @default = null,long idCiuu=0)
+        public ActionResult GetDorpDown(string id, string nombre = "IdLineaProducto", string @default = null,long idCiuu=0,long idEstablecimiento=0)
         {
             Func<LineaProducto, bool> filter = t => t.Activado;
             if (idCiuu > 0)
             {
-                filter = t => t.Activado && t.IdCiiu==idCiuu;
+                if (idEstablecimiento > 0)
+                {
+                    filter =
+                        t =>
+                            t.Activado && t.IdCiiu == idCiuu &&
+                            t.LineasProductoEstablecimiento.Any(h => h.IdEstablecimiento == idEstablecimiento);
+                }
+                else
+                {
+                    filter = t => t.Activado && t.IdCiiu == idCiuu;
+                }
             }
+            else
+            {
+                if (idEstablecimiento > 0)
+                {
+                    filter =
+                        t =>
+                            t.Activado  &&
+                            t.LineasProductoEstablecimiento.Any(h => h.IdEstablecimiento == idEstablecimiento);
+                }
+            }
+            
             var list = OwnManager.Get(filter).Select(t => new SelectListItem()
              {
                  Text = t.ToString(),
@@ -36,10 +57,13 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
-        public ActionResult GetDorpDownCiiu(string id, string nombre = "IdLineaProducto", string @default = null, long idCiuu = 0)
+        public ActionResult GetDorpDownCiiu(string id, string nombre = "IdLineaProducto", string @default = null, long idCiuu = 0,long idEstablecimiento=0)
         {
             Func<LineaProducto, bool> filter =  t => t.Activado && t.IdCiiu == idCiuu;
-           
+            if (idEstablecimiento > 0)
+            {
+                filter = t => t.Activado && t.IdCiiu == idCiuu&&t.LineasProductoEstablecimiento.Any(h=>h.IdEstablecimiento==idEstablecimiento);
+            }
             var list = OwnManager.Get(filter).Select(t => new SelectListItem()
             {
                 Text = t.ToString(),

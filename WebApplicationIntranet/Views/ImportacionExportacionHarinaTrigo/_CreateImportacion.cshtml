@@ -93,6 +93,9 @@
             var v1 = parseFloat(elem.val());
             var v2 = parseFloat(tipoCambioCompra);
             var value = v1 * v2;
+            if (value.toString() == "NaN") {
+                value = 0.0000;
+            }
             $('#cif_s').html(value.toFixed(4));
         });
 

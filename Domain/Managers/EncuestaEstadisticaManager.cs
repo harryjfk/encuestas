@@ -641,9 +641,16 @@ namespace Domain.Managers
 
         public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadistica()
         {
+            return PorcentajeEncuestaEstadisticaAnual();
+        }
+
+        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadisticaAnual()
+        {
             var all = Manager.ViewProcentajeEncuestaExtadisticaManager.Get();
             var elements = all.GroupBy(t => t.id_analista);
             var result = new PorcentajeEncuestaEstadistica();
+            for (var i = 1; i < 13; i++)
+                result.HeadersList.Add(i.GetMonthText().ToUpper().Substring(0,3));
             foreach (var element in elements)
             {
                 var item = new PorcentajeEncuestaEstadisticaItem()
@@ -661,7 +668,7 @@ namespace Domain.Managers
                         MonthlyValue = mes.Count(),
                         Total = all.Count()
                     });
-                    foreach (var ciiu in mes.GroupBy(t=>t.id_ciiu))
+                    foreach (var ciiu in mes.GroupBy(t => t.id_ciiu))
                     {
                         var fr = ciiu.FirstOrDefault();
                         var ciiuData = new CiiuData()
@@ -669,7 +676,7 @@ namespace Domain.Managers
                             Id = ciiu.Key,
                             Name = string.Format("{0}:{1}", fr.codigo_ciiu, fr.nombre_ciiu)
                         };
-                        foreach (var cm in ciiu.GroupBy(t=>t.fecha.Month))
+                        foreach (var cm in ciiu.GroupBy(t => t.fecha.Month))
                         {
                             ciiuData.Month.Add(new MonthData()
                             {
@@ -685,7 +692,6 @@ namespace Domain.Managers
                 result.Elements.Add(item);
             }
             return result;
-
         }
 
         #endregion

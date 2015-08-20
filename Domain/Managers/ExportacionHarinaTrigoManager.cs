@@ -33,6 +33,7 @@ namespace Domain.Managers
         public override List<string> Validate(ExportacionHarinaTrigo element)
         {
             var list = base.Validate(element);
+            if (element.Id == 0) return list;
             list.RequiredAndNotZero(element, t => t.fob_usd, "FOB USD");
 
             return list;

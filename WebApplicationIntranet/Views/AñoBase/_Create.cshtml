@@ -24,33 +24,43 @@
         {
             <input type="hidden" name="Id" value="@Model.Id" />
         }
-              
+
         <div class="form-group ">
             <label for="id_establecimiento" class="col-md-4 control-label"> Establecimiento</label>
             <div class="col-md-7">
                 <div id="drop-down-establecimiento">
-                    @{Html.RenderAction("GetDorpDown", "Establecimiento", new { id = (Model != null) ? Model.id_establecimiento : 0, nombre = "id_establecimiento", @default = "Seleccione elemento"});}
+                    @{Html.RenderAction("GetDorpDown", "Establecimiento", new { id = (Model != null) ? Model.id_establecimiento : 0, nombre = "id_establecimiento", @default = "Seleccione elemento" });}
 
-                </div></div>
-            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
+                </div>
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
-                
+
         <div class="form-group  ciiu-group">
             <label for="id_ciiu" class="col-md-4 control-label"> CIIU</label>
             <div class="col-md-7">
                 <div id="drop-down-ciiu">
-                    @{Html.RenderAction("GetDorpDownEstablecimiento", "CIIU", new { id = (Model != null) ? Model.id_ciiu : 0, idEstablecimiento = (Model != null) ? Model.id_establecimiento : 0, nombre = "id_ciiu",@default="Seleccione elemento", showAllCollection=false });}
-                </div></div>
-            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
+                    @{Html.RenderAction("GetDorpDownEstablecimiento", "CIIU", new { id = (Model != null) ? Model.id_ciiu : 0, idEstablecimiento = (Model != null) ? Model.id_establecimiento : 0, nombre = "id_ciiu", @default = "Seleccione elemento", showAllCollection = false });}
+                </div>
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
-                
+
         <div class="form-group  linea-producto-group">
             <label for="id_linea_producto" class="col-md-4 control-label"> Linea de Producto</label>
             <div class="col-md-7">
                 <div id="drop-down-linea-producto">
-                    @{Html.RenderAction("GetDorpDown", "LineaProducto", new { id = (Model != null) ? Model.id_linea_producto : 0, idCiiu = (Model != null) ? Model.id_ciiu : 0,nombre="id_linea_producto",@default="Seleccione elemento" });}
-                </div></div>
-            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
+                    @{Html.RenderAction("GetDorpDownCiiu", "LineaProducto", new
+                    {
+                        id = (Model != null) ? Model.id_linea_producto : 0,
+                        idCiiu = (Model != null) ? Model.id_ciiu : 0,
+                        idEstablecimiento = (Model != null) ? Model.id_establecimiento : 0,
+                        nombre = "id_linea_producto",
+                        @default = "Seleccione elemento"
+                    });}
+                </div>
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
 
         <div class="form-group">
@@ -60,7 +70,7 @@
                 @Html.ValidationMessageFor(model => model.produccion_anual)
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-        </div>  
+        </div>
         <div class="form-group">
             <label for="valor_produccion" class="col-md-4 control-label"> Valor Producci&oacute;n</label>
             <div class="col-md-7">
@@ -68,48 +78,49 @@
                 @Html.ValidationMessageFor(model => model.valor_produccion)
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-        </div>  
+        </div>
         <div class="form-group">
             <label for="precio" class="col-md-4 control-label"> Precio</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.precio, new { @class = "form-control mask4", Value=Model.precio.ToString("0.0000",CultureInfo.InvariantCulture) })
+                @Html.TextBoxFor(t => t.precio, new { @class = "form-control mask4", Value = Model.precio.ToString("0.0000", CultureInfo.InvariantCulture) })
                 @Html.ValidationMessageFor(model => model.precio)
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-        </div> 
+        </div>
         <div class="form-group unidad-medida-group">
             <label for="id_unidad_medida" class="col-md-4 control-label"> Unidad Medida</label>
             <div class="col-md-7">
                 <div id="drop-down-unidad-medida">
-                    @{Html.RenderAction("GetDorpDownLineaProducto", "UnidadMedida", new { idLineaProducto = (Model != null) ? Model.id_linea_producto : 0, id = (Model != null) ? Model.id_unidad_medida : 0, nombre = "id_unidad_medida",@default="Seleccione elemento" });}
-                </div></div>
-            <div class="col-md-1 txt-color-red"><span >(*)</span></div>
+                    @{Html.RenderAction("GetDorpDownLineaProducto", "UnidadMedida", new { idLineaProducto = (Model != null) ? Model.id_linea_producto : 0, id = (Model != null) ? Model.id_unidad_medida : 0, nombre = "id_unidad_medida", @default = "Seleccione elemento" });}
+                </div>
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
-                
-        
-                <div class="form-group">
+
+
+        <div class="form-group">
             <label for="Activado" class="col-md-4 control-label">Activado</label>
             <div class="col-md-1">
                 @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
                 @Html.ValidationMessageFor(model => model.Activado)
             </div>
         </div>
-         
+
 
         <div class="modal-footer">
             <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         </div>
-      
+
     </div>
-   
+
 }
 @{ var idCiiu = (Model != null) ? Model.id_ciiu : 0;}
 <script type="text/javascript">
     $(document).ready(function () {
-        
+
         $("button[name='aceptarbtn']").click(function () {
-            
+
             var selectE = $("#id_establecimiento");
             var selectC = $("#id_ciiu");
             var selectL = $("#id_linea_producto");
@@ -152,28 +163,28 @@
                         alert('Failed to retrieve data.');
                     }
                 });
-            } else { $.errorIsRequired()}
-           
+            } else { $.errorIsRequired() }
+
 
         });
         var countShowModal = 0;
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
         $.changeModalName("Nuevo Año Base");
-       
+
         $("#editItem").on("shown.bs.modal", function () {
-            
+
             if (countShowModal == 0) {
                 dropDownE();
                 countShowModal++;
             }
-          
 
-           
+
+
         });
-      
+
 
         dropDownE = function () {
-           
+
             var selectE = $("#id_establecimiento");
             var selectC = $("#id_ciiu");
             var selectL = $("#id_linea_producto");
@@ -193,19 +204,19 @@
                     selectL.val(0);
                     selectU.val(0);
                 }
-                
-                $.getDropDrown("/Establecimiento/GetDorpDown/", { "id": idEst, "nombre": "id_establecimiento","default":"Seleccione elemento" }, "#drop-down-establecimiento", dropDownC, dropDownE);
+
+                $.getDropDrown("/Establecimiento/GetDorpDown/", { "id": idEst, "nombre": "id_establecimiento", "default": "Seleccione elemento" }, "#drop-down-establecimiento", dropDownC, dropDownE);
             }
         };
         dropDownC = function () {
-            
+
             var selectE = $("#id_establecimiento");
             var selectC = $("#id_ciiu");
             var selectL = $("#id_linea_producto");
             var selectU = $("#id_unidad_medida");
             if (selectE) {
                 selectE.removeClass("disabled");
-               
+
             }
 
             if (selectL)
@@ -219,7 +230,7 @@
                     selectL.val(0);
                     selectU.val(0);
                 }
-                
+
                 selectC.addClass("disabled");
                 idCiiu = selectC.val() != null ? selectC.val() : 0;
                 idEst = selectE.val() != null ? selectE.val() : 0;
@@ -228,35 +239,37 @@
 
         };
         dropDownL = function () {
-          
+
+            var selectE = $("#id_establecimiento");
             var selectC = $("#id_ciiu");
             var selectL = $("#id_linea_producto");
             var selectU = $("#id_unidad_medida");
-           
+
             if (selectU)
                 selectU.addClass("disabled");
             if (selectL) {
                 if ($("#editItem").attr("acction") == "new") {
                     selectU.val(0);
                 }
-               
+
                 selectL.addClass("disabled");
                 idCiiu = selectC.val() != null ? selectC.val() : 0;
                 idLine = selectL.val() != null ? selectL.val() : 0;
-               
-                $.getDropDrown("/LineaProducto/GetDorpDownCiiu/", { "id": idLine, "nombre": "id_linea_producto", "idCiuu": idCiiu, "default": "Seleccione elemento" }, "#drop-down-linea-producto", dropDownU, dropDownL);
+                idEstab = selectE.val() != null ? selectE.val() : 0;
+
+                $.getDropDrown("/LineaProducto/GetDorpDownCiiu/", { "id": idLine, "nombre": "id_linea_producto", "idCiuu": idCiiu, "default": "Seleccione elemento", "idEstablecimiento": idEstab, }, "#drop-down-linea-producto", dropDownU, dropDownL);
             }
         };
         dropDownU = function () {
-            
+
             var selectL = $("#id_linea_producto");
             if (selectL) {
                 selectL.removeClass("disabled");
-                
+
             }
             var selectU = $("#id_unidad_medida");
             if (selectU) {
-                
+
                 selectU.addClass("disabled");
                 idUnid = selectU.val() != null ? selectU.val() : 0;
                 idLine = selectL.val() != null ? selectL.val() : 0;
@@ -267,7 +280,7 @@
             var selectU = $("#id_unidad_medida");
             if (selectU) {
                 selectU.removeClass("disabled");
-                
+
             }
         }
     })

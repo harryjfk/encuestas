@@ -72,8 +72,15 @@
             <div class="form-group">
                 <label for="envio_1" class="col-md-4 control-label"> Env&iacute;o 1</label>
                 <div class="col-md-7">
-                    @Html.TextBoxFor(t => t.envio_1, new { @class = "form-control maskEnvio" })
-                    @Html.ValidationMessageFor(model => model.envio_1)
+                   @if (Model.envio_1 != 0)
+                   {
+                       @Html.TextBoxFor(t => t.envio_1, new {@class = "form-control maskEnvio"})
+                       @Html.ValidationMessageFor(model => model.envio_1)
+                   }
+                   else
+                   {
+                       <input class="form-control maskEnvio" data-val="true" id="envio_1" name="envio_1" type="text"  />
+                   }
                 </div>
                 <div class="col-md-1 txt-color-red"><span>(*)</span></div>
             </div>
@@ -81,8 +88,15 @@
             <div class="form-group">
                 <label for="envio_2" class="col-md-4 control-label"> Env&iacute;o 2</label>
                 <div class="col-md-7">
-                    @Html.TextBoxFor(t => t.envio_2, new { @class = "form-control maskEnvio" })
-                    @Html.ValidationMessageFor(model => model.envio_2)
+                  @if (Model.envio_2 != 0)
+                  {
+                      @Html.TextBoxFor(t => t.envio_2, new {@class = "form-control maskEnvio"})
+                      @Html.ValidationMessageFor(model => model.envio_2)
+                  }
+                  else
+                  {
+                    <input class="form-control maskEnvio" data-val="true" id="envio_2" name="envio_2" type="text" />
+                  }
                 </div>
                 <div class="col-md-1 txt-color-red"><span>(*)</span></div>
             </div>

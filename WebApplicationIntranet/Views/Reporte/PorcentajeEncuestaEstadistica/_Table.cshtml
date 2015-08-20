@@ -12,7 +12,11 @@
             <th>
                 ANALISTA
             </th>
-            <th>
+            @foreach (var item in Model.HeadersList)
+            {
+                <th>@item</th>
+            }
+            @*<th>
                 ENE
             </th>
             <th>
@@ -47,7 +51,7 @@
             </th>
             <th>
                 DIC
-            </th>
+            </th>*@
 
         </tr>
     </thead>
