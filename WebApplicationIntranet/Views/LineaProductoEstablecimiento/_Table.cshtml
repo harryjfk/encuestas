@@ -6,6 +6,7 @@
         <tr class="cabecera">
             <th> LINEA PRODUCTO </th>
             <th> CIIU </th>
+            <th> PESO </th>
             <th style="width: 100px;">ACCI&Oacute;N</th>
     </thead>
 
@@ -15,7 +16,7 @@
             <tr>
                 <td>@item.LineaProducto.ToString()</td>
                 <td ><span data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.LineaProducto.Ciiu.Nombre">@item.LineaProducto.Ciiu.ToString()</span></td>
-              
+              <td>@item.peso.GetValueOrDefault()</td>
                 <td>
                     @*<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" id="edit-@item.Id" role="@item.Id" class="edit-btn">
                         <i class="color-yellow glyphicon glyphicon-pencil"></i>

@@ -38,8 +38,26 @@
                         <span class="label label-primary">@f</span>
                     }
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.envio_1)</td>
-                <td>@Html.DisplayFor(modelItem => item.envio_2)</td>
+                <td>
+                    @if (item.envio_1 != 0)
+                    {
+                        <span>@item.envio_1</span>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+                <td>
+                    @if (item.envio_2 != 0)
+                    {
+                        <span>@item.envio_2</span>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
                 <td>@Html.DisplayFor(modelItem => item.mensaje)</td>
                 <td>
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" id="edit-@item.Id" role="@item.Id" class="edit-btn">

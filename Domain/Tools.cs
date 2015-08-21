@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.IO;
 using System.Reflection;
 using Data.Contratos;
 using Entity;
@@ -73,6 +74,14 @@ namespace Domain
             var textInfo = cInfo.TextInfo;
             var month= date.ToString("MMMM", cInfo);
             return textInfo.ToTitleCase(month);
+        }
+
+        public static MemoryStream ExportToExcel(this List<object> source)
+        {
+            var result = new SimpleExcelExport.ExportToExcel();
+            var bytes = result.ListToExcel(source);
+            var stream = new MemoryStream(bytes);
+            return stream;
         }
 
         //public static Func<T, bool> GetFilter<T>(this string text) where T : class

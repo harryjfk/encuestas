@@ -15,7 +15,7 @@ namespace Domain
         {
             var temp = new List<T>() {element};
             var value = temp.Select(property).FirstOrDefault();
-            if (value == null) list.Add(string.Format("El campo \"{0}\" es obligatorio", name));
+            if (value == null || value.ToString().Trim()=="") list.Add(string.Format("El campo \"{0}\" es obligatorio", name));
         }
         public static void RequiredAndNotZero<T, TK>(this List<string> list, T element, Func<T, TK> property, string name)
         {
