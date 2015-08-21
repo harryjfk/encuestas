@@ -2,8 +2,10 @@
 @model Entity.Reportes.PorcentajeEncuestaEstadistica
 @{
     ViewBag.Title = "Porcentaje de Encuestas Estadísticas";
+    var meses = new string[12] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
 }
 @Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/Content/css")
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger fade in">
@@ -23,34 +25,197 @@
 
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-4 margin-bottom-5">
+                <div class="col-md-2 margin-bottom-5">
+                    <div class="input-group">
+                        <input type="radio" name="radio-filter" checked="checked" value="rdA" /><span>Año</span>
+                    </div>
+                </div>
+                <div class="col-md-2 margin-bottom-5">
+                    <div class="input-group">
+                        <input type="radio" name="radio-filter" value="rdM" /><span>Mes</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 margin-bottom-5" style="z-index:3;">
                     <div class="input-group">
                         <span class="input-group-addon">AÑO</span>
                         <select id="select-ano" name="Año" class="form-control">
                             @for (int i = 2012; i <= DateTime.Now.Year; i++)
                             {
+                                var selected = i == DateTime.Now.Year ? "selected" : "";
                                 //var selected = (Model.Criteria != null && Model.Criteria.Año == i.ToString() || ((Model.Criteria == null || Model.Criteria.Año == null) && i == DateTime.Now.Year)) ? "selected" : "";
-                                @*<option @selected value="@i">@i.ToString()</option>*@
+                                <option @selected value="@i">@i.ToString()</option>
                             }
                         </select>
                     </div>
 
                 </div>
-                
+
+                <div class="col-md-1 margin-bottom-5">
+                    <div class="input-group"><span class="bold">Rango</span></div>
+                </div>
+                <div id="container-rango-ano">
+                    <div class="col-md-3 margin-bottom-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">Inicio</span>
+                            <select id="select-inicio" name="mes" class="form-control">
+                                @for (int i = 0; i < meses.Length; i++)
+                                {
+                                    var selected = (i + 1) == DateTime.Now.Month ? "selected" : "";
+                                    <option @selected value="@(i+1)">@meses[i]</option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 margin-bottom-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">Fin</span>
+                            <select id="select-fin" class="form-control">
+                                @for (int i = 0; i < meses.Length; i++)
+                                {
+                                    var selected = (i + 1) == DateTime.Now.Month ? "selected" : "";
+                                 
+                                        <option @selected value="@(i+1)">@meses[i]</option>                                   
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="container-rango-mes" class="hidden">
+                    <div class="col-md-3 margin-bottom-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">Mes</span>
+                            <select id="select-mes-mes" class="form-control">
+                                @for (int i = 0; i < meses.Length; i++)
+                                {
+                                    var selected = (i + 1) == DateTime.Now.Month ? "selected" : "";
+                                    <option @selected value="@(i+1)">@meses[i]</option>
+                                }
+                                </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 margin-bottom-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">Inicio</span>
+                            <select id="select-inicio-dias" class="form-control">
+                                @for (int i = 0; i < DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); i++)
+                                {
+                                    var selected = (i + 1) == 1 ? "selected" : "";
+                                    <option @selected value="@(i+1)">@(i+1)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 margin-bottom-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">Fin</span>
+                            <select id="select-fin-dias" class="form-control">
+                                @for (int i = 0; i < DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); i++)
+                                {
+                                    var selected = (i + 1) == 1 ? "se;ected" : "";
+                                    <option @selected value="@(i+1)">@(i+1)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row margin-top-5" >
-            <div class="col-md-4">
-    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
-    <input type="submit" value="Excel" name="buscarbtn" class="btn btn-default" />
-    <input type="submit" value="PDF" name="buscarbtn" class="btn btn-default" />
-    <input type="submit" value="Gráfico" name="buscarbtn" class="btn btn-default" />
-</div></div>
+            <div class="row margin-top-5">
+                <div class="col-md-4 margin-bottom-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">Estado</span>
+                        <select id="select-estado" name="estado" class="form-control">
+                            <option value="0">Seleccione un elemento</option>
+                            <option value="1">Validado</option>
+                            <option value="2">Observado</option>
+                            <option value="3">No Valido</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 margin-bottom-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">Analista</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-5">
+                <div class="col-md-4">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                    <input type="submit" value="Excel" name="buscarbtn" class="btn btn-default" />
+                    <input type="submit" value="PDF" name="buscarbtn" class="btn btn-default" />
+                    <input type="submit" value="Gráfico" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
         </div>
 
 
     </div>
 }
 <div id="table-container">
-@Html.Partial("PorcentajeEncuestaEstadistica/_Table", Model)
+    @Html.Partial("PorcentajeEncuestaEstadistica/_Table", Model)
 </div>
 
+<script>
+    var montArray=[];
+    @{
+        foreach (var m in meses) {
+        @Html.Raw("montArray.push('"+m+"');")
+        }
+
+    }
+    $(document).ready(function () {
+        var selectA = $("#select-ano");
+        var selectE = $("#select-estado");
+        var selectI = $("#select-inicio ");
+        var selectF = $("#select-fin");
+        var selectID = $("#select-inicio-dias");
+        var selectFD = $("#select-fin-dias");
+        var selectMM = $("#select-mes-mes");
+
+        $.search(selectA);
+        $.search(selectE);
+        $.search(selectI);
+        $.search(selectF);
+        $.search(selectID);
+        $.search(selectFD);
+        $.search(selectMM);
+        $('input[name=radio-filter]').click(function (e) { 
+            if(this.value=="rdA"){
+                $("#container-rango-mes").hide();
+                $("#container-rango-ano").show();
+            }else{
+
+                $("#container-rango-mes").removeClass('hidden');
+                $("#container-rango-mes").show();
+                $("#container-rango-ano").hide();
+            }
+            console.log(this.value); 
+        });
+        selectI.change(function(){
+            updateFinMeses();
+        });
+        
+        function updateFinMeses(){
+            selectF.find("option").remove().end();
+
+           
+            var select=selectI.val()-1;
+
+            for(var i=selectI.val()-1;i<montArray.length;i++){
+
+                var selected=select==i?"selected":"";
+                selectF.append('<option '+selected+' value='+(i+1)+'>'+montArray[i]+'</option>');
+
+            }
+            selectF.trigger("chosen:updated");
+        }
+        function updateDias(){
+            selectID.find("option").remove().end();
+            selectFD.find("option").remove().end();
+           
+        }
+    });
+</script>
