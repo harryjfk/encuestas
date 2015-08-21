@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Porcentaje de Encuestas Estadísticas";
     var meses = new string[12] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+    var radCheckA = Model.Filter.IsAnnual ? "checked=checked" : "";
+    var radCheckM = !Model.Filter.IsAnnual ? "checked=checked" : "";
 }
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/Content/css")
@@ -27,12 +29,13 @@
             <div class="row">
                 <div class="col-md-2 margin-bottom-5">
                     <div class="input-group">
-                        <input type="radio" name="radio-filter" checked="checked" value="rdA" /><span>Año</span>
+                        <input type="radio" name="radio-filter" @radCheckA value="rdA" /><span>Año</span>                      
+                        
                     </div>
                 </div>
                 <div class="col-md-2 margin-bottom-5">
                     <div class="input-group">
-                        <input type="radio" name="radio-filter" value="rdM" /><span>Mes</span>
+                        <input type="radio" @radCheckM name="radio-filter" value="rdM" /><span>Mes</span>
                     </div>
                 </div>
             </div>
@@ -43,9 +46,10 @@
                         <select id="select-ano" name="Año" class="form-control">
                             @for (int i = 2012; i <= DateTime.Now.Year; i++)
                             {
-                                var selected = i == DateTime.Now.Year ? "selected" : "";
+                                var selected =(Model.Filter.Year==i)||(Model.Filter.Year==null&& i == DateTime.Now.Year) ? "selected" : "";
                                 //var selected = (Model.Criteria != null && Model.Criteria.Año == i.ToString() || ((Model.Criteria == null || Model.Criteria.Año == null) && i == DateTime.Now.Year)) ? "selected" : "";
                                 <option @selected value="@i">@i.ToString()</option>
+                                
                             }
                         </select>
                     </div>
@@ -62,7 +66,7 @@
                             <select id="select-inicio" name="mes" class="form-control">
                                 @for (int i = 0; i < meses.Length; i++)
                                 {
-                                    var selected = (i + 1) == DateTime.Now.Month ? "selected" : "";
+                                    var selected =(Model.Filter.IsAnnual&&(Model.Filter.From!=null&&Model.Filter.From==(i+1))||(Model.Filter.From==null&&(i+1)==DateTime.Now.Month))||(!Model.Filter.IsAnnual&& (i + 1) == DateTime.Now.Month) ? "selected" : "";
                                     <option @selected value="@(i+1)">@meses[i]</option>
                                 }
 
@@ -75,7 +79,7 @@
                             <select id="select-fin" class="form-control">
                                 @for (int i = 0; i < meses.Length; i++)
                                 {
-                                    var selected = (i + 1) == DateTime.Now.Month ? "selected" : "";
+                                    var selected = (Model.Filter.IsAnnual && (Model.Filter.To != null && Model.Filter.To == (i + 1)) || (Model.Filter.To == null && (i + 1) == DateTime.Now.Month)) || (!Model.Filter.IsAnnual && (i + 1) == DateTime.Now.Month) ? "selected" : "";
                                  
                                         <option @selected value="@(i+1)">@meses[i]</option>                                   
                                 }
@@ -90,7 +94,8 @@
                             <select id="select-mes-mes" class="form-control">
                                 @for (int i = 0; i < meses.Length; i++)
                                 {
-                                    var selected = (i + 1) == DateTime.Now.Month ? "selected" : "";
+                                    var selected = (!Model.Filter.IsAnnual && (Model.Filter.Month != null && Model.Filter.Month == (i + 1)) || (Model.Filter.Month == null && (i + 1) == DateTime.Now.Month)) || (Model.Filter.IsAnnual && (i + 1) == DateTime.Now.Month) ? "selected" : "";
+                                   
                                     <option @selected value="@(i+1)">@meses[i]</option>
                                 }
                                 </select>
@@ -102,7 +107,7 @@
                             <select id="select-inicio-dias" class="form-control">
                                 @for (int i = 0; i < DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); i++)
                                 {
-                                    var selected = (i + 1) == 1 ? "selected" : "";
+                                    var selected = (!Model.Filter.IsAnnual && (Model.Filter.From != null && Model.Filter.From == (i + 1)) || (Model.Filter.From == null && (i + 1) == 1)) || (Model.Filter.IsAnnual && (i + 1) == 1) ? "selected" : "";
                                     <option @selected value="@(i+1)">@(i+1)</option>
                                 }
                             </select>
@@ -114,7 +119,8 @@
                             <select id="select-fin-dias" class="form-control">
                                 @for (int i = 0; i < DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); i++)
                                 {
-                                    var selected = (i + 1) == 1 ? "se;ected" : "";
+                                    var selected = (!Model.Filter.IsAnnual && (Model.Filter.To != null && Model.Filter.To == (i + 1)) || (Model.Filter.To == null && (i + 1) == 1)) || (Model.Filter.IsAnnual && (i + 1) == 1) ? "selected" : "";
+                                   
                                     <option @selected value="@(i+1)">@(i+1)</option>
                                 }
                             </select>
@@ -182,12 +188,14 @@
         $.search(selectID);
         $.search(selectFD);
         $.search(selectMM);
+        
         $('input[name=radio-filter]').click(function (e) { 
-            if(this.value=="rdA"){
+            if (this.value == "rdA") {
+                @{Model.Filter.IsAnnual=true;}
                 $("#container-rango-mes").hide();
                 $("#container-rango-ano").show();
             }else{
-
+                 @{Model.Filter.IsAnnual=false;}
                 $("#container-rango-mes").removeClass('hidden');
                 $("#container-rango-mes").show();
                 $("#container-rango-ano").hide();
