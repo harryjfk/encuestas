@@ -639,18 +639,27 @@ namespace Domain.Managers
 
         #region REPORTES
 
-        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadistica()
+        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadistica(PorcentajeEncuestaEstadisticaFilter filter)
         {
-            return PorcentajeEncuestaEstadisticaAnual();
+            if (filter.IsAnnual)
+                return PorcentajeEncuestaEstadisticaAnual(filter.Year, filter.From, filter.To, filter.Estado, filter.IdAnalista);
+            return PorcentajeEncuestaEstadisticaMensual(filter.Year, filter.Month, filter.From, filter.To, filter.Estado, filter.IdAnalista);
         }
 
-        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadisticaAnual()
+        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadisticaAnual(int year, int from, int to, EstadoEncuesta estado, long? idAnalista = null)
         {
-            var all = Manager.ViewProcentajeEncuestaExtadisticaManager.Get();
+            var all = Manager.ViewProcentajeEncuestaExtadisticaManager.Get(t =>
+                t.fecha.Year == year
+                && t.fecha.Month >= from
+                && t.fecha.Month <= to).AsQueryable();
+            if (idAnalista != null && idAnalista.GetValueOrDefault() > 0)
+                all = all.Where(t => t.id_analista == idAnalista.GetValueOrDefault());
+            if(estado!=EstadoEncuesta.Todos)
+                all = all.Where(t => t.estado_encuesta == (int)estado);
             var elements = all.GroupBy(t => t.id_analista);
             var result = new PorcentajeEncuestaEstadistica();
             for (var i = 1; i < 13; i++)
-                result.HeadersList.Add(i.GetMonthText().ToUpper().Substring(0,3));
+                result.HeadersList.Add(i.GetMonthText().ToUpper().Substring(0, 3));
             foreach (var element in elements)
             {
                 var item = new PorcentajeEncuestaEstadisticaItem()
@@ -693,7 +702,66 @@ namespace Domain.Managers
             }
             return result;
         }
+        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadisticaMensual(int year, int month, int from, int to, EstadoEncuesta estado, long? idAnalista = null)
+        {
+            var all = Manager.ViewProcentajeEncuestaExtadisticaManager.Get(t =>
+                t.fecha.Month == month
+                && t.fecha.Year == year
+                && t.fecha.Day <= to
+                && t.fecha.Day >= from).AsQueryable();
+            if (idAnalista != null && idAnalista.GetValueOrDefault() > 0)
+                all = all.Where(t => t.id_analista == idAnalista.GetValueOrDefault());
+            if (estado != EstadoEncuesta.Todos)
+                all = all.Where(t => t.estado_encuesta == (int)estado);
+            var elements = all.GroupBy(t => t.id_analista);
+            var result = new PorcentajeEncuestaEstadistica();
+            for (var i = from; i <= to; i++)
+                result.HeadersList.Add(i.ToString());
+            foreach (var element in elements)
+            {
+                var item = new PorcentajeEncuestaEstadisticaItem()
+                {
+                    IdAnalista = (long)element.Key,
+                    Analista = element.FirstOrDefault().login_analista,
+                    Total = all.Count()
+                };
+                foreach (var mes in element.GroupBy(t => t.fecha.Day))
+                {
+                    item.Month.Add(new MonthData()
+                    {
+                        Number = mes.Key,
+                        Name = mes.Key.ToString(),
+                        MonthlyValue = mes.Count(),
+                        Total = all.Count()
+                    });
+                    foreach (var ciiu in mes.GroupBy(t => t.id_ciiu))
+                    {
+                        var fr = ciiu.FirstOrDefault();
+                        var ciiuData = new CiiuData()
+                        {
+                            Id = ciiu.Key,
+                            Name = string.Format("{0}:{1}", fr.codigo_ciiu, fr.nombre_ciiu)
+                        };
+                        foreach (var cm in ciiu.GroupBy(t => t.fecha.Day))
+                        {
+                            ciiuData.Month.Add(new MonthData()
+                            {
+                                Name = cm.Key.ToString(),
+                                MonthlyValue = cm.Count(),
+                                Number = cm.Key,
+                                Total = mes.Count()
+                            });
+                        }
+                        item.Ciius.Add(ciiuData);
+                    }
+                }
+                result.Elements.Add(item);
+            }
+            return result;
+        }
 
+
+        
         #endregion
     }
 }
