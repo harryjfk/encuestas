@@ -642,8 +642,14 @@ namespace Domain.Managers
         public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadistica(PorcentajeEncuestaEstadisticaFilter filter)
         {
             if (filter.IsAnnual)
-                return PorcentajeEncuestaEstadisticaAnual(filter.Year, filter.From, filter.To, filter.Estado, filter.IdAnalista);
-            return PorcentajeEncuestaEstadisticaMensual(filter.Year, filter.Month, filter.From, filter.To, filter.Estado, filter.IdAnalista);
+            {
+                var res= PorcentajeEncuestaEstadisticaAnual(filter.Year, filter.From, filter.To, filter.Estado, filter.IdAnalista);
+                res.Filter = filter;
+                return res;
+            }
+            var res1= PorcentajeEncuestaEstadisticaMensual(filter.Year, filter.Month, filter.From, filter.To, filter.Estado, filter.IdAnalista);
+            res1.Filter = filter;
+            return res1;
         }
 
         public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadisticaAnual(int year, int from, int to, EstadoEncuesta estado, long? idAnalista = null)
