@@ -9,7 +9,7 @@
     <thead>
         <tr class="cabecera">
 
-            <th>
+            <th  style="width: 200px;">
                 ANALISTA
             </th>
             @foreach (var item in Model.HeadersList)
@@ -69,14 +69,14 @@
                         </a>
                     </span>
                 </td>
-                @for (var i = 1; i <= 12; i++)
+                @for (var i = 1; i <= Model.HeadersList.Count; i++)
                 {
                     <td>
                         @{
                             var m = item.Month.FirstOrDefault(t => t.Number == i);
                             if (m != null)
                             {
-                                <span>@m.Percent.ToString(".00", CultureInfo.CreateSpecificCulture("en"))%</span>
+                                <span>@m.Percent.ToString(".00", CultureInfo.CreateSpecificCulture("en"))</span>
                             }
                             else
                             {

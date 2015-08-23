@@ -8,6 +8,8 @@ namespace WebApplication
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/chart").Include(
+                "~/Scripts/chart/highcharts.js"));
             bundles.Add(new ScriptBundle("~/bundles/tools").Include(
                 "~/Scripts/function.tools/fast-functions.js"));
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
