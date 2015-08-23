@@ -36,6 +36,7 @@ namespace WebApplication.Controllers
                 Estado = EstadoEncuesta.Todos,
             };
             var report = Manager.EncuestaEstadistica.PorcentajeEncuestaEstadistica(filter);
+            report.Filter = filter;
             return View("PorcentajeEncuestaEstadistica/Index",report);
         }
 	}
