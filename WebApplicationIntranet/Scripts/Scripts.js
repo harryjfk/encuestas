@@ -97,9 +97,11 @@
     errorIsRequired: function () {
         var errors = "<li> Debe llenar los campos requeridos</li>";
         $("#errors-container").removeClass("hidden").find("ul").html(errors);
-    }
+    },
 
-
+    daysInMonth:function(month,year) {
+    return new Date(year, month, 0).getDate();
+}
 });
 $(document).ready(function () {
     

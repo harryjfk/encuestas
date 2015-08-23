@@ -64,7 +64,7 @@
                                 <li>@Html.ActionLink("Tipo de Cambio", "Index", "TipoCambio")</li>
                                 <li>@Html.ActionLink("IPM-IPP", "Index", "IpmIpp")</li>
                                 <li>@Html.ActionLink("Consumo de Harina para Fideos", "Index", "ConsumoHarinaFideo")</li>
-                                <li>@Html.ActionLink("Impotación y Exportación de Harina de Trigo", "Index", "ImportacionExportacionHarinaTrigo")</li>
+                                <li>@Html.ActionLink("Importación y Exportación de Harina de Trigo", "Index", "ImportacionExportacionHarinaTrigo")</li>
                                 <li>@Html.ActionLink("Método de Cálculo", "Index", "MetodoCalculo")</li>
                                 <li>@Html.ActionLink("Año Base", "Index", "AñoBase")</li>
                                 <li>@Html.ActionLink("Parametrización de Envío de Correos", "Index", "ParametrizacionEnvio")</li>                              
@@ -85,6 +85,13 @@
                                 <li>@Html.ActionLink("Analista", "IndexAnalista", "UsuarioIntranet")</li>
                             </ul>
                         </li>
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Reportes</a>
+                            <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("PorcentajeEncuestaEstadistica", "PorcentajeEncuestaEstadistica", "Reporte")</li>    
+                            <li><a href="http://www.produce.gob.pe/index.php/estadisticas/boletines-mensuales">Reporte de la producci&oacute;n manufacturera</a></li>
+                            </ul>
+                            </li>
                     }
 
                     @if (Session["pr"].ToString() == "Informante")

@@ -1,0 +1,289 @@
+﻿@using Entity
+@model Entity.Reportes.PorcentajeEncuestaEstadistica
+@{
+    ViewBag.Title = "Porcentaje de Encuestas Estadísticas";
+    var meses = new string[12] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+    var radCheckA = Model.Filter.IsAnnual ? "checked=checked" : "";
+    var radCheckM = !Model.Filter.IsAnnual ? "checked=checked" : "";
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/Content/css")
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("BuscarPorcentajeEncuestaEstadistica", "Reporte", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 margin-bottom-5">
+                    <div class="input-group">
+                        <input type="radio" name="radio-filter" @radCheckA value="rdA" /><span>Año</span>
+
+                    </div>
+                </div>
+                <div class="col-md-2 margin-bottom-5">
+                    <div class="input-group">
+                        <input type="radio" @radCheckM name="radio-filter" value="rdM" /><span>Mes</span>
+                    </div>
+                </div>
+
+                <input type="hidden" id="radio-is-anual" name="Filter.IsAnnual" value="@Model.Filter.IsAnnual.ToString()" />
+
+            </div>
+            <div class="row">
+                <div class="col-md-3 margin-bottom-5" style="z-index:3;">
+                    <div class="input-group">
+                        <span class="input-group-addon">AÑO</span>
+                        <select id="select-ano" name="Filter.Year" class="form-control">
+                            @for (int i = 2012; i <= DateTime.Now.Year; i++)
+                            {
+                                var selected = (Model.Filter.Year == i) || (Model.Filter.Year == null && i == DateTime.Now.Year) ? "selected" : "";
+                               
+                                <option @selected value="@i">@i.ToString()</option>
+
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-md-1 margin-bottom-5">
+                    <div class="input-group"><span class="bold">Rango</span></div>
+                </div>
+                <div id="container-rango-ano">
+                    <div class="col-md-3 margin-bottom-5" style="z-index:3;">
+                        <div class="input-group">
+                            <span class="input-group-addon">Inicio</span>
+                            <select id="select-inicio"  name="Filter.From" class="form-control">
+                                @for (int i = 0; i < meses.Length; i++)
+                                {
+                                    var selected = (Model.Filter.IsAnnual && (Model.Filter.From != 0 && Model.Filter.From == (i + 1)) || (Model.Filter.From == 0 && (i + 1) == DateTime.Now.Month)) || (!Model.Filter.IsAnnual && (i + 1) == DateTime.Now.Month) ? "selected" : "";
+                                    <option @selected value="@(i+1)">@meses[i]</option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 margin-bottom-5" style="z-index:3;">
+                        <div class="input-group">
+                            <span class="input-group-addon">Fin</span>
+                            <select id="select-fin" name="Filter.To" class="form-control">
+                                @for (int i =Model.Filter.IsAnnual&&Model.Filter.From>0?(Model.Filter.From-1):(DateTime.Now.Month-1); i < meses.Length; i++)
+                                {
+                                    var selected = (Model.Filter.IsAnnual && (Model.Filter.To != 0 && Model.Filter.To == (i + 1)) || (Model.Filter.To == 0 && (i + 1) == DateTime.Now.Month)) || (!Model.Filter.IsAnnual && (i + 1) == DateTime.Now.Month) ? "selected" : "";
+
+                                    <option @selected value="@(i+1)">@meses[i]</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="container-rango-mes" class="hidden">
+                    <div class="col-md-3 margin-bottom-5" style="z-index:3;">
+                        <div class="input-group">
+                            <span class="input-group-addon">Mes</span>
+                            <select id="select-mes-mes" name="Filter.Month" class="form-control">
+                                @for (int i = 0; i < meses.Length; i++)
+                                {
+                                    var selected = (!Model.Filter.IsAnnual && (Model.Filter.Month != 0 && Model.Filter.Month == (i + 1)) || (Model.Filter.Month == 0 && (i + 1) == DateTime.Now.Month)) || (Model.Filter.IsAnnual && (i + 1) == DateTime.Now.Month) ? "selected" : "";
+
+                                    <option @selected value="@(i+1)">@meses[i]</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 margin-bottom-5" style="z-index:3;">
+                        <div class="input-group">
+                            <span class="input-group-addon">Inicio</span>
+                            <select id="select-inicio-dias" name="Filter.From" class="form-control">
+                                @for (int i = 0; i < DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); i++)
+                                {
+                                    var selected = (!Model.Filter.IsAnnual && (Model.Filter.From != 0 && Model.Filter.From == (i + 1)) || (Model.Filter.From == 0 && (i + 1) == 1)) || (Model.Filter.IsAnnual && (i + 1) == 1) ? "selected" : "";
+                                    <option @selected value="@(i+1)">@(i + 1)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 margin-bottom-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">Fin</span>
+                            <select id="select-fin-dias" name="Filter.To" class="form-control">
+                                @for (int i = !Model.Filter.IsAnnual&&Model.Filter.From>0?(Model.Filter.From-1):0; i < DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); i++)
+                                {
+                                    var selected = (!Model.Filter.IsAnnual && (Model.Filter.To != 0 && Model.Filter.To == (i + 1)) || (Model.Filter.To == 0 && (i + 1) == 1)) || (Model.Filter.IsAnnual && (i + 1) == 1) ? "selected" : "";
+
+                                    <option @selected value="@(i+1)">@(i + 1)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-5">
+                <div class="col-md-4 margin-bottom-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">Estado</span>
+                        @*<select id="select-estado" name="Filter.Estado" class="form-control">*@
+                            @Html.EnumDropDownListFor(t => t.Filter.Estado, new { @class="form-control"})
+                            @*<option value="0">Todos</option>
+                            <option value="1">No Enviada</option>
+                            <option value="2">Enviada</option>
+                            <option value="3">Validada</option>
+                            @*<option value="4">Observada</option>
+                        </select>*@
+                    </div>
+                </div>
+                <div class="col-md-4 margin-bottom-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">Analista</span>
+                        @{Html.RenderAction("GetDorpDown", "UsuarioIntranet", new { id = Model.Filter != null ? Model.Filter.IdAnalista : 0, nombre = "Filter.IdAnalista", @default = "Todos" });}
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-5">
+                <div class="col-md-4">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                    <input type="submit" value="Excel" name="excelbtn" class="btn btn-default hidden" />
+                    <input type="submit" value="PDF" name="pdfbtn" class="btn btn-default hidden" />
+                    <input type="submit" value="Gráfico" name="graficobtn" class="btn btn-default hidden" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+<div id="table-container">
+    @Html.Partial("PorcentajeEncuestaEstadistica/_Table", Model)
+</div>
+
+<script>
+    var montArray = [];
+    @{
+        foreach (var m in meses) {
+        @Html.Raw("montArray.push('"+m+"');")
+        }
+          
+    }
+    $(document).ready(function () {            
+       
+        var selectA = $("#select-ano");
+        var selectE = $("#Filter_Estado");
+        var selectI = $("#select-inicio ");
+        var selectF = $("#select-fin");
+        var selectID = $("#select-inicio-dias");
+        var selectFD = $("#select-fin-dias");
+        var selectMM = $("#select-mes-mes");         
+        if ($("#radio-is-anual").val().toLowerCase() == "false") {
+            changeRadioVisivility(false);
+            
+        }
+        $.search(selectA);
+        $.search(selectE);
+        $.search(selectI);
+        $.search(selectF);
+        $.search(selectID);
+        $.search(selectFD);
+        $.search(selectMM);
+
+        
+        $('input[name=radio-filter]').click(function (e) {
+            if (this.value == "rdA") {
+                changeRadioVisivility(true);
+            } else {
+                changeRadioVisivility(false);
+            }
+          
+        });
+        function changeRadioVisivility(valueRa){
+            if (valueRa) {
+                
+                selectID.attr('disabled', 'disabled');
+                selectFD.attr('disabled', 'disabled');
+                selectI.removeAttr('disabled');
+                selectF.removeAttr('disabled');
+                selectI.trigger("chosen:updated");
+                selectF.trigger("chosen:updated");
+                $("#container-rango-mes").hide();
+                $("#container-rango-ano").show();               
+                $("#radio-is-anual").val(true);
+                
+                $("#select_inici_chosen").removeAttr("style");
+                $("#select_inicio_chosen").attr("style", "width:100% !important;");
+                $("#select_fin_chosen").removeAttr("style");
+                $("#select_fin_chosen").attr("style", "width:100% !important;");
+                
+            } else {
+                selectI.attr('disabled', 'disabled');
+                selectF.attr('disabled', 'disabled');
+                selectID.removeAttr('disabled');
+                selectFD.removeAttr('disabled');
+                selectID.trigger("chosen:updated");
+                selectFD.trigger("chosen:updated");
+                $("#radio-is-anual").val(false);
+                $("#container-rango-mes").removeClass('hidden');
+                $("#container-rango-mes").show();
+                $("#container-rango-ano").hide();
+                $("#select_inicio_dias_chosen").removeAttr("style");
+                $("#select_inicio_dias_chosen").attr("style", "width:100% !important;");
+                $("#select_fin_dias_chosen").removeAttr("style");
+                $("#select_fin_dias_chosen").attr("style", "width:100% !important;");
+                $("#select_mes_mes_chosen").removeAttr("style");
+                $("#select_mes_mes_chosen").attr("style", "width:100% !important;");
+            }
+        };
+        selectI.change(function () {
+            updateFinMeses();
+        });
+        selectID.change(function () { updateDias(selectFD, selectID.val()); });
+        selectA.change(function () {
+            if ($("#radio-is-anual").val().toLowerCase() == "true") {
+                updateDias(selectID,1);
+                updateDias(selectFD,1);
+            }
+        });
+        selectMM.change(function () {
+            updateDias(selectID,1);
+            updateDias(selectFD,1);
+        });
+        function updateFinMeses() {
+            selectF.find("option").remove().end();
+
+            var select = selectI.val() - 1;
+
+            for (var i = selectI.val() - 1; i < montArray.length; i++) {
+
+                var selected = select == i ? "selected" : "";
+                selectF.append('<option ' + selected + ' value=' + (i + 1) + '>' + montArray[i] + '</option>');
+
+            }
+            selectF.trigger("chosen:updated");
+        }
+        //esta funcion va actualizar los valores del select de los dias, cuando l filtro es por mes
+        //var element es el valor del elemento
+        //var from es el dia a partir del cual se va a generar, en caso que se quieran todos se pasa cero o no se pasa
+        function updateDias(element, from) {
+          
+            element.find("option").remove().end();
+            var valSelectA = selectA.val();
+            var valSelectM = selectMM.val();
+            for (var i =from&&from>0?(from-1): 0; i < $.daysInMonth(valSelectM, valSelectA) ; i++) {
+                var selected = (from && from > 1 && (i+1) == from) || (!from && (i + 1) == 1) ? "selected" : "";
+                element.append('<option ' + selected + ' value=' + (i + 1) + '>'+(i + 1) + '</option>');
+            }
+            element.trigger("chosen:updated");
+        }
+    });
+</script>

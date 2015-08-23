@@ -11,14 +11,14 @@
     <div class="info-child-screen-details">
         <div>
             <span class="bold">Raz&oacute;n Social: </span> <span>@Model.Nombre</span>
-        </div>        
+        </div>
         <div>
             <span class="bold">Ruc: </span> <span>@Model.Ruc</span>
         </div>
         <div>
             <span class="bold">Direcci&oacute;n: </span> <span>@Model.Direccion</span>
         </div>
-        <div >
+        <div>
             <span class="bold">Departamento:</span>
             @{Html.RenderAction("GetNombreDepartamento", "Departamento", new { idDepartamento = Model.IdDepartamento });}
         </div>
@@ -46,10 +46,19 @@
             <span class="bold">Enviar Notificaciones: </span> <span>@Model.EnviarCorreo</span>
         </div>
         <div>
-            <span class="bold">Analista: </span>
-            @if (Model.Analista != null)
+            <span class="bold">Analistas: </span>
+            @if (Model.CAT_ESTAB_ANALISTA.Any())
             {
-                <span>@Model.Analista.Login</span>
+                foreach (var estAn in Model.CAT_ESTAB_ANALISTA)
+                {
+                    <div>
+                        <span class="bold">Nombre: </span> <span>@estAn.SEG_USUARIO.Login</span>
+                    </div>
+                    <div>
+                        <span class="bold">CIIU: </span> <span>@estAn.CAT_CIIU.ToString()</span>
+                    </div>
+                <br/>
+                }
             }
             else
             {

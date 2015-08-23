@@ -205,6 +205,7 @@
     <Compile Include="Controllers\EncuestaEmpresarialController.cs" />
     <Compile Include="Controllers\IpmIppController.cs" />
     <Compile Include="Controllers\LineaProductoEstablecimientoController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\PreguntaController.cs" />
     <Compile Include="Controllers\ProvinciaController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
@@ -221,6 +222,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ExportExcelPorcentajeEstadisticaMensualModel.cs" />
+    <Compile Include="Models\ExportExcelPorcentajeEstadisticaAnualModel.cs" />
     <Compile Include="Models\ImportacionExportacionHarinaTrigo.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -288,6 +291,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\chart\highcharts.js" />
     <Content Include="Scripts\function.tools\fast-functions.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
@@ -476,6 +480,10 @@
     <Content Include="Views\Auditoria\Index.cshtml" />
     <Content Include="Views\Auditoria\_Table.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_InfoAnalistas.cshtml" />
+    <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\Index.cshtml" />
+    <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\_Table.cshtml" />
+    <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\_TableCiiu.cshtml" />
+    <Content Include="Views\Shared\_Graphic.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>

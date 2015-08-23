@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Data;
 using Data.Repositorios;
 using Entity;
+using Entity.Reportes;
 using PagedList;
 
 namespace Domain.Managers
@@ -58,9 +59,9 @@ namespace Domain.Managers
             Manager.AuditoriaManager.SaveChanges();
             return result;
         }
-        public bool GenerateCurrent(long idEstablecimiento,DateTime? date=null)
+        public bool GenerateCurrent(long idEstablecimiento, DateTime? date = null)
         {
-            var now =date?? DateTime.Now.Subtract(TimeSpan.FromDays(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)));
+            var now = date ?? DateTime.Now.Subtract(TimeSpan.FromDays(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)));
             var establecimiento = Manager.Establecimiento.Find(idEstablecimiento);
             if (establecimiento == null || establecimiento.Informante == null) return false;
             var item = Get(t => t.Fecha.Month == now.Month && t.Fecha.Year == now.Year && t.IdEstablecimiento == idEstablecimiento).FirstOrDefault();
@@ -80,12 +81,12 @@ namespace Domain.Managers
                     // ValorProduccionMensual = new ValorProduccion(),
                     VentasProductosEstablecimiento = new VentasProductosEstablecimientos()
                     {
-                        ServiciosActivados = establecimiento.TipoEnum==TipoEstablecimiento.Servicio?true:false
+                        ServiciosActivados = establecimiento.TipoEnum == TipoEstablecimiento.Servicio ? true : false
                     },
                     TrabajadoresDiasTrabajados = new TrabajadoresDiasTrabajados(),
                     FactorProduccion = new FactorProducccion()
                 };
-                
+
 
                 var encuestaEstadisticaLast = this.Get().OrderBy(x => x.Id).LastOrDefault();
                 var encuestaEmpresarialLast = Manager.EncuestaEmpresarial.Get().OrderBy(x => x.Id).LastOrDefault();
@@ -126,7 +127,7 @@ namespace Domain.Managers
                         id_analista = analista.id_analista,
                         id_encuesta = encuesta.Id,
                         EstadoEncuesta = EstadoEncuesta.NoEnviada,
-                        current = (analista.orden == first)?1:0
+                        current = (analista.orden == first) ? 1 : 0
                     };
                     Manager.EncuestaAnalistaManager.Add(ne);
                     Manager.EncuestaAnalistaManager.SaveChanges();
@@ -199,22 +200,22 @@ namespace Domain.Managers
             return false;
         }
 
-        public void UpdateExistenciasEncuestas(long idEncuesta,long idLineaProd)
+        public void UpdateExistenciasEncuestas(long idEncuesta, long idLineaProd)
         {
             var encuesta = Manager.EncuestaEstadistica.Find(idEncuesta);
             var lineaProd = Manager.LineaProducto.Find(idLineaProd);
             if (encuesta == null || lineaProd == null) return;
             var rest = Manager.EncuestaEstadistica.Get(t => t.Fecha > encuesta.Fecha).ToList();
-            foreach (var encuestaEstadistica in rest.OrderBy(t=>t.Fecha))
+            foreach (var encuestaEstadistica in rest.OrderBy(t => t.Fecha))
             {
-                UpdateExistenciasEncuesta(encuestaEstadistica,lineaProd);
+                UpdateExistenciasEncuesta(encuestaEstadistica, lineaProd);
             }
         }
-        private void UpdateExistenciasEncuesta(EncuestaEstadistica encuesta,LineaProducto lineaProd)
+        private void UpdateExistenciasEncuesta(EncuestaEstadistica encuesta, LineaProducto lineaProd)
         {
             if (encuesta == null || lineaProd == null) return;
             var establecimiento = encuesta.Establecimiento;
-            var old = establecimiento.Encuestas.Where(t => t.Id != encuesta.Id && t.Fecha<encuesta.Fecha).OfType<EncuestaEstadistica>().OrderBy(t => t.Fecha).ToList();
+            var old = establecimiento.Encuestas.Where(t => t.Id != encuesta.Id && t.Fecha < encuesta.Fecha).OfType<EncuestaEstadistica>().OrderBy(t => t.Fecha).ToList();
             // mp.IsFirst = true;
             if (old.Count > 0)
             {
@@ -242,7 +243,7 @@ namespace Domain.Managers
 
             }
 
-            
+
         }
         public override void UpdateKey(EncuestaEstadistica element)
         {
@@ -365,12 +366,12 @@ namespace Domain.Managers
             return list;
         }
 
-        public void AddLineaProducto(long idEncuesta, LineaProducto linea,bool addMateriaPropia=true)
+        public void AddLineaProducto(long idEncuesta, LineaProducto linea, bool addMateriaPropia = true)
         {
             var encuesta = Manager.EncuestaEstadistica.Find(idEncuesta);
             var lineaprod = Manager.LineaProducto.Find(linea.Id);
             var ciiu = Manager.Ciiu.Find(linea.IdCiiu);
-            if (ciiu != null && encuesta != null && lineaprod!=null)
+            if (ciiu != null && encuesta != null && lineaprod != null)
             {
                 long idUM = 0;
                 var first = lineaprod.LineasProductoUnidadMedida.FirstOrDefault();
@@ -382,18 +383,18 @@ namespace Domain.Managers
                     {
                         IdLineaProducto = linea.Id,
                         IdEstablecimiento = establecimiento.Id,
-                        fecha_creacion_informante=encuesta.Fecha
+                        fecha_creacion_informante = encuesta.Fecha
                     });
                     Manager.LineaProductoEstablecimiento.SaveChanges();
                     if (addMateriaPropia)
                     {
-                       var tr= Manager.MateriaPropiaManager.Add(new MateriaPropia()
-                        {
-                            IdLineaProducto = linea.Id,
-                            IdUnidadMedida = idUM,
-                            IdVolumenProduccion = encuesta.VolumenProduccionMensual.Identificador,
+                        var tr = Manager.MateriaPropiaManager.Add(new MateriaPropia()
+                         {
+                             IdLineaProducto = linea.Id,
+                             IdUnidadMedida = idUM,
+                             IdVolumenProduccion = encuesta.VolumenProduccionMensual.Identificador,
 
-                        });
+                         });
                         Manager.MateriaPropiaManager.SaveChanges();
                     }
                 }
@@ -412,13 +413,13 @@ namespace Domain.Managers
                     Manager.LineaProductoEstablecimiento.SaveChanges();
                     if (addMateriaPropia)
                     {
-                       var re= Manager.MateriaPropiaManager.Add(new MateriaPropia()
-                        {
-                            IdLineaProducto = linea.Id,
-                            IdUnidadMedida = idUM,
-                            IdVolumenProduccion = encuesta.VolumenProduccionMensual.Identificador,
+                        var re = Manager.MateriaPropiaManager.Add(new MateriaPropia()
+                         {
+                             IdLineaProducto = linea.Id,
+                             IdUnidadMedida = idUM,
+                             IdVolumenProduccion = encuesta.VolumenProduccionMensual.Identificador,
 
-                        });
+                         });
                         Manager.MateriaPropiaManager.SaveChanges();
                     }
                 }
@@ -438,7 +439,7 @@ namespace Domain.Managers
 
             foreach (var mt in element.VolumenProduccionMensual.MateriasPropia)
             {
-                if(!mt.IsValid)
+                if (!mt.IsValid)
                     list.Add(string.Format("Los valores insertados para la línea de producto {0} en el capítulo 2 sección A no son correctos. (Existencias + Produccion + Otros Ingresos) ≥ (VentasPais + Ventas Extranjeros + Otras Salidas)", mt.LineaProducto.Nombre));
             }
 
@@ -542,10 +543,10 @@ namespace Domain.Managers
             }
 
         }
-        public IPagedList GetAsignadosAnalista(Query<EncuestaEstadistica> query,long idAnalista)
+        public IPagedList GetAsignadosAnalista(Query<EncuestaEstadistica> query, long idAnalista)
         {
             var estab = new long?();
-           // var ana = new long?();
+            // var ana = new long?();
             if (query.Criteria != null)
             {
                 if (query.Criteria.IdEstablecimiento != 0)
@@ -555,7 +556,7 @@ namespace Domain.Managers
             }
             var temp = Repository.Get(query.Filter, null, query.Order)
                 .Where(t => t.IdEstablecimiento == estab
-                && t.CAT_ENCUESTA_ANALISTA.Any(h => h.id_analista == idAnalista && (h.IsCurrent||h.IsPast)) 
+                && t.CAT_ENCUESTA_ANALISTA.Any(h => h.id_analista == idAnalista && (h.IsCurrent || h.IsPast))
                 && (t.EstadoEncuesta != EstadoEncuesta.NoEnviada));
             if (query.Paginacion != null)
             {
@@ -597,9 +598,9 @@ namespace Domain.Managers
 
             var analistas = encuesta.CAT_ENCUESTA_ANALISTA.OrderBy(t => t.current);
             var tt = analistas.FirstOrDefault(t => t.IsCurrent);
-            if (tt == null) return ;
+            if (tt == null) return;
             tt.current = 2;
-            tt.EstadoEncuesta=EstadoEncuesta.Validada;
+            tt.EstadoEncuesta = EstadoEncuesta.Validada;
             Manager.EncuestaAnalistaManager.Modify(tt);
             var next = analistas.FirstOrDefault(t => t.orden > tt.orden);
             if (next != null)
@@ -634,5 +635,139 @@ namespace Domain.Managers
             }
             Manager.EncuestaAnalistaManager.SaveChanges();
         }
+
+
+        #region REPORTES
+
+        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadistica(PorcentajeEncuestaEstadisticaFilter filter)
+        {
+            if (filter.IsAnnual)
+            {
+                var res= PorcentajeEncuestaEstadisticaAnual(filter.Year, filter.From, filter.To, filter.Estado, filter.IdAnalista);
+                res.Filter = filter;
+                return res;
+            }
+            var res1= PorcentajeEncuestaEstadisticaMensual(filter.Year, filter.Month, filter.From, filter.To, filter.Estado, filter.IdAnalista);
+            res1.Filter = filter;
+            return res1;
+        }
+
+        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadisticaAnual(int year, int from, int to, EstadoEncuesta estado, long? idAnalista = null)
+        {
+            var all = Manager.ViewProcentajeEncuestaExtadisticaManager.Get(t =>
+                t.fecha.Year == year
+                && t.fecha.Month >= from
+                && t.fecha.Month <= to).AsQueryable();
+            if (idAnalista != null && idAnalista.GetValueOrDefault() > 0)
+                all = all.Where(t => t.id_analista == idAnalista.GetValueOrDefault());
+            if(estado!=EstadoEncuesta.Todos)
+                all = all.Where(t => t.estado_encuesta == (int)estado);
+            var elements = all.GroupBy(t => t.id_analista);
+            var result = new PorcentajeEncuestaEstadistica();
+            for (var i = 1; i < 13; i++)
+                result.HeadersList.Add(i.GetMonthText().ToUpper().Substring(0, 3));
+            foreach (var element in elements)
+            {
+                var item = new PorcentajeEncuestaEstadisticaItem()
+                {
+                    IdAnalista = (long)element.Key,
+                    Analista = element.FirstOrDefault().login_analista,
+                    Total = all.Count()
+                };
+                foreach (var mes in element.GroupBy(t => t.fecha.Month))
+                {
+                    item.Month.Add(new MonthData()
+                    {
+                        Number = mes.Key,
+                        Name = mes.Key.GetMonthText(),
+                        MonthlyValue = mes.Count(),
+                        Total = all.Count()
+                    });
+                    foreach (var ciiu in mes.GroupBy(t => t.id_ciiu))
+                    {
+                        var fr = ciiu.FirstOrDefault();
+                        var ciiuData = new CiiuData()
+                        {
+                            Id = ciiu.Key,
+                            Name = string.Format("{0}:{1}", fr.codigo_ciiu, fr.nombre_ciiu)
+                        };
+                        foreach (var cm in ciiu.GroupBy(t => t.fecha.Month))
+                        {
+                            ciiuData.Month.Add(new MonthData()
+                            {
+                                Name = cm.Key.GetMonthText(),
+                                MonthlyValue = cm.Count(),
+                                Number = cm.Key,
+                                Total = mes.Count()
+                            });
+                        }
+                        item.Ciius.Add(ciiuData);
+                    }
+                }
+                result.Elements.Add(item);
+            }
+            return result;
+        }
+        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadisticaMensual(int year, int month, int from, int to, EstadoEncuesta estado, long? idAnalista = null)
+        {
+            var all = Manager.ViewProcentajeEncuestaExtadisticaManager.Get(t =>
+                t.fecha.Month == month
+                && t.fecha.Year == year
+                && t.fecha.Day <= to
+                && t.fecha.Day >= from).AsQueryable();
+            if (idAnalista != null && idAnalista.GetValueOrDefault() > 0)
+                all = all.Where(t => t.id_analista == idAnalista.GetValueOrDefault());
+            if (estado != EstadoEncuesta.Todos)
+                all = all.Where(t => t.estado_encuesta == (int)estado);
+            var elements = all.GroupBy(t => t.id_analista);
+            var result = new PorcentajeEncuestaEstadistica();
+            for (var i = from; i <= to; i++)
+                result.HeadersList.Add(i.ToString());
+            foreach (var element in elements)
+            {
+                var item = new PorcentajeEncuestaEstadisticaItem()
+                {
+                    IdAnalista = (long)element.Key,
+                    Analista = element.FirstOrDefault().login_analista,
+                    Total = all.Count()
+                };
+                foreach (var mes in element.GroupBy(t => t.fecha.Day))
+                {
+                    item.Month.Add(new MonthData()
+                    {
+                        Number = mes.Key,
+                        Name = mes.Key.ToString(),
+                        MonthlyValue = mes.Count(),
+                        Total = all.Count()
+                    });
+                    foreach (var ciiu in mes.GroupBy(t => t.id_ciiu))
+                    {
+                        var fr = ciiu.FirstOrDefault();
+                        var ciiuData = new CiiuData()
+                        {
+                            Id = ciiu.Key,
+                            Name = string.Format("{0}:{1}", fr.codigo_ciiu, fr.nombre_ciiu)
+                        };
+                        foreach (var cm in ciiu.GroupBy(t => t.fecha.Day))
+                        {
+                            ciiuData.Month.Add(new MonthData()
+                            {
+                                Name = cm.Key.ToString(),
+                                MonthlyValue = cm.Count(),
+                                Number = cm.Key,
+                                Total = mes.Count()
+                            });
+                        }
+                        item.Ciius.Add(ciiuData);
+                    }
+                }
+                result.Elements.Add(item);
+            }
+            return result;
+        }
+
+
+        
+        #endregion
     }
 }

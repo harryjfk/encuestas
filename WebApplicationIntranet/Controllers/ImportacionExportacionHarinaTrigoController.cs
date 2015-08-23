@@ -170,5 +170,14 @@ namespace WebApplication.Controllers
             ModelState.AddModelError("Error", "No se pudo encontrar el elemento.");
             return RedirectToAction("Index");
         }
+
+        public JsonResult GetTipoCambioVenta(long id)
+        {
+            return Json(Manager.ExportacionHarinaTrigoManager.GetTipoCambioVenta(id), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetTipoCambioCompra(long id)
+        {
+            return Json(Manager.ImportacionHarinaTrigoManager.GetTipoCambioVenta(id), JsonRequestBehavior.AllowGet);
+        }
     }
 }
