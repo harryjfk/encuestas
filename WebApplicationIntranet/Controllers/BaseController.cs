@@ -209,11 +209,10 @@ namespace WebApplication.Controllers
 
             return File(path, "application/pdf");
         }
-        public virtual FileResult ExportExcel(List<object> source)
+        public virtual FileResult ExportExcel<TK>(IList<TK> source,string nombreHoja,string nombreReporte)
         {
-            var stream = source.ExportToExcel();
             var downloads = ConfigurationManager.AppSettings["Downloads"];
-            var name = Guid.NewGuid().ToString() + ".xls";
+            var name = Guid.NewGuid().ToString() + ".xlsx";
             var path = Path.Combine(downloads, name);
             var now = DateTime.Now;
             var files =
@@ -225,8 +224,9 @@ namespace WebApplication.Controllers
             {
                 System.IO.File.Delete(file);
             }
-            System.IO.File.WriteAllBytes(path, stream.ToArray());
-            return File(path, "application/pdf");
+            source.ToList().ExportToExcel(nombreHoja, nombreReporte, path);
+
+            return File(path, "application/vnd.ms-excel");
         }
 
 

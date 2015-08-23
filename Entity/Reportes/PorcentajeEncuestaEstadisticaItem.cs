@@ -32,6 +32,14 @@ namespace Entity.Reportes
         {
             get { return MonthlyValue * 100.0 / Total; }
         }
+
+        public double PercentRound
+        {
+            get
+            {
+                return Math.Round(Percent, 2);
+            }
+        }
     }
 
     public class CiiuData
