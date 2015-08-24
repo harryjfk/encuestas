@@ -136,41 +136,46 @@
         });
         $("button[name='aceptarbtn']").click(function () {
             var $elem = $(this);
-            $elem.addClass("disabled");
-            //console.log($("form[name='Pa-635744606616650796']").serialize());
-            $.ajax({
-                cache: false,
-                type: "POST",
-                url: $.origin() + "/ParametrizacionEnvio/CreatePost/",
-                data: $("form[name='Pa-635744606616650796']").serialize(),
-                success: function (data) {
-                    $elem.removeClass("disabled");
-                    if (data.Success) {
-                        $("#table-container").html(data.Data);
-                        $("#editItem").modal("hide");
-                        $.smallBox({
-                            title: "Confirmación",
-                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
-                            color: "#659265",
-                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                            timeout: 4000
-                        });
-                    } else {
-                        var errors = "";
-                        for (var i = 0; i < data.Errors.length; i++) {
-                            errors += "<li>" + data.Errors[i] + "</li>";
+            if ($("#datetimepicker1").val() != "") {
+                $elem.addClass("disabled");
+                //console.log($("form[name='Pa-635744606616650796']").serialize());
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/ParametrizacionEnvio/CreatePost/",
+                    data: $("form[name='Pa-635744606616650796']").serialize(),
+                    success: function (data) {
+                        $elem.removeClass("disabled");
+                        if (data.Success) {
+                            $("#table-container").html(data.Data);
+                            $("#editItem").modal("hide");
+                            $.smallBox({
+                                title: "Confirmación",
+                                content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                                color: "#659265",
+                                iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                timeout: 4000
+                            });
+                        } else {
+                            var errors = "";
+                            for (var i = 0; i < data.Errors.length; i++) {
+                                errors += "<li>" + data.Errors[i] + "</li>";
+                            }
+                            $("#errors-container").removeClass("hidden").find("ul").html(errors);
                         }
-                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                        //$("#editItem .modal-body").html(data);
+                        //$("#editItem").modal("show");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $elem.removeClass("disabled");
+                        alert('Failed to retrieve data.');
+                        //console.log(arguments);
                     }
-                    //$("#editItem .modal-body").html(data);
-                    //$("#editItem").modal("show");
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    $elem.removeClass("disabled");
-                    alert('Failed to retrieve data.');
-                    //console.log(arguments);
-                }
-            });
+                });
+            } else {
+                $.errorIsRequired();
+            }
+            
 
         });
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
