@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
 @using Entity
-@model System.Collections.Generic.IEnumerable<Entity.Reportes.CiiuData>
+@model Entity.Reportes.PorcentajeEncuestaEstadisticaItem
 @{
 
 }
@@ -8,81 +8,51 @@
     <thead>
         <tr class="cabecera2">
 
-            <th>
+            <th style="width: 200px;">
                 CIIU
             </th>
-            <th>
-                ENE
-            </th>
-            <th>
-                FEB
-            </th>
-            <th>
-                MAR
-            </th>
-            <th>
-                ABR
-            </th>
-            <th>
-                MAY
-            </th>
-            <th>
-                JUN
-            </th>
-            <th>
-                JUL
-            </th>
-            <th>
-                AGO
-            </th>
-            <th>
-                SEP
-            </th>
-            <th>
-                OCT
-            </th>
-            <th>
-                NOV
-            </th>
-            <th>
-                DIC
-            </th>
+            @foreach (var item in Model.PorcentajeEncuestaEstadistica.HeadersList)
+            {
+                <th>@item</th>
+            }
 
         </tr>
     </thead>
 
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Ciius)
         {
             <tr>
                 <td>
                     <span>@item.Name</span>
                     
                 </td>
-                @for (var i = 1; i <= 12; i++)
+                @for (var i = 0; i < Model.PorcentajeEncuestaEstadistica.HeadersList.Count; i++)
                 {
                     <td>
                         @{
-                            var m = item.Month.FirstOrDefault(t => t.Number == i);
-                            if (m != null)
-                            {
-                                <span>@m.Percent.ToString(".00", CultureInfo.CreateSpecificCulture("en"))%</span>
-                            }
-                            else
-                            {
-                                <span>-</span>
-                            }
+                    var current = Model.PorcentajeEncuestaEstadistica.HeadersList[i];
+                    var m = item.Month.FirstOrDefault(t => t.Name == current);
+                    if (m != null)
+                    {
+                        <span>@m.Percent.ToString(".00", CultureInfo.CreateSpecificCulture("en"))</span>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
                         }
                     </td>
 
                 }
+           
             </tr>
           
         }
     </tbody>
 </table>
 
-@if (!Model.Any())
+@if (!Model.Ciius.Any())
 {
     <div class="no-elements-notification">
         No hay elementos para mostrar

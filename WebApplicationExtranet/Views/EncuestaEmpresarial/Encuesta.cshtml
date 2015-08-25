@@ -150,55 +150,61 @@
                                             }
                                             @if (hasPrAso)
                                             {
-                                                <span class="preg-asociada-container preg-@pr.Id preg-asoc-@v.Id animated fadeInLeft fast @hidden">
-                                                    <span class="margin-right-10 bold">@v.Pregunta.Texto</span>
-                                                    @{
+                                                <table >
+                                                    <tr class="preg-asociada-container preg-@pr.Id preg-asoc-@v.Id animated fadeInLeft fast @hidden">
+                                                        <td style="padding-right: 10px;"  class="margin-right-10 bold">@v.Pregunta.Texto</td>
+                                                        @{
                                                 var posResp = v.Pregunta.PosiblesRespuestas.FirstOrDefault();
-                                                    }
-                                                    @if (posResp != null)
-                                                    {
-                                                        foreach (var tv in posResp.Valores)
-                                                        {
-                                                            var see = tv.Seleccionado ? "true" : "false";
-                                                            if (tv.PosibleRespuesta.Tipo == TipoPosibleRespuesta.Excluyente)
-                                                            {
-                                                                if (tv.Seleccionado)
-                                                                {
-                                                                    @Html.RadioButton("aa" + v.Id, tv.Texto, new { @checked = "checked", @class = "imp", datavalueasoc = "true", name = "aa", datavalueasocid = tv.Id,datavalorid=tv.Id, datavalueasoctext = tv.Texto })
-                                                                }
-                                                                else
-                                                                {
-                                                                    @Html.RadioButton("aa" + v.Id, tv.Texto, new { datavalueasoc = "true", @class = "imp", name = "aa", datavalueasocid = tv.Id,datavalorid=tv.Id, datavalueasoctext = tv.Texto })
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                if (tv.Seleccionado)
-                                                                {
-                                                                    @Html.CheckBox(tv.Texto, new { @checked = "checked", datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto, @class = "imp" })
-                                                                }
-                                                                else
-                                                                {
-                                                                    @Html.CheckBox(tv.Texto, new { datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto, @class = "imp" })
-                                                                }
-
-                                                            }
-                                                            <span class="margin-right-10">@tv.Texto</span>
-                                                            if (tv.Personalizado)
-                                                            {
-                                                                if (tv.Seleccionado)
-                                                                {
-                                                                    <input style="margin-left: 10px; width: 100%" type="text" class="personalizado" value="@tv.texto_personalizado" data-vid="@tv.Id" />
-                                                                }
-                                                                else
-                                                                {
-                                                                    <input style="margin-left: 10px; width: 100%" type="text" class="hidden personalizado animated fadeInLeft fast" data-vid="@tv.Id" />
-                                                                }
-                                                            }
-
                                                         }
-                                                    }
-                                                </span>
+                                                        @if (posResp != null)
+                                                        {
+                                                            foreach (var tv in posResp.Valores)
+                                                            {
+                                                                <td class="">
+                                                                    @{
+                                                                var see = tv.Seleccionado ? "true" : "false";
+                                                                if (tv.PosibleRespuesta.Tipo == TipoPosibleRespuesta.Excluyente)
+                                                                {
+                                                                    if (tv.Seleccionado)
+                                                                    {
+                                                                        @Html.RadioButton("aa" + v.Id, tv.Texto, new { @checked = "checked", @class = "imp", datavalueasoc = "true", name = "aa", datavalueasocid = tv.Id, datavalorid = tv.Id, datavalueasoctext = tv.Texto })
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @Html.RadioButton("aa" + v.Id, tv.Texto, new { datavalueasoc = "true", @class = "imp", name = "aa", datavalueasocid = tv.Id, datavalorid = tv.Id, datavalueasoctext = tv.Texto })
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (tv.Seleccionado)
+                                                                    {
+                                                                        @Html.CheckBox(tv.Texto, new { @checked = "checked", datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto, @class = "imp" })
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @Html.CheckBox(tv.Texto, new { datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto, @class = "imp" })
+                                                                    }
+
+                                                                }
+                                                                <span class="margin-right-10">@tv.Texto</span>
+                                                                if (tv.Personalizado)
+                                                                {
+                                                                    if (tv.Seleccionado)
+                                                                    {
+                                                                        <input style="margin-left: 10px; width: 100%" type="text" class="personalizado" value="@tv.texto_personalizado" data-vid="@tv.Id" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input style="margin-left: 10px; width: 100%" type="text" class="hidden personalizado animated fadeInLeft fast" data-vid="@tv.Id" />
+                                                                    }
+                                                                }
+                                                                    }
+                                                                </td>
+
+                                                            }
+                                                        }
+                                                    </tr>
+                                                </table>
                                             }
                                             @if (v.Personalizado)
                                             {
@@ -239,8 +245,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.imp').each(function(i, e) {
-            $(e).change(function() {
+        $('.imp').each(function (i, e) {
+            $(e).change(function () {
                 if ($(e)[0].checked) {
                     var id = $(e).attr('datavalorid');
                     var personalizado = $("input[data-vid='" + id + "']")[0];

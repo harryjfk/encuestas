@@ -11,6 +11,8 @@ namespace Entity.Reportes
         public List<PorcentajeEncuestaEstadisticaItem> Elements { get; set; }
         public List<string> HeadersList { get; set; }
 
+        public PorcentajeEncuestaEstadisticaFilter Filter { get; set; }
+
         public PorcentajeEncuestaEstadistica()
         {
             Elements = new List<PorcentajeEncuestaEstadisticaItem>();

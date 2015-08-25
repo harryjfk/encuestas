@@ -15,7 +15,7 @@ namespace WebApplication.Controllers
 {
     public class BaseController<T> : Controller where T : class, new()
     {
-       
+
         public static Query<T> Query { get; set; }
 
         public virtual Manager Manager
@@ -58,33 +58,33 @@ namespace WebApplication.Controllers
         {
             //if (ModelState.IsValid)
             //{
-                Query = Query ?? new Query<T>().Validate();
-                var manager = OwnManager;
-                var op = IsNew(element) ?
-                    manager.Add(element) :
-                    manager.Modify(element,properties);
-                if (op.Success)
+            Query = Query ?? new Query<T>().Validate();
+            var manager = OwnManager;
+            var op = IsNew(element) ?
+                manager.Add(element) :
+                manager.Modify(element, properties);
+            if (op.Success)
+            {
+                manager.SaveChanges();
+                //this.WriteMessage(string.Format("Actualizando datos del ciiu {0}", ciiu.Nombre));
+                OwnManager.Get(Query);
+                var c = RenderRazorViewToString("_Table", Query);
+                var result = new
                 {
-                    manager.SaveChanges();
-                    //this.WriteMessage(string.Format("Actualizando datos del ciiu {0}", ciiu.Nombre));
-                    OwnManager.Get(Query);
-                    var c = RenderRazorViewToString("_Table", Query);
-                    var result = new
-                    {
-                        Success = true,
-                        Data = c
-                    };
-                    return Json(result, JsonRequestBehavior.AllowGet);
-                }
-                else
+                    Success = true,
+                    Data = c
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new
                 {
-                    var result = new
-                    {
-                        Success = false,
-                        Errors = op.Errors.Select(t => t).ToList()
-                    };
-                    return Json(result, JsonRequestBehavior.AllowGet);
-                }
+                    Success = false,
+                    Errors = op.Errors.Select(t => t).ToList()
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
             //}
             //else
             //{
@@ -177,9 +177,9 @@ namespace WebApplication.Controllers
             doc.Close();
             return File(stream, "application/pdf");
         }
-        public virtual FileResult Export()
+        public virtual FileResult Export(string url = null,bool vertical=false)
         {
-            if (Request.UrlReferrer == null)
+            if (Request.UrlReferrer == null && url == null)
             {
                 throw new FileNotFoundException("Operación Inválida");
             }
@@ -191,23 +191,46 @@ namespace WebApplication.Controllers
                 Directory.GetFiles(downloads)
                     .Select(t => new FileInfo(t))
                     .Where(t => now.Subtract(t.CreationTime).TotalMinutes > 1)
-                    .Select(t=>t.FullName);
+                    .Select(t => t.FullName);
             foreach (var file in files)
             {
-              System.IO.File.Delete(file);
-            } 
-
-            var url = Request.UrlReferrer.AbsoluteUri;
+                System.IO.File.Delete(file);
+            }
+            url = url ?? Request.UrlReferrer.AbsoluteUri;
+            url = string.Format(url.Contains("?") 
+                ? "{0}&report=true" 
+                : "{0}?report=true", url);
             var converter = new HtmlToPdf();
-            converter.Options.AutoFitHeight = HtmlToPdfPageFitMode.NoAdjustment;
+            converter.Options.AutoFitHeight = HtmlToPdfPageFitMode.ShrinkOnly;
+            converter.Options.AutoFitWidth = HtmlToPdfPageFitMode.ShrinkOnly;
+           
             converter.Options.KeepTextsTogether = true;
-
+            if (vertical) converter.Options.PdfPageOrientation = PdfPageOrientation.Landscape;
             var doc = converter.ConvertUrl(url);
-            
+
             doc.Save(path);
             doc.Close();
 
             return File(path, "application/pdf");
+        }
+        public virtual FileResult ExportExcel<TK>(IList<TK> source, string nombreHoja, string nombreReporte)
+        {
+            var downloads = ConfigurationManager.AppSettings["Downloads"];
+            var name = Guid.NewGuid().ToString() + ".xlsx";
+            var path = Path.Combine(downloads, name);
+            var now = DateTime.Now;
+            var files =
+                Directory.GetFiles(downloads)
+                    .Select(t => new FileInfo(t))
+                    .Where(t => now.Subtract(t.CreationTime).TotalMinutes > 1)
+                    .Select(t => t.FullName);
+            foreach (var file in files)
+            {
+                System.IO.File.Delete(file);
+            }
+            source.ToList().ExportToExcel(nombreHoja, nombreReporte, path);
+
+            return File(path, "application/vnd.ms-excel");
         }
 
 

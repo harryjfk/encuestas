@@ -184,7 +184,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="Reportes\GraphicModel.cs" />
     <Compile Include="Reportes\PorcentajeEncuestaEstadistica.cs" />
+    <Compile Include="Reportes\PorcentajeEncuestaEstadisticaFilter.cs" />
     <Compile Include="Reportes\PorcentajeEncuestaEstadisticaItem.cs" />
     <Compile Include="Rol.cs">
       <DependentUpon>Entidades.tt</DependentUpon>

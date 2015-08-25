@@ -69,9 +69,9 @@
         <div class="form-group">
             <label for="Peso" class="col-md-4 control-label">Peso</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.peso, new { @class = "form-control disabled" })
-                @Html.ValidationMessageFor(model => model.peso)
-                </div>
+                <span style="max-width: 280px;" class="form-control">@Model.peso.GetValueOrDefault()</span>
+             
+            </div>
             </div>
             <div class="modal-footer">
                 <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>

@@ -133,6 +133,19 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
+        var id = parseInt($("input[name='Id']").val());
+        var cn = $('div#editItem div div div h4.modal-title');
+        if (id > 0) {
+            var content = cn.html();
+            content = content.replace("Nueva", "Editar");
+            cn.html(content);
+        } else {
+            var content = cn.html();
+            content = content.replace("Editar", "Nueva");
+            cn.html(content);
+        }
+
+
 
         $('#datetimepicker1').datepicker({
             pickTime: false,
