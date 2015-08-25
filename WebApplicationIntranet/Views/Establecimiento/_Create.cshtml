@@ -208,6 +208,18 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
+
+        var id = parseInt($("input[name='Id']").val());
+        var cn = $('div#editItem div div div h4.modal-title');
+        if (id > 0) {
+            var content = cn.html();
+            content = content.replace("Nuevo", "Editar");
+            cn.html(content);
+        } else {
+            var content = cn.html();
+            content = content.replace("Editar", "Nuevo");
+            cn.html(content);
+        }
         $("button[name='aceptarbtn']").click(function () {
             var $elem = $(this);
             $elem.addClass("disabled");

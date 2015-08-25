@@ -12,6 +12,7 @@ namespace Entity.Reportes
         public List<MonthData> Month { get; set; }
         public List<CiiuData> Ciius { get; set; }
         public int Total { get; set; }
+        public PorcentajeEncuestaEstadistica PorcentajeEncuestaEstadistica { get; set; }
 
         public PorcentajeEncuestaEstadisticaItem()
         {
@@ -47,6 +48,7 @@ namespace Entity.Reportes
         public string Name { get; set; }
         public long Id { get; set; }
         public IList<MonthData> Month { get; set; }
+        public PorcentajeEncuestaEstadisticaItem PorcentajeEncuestaEstadisticaItem { get; set; }
 
         public CiiuData()
         {

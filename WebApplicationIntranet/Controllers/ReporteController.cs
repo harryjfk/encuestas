@@ -18,18 +18,17 @@ namespace WebApplication.Controllers
         {
             var filter = new PorcentajeEncuestaEstadisticaFilter()
             {
-                IsAnnual = false,
+                IsAnnual = true,
                 Year = DateTime.Now.Year,
                 Estado = EstadoEncuesta.Todos,
-                Month = 7,
                 From = 1,
-                To = 31,
+                To = 12,
             };
-            //var report = new PorcentajeEncuestaEstadistica()
-            //{
-            //    Filter = filter
-            //};
-            var report = Manager.EncuestaEstadistica.PorcentajeEncuestaEstadistica(filter);
+            var report =PocentajeEncuestaEstadistica?? new PorcentajeEncuestaEstadistica()
+            {
+                Filter = filter
+            };
+            report = Manager.EncuestaEstadistica.PorcentajeEncuestaEstadistica(report.Filter);
             PocentajeEncuestaEstadistica = report;
             return View("PorcentajeEncuestaEstadistica/Index", report);
         }
@@ -43,6 +42,8 @@ namespace WebApplication.Controllers
                 IsAnnual = true,
                 Year = DateTime.Now.Year,
                 Estado = EstadoEncuesta.Todos,
+                From = 1,
+                To = 12
             };
             var report = Manager.EncuestaEstadistica.PorcentajeEncuestaEstadistica(filter);
             PocentajeEncuestaEstadistica = report;
@@ -55,7 +56,7 @@ namespace WebApplication.Controllers
                 return HttpNotFound("No hay datos para mostrar");
             var data = new GraphicModel()
             {
-                Title = "Porcentaje de Encuestas Estadísticas",
+                Title = "Porcentaje de Encuestas Estad&iacute;sticas",
                 YTitle = "Porciento",
                 Serie = new Dictionary<string, double>()
             };

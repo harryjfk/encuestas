@@ -102,6 +102,17 @@
 
         });
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 150, statusText: 'caracteres restantes' });
+        var id = parseInt($("input[name='Id']").val());
+       
+        if (id > 0) {
+            var content = $('h4.modal-title').html();
+            content = content.replace("Nuevo", "Editar");
+            $('h4.modal-title').html(content);
+        } else {
+            var content = $('h4.modal-title').html();
+            content = content.replace("Editar", "Nuevo");
+            $('h4.modal-title').html(content);
+        }
 
     })
 </script>

@@ -692,7 +692,7 @@ namespace WebApplication.Controllers
         public ActionResult GetDorpDownLineaProductop(string id, long idCiiu = 0, string nombre = "IdLineaProducto", string @default = null)
         {
             var list = Manager.LineaProducto.Get(t => t.Activado && t.LineasProductoUnidadMedida.Any()
-                && t.MateriasPropia.All(h => h.VolumenProduccion.Encuesta.Id != Model.Id)
+                //&& t.MateriasPropia.All(h => h.VolumenProduccion.Encuesta.Id != Model.Id)
                 /*&& t.Ciiu.Establecimientos.Any(h=>h.Id==IdEstablecimiento*/
                 && t.IdCiiu == idCiiu && t.LineasProductoEstablecimiento.All(h => h.IdEstablecimiento != IdEstablecimiento))
                 .Select(t => new SelectListItem()

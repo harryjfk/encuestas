@@ -177,9 +177,9 @@ namespace WebApplication.Controllers
             doc.Close();
             return File(stream, "application/pdf");
         }
-        public virtual FileResult Export()
+        public virtual FileResult Export(string url = null,bool vertical=false)
         {
-            if (Request.UrlReferrer == null)
+            if (Request.UrlReferrer == null && url == null)
             {
                 throw new FileNotFoundException("Operación Inválida");
             }
@@ -196,12 +196,16 @@ namespace WebApplication.Controllers
             {
                 System.IO.File.Delete(file);
             }
-
-            var url = Request.UrlReferrer.AbsoluteUri;
+            url = url ?? Request.UrlReferrer.AbsoluteUri;
+            url = string.Format(url.Contains("?") 
+                ? "{0}&report=true" 
+                : "{0}?report=true", url);
             var converter = new HtmlToPdf();
-            converter.Options.AutoFitHeight = HtmlToPdfPageFitMode.NoAdjustment;
+            converter.Options.AutoFitHeight = HtmlToPdfPageFitMode.ShrinkOnly;
+            converter.Options.AutoFitWidth = HtmlToPdfPageFitMode.ShrinkOnly;
+           
             converter.Options.KeepTextsTogether = true;
-
+            if (vertical) converter.Options.PdfPageOrientation = PdfPageOrientation.Landscape;
             var doc = converter.ConvertUrl(url);
 
             doc.Save(path);
@@ -209,7 +213,7 @@ namespace WebApplication.Controllers
 
             return File(path, "application/pdf");
         }
-        public virtual FileResult ExportExcel<TK>(IList<TK> source,string nombreHoja,string nombreReporte)
+        public virtual FileResult ExportExcel<TK>(IList<TK> source, string nombreHoja, string nombreReporte)
         {
             var downloads = ConfigurationManager.AppSettings["Downloads"];
             var name = Guid.NewGuid().ToString() + ".xlsx";

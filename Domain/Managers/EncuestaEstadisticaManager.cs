@@ -664,7 +664,7 @@ namespace Domain.Managers
                 all = all.Where(t => t.estado_encuesta == (int)estado);
             var elements = all.GroupBy(t => t.id_analista);
             var result = new PorcentajeEncuestaEstadistica();
-            for (var i = 1; i < 13; i++)
+            for (var i = from; i <= to; i++)
                 result.HeadersList.Add(i.GetMonthText().ToUpper().Substring(0, 3));
             foreach (var element in elements)
             {
@@ -672,14 +672,15 @@ namespace Domain.Managers
                 {
                     IdAnalista = (long)element.Key,
                     Analista = element.FirstOrDefault().login_analista,
-                    Total = all.Count()
+                    Total = all.Count(),
+                    PorcentajeEncuestaEstadistica = result
                 };
                 foreach (var mes in element.GroupBy(t => t.fecha.Month))
                 {
                     item.Month.Add(new MonthData()
                     {
                         Number = mes.Key,
-                        Name = mes.Key.GetMonthText(),
+                        Name = mes.Key.GetMonthText().ToUpper().Substring(0, 3),
                         MonthlyValue = mes.Count(),
                         Total = all.Count()
                     });
@@ -689,13 +690,15 @@ namespace Domain.Managers
                         var ciiuData = new CiiuData()
                         {
                             Id = ciiu.Key,
-                            Name = string.Format("{0}:{1}", fr.codigo_ciiu, fr.nombre_ciiu)
+                            Name = string.Format("{0}:{1}", fr.codigo_ciiu, fr.nombre_ciiu),
+                            PorcentajeEncuestaEstadisticaItem = item
+                            
                         };
                         foreach (var cm in ciiu.GroupBy(t => t.fecha.Month))
                         {
                             ciiuData.Month.Add(new MonthData()
                             {
-                                Name = cm.Key.GetMonthText(),
+                                Name = cm.Key.GetMonthText().ToUpper().Substring(0, 3),
                                 MonthlyValue = cm.Count(),
                                 Number = cm.Key,
                                 Total = mes.Count()
@@ -729,7 +732,8 @@ namespace Domain.Managers
                 {
                     IdAnalista = (long)element.Key,
                     Analista = element.FirstOrDefault().login_analista,
-                    Total = all.Count()
+                    Total = all.Count(),
+                    PorcentajeEncuestaEstadistica = result
                 };
                 foreach (var mes in element.GroupBy(t => t.fecha.Day))
                 {
@@ -746,7 +750,8 @@ namespace Domain.Managers
                         var ciiuData = new CiiuData()
                         {
                             Id = ciiu.Key,
-                            Name = string.Format("{0}:{1}", fr.codigo_ciiu, fr.nombre_ciiu)
+                            Name = string.Format("{0}:{1}", fr.codigo_ciiu, fr.nombre_ciiu),
+                            PorcentajeEncuestaEstadisticaItem = item
                         };
                         foreach (var cm in ciiu.GroupBy(t => t.fecha.Day))
                         {

@@ -169,12 +169,23 @@ namespace Domain
             TypeDescriptor.GetProperties(typeof(T));
             var table = new DataTable();
             foreach (PropertyDescriptor prop in properties)
-                table.Columns.Add(prop.Name.Replace("_",""), Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+            {
+                if (data.Any(t => prop.GetValue(t) != null))
+                {
+                    table.Columns.Add(prop.Name.Replace("_", ""),
+                    Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+                }
+            }
             foreach (var item in data)
             {
                 var row = table.NewRow();
                 foreach (PropertyDescriptor prop in properties)
-                    row[prop.Name.Replace("_", "")] = prop.GetValue(item) ?? DBNull.Value;
+                {
+                    if (true)
+                    {
+                         row[prop.Name.Replace("_", "")] = prop.GetValue(item) ?? DBNull.Value;
+                    }
+                }
                 table.Rows.Add(row);
             }
             return table;
