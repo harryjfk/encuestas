@@ -11,7 +11,7 @@ using Data.Contratos;
 using Data.DataAccess;
 using Entity;
 using PagedList;
-//esto es una prueba 
+//esto es una prueba no debia estar aca
 namespace Data.Repositorios
 {
     public class RepositorioUsuario : IRepositorioUsuario
