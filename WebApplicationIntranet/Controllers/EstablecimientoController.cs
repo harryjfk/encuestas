@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using OfficeOpenXml;
 
 namespace WebApplication.Controllers
 {
@@ -180,8 +181,7 @@ namespace WebApplication.Controllers
             Manager.Establecimiento.GetCiiuNoAsignados(QueryCiiuNoAsignados, Establecimiento.Id);
             return View("CiiuNoAsignados", QueryCiiuAsignados);
         }
-
-        // Elmer 
+        
         public JsonResult GetSunat(string id)
         {
             if (miserviciosunat == null)
@@ -192,7 +192,7 @@ namespace WebApplication.Controllers
             entidad = miserviciosunat.BuscarSunatProduccionParametro(id);
 
             return Json(entidad.ddp_nombreField, JsonRequestBehavior.AllowGet);
-            //return Json("", JsonRequestBehavior.AllowGet);
+            
         }
     }
 }

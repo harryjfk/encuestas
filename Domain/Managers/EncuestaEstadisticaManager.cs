@@ -87,7 +87,6 @@ namespace Domain.Managers
                     FactorProduccion = new FactorProducccion()
                 };
 
-
                 var encuestaEstadisticaLast = this.Get().OrderBy(x => x.Id).LastOrDefault();
                 var encuestaEmpresarialLast = Manager.EncuestaEmpresarial.Get().OrderBy(x => x.Id).LastOrDefault();
 
@@ -657,7 +656,7 @@ namespace Domain.Managers
             var all = Manager.ViewProcentajeEncuestaExtadisticaManager.Get(t =>
                 t.fecha.Year == year
                 && t.fecha.Month >= from
-                && t.fecha.Month <= to).AsQueryable();
+                && t.fecha.Month <= to).AsQueryable();            
             if (idAnalista != null && idAnalista.GetValueOrDefault() > 0)
                 all = all.Where(t => t.id_analista == idAnalista.GetValueOrDefault());
             if(estado!=EstadoEncuesta.Todos)
@@ -665,7 +664,7 @@ namespace Domain.Managers
             var elements = all.GroupBy(t => t.id_analista);
             var result = new PorcentajeEncuestaEstadistica();
             for (var i = from; i <= to; i++)
-                result.HeadersList.Add(i.GetMonthText().ToUpper().Substring(0, 3));
+                result.HeadersList.Add(i.GetMonthText().ToUpper().Substring(0, 3));                
             foreach (var element in elements)
             {
                 var item = new PorcentajeEncuestaEstadisticaItem()

@@ -27,14 +27,16 @@ namespace WebApplication
             ModelBinders.Binders.Add(typeof(double?), new ModelBinder.DecimalModelBinder());
             ModelBinders.Binders.Add(typeof(double), new ModelBinder.DecimalModelBinder());
 
-            //Seguridad.PRODUCE
-            ConfigurationSecurity.Start();
+            //brb
+            //ConfigurationSecurity.Start();
+            //endbrb
         }
 
         protected void Application_EndRequest(object sender, EventArgs e)
         {
-            // Seguridad.PRODUCE
+            //brb
             //ConfigurationSecurity.EndRequest(this);
+            //endbrb
         }
 
     }

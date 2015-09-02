@@ -9,8 +9,9 @@ namespace WebApplication
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            // seguridad.PRODUCE
-            filters.Add(new AutorizacionRol());
+            //brb
+            //filters.Add(new AutorizacionRol());
+            //endbrb
         }
     }
 }

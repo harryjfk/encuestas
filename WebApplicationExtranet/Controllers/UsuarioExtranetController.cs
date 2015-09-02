@@ -9,8 +9,8 @@ using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
-    //[Authorize]
-    //[Autorizacion]
+    /*[Authorize]
+    [Autorizacion]*/
     public class UsuarioExtranetController : Controller
     {
         public UsuarioExtranet UsuarioActual
@@ -192,22 +192,24 @@ namespace WebApplication.Controllers
         public ActionResult EstablecimientosEncuestaEmpresarial(UserInformation user)
         {
             Informante = UsuarioActual;
-           // Informante = Manager.Usuario.FindUsuarioExtranet(user.Id);
+            //brb
+            //Informante = Manager.Usuario.FindUsuarioExtranet(user.Id);
+            //endbrb
             if (Informante == null) return this.HttpNotFound("No se pudo encontrar el informante");
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados ?? new Query<Establecimiento>();
             QueryEstablecimientosAsignados = QueryEstablecimientosAsignados.Validate();
             QueryEstablecimientosAsignados.Criteria = QueryEstablecimientosAsignados.Criteria ?? new Establecimiento();
             QueryEstablecimientosAsignados.Criteria.IdInformante = Informante.Identificador;
             QueryEstablecimientosAsignados.BuildFilter();
-            QueryEstablecimientosAsignados.Paginacion.ItemsPerPage = 10;
+            QueryEstablecimientosAsignados.Paginacion.ItemsPerPage = 10;            
             Manager.Establecimiento.Get(QueryEstablecimientosAsignados);
             if (QueryEstablecimientosAsignados.Elements.Count == 1 && QueryEstablecimientosAsignados.Filter == null)
             {
                 var establecimiento = QueryEstablecimientosAsignados.Elements.FirstOrDefault();
                 return RedirectToAction("Encuestas", "EncuestaEmpresarial", new { id = establecimiento.Id });
             }
-            //ViewBag.UserId = user.Id;
-            ViewBag.UserId = Informante.Identificador;
+            
+            ViewBag.UserId = user.Id;
             return View("EstablecimientosEncuestaEmpresarial", QueryEstablecimientosAsignados);
         }
         [HttpPost]

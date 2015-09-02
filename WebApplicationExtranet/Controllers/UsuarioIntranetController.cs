@@ -9,8 +9,8 @@ using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
-    //[Authorize]
-    //[Autorizacion]
+    /*[Authorize]
+    [Autorizacion]*/
     public class UsuarioIntranetController : Controller
     {
         public UsuarioIntranet UsuarioActual

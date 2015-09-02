@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <NuGetPackageImportStamp>0be809e4</NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -248,6 +249,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Descargas\PRODUCE.Manual.Usuario.Informante.pdf" />
+    <Content Include="bin\Select.Html.dep" />
+    <None Include="Properties\PublishProfiles\Extranet.pubxml" />
     <None Include="Properties\PublishProfiles\IIS.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCE-EXTRANET.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCE-INTRANET.pubxml" />
@@ -276,6 +279,7 @@
     <Content Include="Scripts\Scripts.js" />
     <Content Include="Scripts\SmartNotification.min.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="TempPrint\test.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

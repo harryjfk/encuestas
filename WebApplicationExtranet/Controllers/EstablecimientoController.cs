@@ -115,7 +115,13 @@ namespace WebApplication.Controllers
         {
             var estab = Manager.Establecimiento.Find(id);
             ViewBag.Establecimiento = estab;
-            return View("_AnalistaInfo",estab.CAT_ESTAB_ANALISTA);
+            List<UsuarioIntranet> usuariosIntranet = new List<UsuarioIntranet>();
+            foreach (var itemUsuario in estab.CAT_ESTAB_ANALISTA) {
+                UsuarioIntranet usuarioIntranet = Manager.Usuario.FindUsuarioIntranet(Convert.ToInt32(itemUsuario.id_analista));
+                usuarioIntranet.CAT_ESTAB_ANALISTA.Add(itemUsuario);
+                usuariosIntranet.Add(usuarioIntranet);
+            }
+            return View("_AnalistaInfo", usuariosIntranet);
         }
 
         public ActionResult GetCiiuNoAsignados()

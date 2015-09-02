@@ -12,6 +12,10 @@ using WebApplication.Models;
 using System.Configuration;
 using System.Net.Mail;
 using System.Globalization;
+using System.Web;
+using System.IO;
+using OfficeOpenXml;
+using System.Diagnostics;
 
 namespace WebApplication.Controllers
 {
@@ -105,13 +109,211 @@ namespace WebApplication.Controllers
             return View("VerEncuesta", encuesta);
         }
 
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase excelPoll) {
+
+            if (excelPoll.ContentLength > 0)
+            {
+                string filePath = Path.Combine(HttpContext.Server.MapPath("../TempFiles"),
+                                               Path.GetFileName(excelPoll.FileName));
+                excelPoll.SaveAs(filePath);
+
+                var excelPollFile = new FileInfo(filePath);
+
+                List<EncuestaEstadisticaUploadModel> encuestaEstadisticasUpload = new List<EncuestaEstadisticaUploadModel>();
+
+                using (var package = new ExcelPackage(excelPollFile))
+                {
+                    ExcelWorkbook workBook = package.Workbook;
+                    if (workBook != null)
+                    {
+                        if (workBook.Worksheets.Count > 0)
+                        {
+                            
+                            ExcelWorksheet currentWorksheet = workBook.Worksheets.First();
+                            var end = currentWorksheet.Dimension.End;
+                            
+                            for (int row = 2; row <= end.Row; ++row)
+                            {
+                                EncuestaEstadisticaUploadModel encuestaEstadisticaUpload = new EncuestaEstadisticaUploadModel();
+                                encuestaEstadisticaUpload.IdInternoEstablecimiento = currentWorksheet.Cells[row, 1].Value.ToString();
+                                encuestaEstadisticaUpload.Fecha = Convert.ToDateTime(currentWorksheet.Cells[row, 2].Value);
+                                encuestaEstadisticaUpload.CodigoCIIU = currentWorksheet.Cells[row, 3].Value.ToString();
+                                encuestaEstadisticaUpload.CodigoLineaProducto = currentWorksheet.Cells[row, 6].Value.ToString();
+                                encuestaEstadisticaUpload.AbreviaturaUM = currentWorksheet.Cells[row, 7].Value.ToString();
+                                encuestaEstadisticaUpload.ValorUnitario = Convert.ToDecimal(currentWorksheet.Cells[row, 8].Value);
+                                encuestaEstadisticaUpload.Existencia = Convert.ToDecimal(currentWorksheet.Cells[row, 9].Value);
+                                encuestaEstadisticaUpload.Produccion = Convert.ToDecimal(currentWorksheet.Cells[row, 10].Value);
+                                encuestaEstadisticaUpload.VentasPais = Convert.ToDecimal(currentWorksheet.Cells[row, 11].Value);
+                                encuestaEstadisticaUpload.VentasExtranjero = Convert.ToDecimal(currentWorksheet.Cells[row, 12].Value);
+                                encuestaEstadisticaUpload.OtrasSalidas = Convert.ToDecimal(currentWorksheet.Cells[row, 13].Value);
+                                encuestaEstadisticasUpload.Add(encuestaEstadisticaUpload);
+                            }
+                        }
+                    }
+                }
+
+                System.IO.File.Delete(filePath);
+
+                long idEstablecimientoBefore = 0;
+                long idEncuestaBefore = 0;
+                string IdentificadorInternoBefore = "";
+                DateTime fechaBefore = DateTime.MinValue;
+
+                for (int i = 0; i <encuestaEstadisticasUpload.Count; i++) {
+
+                    if(IdentificadorInternoBefore == encuestaEstadisticasUpload[i].IdInternoEstablecimiento && fechaBefore == encuestaEstadisticasUpload[i].Fecha)
+                    {
+                        var lineaProductoNew = Manager.LineaProducto.Get(t => t.Codigo == encuestaEstadisticasUpload[i].CodigoLineaProducto).FirstOrDefault();
+                        var unidadMedidaNew = Manager.UnidadMedida.Get(t => t.Abreviatura == encuestaEstadisticasUpload[i].AbreviaturaUM).FirstOrDefault();
+
+                        var materiaPropia = new MateriaPropia()
+                        {
+                            IdLineaProducto = lineaProductoNew.Id,
+                            IdUnidadMedida = unidadMedidaNew.Id,
+                            IdVolumenProduccion = idEncuestaBefore,
+                            ValorUnitario = encuestaEstadisticasUpload[i].ValorUnitario,
+                            Existencia = encuestaEstadisticasUpload[i].Existencia,
+                            Produccion = encuestaEstadisticasUpload[i].Produccion,
+                            VentasPais = encuestaEstadisticasUpload[i].VentasPais,
+                            VentasExtranjero = encuestaEstadisticasUpload[i].VentasExtranjero,
+                            OtrasSalidas = encuestaEstadisticasUpload[i].OtrasSalidas
+                        };
+
+                        Manager.MateriaPropiaManager.Add(materiaPropia);
+                        Manager.MateriaPropiaManager.SaveChanges();
+
+                        continue;
+                    }
+
+                    var establecimiento = Manager.Establecimiento.Get(t => t.IdentificadorInterno == encuestaEstadisticasUpload[i].IdInternoEstablecimiento).FirstOrDefault();
+                    idEstablecimientoBefore = establecimiento.Id;
+                    IdentificadorInternoBefore = encuestaEstadisticasUpload[i].IdInternoEstablecimiento;
+                    fechaBefore = encuestaEstadisticasUpload[i].Fecha;                    
+
+                    var encuesta = new EncuestaEstadistica()
+                    {
+                        IdEstablecimiento = establecimiento.Id,
+                        EstadoEncuesta = EstadoEncuesta.Enviada,
+                        Fecha = encuestaEstadisticasUpload[i].Fecha,
+                        IdInformante = establecimiento.Informante.Identificador,
+                        //IdAnalista = establecimiento.IdAnalista,
+                        VolumenProduccionMensual = new VolumenProduccion()
+                        {
+                        },
+                        // ValorProduccionMensual = new ValorProduccion(),
+                        VentasProductosEstablecimiento = new VentasProductosEstablecimientos()
+                        {
+                            ServiciosActivados = establecimiento.TipoEnum == TipoEstablecimiento.Servicio ? true : false
+                        },
+                        TrabajadoresDiasTrabajados = new TrabajadoresDiasTrabajados(),
+                        FactorProduccion = new FactorProducccion()
+                    };
+
+                    var encuestaEstadisticaLast = Manager.EncuestaEstadistica.Get().OrderBy(x => x.Id).LastOrDefault();
+                    var encuestaEmpresarialLast = Manager.EncuestaEmpresarial.Get().OrderBy(x => x.Id).LastOrDefault();
+
+                    if (encuestaEstadisticaLast == null && encuestaEmpresarialLast == null)
+                    {
+                        encuesta.Id = 1;
+                    }
+                    else if (encuestaEstadisticaLast != null && encuestaEmpresarialLast == null)
+                    {
+                        encuesta.Id = encuestaEstadisticaLast.Id + 1;
+                    }
+                    else if (encuestaEstadisticaLast == null && encuestaEmpresarialLast != null)
+                    {
+                        encuesta.Id = encuestaEmpresarialLast.Id + 1;
+                    }
+                    else if (encuestaEstadisticaLast != null && encuestaEmpresarialLast != null)
+                    {
+                        if (encuestaEstadisticaLast.Id > encuestaEmpresarialLast.Id)
+                        {
+                            encuesta.Id = encuestaEstadisticaLast.Id + 1;
+                        }
+                        else
+                        {
+                            encuesta.Id = encuestaEmpresarialLast.Id + 1;
+                        }
+                    }
+
+                    Manager.EncuestaEstadistica.Add(encuesta);
+                    idEncuestaBefore = encuesta.Id;
+
+                    var first = establecimiento.CAT_ESTAB_ANALISTA.Select(t => t.orden).OrderBy(t => t).FirstOrDefault();
+                    foreach (var analista in establecimiento.CAT_ESTAB_ANALISTA)
+                    {
+                        var ne = new EncuestaAnalista()
+                        {
+                            orden = analista.orden,
+                            id_ciiu = analista.id_ciiu,
+                            id_analista = analista.id_analista,
+                            id_encuesta = encuesta.Id,
+                            EstadoEncuesta = EstadoEncuesta.Validada,
+                            current = (analista.orden == first) ? 1 : 0
+                        };
+                        Manager.EncuestaAnalistaManager.Add(ne);
+                        Manager.EncuestaAnalistaManager.SaveChanges();
+                    }
+                    var volumenP = new VolumenProduccion()
+                    {
+                        Identificador = encuesta.Id,
+                    };
+                    Manager.VolumenProduccionManager.Add(volumenP);
+                    Manager.VolumenProduccionManager.SaveChanges();
+
+                    var lineaProducto = Manager.LineaProducto.Get(t => t.Codigo == encuestaEstadisticasUpload[i].CodigoLineaProducto).FirstOrDefault();
+                    var unidadMedida = Manager.UnidadMedida.Get(t => t.Abreviatura == encuestaEstadisticasUpload[i].AbreviaturaUM).FirstOrDefault();
+
+                    var mp = new MateriaPropia()
+                    {
+                        IdLineaProducto = lineaProducto.Id,
+                        IdUnidadMedida = unidadMedida.Id,
+                        IdVolumenProduccion = volumenP.Identificador,
+                        ValorUnitario = encuestaEstadisticasUpload[i].ValorUnitario,
+                        Existencia = encuestaEstadisticasUpload[i].Existencia,
+                        Produccion = encuestaEstadisticasUpload[i].Produccion,
+                        VentasPais = encuestaEstadisticasUpload[i].VentasPais,
+                        VentasExtranjero = encuestaEstadisticasUpload[i].VentasExtranjero,
+                        OtrasSalidas = encuestaEstadisticasUpload[i].OtrasSalidas
+                    };
+
+                    Manager.MateriaPropiaManager.Add(mp);
+                    Manager.MateriaPropiaManager.SaveChanges();
+
+                    var ciius = new[]
+                    {
+                        new{ciiu="2592",detalle="TRATAMIENTO Y REVESTIMIENTO DE METALES MAQUINADO"},
+                        new{ciiu="3312",detalle="REPARACION Y MANTENIMIENTO DE MAQUINARIAS"},
+                        new{ciiu="3314",detalle="REPARACION DE EQUIPOS ELECTRICOS"},
+                        new{ciiu="3315",detalle="REPARACION DE EQUIPOS DE TRANSPORTE, EXCEPTO VEHICULOS AUTOMOTORES"},
+                    };
+
+                    foreach (var ciiu in ciius)
+                    {
+                        var serv = new VentasServicioManufactura()
+                        {
+                            IdVentaProductoestablecimiento = encuesta.VentasProductosEstablecimiento.Identificador,
+                            ciiu = ciiu.ciiu,
+                            detalle = ciiu.detalle
+                        };
+                        Manager.VentaServicioManufacturaManager.Add(serv);
+                        Manager.VentaServicioManufacturaManager.SaveChanges();
+                    }
+                }
+            }
+
+            return RedirectToAction("Index", "Establecimiento");
+        }
+
         public ActionResult EncuestaAnalista(long idEncuesta = 0)
         {
-           
-
             var manager = Manager;
             var encuesta = manager.EncuestaEstadistica.FindById(idEncuesta);
             if (encuesta == null) return HttpNotFound("Encuesta No encontrada");
+
+            ViewBag.CorreoInformante = manager.Usuario.FindUsuarioExtranet(Convert.ToInt32(encuesta.IdInformante)).Email;
+
             var user = this.GetLogued();
             if (user == null) return View("VerEncuesta", encuesta);
             var analist = encuesta.CAT_ENCUESTA_ANALISTA.FirstOrDefault(t => t.id_analista == user.Identificador);

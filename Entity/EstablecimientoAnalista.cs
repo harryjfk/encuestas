@@ -22,6 +22,6 @@ namespace Entity
     
         public virtual Establecimiento CAT_ESTABLECIMIENTO { get; set; }
         public virtual Usuario SEG_USUARIO { get; set; }
-        public virtual Ciiu CAT_CIIU { get; set; }
+        public virtual Ciiu CAT_CIIU { get; set; }        
     }
 }

@@ -14,8 +14,8 @@ using Seguridad.PRODUCE;
 namespace WebApplication.Controllers
 {
     
-    //[Authorize]
-    //[Autorizacion]
+    /*[Authorize]
+    [Autorizacion]*/
     public class HomeController : Controller
     {
         public Manager Manager {
@@ -24,7 +24,7 @@ namespace WebApplication.Controllers
 
         public ActionResult Index(UserInformation user)
         {
-            
+            //brb
             user = new UserInformation()
             {
                 Id = 2,
@@ -43,23 +43,32 @@ namespace WebApplication.Controllers
                 }
 
             };
-
             Session["uid"] = user.Id;
-            
-            string identificador = user.Aplicaciones.First().A.ToString();
-            string rol = user.Aplicaciones.First().R;
-            ViewBag.Identificador = identificador;
-            ViewBag.Rol = rol;
-            Session["pr"] = rol;
-            ViewBag.Empresa = user.Empresa;
-            ViewBag.Id = user.Id;
-            ViewBag.Login = user.Login;
-            ViewBag.Ndocumento = user.Ndocumento;
-            ViewBag.Nombre = user.Nombre;
-            ViewBag.Tipo = user.Tipo;
-            ViewBag.IdentityName = this.User.Identity.Name;
+            Session["pr"] = user.Aplicaciones.First().R;
+            //endbrb
 
-            //Manager.Usuario.AutenticateIntranetPRODUCE(user.Id.ToString(), user.Login, rol, user.Nombre);           
+            //Session["uid"] = user.Id;
+
+            //string identificador = user.Aplicaciones.First().A.ToString();
+            //string rol = "";
+            //foreach (var item in user.Aplicaciones)
+            //{
+            //    if (item.R == "Analista" || item.R == "Administrador") {
+            //        rol = item.R;
+            //        break;
+            //    }
+            //}
+            //ViewBag.Identificador = identificador;
+            //ViewBag.Rol = rol;            
+            //ViewBag.Empresa = user.Empresa;
+            //ViewBag.Id = user.Id;
+            //ViewBag.Login = user.Login;
+            //ViewBag.Ndocumento = user.Ndocumento;
+            //ViewBag.Nombre = user.Nombre;
+            //ViewBag.Tipo = user.Tipo;
+            //ViewBag.IdentityName = this.User.Identity.Name;
+
+            //Manager.Usuario.AutenticateIntranetPRODUCE(user.Id.ToString(), user.Login, rol, user.Nombre);
 
             return View();
         }
