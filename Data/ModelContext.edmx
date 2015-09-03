@@ -1283,7 +1283,7 @@ advertencia 6002: La tabla o vista 'TEST.CAT_PORCENTAJE_ENC_EST' no tiene defini
               "CAT_PORCENTAJE_ENC_EST"."codigo_ciiu" AS "codigo_ciiu",
               "CAT_PORCENTAJE_ENC_EST"."nombre_ciiu" AS "nombre_ciiu",
               "CAT_PORCENTAJE_ENC_EST"."login_analista" AS "login_analista"
-              FROM "TEST"."CAT_PORCENTAJE_ENC_EST" "CAT_PORCENTAJE_ENC_EST"
+              FROM "CAT_PORCENTAJE_ENC_EST" "CAT_PORCENTAJE_ENC_EST"
             </DefiningQuery>
           </EntitySet>
           <AssociationSet Name="SYS_C007758" Association="Self.SYS_C007758">
