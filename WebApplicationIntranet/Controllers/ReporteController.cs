@@ -129,5 +129,11 @@ namespace WebApplication.Controllers
 
 
         }
+
+        public ActionResult GeneralEncuestaEstadistica() 
+        {
+            return View("GeneralEncuestasEstadisticas/Index");
+        }
+        
 	}
 }
