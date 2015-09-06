@@ -486,6 +486,9 @@
     <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\_Table.cshtml" />
     <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\_TableCiiu.cshtml" />
     <Content Include="Views\Shared\_Graphic.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\Index.cshtml" />
+    <Content Include="Views\Reporte\IndiceValorFisico\Index.cshtml" />
+    <Content Include="Views\Reporte\IndiceValorFisico\_Table.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>
