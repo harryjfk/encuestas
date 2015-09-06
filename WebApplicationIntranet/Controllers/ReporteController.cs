@@ -24,7 +24,7 @@ namespace WebApplication.Controllers
                 From = 1,
                 To = 12,
             };
-            var report =PocentajeEncuestaEstadistica?? new PorcentajeEncuestaEstadistica()
+            var report = PocentajeEncuestaEstadistica ?? new PorcentajeEncuestaEstadistica()
             {
                 Filter = filter
             };
@@ -130,10 +130,13 @@ namespace WebApplication.Controllers
 
         }
 
-        public ActionResult GeneralEncuestaEstadistica() 
+        public ActionResult GeneralEncuestaEstadistica()
         {
             return View("GeneralEncuestasEstadisticas/Index");
         }
-        
-	}
+        public ActionResult IndiceValorFisico()
+        {
+            return View("IndiceValorFisico/Index");
+        }
+    }
 }

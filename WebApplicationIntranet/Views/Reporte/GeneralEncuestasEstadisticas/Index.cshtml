@@ -1,23 +1,25 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Reporte General de Encuestas Estadísticas";
 }
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/Content/css")
+<h3 class="screen-title">Reporte General de Encuestas Estad&iacute;sticas</h3>
 @using (Html.BeginForm("Buscar", "GeneralEncuestaEstadistica", FormMethod.Post))
 {
     <div class="panel panel-primary">
         <div class="panel-heading">1.Seleccione el &Aacute;mbito de An&aacute;lisis</div>
-        <div class="row">
-            <div class="col-md-12">
-                <input id="btn-establecimiento" type="submit" value="Establecimiento" name="btn-establecimiento" class="btn btn-default" />
-                <input id="btn-ciiu" type="submit" value="CIIU" name="btn-ciiu" class="btn btn-default" />
-                <input id="btn-linea-producto" type="submit" value="LineaProducto" name="btn-linea-producto" class="btn btn-default" />
+        <div class="panel-body">
+            <div class="row ">
+                <div class="col-md-12">
+                    <input id="btn-establecimiento" type="submit" value="Establecimiento" name="btn-establecimiento" class="btn btn-default" />
+                    <input id="btn-ciiu" type="submit" value="CIIU" name="btn-ciiu" class="btn btn-default" />
+                    <input id="btn-linea-producto" type="submit" value="LineaProducto" name="btn-linea-producto" class="btn btn-default" />
 
-            </div>
-            <div class="margin-top-5" >
-                <div class="col-md-5">
-                   
-                    <input type="text" id="search-select-ecl" class="form-control reset-max-width" style="width:100%;" />
+                </div>
+                <div class="margin-top-5">
+                    <div class="col-md-5 margin-top-5">
+
+                        <input type="text" id="search-select-ecl" class="form-control reset-max-width" style="width:100%;" />
 
                         <select id="ecl" multiple="multiple" class="form-control reset-max-width" style="width:100%;">
                             <option value="1">Primero</option>
@@ -26,60 +28,65 @@
                             <option value="4">cuarto</option>
                             <option value="5">quinto</option>
                         </select>
-                   
-                </div>
-                <div class="col-md-2">
-                    
-                        <a href="javascript:void(0)" id="option-to-right" class="form-control btn btn-default"  style="text-align:center;">>></a>
-                    <a href="javascript:void(0)" id="option-to-left" class="form-control btn btn-default" style="text-align:center;"><<</a>
-                   
-                </div>
-                <div class="col-md-5">
-                  
-                    <input type="text" id="search-select-ecls" class="form-control reset-max-width" style="width:100%;" />
-                    <select id="ecls" multiple="multiple" class="form-control reset-max-width" style="width:100%;"></select>
-                    
+
+                    </div>
+                    <div class="col-md-1 margin-top-5">
+
+                        <a href="javascript:void(0)" id="option-to-right" class="form-control btn btn-default" style="text-align:center;">>></a>
+                        <a href="javascript:void(0)" id="option-to-left" class="form-control btn btn-default margin-top-5" style="text-align:center;"><<</a>
+
+                    </div>
+                    <div class="col-md-5 margin-top-5">
+
+                        <input type="text" id="search-select-ecls" class="form-control reset-max-width" style="width:100%;" />
+                        <select id="ecls" multiple="multiple" class="form-control reset-max-width" style="width:100%;"></select>
+
+
+                    </div>
 
                 </div>
-
             </div>
         </div>
+       
        
     </div>
     <div class="panel panel-primary">
         <div class="panel-heading">2.Seleccione Variables</div>
-        <div class="row">
-            <div class="col-md-5">
-                <div class="col-md-12">
-                    <input type="radio" name="variable" value="VPMP" />
-                    <span>Volumen de Producci&oacute;n con Materia Prima</span>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="col-md-12">
+                        <input type="radio" name="variable" value="VPMP" />
+                        <span>Volumen de Producci&oacute;n con Materia Prima</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="variable" value="VPMT" />
+                        <span>Volumen de Producci&oacute;n con Materia de terceros</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="variable" value="VAPMP" />
+                        <span>Valor de Producci&oacute;n con Materia Prima</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="variable" value="VAPMT" />
+                        <span>Valor de Producci&oacute;n con Materia de terceros</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="variable" value="VVP" />
+                        <span>Valor de Ventas en el pa&iacute;s</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="variable" value="VVE" />
+                        <span>Valor de Ventas en el extranjero</span>
+                    </div>
+                    <div id="NT" class="col-md-12" hidden="hidden">
+                        <input type="radio" name="variable" value="NT" />
+                        <span>N&uacute;mero de Trabajadores</span>
+                    </div>
                 </div>
-                <div class="col-md-12">
-                    <input type="radio" name="variable" value="VPMT" />
-                    <span>Volumen de Producci&oacute;n con Materia de terceros</span>
-                </div>
-                <div class="col-md-12">
-                    <input type="radio" name="variable" value="VAPMP" />
-                    <span>Valor de Producci&oacute;n con Materia Prima</span>
-                </div>
-                <div class="col-md-12">
-                    <input type="radio" name="variable" value="VAPMT" />
-                    <span>Valor de Producci&oacute;n con Materia de terceros</span>
-                </div>
-                <div class="col-md-12">
-                    <input type="radio" name="variable" value="VVP" />
-                    <span>Valor de Ventas en el pa&iacute;s</span>
-                </div>
-                <div class="col-md-12">
-                    <input type="radio" name="variable" value="VVE" />
-                    <span>Valor de Ventas en el extranjero</span>
-                </div>
-                <div id="NT" class="col-md-12" hidden="hidden">
-                    <input type="radio" name="variable" value="NT" />
-                    <span>N&uacute;mero de Trabajadores</span>
-                </div>
-            </div> 
+            </div>
         </div>
+       
     </div>
 }
 <script>

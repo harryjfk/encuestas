@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Índice de Valor Físico";
+    var meses = new string[12] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/Content/css")
+<h3 class="screen-title">&Iacute;ndice de Valor F&iacute;sico</h3>
+@using (Html.BeginForm())
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4" style="z-index:3;">
+                    <div class="input-group">
+                        <span class="input-group-addon">Año</span>
+                        <select id="select-ano" name="Filter.Year" class="form-control">
+                            @for (int i = 2012; i <= DateTime.Now.Year; i++)
+                            {
+                                var selected = ""; //(Model.Filter.Year == i) || (Model.Filter.Year == null && i == DateTime.Now.Year) ? "selected" : "";
+
+                                <option @selected value="@i">@i.ToString()</option>
+
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-4" >
+                    <div class="input-group">
+                        <span class="input-group-addon">Inicio</span>
+                        <select id="select-mes" name="Filter.From" class="form-control">
+                            @for (int i = 0; i < meses.Length; i++)
+                            {
+                                var selected = ""; //(Model.Filter.IsAnnual && (Model.Filter.From != 0 && Model.Filter.From == (i + 1)) || (Model.Filter.From == 0 && (i + 1) == DateTime.Now.Month)) || (!Model.Filter.IsAnnual && (i + 1) == DateTime.Now.Month) ? "selected" : "";
+                                <option @selected value="@(i+1)">@meses[i]</option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row margin-top-5">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">CIIU</span>
+                        <div id="drop-ciiu">                           
+                            @{Html.RenderAction("GetDorpDownEstablecimiento", "CIIU", new { id = (Model != null && Model.Criteria != null) ? Model.Criteria.id_ciiu : 0, nombre = "Criteria.id_ciiu", @default = "Todos", idEstablecimiento = (Model != null && Model.Criteria != null) ? Model.Criteria.id_establecimiento : 0 });}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                    <a target="_blank" class="btn btn-default  btns-group" href="/Reporte/ExportPorcentajeEncuestaEstadisticaToExcel">Excel</a>
+                    <a target="_blank" class="btn btn-default  btns-group" href="/Reporte/Export?url=@Url.Action("PorcentajeEncuestaEstadistica", null, null, Request.Url.Scheme)&vertical=true">PDF</a>
+                    <a target="_blank" href="/Reporte/GraphicPorcentajeEstadistica" class="btn btn-default  btns-group">Gráfico</a>
+                </div>
+            </div>
+        </div>
+    </div>
+         }
+<div id="table-container" class="margin-bottom-10">
+    @Html.Partial("IndiceValorFisico/_Table")
+</div>
+<script>
+    $(document).ready(function () {
+        $.search($('#select-ano'));
+        $.search($('#select-mes'));
+    });
+    
+</script>
