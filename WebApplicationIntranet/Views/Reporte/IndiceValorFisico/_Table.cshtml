@@ -1,4 +1,5 @@
-﻿
+﻿@using System.Globalization
+@model Entity.Reportes.IndiceValorFisicoProducido
 @{
     ViewBag.Title = "_Table";
 }
@@ -8,11 +9,62 @@
             <th>CIIU</th>
             <th>ESTABLECIMIENTO</th>
             <th>PONDERACI&Oacute;N</th>
-            @*@foreach (var item in Model.HeadersList)
+            @foreach (var item in Model.Header)
             {
                 <th>@item</th>
-            }*@
+            }
         </tr>
     </thead>
-</table> 
+    <tbody>
+        @foreach (var item in Model.Elements)
+        {
+            <tr>
+                <td>
+                    <span>@item.Ciiu</span>
+                </td>
+                <td>
+                    <span>@item.Establecimiento</span>
+                </td>
+                <td>
+                    <span>@item.Ponderacion.ToString("0.00", CultureInfo.CreateSpecificCulture("en"))</span>
+                </td>
+                @for (var i = 0; i < Model.Header.Count; i++)
+                {
+                    <td>
+                        @{
+                    var current = Model.Header[i];
+                    var m = item.Values.FirstOrDefault(t => t.Header == current);
+                    if (m != null)
+                    {
+                        <span>@m.Value.ToString("0.00", CultureInfo.CreateSpecificCulture("en"))</span>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                        }
+                    </td>
+
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Elements.Count == 0)
+{
+    <div class="no-elements-notification">
+        No hay elementos para mostrar
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function() {
+        var count=@Model.Elements.Count;
+        if(count>0){
+            $(".btns-group").removeClass("hidden");
+        }else{
+            $(".btns-group").addClass("hidden");
+        }
+    });
+</script>
 

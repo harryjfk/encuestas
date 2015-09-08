@@ -11,9 +11,9 @@
         <div class="panel-body">
             <div class="row ">
                 <div class="col-md-12">
-                    <input id="btn-establecimiento" type="submit" value="Establecimiento" name="btn-establecimiento" class="btn btn-default" />
-                    <input id="btn-ciiu" type="submit" value="CIIU" name="btn-ciiu" class="btn btn-default" />
-                    <input id="btn-linea-producto" type="submit" value="LineaProducto" name="btn-linea-producto" class="btn btn-default" />
+                    <input id="btn-establecimiento" type="button" value="Establecimiento" name="btn-establecimiento" class="btn-select btn btn-default" />
+                    <input id="btn-ciiu" type="button" value="CIIU" name="btn-ciiu" class="btn-select btn btn-default" />
+                    <input id="btn-linea-producto" type="button" value="LineaProducto" name="btn-linea-producto" class="btn-select btn btn-default" />
 
                 </div>
                 <div class="margin-top-5">
@@ -91,6 +91,13 @@
 }
 <script>
     $(document).ready(function () {
+        ActivateBtn($("#btn-establecimiento"));
+        $(".btn-select").click(function () {
+            var elem = $(this);
+            ActivateBtn(elem);
+        });
+
+
         var eclCollection = [];
         var eclsCollection = [];
         var establecimiento = false;
@@ -222,5 +229,20 @@
         }
 
     });
+    function ActivateBtn(elem) {
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $.origin() + "/Reporte/GetCiiuReporteGeneralEncuestaEstadistica/",
+            data: elem.val(),
+            success: function (data) {
+                $(".btn-select").removeClass("btn-primary");
+                elem.addClass("btn-primary");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+    }
 </script>
 

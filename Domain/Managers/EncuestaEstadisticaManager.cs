@@ -140,6 +140,7 @@ namespace Domain.Managers
                 Manager.VolumenProduccionManager.SaveChanges();
                 foreach (var lp in establecimiento.LineasProductoEstablecimiento)
                 {
+                    //var temp = Manager.LineaProductoEstablecimiento.Find(lp.Id);
                     var um = lp.LineaProducto.LineasProductoUnidadMedida.FirstOrDefault();
                     if (um != null)
                     {
@@ -780,23 +781,32 @@ namespace Domain.Managers
                 Month = month.GetValueOrDefault(),
                 IdCiiu = idCiiu.GetValueOrDefault(),
             };
+            if (month == null)
+                for (var i = 1; i <= 12; i++)
+                    result.Header.Add(i.GetMonthText().ToUpper().Substring(0, 3));
+            else
+                result.Header.Add(month.GetValueOrDefault().GetMonthText().ToUpper().Substring(0, 3));
 
+            var from = new DateTime(year, 1, 1);
+            var to = new DateTime(year, 12, 31);
             if (month != null)
             {
-                var encuestas = Manager.EncuestaEstadistica.Get(t =>
-                    t.EstadoEncuesta == EstadoEncuesta.Validada);
-                var days = DateTime.DaysInMonth(year, month.GetValueOrDefault());
-                for (int i = 1; i <= days; i++)
-                {
-                    result.Header.Add(i.ToString());
-                    result.Elements.Add(new IndiceValorFisicoProducidoItem()
-                    {
-
-                    });
-                }
-
+                from = new DateTime(year, month.GetValueOrDefault(), 1);
+                to = new DateTime(year, month.GetValueOrDefault(), DateTime.DaysInMonth(year, month.GetValueOrDefault()));
             }
-
+            if (idCiiu == null)
+            {
+                var all = Manager.Ciiu.Get(t => t.Activado);
+                foreach (var ciiu in all)
+                {
+                    result.Elements.AddRange(CalculateIVF1(ciiu.Id, from, to));
+                }
+            }
+            else
+            {
+                result.Elements.AddRange(CalculateIVF1(idCiiu.GetValueOrDefault(), from, to));
+            }
+            return result;
         }
 
         public List<IndiceValorFisicoProducidoItem> CalculateIVF1(long idCiiu, DateTime from, DateTime to)
@@ -804,31 +814,34 @@ namespace Domain.Managers
             var result = new List<IndiceValorFisicoProducidoItem>();
             var ciiu = Manager.Ciiu.Find(idCiiu);
             if (ciiu == null) return new List<IndiceValorFisicoProducidoItem>();
-            for (var i = from; i <= to; i = i.AddMonths(1))
+            //for (var i = from; i <= to; i = i.AddMonths(1))
+            //{
+            var encuestas = Manager.EncuestaEstadistica.Get(t => t.EstadoEncuesta == EstadoEncuesta.Validada
+                                                            && t.Fecha <= to && t.Fecha >= from &&
+                                                             t.VolumenProduccionMensual.MateriasPropia.Any(
+                                                                 h => h.LineaProducto.IdCiiu == idCiiu));
+
+            var establecimientos = encuestas.GroupBy(t => t.Establecimiento.Id);
+            foreach (var establecimiento in establecimientos)
             {
-                var encuestas = Manager.EncuestaEstadistica.Get(t => t.EstadoEncuesta == EstadoEncuesta.Validada
-                                                                 && t.Fecha.Year == i.Year && t.Fecha.Month == i.Month &&
-                                                                 t.VolumenProduccionMensual.MateriasPropia.Any(
-                                                                     h => h.LineaProducto.IdCiiu == idCiiu));
-
-                var establecimientos = encuestas.GroupBy(t => t.Establecimiento);
-                foreach (var establecimiento in establecimientos)
+                var est = Manager.Establecimiento.Find(establecimiento.Key);
+                var total = Manager.EncuestaEstadistica.Get(t => t.EstadoEncuesta == EstadoEncuesta.Validada
+                                                             && t.Fecha <= to && t.Fecha >= from
+                                                             && t.IdEstablecimiento == establecimiento.Key).Count();
+                var parte = establecimiento.Count();
+                var it = new IndiceValorFisicoProducidoItem()
                 {
-                    var total = Manager.EncuestaEstadistica.Get(t => t.EstadoEncuesta == EstadoEncuesta.Validada
-                                                                 && t.Fecha.Year == i.Year && t.Fecha.Month == i.Month
-                                                                 && t.IdEstablecimiento == establecimiento.Key.Id).Count();
-                    var parte = establecimiento.Count();
-                    var it = new IndiceValorFisicoProducidoItem()
-                    {
-                        IdCiiu = idCiiu,
-                        Establecimiento = establecimiento.Key.Nombre,
-                        IdEstablecimiento = establecimiento.Key.Id,
-                        Ciiu = ciiu.ToString(),
-                        Ponderacion = parte * 100.0 / total
-                    };
-                    foreach (var item2 in establecimiento)
-                    {
+                    IdCiiu = idCiiu,
+                    Establecimiento = est.Nombre,
+                    IdEstablecimiento = establecimiento.Key,
+                    Ciiu = ciiu.ToString(),
+                    Ponderacion = parte * 100.0 / total
+                };
 
+                for (var i = from; i <= to; i = i.AddMonths(1))
+                {
+                    foreach (var item2 in establecimiento.Where(t => t.Fecha.Month == i.Month && t.Fecha.Year == i.Year))
+                    {
                         var ciius = item2.VolumenProduccionMensual.MateriasPropia.GroupBy(t => t.LineaProducto.IdCiiu);
                         foreach (var materiaPropia in ciius)
                         {
@@ -840,7 +853,7 @@ namespace Domain.Managers
                                 var aBase =
                                     Manager.AñoBaseManager.Get(
                                         t =>
-                                            t.id_ciiu == materiaPropia.Key && t.id_establecimiento == establecimiento.Key.Id &&
+                                            t.id_ciiu == materiaPropia.Key && t.id_establecimiento == establecimiento.Key &&
                                             t.id_linea_producto == propia.IdLineaProducto).FirstOrDefault();
 
                                 if (aBase == null) continue;
@@ -853,14 +866,15 @@ namespace Domain.Managers
                             it.Values.Add(new IndiceValorFisicoProducidoValue()
                             {
                                 Value = ivf,
-                                Header = i.Month.GetMonthText().ToLower().Substring(0, 3),
+                                Header = i.Month.GetMonthText().ToUpper().Substring(0, 3),
                                 Index = i.Month
                             });
                         }
                     }
-                    result.Add(it);
                 }
+                result.Add(it);
             }
+            //}
             return result;
         }
 

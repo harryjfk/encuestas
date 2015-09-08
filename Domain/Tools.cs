@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -11,6 +12,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 
 namespace Domain
@@ -78,6 +81,40 @@ namespace Domain
             return textInfo.ToTitleCase(month);
         }
 
+        public static string GetVariableNames(this string value)
+        {
+            switch (value.ToUpper())
+            {
+                case "VPMP":
+                    return "Volumen de Producción con Materia Prima";
+                case "VPMT":
+                    return "Volumen de Producción con Materia de terceros";
+                case "VAPMP":
+                    return "Valor de Producción con Materia Prima";
+                case "VAPMT":
+                    return "Valor de Producción con Materia de terceros";
+                case "VVP":
+                    return "Valor de Ventas en el país";
+                case "VVE":
+                    return "Valor de Ventas en el extranjero";
+                case "NT":
+                    return "Número de Trabajadores";
+            }
+            return "";
+        }
+        public static string GetAmbito(this string value)
+        {
+            switch (value.ToUpper())
+            {
+                case "LINEAPRODUCTO":
+                    return "Línea de Producto";
+                default:
+                    return value;
+            }
+            
+        }
+       
+
         public static bool ExportToExcel<T>(this IList<T> source,string nombreHoja,string nombreReporte,string direccion)
         {
             var dt = ExcelUtility.ConvertToDataTable(source);
@@ -85,18 +122,7 @@ namespace Domain
           
         }
 
-        //public static Func<T, bool> GetFilter<T>(this string text) where T : class
-        //{
-        //    var type = typeof (T);
-        //    if (type.IsSubclassOf(typeof (Filtered<T>)))
-        //    {
-        //        var method = type.GetMethod("GetFilter",BindingFlags.Static);
-        //        if (method != null)
-        //        {
-
-        //        }b
-        //    }
-        //}
+      
     }
 
     public static class ExcelUtility
@@ -114,48 +140,42 @@ namespace Domain
         {
             try
             {
-                Microsoft.Office.Interop.Excel.Range excelCellrange;
-                var excel = new Microsoft.Office.Interop.Excel.Application
-                {
-                    Visible = false,
-                    DisplayAlerts = false
-                };
-                var excelworkBook = excel.Workbooks.Add(Type.Missing);
-                var excelSheet = (Microsoft.Office.Interop.Excel.Worksheet)excelworkBook.ActiveSheet;
-                excelSheet.Name = worksheetName;
-                excelSheet.Cells[1, 1] = ReporType;
-                excelSheet.Cells[1, 2] = "Date : " + DateTime.Now.ToShortDateString();
+                var pack = new ExcelPackage(new FileInfo(saveAsLocation));
+                pack.Workbook.Worksheets.Add(worksheetName);
+                var ws = pack.Workbook.Worksheets[1];
+                ws.Name = ReporType;
+                ws.Cells.Style.Font.Size = 11; 
+                ws.Cells.Style.Font.Name = "Calibri";
+              
+               
+                ws.Cells[1, 1].Value = ReporType.ToUpper();
+                ws.Cells[1, 2].Value = "DATE : " + DateTime.Now.ToShortDateString().ToUpper();
                 var rowcount = 2;
+
                 foreach (DataRow datarow in dataTable.Rows)
                 {
+                   
                     rowcount += 1;
                     for (var i = 1; i <= dataTable.Columns.Count; i++)
                     {
+                        ws.Column(i).AutoFit();
                         if (rowcount == 3)
                         {
-                            excelSheet.Cells[2, i] = dataTable.Columns[i - 1].ColumnName;
-                            excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
-
+                            ws.Cells[2, i].Value = dataTable.Columns[i - 1].ColumnName;
+                            var fill = ws.Cells[2, i].Style.Fill;
+                            fill.PatternType = ExcelFillStyle.Solid;
+                            fill.BackgroundColor.SetColor(Color.Gray);
                         }
-                        excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString();
+                        ws.Cells[rowcount, i].Value = datarow[i - 1].ToString();
                         if (rowcount <= 3) continue;
                         if (i != dataTable.Columns.Count) continue;
                         if (rowcount % 2 != 0) continue;
-                        excelCellrange = excelSheet.Range[excelSheet.Cells[rowcount, 1], excelSheet.Cells[rowcount, dataTable.Columns.Count]];
-                        FormattingExcelCells(excelCellrange, "#CCCCFF", System.Drawing.Color.Black, false);
+                        
                     }
 
                 }
-                excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[rowcount, dataTable.Columns.Count]];
-                excelCellrange.EntireColumn.AutoFit();
-                var border = excelCellrange.Borders;
-                border.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
-                border.Weight = 2d;
-                excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[2, dataTable.Columns.Count]];
-                FormattingExcelCells(excelCellrange, "#000099", System.Drawing.Color.White, true);
-                excelworkBook.SaveAs(saveAsLocation);
-                excelworkBook.Close();
-                excel.Quit();
+             
+                pack.Save();
                 return true;
             }
             catch (Exception ex)
