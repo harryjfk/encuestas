@@ -228,11 +228,13 @@ namespace Domain.Managers
         {
             var list = Repositorio.GetUsuariosExtranet();
             if (string.IsNullOrEmpty(query.Criteria.NombreApellidos) || string.IsNullOrWhiteSpace(query.Criteria.NombreApellidos))
-                list =
-                    Get(t => t.EstablecimientosInformante.Any(h => h.Id == idEstablecimiento))
-                    .Select(t => Repositorio.FindUsuarioExtranet((int)t.Identificador))
-                    .ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
-
+            {
+                //consultar
+                //list =
+                //    Get(t => t.EstablecimientosInformante.Any(h => h.Id == idEstablecimiento))
+                //    .Select(t => Repositorio.FindUsuarioExtranet((int)t.Identificador))
+                //    .ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
+            }
             else
             {
                 list = Repositorio.GetUsuariosExtranet(query.Paginacion, query.Filter);

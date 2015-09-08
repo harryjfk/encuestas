@@ -108,16 +108,22 @@
                                         </ul>*@
                                 </li>
                             }
+                            
                             @if (Session["pr"].ToString() == "Analista")
                             {
+                                
                                 <li>@Html.ActionLink("Establecimientos", "EstablecimientosEncuestaEmpresarial", "UsuarioIntranet")</li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
                                     <ul class="dropdown-menu">
                                         <li>@Html.ActionLink("Porcentaje de Encuestas Estadísticas", "PorcentajeEncuestaEstadistica", "Reporte")</li>
+<<<<<<< HEAD
                                         <li><a href="http://www.produce.gob.pe/index.php/estadisticas/boletines-mensuales">Reporte de la producci&oacute;n manufacturera</a></li>
                                        
                                         <li>@Html.ActionLink("Indice de Valor Físico", "IndiceValorFisico", "Reporte")</li>
+=======
+                                        <li><a href="http://www.produce.gob.pe/index.php/estadisticas/boletines-mensuales">Reporte de la producci&oacute;n manufacturera</a></li>                                        
+>>>>>>> 2e2ac66b5335f5078fe375cb529c0e2ae1b08069
                                     </ul>
                                 </li>
                             }

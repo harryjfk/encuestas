@@ -182,7 +182,8 @@ namespace WebApplication.Controllers
             {
                 throw new FileNotFoundException("Operación Inválida");
             }
-            var downloads = ConfigurationManager.AppSettings["Downloads"];
+            //var downloads = ConfigurationManager.AppSettings["Downloads"];
+            var downloads = HttpContext.Server.MapPath("../TempPrint");
             var name = Guid.NewGuid().ToString() + ".pdf";
             var path = Path.Combine(downloads, name);
             var now = DateTime.Now;

@@ -74,7 +74,7 @@ namespace Domain
         public static string GetMonthText(this int number)
         {
             var now = DateTime.Now;
-            var date = new DateTime(now.Year, number, now.Day);
+            var date = new DateTime(now.Year, number, 1);
             var cInfo = CultureInfo.GetCultureInfo("es");
             var textInfo = cInfo.TextInfo;
             var month = date.ToString("MMMM", cInfo);
