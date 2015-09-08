@@ -30,5 +30,46 @@ namespace Domain.Managers
             list.MaxLength(element,t=>t.nombre,20,"Nombre");
             return list;
         }
+
+        public void Generate()
+        {
+            var vp = Get(t => t.nombre.Equals("Volumen Producción")).FirstOrDefault();
+            if (vp == null)
+            {
+                vp = new MetodoCalculo()
+                {
+                    nombre = "Volumen Producción",
+                    Activado = true,
+                    RegistroObligatorio = true,
+
+                };
+                Add(vp);
+                SaveChanges();
+            }
+            var vd = Get(t => t.nombre.Equals("VD-IIP")).FirstOrDefault();
+            if (vd == null)
+            {
+                vd = new MetodoCalculo()
+                {
+                    nombre = "VD-IIP",
+                    Activado = true,
+                    RegistroObligatorio = true
+                };
+                Add(vd);
+                SaveChanges();
+            }
+            var ca = Get(t => t.nombre.Equals("Consumo Aparente")).FirstOrDefault();
+            if (ca == null)
+            {
+                ca = new MetodoCalculo()
+                {
+                    nombre = "Consumo Aparente",
+                    Activado = true,
+                    RegistroObligatorio = true
+                };
+                Add(ca);
+                SaveChanges();
+            }
+        }
     }
 }

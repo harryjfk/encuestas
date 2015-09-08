@@ -51,5 +51,7 @@ namespace Entity
            }
            return String.Format("{0}-{1}",Codigo,subName);
        }
+
+      
    }
 }

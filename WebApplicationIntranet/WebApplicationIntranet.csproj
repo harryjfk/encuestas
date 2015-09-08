@@ -48,7 +48,15 @@
     <Reference Include="ephtmltopdf">
       <HintPath>..\packages\ExpertPdfHtmlToPdf.9.5.0\lib\net40\ephtmltopdf.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\Domain\Office\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\Domain\Office\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -224,6 +232,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EncuestaEstadisticaUploadModel.cs" />
     <Compile Include="Models\ExportExcelPorcentajeEstadisticaMensualModel.cs" />
     <Compile Include="Models\ExportExcelPorcentajeEstadisticaAnualModel.cs" />
     <Compile Include="Models\ImportacionExportacionHarinaTrigo.cs" />
@@ -281,9 +290,11 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Descargas\PRODUCE.Manual.Usuario.Analista.pdf" />
+    <Content Include="bin\Select.Html.dep" />
     <None Include="Properties\PublishProfiles\IIS.pubxml">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\Intranet.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCE - EXTRANET.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCE-INTRANET.pubxml" />
     <None Include="Properties\PublishProfiles\Produce.pubxml">
@@ -319,6 +330,8 @@
     <Content Include="Scripts\Scripts.js" />
     <Content Include="Scripts\SmartNotification.min.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="TempFiles\test.txt" />
+    <Content Include="TempPrint\test.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -486,6 +499,9 @@
     <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\_Table.cshtml" />
     <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\_TableCiiu.cshtml" />
     <Content Include="Views\Shared\_Graphic.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\Index.cshtml" />
+    <Content Include="Views\Reporte\IndiceValorFisico\Index.cshtml" />
+    <Content Include="Views\Reporte\IndiceValorFisico\_Table.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>

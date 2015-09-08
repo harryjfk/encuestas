@@ -13,6 +13,11 @@ namespace Entity
            get { return estado == 1; }
            set { estado = value ? 1 : 0; }
        }
+       public bool RegistroObligatorio
+       {
+           get { return registro_obligatorio == 1; }
+           set { registro_obligatorio = value ? 1 : 0; }
+       }
 
        public override string ToString()
        {

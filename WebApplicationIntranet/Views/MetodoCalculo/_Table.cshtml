@@ -10,7 +10,7 @@
         <tr class="cabecera">
             <th style="width: 20px;"></th>
             <th> NOMBRE </th>
-           
+
             <th style="width: 100px;">ACCI&Oacute;N</th>
     </thead>
     <tbody>
@@ -28,7 +28,7 @@
                     }
                 </td>
                 <td>@Html.DisplayFor(modelItem => item.nombre)</td>
-                
+
                 <td>
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" id="edit-@item.Id" role="@item.Id" class="edit-btn">
                         <i class="color-yellow glyphicon glyphicon-pencil"></i>
@@ -37,10 +37,13 @@
                     <a href="/MetodoCalculo/Details/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visualizar" id="details-@item.Id">
                         <i class="color-black glyphicon glyphicon-eye-open"></i>
                     </a>
-                    |
-                    <a href="/MetodoCalculo/Delete/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" id="delete-@item.Id" role="@item.Id" class="delete-btn">
-                        <i class="color-red glyphicon glyphicon-remove"></i>
-                    </a>
+                    @if (!item.RegistroObligatorio)
+                    {
+                        <span>|</span>
+                        <a href="/MetodoCalculo/Delete/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" id="delete-@item.Id" role="@item.Id" class="delete-btn">
+                            <i class="color-red glyphicon glyphicon-remove"></i>
+                        </a>
+                    }
                 </td>
 
             </tr>
@@ -69,7 +72,7 @@
                 data: { "id": id },
                 success: function (data) {
                     $("#editItem .modal-body").html(data);
-                    $.changeModalName("Método de Cálculo");                   
+                    $.changeModalName("Método de Cálculo");
                     $("#editItem").modal("show");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {

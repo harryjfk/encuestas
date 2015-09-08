@@ -12,7 +12,7 @@
 }
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/Content/css")
-
+<h3 class="screen-title">Porcentaje de Encuestas Estad&iacute;sticas</h3>
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger fade in">
@@ -161,8 +161,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row margin-top-5" style="@styleNormal">
-                <div class="col-md-4">
+            <div class="row margin-top-5 pull-right" style="@styleNormal">
+                <div class="col-md-12">
                     <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
                     <a target="_blank" class="btn btn-default hidden btns-group" href="/Reporte/ExportPorcentajeEncuestaEstadisticaToExcel">Excel</a>
                     <a target="_blank" class="btn btn-default hidden btns-group" href="/Reporte/Export?url=@Url.Action("PorcentajeEncuestaEstadistica", null, null, Request.Url.Scheme)&vertical=true">PDF</a>

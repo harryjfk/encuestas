@@ -26,10 +26,23 @@
         <div class="form-group">
             <label for="nombre" class="col-md-4 control-label"> Nombre</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.nombre, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.nombre)
+                @if (!Model.RegistroObligatorio)
+                {
+                    @Html.TextBoxFor(t => t.nombre, new {@class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.nombre)
+                }
+                else
+                {
+                    <span class="form-control">
+                        @Model.nombre
+                    </span>
+                }
             </div>
-            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+            @if (!Model.RegistroObligatorio)
+            {
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+            }
+           
         </div>
 
 

@@ -13,6 +13,7 @@ namespace WebApplication.Controllers
     public class ReporteController : BaseController<PorcentajeEncuestaEstadistica>
     {
         public static PorcentajeEncuestaEstadistica PocentajeEncuestaEstadistica { get; set; }
+        public static IndiceValorFisicoProducido IndiceValorFisicoProducido { get; set; }
 
         public ActionResult PorcentajeEncuestaEstadistica()
         {
@@ -24,7 +25,7 @@ namespace WebApplication.Controllers
                 From = 1,
                 To = 12,
             };
-            var report =PocentajeEncuestaEstadistica?? new PorcentajeEncuestaEstadistica()
+            var report = PocentajeEncuestaEstadistica ?? new PorcentajeEncuestaEstadistica()
             {
                 Filter = filter
             };
@@ -56,8 +57,8 @@ namespace WebApplication.Controllers
                 return HttpNotFound("No hay datos para mostrar");
             var data = new GraphicModel()
             {
-                Title = "Porcentaje de Encuestas Estad&iacute;sticas",
-                YTitle = "Porciento",
+                Title = "Encuestas Estadisticas",
+                YTitle = "Cantidad",
                 Serie = new Dictionary<string, double>()
             };
             foreach (var element in PocentajeEncuestaEstadistica.Elements)
@@ -74,7 +75,7 @@ namespace WebApplication.Controllers
             {
                 var result = PocentajeEncuestaEstadistica.Elements.Select(t => new ExportExcelPorcentajeEstadisticaAnualModel()
                 {
-                    Analist = t.Analista,
+                    Analista = t.Analista,
                     Enero = t.Month.Where(h => h.Number == 1).Sum(h => h.PercentRound),
                     Febrero = t.Month.Where(h => h.Number == 2).Sum(h => h.PercentRound),
                     Marzo = t.Month.Where(h => h.Number == 3).Sum(h => h.PercentRound),
@@ -129,5 +130,63 @@ namespace WebApplication.Controllers
 
 
         }
-	}
+        public ActionResult ExportIndiceValorFisicoToExcel()
+        {
+            if (IndiceValorFisicoProducido == null || IndiceValorFisicoProducido.Elements.Count == 0)
+                return HttpNotFound("No hay datos para mostrar");
+
+            var result = IndiceValorFisicoProducido.Elements.Select(t => new ExportExcelIndiceValorFijoModel()
+            {
+                Establecimiento = t.Establecimiento,
+                Ciiu = t.Ciiu,
+                Enero = t.Values.Where(h => h.Index == 1).Sum(h => h.Value),
+                Febrero = t.Values.Where(h => h.Index == 2).Sum(h => h.Value),
+                Marzo = t.Values.Where(h => h.Index == 3).Sum(h => h.Value),
+                Abril = t.Values.Where(h => h.Index == 4).Sum(h => h.Value),
+                Mayo = t.Values.Where(h => h.Index == 5).Sum(h => h.Value),
+                Junio = t.Values.Where(h => h.Index == 6).Sum(h => h.Value),
+                Julio = t.Values.Where(h => h.Index == 7).Sum(h => h.Value),
+                Agosto = t.Values.Where(h => h.Index == 8).Sum(h => h.Value),
+                Septiembre = t.Values.Where(h => h.Index == 9).Sum(h => h.Value),
+                Octubre = t.Values.Where(h => h.Index == 10).Sum(h => h.Value),
+                Noviembre = t.Values.Where(h => h.Index == 11).Sum(h => h.Value),
+                Diciembre = t.Values.Where(h => h.Index == 12).Sum(h => h.Value),
+            }).ToList();
+            return ExportExcel(result, "Detalles", "Indice Valor Físico");
+        }
+
+        public ActionResult GeneralEncuestaEstadistica()
+        {
+            return View("GeneralEncuestasEstadisticas/Index");
+        }
+        public ActionResult IndiceValorFisico()
+        {
+            IndiceValorFisicoProducido = Manager.EncuestaEstadistica.ValorFisicoProducido(DateTime.Now.Year);
+            return View("IndiceValorFisico/Index", IndiceValorFisicoProducido);
+        }
+        public ActionResult BuscarIndiceValorFisico(IndiceValorFisicoProducido model)
+        {
+            var month = (model.Month > 0 ? model.Month : default(int?));
+            var idCiiu = (model.IdCiiu > 0 ? model.IdCiiu : default(long?));
+            IndiceValorFisicoProducido = Manager.EncuestaEstadistica.ValorFisicoProducido(model.Year, month, idCiiu);
+            return View("IndiceValorFisico/Index", IndiceValorFisicoProducido);
+        }
+
+        public ActionResult GraphicIndiceValorFisico()
+        {
+            if (IndiceValorFisicoProducido == null || IndiceValorFisicoProducido.Elements.Count == 0)
+                return HttpNotFound("No hay datos para mostrar");
+            var data = new GraphicModel()
+            {
+                Title = "Encuestas Estadisticas",
+                YTitle = "Cantidad",
+                Serie = new Dictionary<string, double>()
+            };
+            foreach (var element in IndiceValorFisicoProducido.Elements)
+            {
+                data.Serie.Add(string.Format("{0}-{1}", element.Establecimiento, element.Ciiu), element.Values.Sum(h => h.Value));
+            }
+            return PartialView("_Graphic", data);
+        }
+    }
 }
