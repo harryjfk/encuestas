@@ -183,7 +183,9 @@ namespace WebApplication.Controllers
             {
                 throw new FileNotFoundException("Operación Inválida");
             }
-            var downloads = ConfigurationManager.AppSettings["Downloads"];
+            
+            //var downloads = ConfigurationManager.AppSettings["Downloads"];
+            var downloads = HttpContext.Server.MapPath("../TempPrint");
             var name = Guid.NewGuid().ToString() + ".pdf";
             var path = Path.Combine(downloads, name);
             var now = DateTime.Now;
@@ -215,7 +217,8 @@ namespace WebApplication.Controllers
         }
         public virtual FileResult ExportExcel<TK>(IList<TK> source, string nombreHoja, string nombreReporte)
         {
-            var downloads = ConfigurationManager.AppSettings["Downloads"];
+            //var downloads = ConfigurationManager.AppSettings["Downloads"];
+            var downloads = HttpContext.Server.MapPath("../TempPrint");
             var name = Guid.NewGuid().ToString() + ".xlsx";
             var path = Path.Combine(downloads, name);
             var now = DateTime.Now;

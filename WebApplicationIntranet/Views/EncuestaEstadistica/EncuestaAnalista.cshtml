@@ -84,6 +84,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Observar Encuesta</h4>
+                <span>Correo del Informante: @ViewBag.CorreoInformante</span>
             </div>
             @using (Html.BeginForm("Observar", "EncuestaEstadistica", FormMethod.Post))
             {

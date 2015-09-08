@@ -10,8 +10,8 @@ using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
-    //[Authorize]
-    //[Autorizacion]
+    /*[Authorize]
+    [Autorizacion]*/
     public class EncuestaEmpresarialController : BaseController<EncuestaEmpresarial>
     {
         private static long IdEstablecimiento { get; set; }

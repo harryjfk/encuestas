@@ -1,0 +1,411 @@
+﻿@{
+    ViewBag.Title = "Reporte General de Encuestas Estadísticas";
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/Content/css")
+<h3 class="screen-title">Reporte General de Encuestas Estad&iacute;sticas</h3>
+@using (Html.BeginForm())
+{
+    <input type="hidden" name="InputTypes" id="InputTypes" />
+    <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+        <strong>Alertas</strong>
+        <div>
+            <ul></ul>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">1.Seleccione el &Aacute;mbito de An&aacute;lisis</div>
+        <div class="panel-body">
+            <div class="row ">
+                <div class="col-md-12">
+                    <input id="btn-establecimiento" type="button" value="Establecimiento" name="btn-establecimiento" class="btn-select btn btn-default" />
+                    <input id="btn-ciiu" type="button" value="CIIU" name="btn-ciiu" class="btn-select btn btn-default" />
+                    <input id="btn-linea-producto" type="button" value="LineaProducto" name="btn-linea-producto" class="btn-select btn btn-default" />
+
+                </div>
+                <div class="margin-top-5">
+                    <div class="col-md-5 margin-top-5">
+
+                        <input type="text" id="search-select-ecl" class="form-control reset-max-width" style="width:100%;" />
+
+                        <div id="container">
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-1 margin-top-5">
+
+                        <a href="javascript:void(0)" id="option-to-right" class="form-control btn btn-default" style="text-align:center;">>></a>
+                        <a href="javascript:void(0)" id="option-to-left" class="form-control btn btn-default margin-top-5" style="text-align:center;"><<</a>
+
+                    </div>
+                    <div class="col-md-5 margin-top-5">
+
+                        <input type="text" id="search-select-ecls" class="form-control reset-max-width" style="width:100%;" />
+                        <select name="Values" id="ecls" multiple="multiple" class="form-control reset-max-width" style="width:100%;"></select>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">2.Seleccione Variables</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="col-md-12">
+                        <input type="radio" name="Output" value="VPMP" />
+                        <span>Volumen de Producci&oacute;n con Materia Prima</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="Output" value="VPMT" />
+                        <span>Volumen de Producci&oacute;n con Materia de terceros</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="Output" value="VAPMP" />
+                        <span>Valor de Producci&oacute;n con Materia Prima</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="Output" value="VAPMT" />
+                        <span>Valor de Producci&oacute;n con Materia de terceros</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="Output" value="VVP" />
+                        <span>Valor de Ventas en el pa&iacute;s</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="radio" name="Output" value="VVE" />
+                        <span>Valor de Ventas en el extranjero</span>
+                    </div>
+                    <div id="NT" class="col-md-12">
+                        <input type="radio" name="Output" value="NT" />
+                        <span>N&uacute;mero de Trabajadores</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">3. Período</div>
+        <div class="panel-body">
+            <div class="row form-horizontal">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="Año" class="col-md-2 control-label">Año</label>
+                        <div class="col-md-10">
+                            <select class="form-control reset-max-width" id="yearDrop" name="Year">
+                                @for (var i = 2012; i <= DateTime.Now.Year; i++)
+                                {
+                                <option value="@i">@i</option>
+                                }
+                            </select>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-5 margin-top-5">
+                    <select id="month" multiple="multiple"  class="form-control reset-max-width" style="width:100%;">
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+                <div class="col-md-1 margin-top-5">
+
+                    <a href="javascript:void(0)" id="optionm-to-right" class="form-control btn btn-default" style="text-align:center;">>></a>
+                    <a href="javascript:void(0)" id="optionm-to-left" class="form-control btn btn-default margin-top-5" style="text-align:center;"><<</a>
+
+                </div>
+                <div class="col-md-5 margin-top-5">
+                    <select id="months" name="Month" multiple="multiple" class="form-control reset-max-width" style="width:100%;"></select>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="submit" class="btn-xs btn-primary" value="PDF" name="action:PDF" />
+                    <input type="submit" class="btn-xs btn-primary" value="Excel" name="action:Excel" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        var btnselected;
+        $('#btnpdf').click(function () {
+            save();
+        });
+        $('#btnexcel').click(function () {
+            save();
+        });
+
+        function save(type) {
+            $("#errors-container").addClass("hidden");
+            var arrayValues = [];
+            var arrayMonth = [];
+            for (var i in eclsCollection) {
+                var item = eclsCollection[i];
+                arrayValues.push(parseInt(item.value));
+            }
+            for (var i in monthsCollection) {
+                var item = monthsCollection[i];
+                arrayMonth.push(parseInt(item.value));
+            }
+            arrayMonth = [1, 2, 3, 45];
+            var output = $("input[name='variable']:checked").val();
+            var res = {};
+            var errors = [];
+            var yearS = $("#yearDrop").val();
+            if (arrayValues.length == 0) {
+                errors.push("Debe seleccionar un ámbito de análisis");
+            }
+            if (arrayMonth.length == 0) {
+                errors.push("Debe seleccionar un período");
+            }
+            if (!output) {
+                errors.push("Debe seleccionar una variable");
+            }
+            if (!yearS) {
+                errors.push("Debe seleccionar un año");
+            }
+            if (errors.length > 0) {
+                var str = "";
+                for (var i = 0; i < errors.length; i++) {
+                    str += "<li>" + errors[i] + "</li>";
+                }
+                $("#errors-container").removeClass("hidden").find("ul").html(str);
+                return;
+            }
+            res.InputTypes = btnselected;
+            res.Values = arrayValues;
+            res.Output = output;
+            res.Year = yearS;
+            res.Month = arrayMonth;
+            console.log(res);
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/Reporte/Save/",
+                data: res,
+                success: function (data) {
+                   
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
+        
+
+        ActivateBtn($("#btn-establecimiento"));
+        $(".btn-select").click(function () {
+            var elem = $(this);
+            ActivateBtn(elem);
+        });
+
+
+        var eclCollection = [];
+        var eclsCollection = [];
+
+        var monthCollection = [];
+        var monthsCollection = [];
+
+        llenarArryWhitOptiosn("#month", monthCollection);
+        llenarArryWhitOptiosn("#months", monthsCollection);
+        var establecimiento = false;
+
+
+        $('btn-establecimiento').click(function () {
+            var divNT = $('#NT');
+            divNT.removeAttr('hidden');
+
+
+        });
+        $('#btn-ciiu').click(function () {
+            var divNT = $('#NT');
+            divNT.attr('hidden', 'hidden');
+        });
+        $('#btn-linea-producto').click(function () {
+            var divNT = $('#NT');
+            divNT.attr('hidden', 'hidden');
+        });
+        $('#option-to-right').click(function () {
+            passOptionsFromSelect('#ecl', '#ecls', eclCollection, eclsCollection);
+            sortOptionCollection(eclCollection);
+            searchBy('#ecl', $('#search-select-ecl').val(), eclCollection);
+            searchBy('#ecls', $('#search-select-ecls').val(), eclsCollection);
+
+
+        });
+        $('#optionm-to-right').click(function () {
+            passOptionsFromSelect('#month', '#months', monthCollection, monthsCollection);
+            sortOptionCollection(monthCollection);
+
+        });
+
+        $('#option-to-left').click(function () {
+            passOptionsFromSelect('#ecls', '#ecl', eclsCollection, eclCollection);
+            sortOptionCollection(eclsCollection);
+            searchBy('#ecl', $('#search-select-ecl').val(), eclCollection);
+            searchBy('#ecls', $('#search-select-ecls').val(), eclsCollection);
+
+
+        });
+        $('#optionm-to-left').click(function () {
+            passOptionsFromSelect('#months', '#month', monthsCollection, monthCollection);
+            sortOptionCollection(monthsCollection);
+
+        });
+        $('#search-select-ecl').keyup(function () {
+            sortOptionCollection(eclCollection);
+            searchBy('#ecl', this.value, eclCollection);
+
+
+        });
+
+        $('#search-select-ecls').keyup(function () {
+            sortOptionCollection(eclsCollection);
+            searchBy('#ecls', this.value, eclsCollection);
+
+        });
+        /**
+        Esta funcion se encarga de pasar os elemntos seleccionados, de un select para otro
+        */
+        function passOptionsFromSelect(idSelectFrom, idSelectTo, collectionFrom, collectionTo) {
+            var indexI = 0;
+            $(idSelectFrom + " option:selected").each(function (i, e) {
+                if ($(idSelectTo + ' option').length > 0) {
+
+                    $(idSelectTo + ' option').each(function (j, e1) {
+
+                        if ($(e1).attr('value') > $(e).attr('value')) {
+
+                            $(e).insertBefore(e1);
+                            if (collectionFrom && collectionTo) {
+                                collectionTo.splice(j, 0, e);
+
+                            }
+                            return false;
+
+                        } else if ($(idSelectTo + ' option').length == (j + 1)) {
+                            $(idSelectTo).append(e);
+                            if (collectionFrom && collectionTo) {
+                                collectionTo.push(e);
+
+                            }
+
+                        }
+
+                    });
+                } else {
+                    $(idSelectTo).append(e);
+                    if (collectionFrom && collectionTo) {
+                        collectionTo.push(e);
+
+                    }
+
+                }
+                var k = collectionFrom.indexOf(e);
+                collectionFrom.splice(k, 1);
+
+            });
+        }
+        /**
+        Esta funcion llena los arreglos que son los que van a tener las colecciones de options de los selects
+        */
+        function llenarArryWhitOptiosn(idSelect, collection) {
+            $(idSelect + ' option').each(function (i, e) {
+                collection.push(e);
+            });
+        }
+        /**
+        Esta funcion se encarga de buscar los elemento en la collection que coinciden con los parametros de busqueda
+        */
+        function searchBy(idSelect, name, collection) {
+
+            $(idSelect).find('option').remove().end();
+            collection.forEach(function (e, i) {
+                if (name != "") {
+                    if ($(e).text().toLowerCase().indexOf(name.toLowerCase()) > -1) {
+                        $(idSelect).append(e);
+                    }
+                } else {
+                    $(idSelect).append(e);
+                }
+
+            });
+        }
+        /**
+        ordena la collecion de options de menor a mayor por sus valores
+        */
+        function sortOptionCollection(collection) {
+            collection.sort(function (e1, e2) {
+                if ($(e1).val() < $(e2).val()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+
+            });
+        }
+
+        /*
+        Activa o desactiva los botones de establecimiento, ciiu y linea de producto.
+        Llena el select en corresponencia de la opcion marcada
+        */
+        function ActivateBtn(elem) {
+            // //container
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/Reporte/GetCiiuReporteGeneralEncuestaEstadistica/",
+                data: { "type": elem.val() },
+                success: function (data) {
+                    $(".btn-select").removeClass("btn-primary");
+                    elem.addClass("btn-primary");
+                    $("#container").html(data);
+                    eclCollection = [];
+                    eclsCollection = [];
+                    $("#ecls").html("");
+                    llenarArryWhitOptiosn('#ecl', eclCollection);
+                    llenarArryWhitOptiosn('#ecls', eclsCollection);
+                    btnselected = elem.val();
+                    $('#InputTypes').val(btnselected);
+                    if (elem.val() == "Establecimiento") {
+                        $("#NT").show();
+
+                    } else {
+                        $("#NT").hide();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
+
+    });
+
+</script>
+

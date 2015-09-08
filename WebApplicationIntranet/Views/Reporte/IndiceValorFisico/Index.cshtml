@@ -1,0 +1,78 @@
+﻿@model Entity.Reportes.IndiceValorFisicoProducido
+@{
+    var isReport = Request.Params["report"];
+    var styleNormal = string.IsNullOrEmpty(isReport) ? "" : "display: none;";
+    ViewBag.Title = "Índice de Valor Físico";
+    var meses = new[] { "Todos", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/Content/css")
+<h3 class="screen-title">&Iacute;ndice de Valor F&iacute;sico</h3>
+@using (Html.BeginForm("BuscarIndiceValorFisico", "Reporte", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4" style="z-index:3;">
+                    <div class="input-group">
+                        <span class="input-group-addon">&nbsp;Año</span>
+                        <select id="select-ano" name="Year" class="form-control">
+                            @for (int i = 2012; i <= DateTime.Now.Year; i++)
+                            {
+                                var selected = (Model.Year == i) || (Model.Year == null && i == DateTime.Now.Year) ? "selected" : "";
+
+                            <option @selected value="@i">@i.ToString()</option>
+
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">Mes</span>
+                        <select id="select-mes" name="Month" class="form-control">
+                            @for (int i = 0; i < meses.Length; i++)
+                            {
+                                var selected = (Model.Month == i) || (Model.Month == null && i == 0) ? "selected" : "";
+                            <option @selected value="@(i)">@meses[i]</option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+                <div class="row margin-top-4">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">CIIU</span>
+                            <div id="drop-ciiu">
+                                @{Html.RenderAction("GetDorpDown", "CIIU", new { id = (Model != null && Model.IdCiiu != null) ? Model.IdCiiu : 0, nombre = "IdCiiu", @default = "Todos" });}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-4 margin-top-5 pull-right" style="@styleNormal">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                    <a target="_blank" class="btn btn-default  btns-group" href="/Reporte/ExportIndiceValorFisicoToExcel">Excel</a>
+                    <a target="_blank" class="btn btn-default  btns-group" href="/Reporte/Export?url=@Url.Action("IndiceValorFisico", null, null, Request.Url.Scheme)&vertical=true">PDF</a>
+                    <a target="_blank" href="/Reporte/GraphicIndiceValorFisico" class="btn btn-default  btns-group">Gráfico</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+<div id="table-container" class="margin-bottom-10">
+    @Html.Partial("IndiceValorFisico/_Table", Model)
+</div>
+<script>
+    $(document).ready(function () {
+        $.search($('#select-ano'));
+        $.search($('#select-mes'));
+    });
+
+</script>

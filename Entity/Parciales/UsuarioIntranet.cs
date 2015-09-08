@@ -12,6 +12,7 @@ namespace Entity
        public string CodigoDistrito { get; set; }
        public string CodigoProvincia { get; set; }
        public string DNI { get; set; }
+       public string Telefono { get; set; }
        public int IdRol { get; set; }
 
        public string Ubigeo

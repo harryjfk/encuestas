@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entity.EstablecimientoAnalista>
+﻿@model IEnumerable<Entity.UsuarioIntranet>
 @{
     ViewBag.Title = "Analistas Asignados";
 }
@@ -14,17 +14,17 @@
         {
             <div class="info-child-screen-details">
                 <div>
-                    <span class="bold">CIIU: </span> <span>@est.CAT_CIIU.ToString()</span>
+                    <span class="bold">CIIU: </span> <span>@est.CAT_ESTAB_ANALISTA.First().CAT_CIIU.ToString()</span>
                 </div>
                 <div>
-                    <span class="bold">Nombre: </span> <span>@est.SEG_USUARIO.Nombres</span>
+                    <span class="bold">Nombre: </span> <span>@est.Nombres</span>
                 </div>
                 <div>
-                    <span class="bold">Apellidos: </span> <span>@est.SEG_USUARIO.Apellidos</span>
+                    <span class="bold">Apellidos: </span> <span>@est.Apellidos</span>
                 </div>
                 <div>
-                    <span class="bold">Nombre de Usuario: </span> <span>@est.SEG_USUARIO.Login</span>
-                </div>
+                    <span class="bold">Teléfono: </span> <span>@est.Telefono</span>
+                </div>                
             </div>
         <br/>
         }
