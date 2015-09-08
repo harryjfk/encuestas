@@ -185,6 +185,8 @@
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
     <Compile Include="Reportes\GraphicModel.cs" />
+    <Compile Include="Reportes\IndiceValorFisicoProducido.cs" />
+    <Compile Include="Reportes\IndiceValorFisicoProducidoItem.cs" />
     <Compile Include="Reportes\PorcentajeEncuestaEstadistica.cs" />
     <Compile Include="Reportes\PorcentajeEncuestaEstadisticaFilter.cs" />
     <Compile Include="Reportes\PorcentajeEncuestaEstadisticaItem.cs" />

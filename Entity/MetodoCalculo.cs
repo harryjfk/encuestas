@@ -22,6 +22,7 @@ namespace Entity
         public long Id { get; set; }
         public string nombre { get; set; }
         public decimal estado { get; set; }
+        public decimal registro_obligatorio { get; set; }
     
         public virtual ICollection<Ciiu> CAT_CIIU { get; set; }
     }
