@@ -65,23 +65,23 @@
                         <input type="radio" name="Output" value="VPMT" />
                         <span>Volumen de Producci&oacute;n con Materia de terceros</span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lp">
                         <input type="radio" name="Output" value="VAPMP" />
                         <span>Valor de Producci&oacute;n con Materia Prima</span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lp">
                         <input type="radio" name="Output" value="VAPMT" />
                         <span>Valor de Producci&oacute;n con Materia de terceros</span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lp">
                         <input type="radio" name="Output" value="VVP" />
                         <span>Valor de Ventas en el pa&iacute;s</span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lp">
                         <input type="radio" name="Output" value="VVE" />
                         <span>Valor de Ventas en el extranjero</span>
                     </div>
-                    <div id="NT" class="col-md-12">
+                    <div id="NT" class="col-md-12 lp">
                         <input type="radio" name="Output" value="NT" />
                         <span>N&uacute;mero de Trabajadores</span>
                     </div>
@@ -397,6 +397,12 @@
 
                     } else {
                         $("#NT").hide();
+                    }
+                    if (elem.val() == "LineaProducto") {
+                        $(".lp").show();
+
+                    } else {
+                        $(".lp").hide();
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
