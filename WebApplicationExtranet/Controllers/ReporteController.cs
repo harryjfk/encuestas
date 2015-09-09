@@ -110,7 +110,7 @@ namespace WebApplication.Controllers
                         ExportGeneralEncuestaEstadistica.InputTypes, ExportGeneralEncuestaEstadistica.Year,
                         ExportGeneralEncuestaEstadistica.Month, ExportGeneralEncuestaEstadistica.Values,
                         ExportGeneralEncuestaEstadistica.Establecimiento);
-                return ExportExcel(ExportGeneralEncuestaEstadistica.VolumenProduccionMateriaTerceros.ToList(), "Detalles", "Volumen de produccion");
+                return ExportExcel(ExportGeneralEncuestaEstadistica.VolumenProduccionMateriaTerceros.Convert(), "Detalles", "Volumen de produccion");
             }
             if (ExportGeneralEncuestaEstadistica.Output.ToUpper() == "VAPMP" || ExportGeneralEncuestaEstadistica.Output.ToUpper() == "VAPMT")
             {
@@ -119,7 +119,8 @@ namespace WebApplication.Controllers
                         ExportGeneralEncuestaEstadistica.InputTypes, ExportGeneralEncuestaEstadistica.Year,
                         ExportGeneralEncuestaEstadistica.Month, ExportGeneralEncuestaEstadistica.Values,
                         ExportGeneralEncuestaEstadistica.Establecimiento);
-                return ExportExcel(ExportGeneralEncuestaEstadistica.ValorProduccion.ToList(), "Detalles", "Valor de produccion");
+                return ExportExcel(ExportGeneralEncuestaEstadistica.ValorProduccion
+                    .Convert(ExportGeneralEncuestaEstadistica.Output.ToUpper() == "VAPMP"), "Detalles", "Valor de produccion");
             }
             if (ExportGeneralEncuestaEstadistica.Output.ToUpper() == "VVP" || ExportGeneralEncuestaEstadistica.Output.ToUpper() == "VVE")
             {
@@ -128,7 +129,8 @@ namespace WebApplication.Controllers
                         ExportGeneralEncuestaEstadistica.InputTypes, ExportGeneralEncuestaEstadistica.Year,
                         ExportGeneralEncuestaEstadistica.Month, ExportGeneralEncuestaEstadistica.Values,
                         ExportGeneralEncuestaEstadistica.Establecimiento);
-                return ExportExcel(ExportGeneralEncuestaEstadistica.VentasPaisExtranjeros.ToList(), "Detalles", "Ventas en el pais y en el extranjero");
+                return ExportExcel(ExportGeneralEncuestaEstadistica.VentasPaisExtranjeros
+                    .Convert(ExportGeneralEncuestaEstadistica.Output.ToUpper() == "VVP"), "Detalles", "Ventas en el pais y en el extranjero");
             }
             if (ExportGeneralEncuestaEstadistica.Output.ToUpper() == "NT")
             {
@@ -136,7 +138,7 @@ namespace WebApplication.Controllers
                     Manager.EncuestaEstadistica.GetTrabajadoresDiasTrabajadoses(
                         ExportGeneralEncuestaEstadistica.Year,
                         ExportGeneralEncuestaEstadistica.Month, ExportGeneralEncuestaEstadistica.Values);
-                return ExportExcel(ExportGeneralEncuestaEstadistica.TrabajadoresDiasTrabajadoses.ToList(), "Detalles", "Trabajadores y dias trabajados");
+                return ExportExcel(ExportGeneralEncuestaEstadistica.TrabajadoresDiasTrabajadoses.Convert(), "Detalles", "Trabajadores y dias trabajados");
             }
 
             return HttpNotFound("Error en los datos");

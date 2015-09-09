@@ -878,6 +878,74 @@ namespace Domain.Managers
             //}
             return result;
         }
+        public List<IndiceValorFisicoProducidoItem> CalculateIVF2(long idCiiu, DateTime from, DateTime to)
+        {
+            var result = new List<IndiceValorFisicoProducidoItem>();
+            var ciiu = Manager.Ciiu.Find(idCiiu);
+            if (ciiu == null) return new List<IndiceValorFisicoProducidoItem>();
+            //for (var i = from; i <= to; i = i.AddMonths(1))
+            //{
+            var encuestas = Manager.EncuestaEstadistica.Get(t => t.EstadoEncuesta == EstadoEncuesta.Validada
+                                                            && t.Fecha <= to && t.Fecha >= from &&
+                                                             t.VolumenProduccionMensual.MateriasPropia.Any(
+                                                                 h => h.LineaProducto.IdCiiu == idCiiu));
+
+            var establecimientos = encuestas.GroupBy(t => t.Establecimiento.Id);
+            foreach (var establecimiento in establecimientos)
+            {
+                var est = Manager.Establecimiento.Find(establecimiento.Key);
+                var total = Manager.EncuestaEstadistica.Get(t => t.EstadoEncuesta == EstadoEncuesta.Validada
+                                                             && t.Fecha <= to && t.Fecha >= from
+                                                             && t.IdEstablecimiento == establecimiento.Key).Count();
+                var parte = establecimiento.Count();
+                var it = new IndiceValorFisicoProducidoItem()
+                {
+                    IdCiiu = idCiiu,
+                    Establecimiento = est.Nombre,
+                    IdEstablecimiento = establecimiento.Key,
+                    Ciiu = ciiu.ToString(),
+                    Ponderacion = parte * 100.0 / total
+                };
+
+                for (var i = from; i <= to; i = i.AddMonths(1))
+                {
+                    foreach (var item2 in establecimiento.Where(t => t.Fecha.Month == i.Month && t.Fecha.Year == i.Year))
+                    {
+                        var ciius = item2.VolumenProduccionMensual.MateriasPropia.GroupBy(t => t.LineaProducto.IdCiiu);
+                        foreach (var materiaPropia in ciius)
+                        {
+
+                            var num = 0d;
+                            var den = 0d;
+                            foreach (var propia in materiaPropia)
+                            {
+                                var aBase =
+                                    Manager.AñoBaseManager.Get(
+                                        t =>
+                                            t.id_ciiu == materiaPropia.Key && t.id_establecimiento == establecimiento.Key &&
+                                            t.id_linea_producto == propia.IdLineaProducto).FirstOrDefault();
+
+                                if (aBase == null) continue;
+                                num += (double)(aBase.precio * propia.Produccion.GetValueOrDefault() * propia.ValorUnitario.GetValueOrDefault());
+                                den += (double)(aBase.precio * aBase.valor_produccion);
+                            }
+                            var ivf = 0d;
+                            if (den > 0)
+                                ivf = num / den;
+                            it.Values.Add(new IndiceValorFisicoProducidoValue()
+                            {
+                                Value = ivf,
+                                Header = i.Month.GetMonthText().ToUpper().Substring(0, 3),
+                                Index = i.Month
+                            });
+                        }
+                    }
+                }
+                result.Add(it);
+            }
+            //}
+            return result;
+        }
 
         public List<MateriaPropia> GetVolumenProduccionMateriaPropia(string type, int year, IEnumerable<int> month,
             IEnumerable<long> ids, IEnumerable<long> idEstablecimientos = null)
