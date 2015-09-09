@@ -47,23 +47,31 @@
         </div>
         <div>
             <span class="bold">Analistas: </span>
-            @if (Model.CAT_ESTAB_ANALISTA.Any())
-            {
-                foreach (var estAn in Model.CAT_ESTAB_ANALISTA)
+            <table class="table table-striped table-hover table-bordered table-condensed tabla small">
+                <thead>
+                    <tr class="cabecera">
+                        <th>Nombre</th>
+                        <th>CIIU</th>
+                    </tr>
+                </thead>
+                @if (Model.CAT_ESTAB_ANALISTA.Any())
                 {
-                    <div>
-                        <span class="bold">Nombre: </span> <span>@estAn.SEG_USUARIO.Login</span>
-                    </div>
-                    <div>
-                        <span class="bold">CIIU: </span> <span>@estAn.CAT_CIIU.ToString()</span>
-                    </div>
-                <br/>
+                    foreach (var estAn in Model.CAT_ESTAB_ANALISTA)
+                    {
+                        <tr>
+
+                            <td>@estAn.SEG_USUARIO.Login</td>
+
+                            <td>@estAn.CAT_CIIU.ToString()</td>
+
+                        </tr>
+                    }
                 }
-            }
-            else
-            {
-                <span>Sin Asignar</span>
-            }
+                else
+                {
+                    <span>Sin Asignar</span>
+                }
+            </table>
         </div>
         <div>
             <span class="bold">Informante: </span>
@@ -134,3 +142,4 @@
 
     </div>
 </div>
+<br /><br />
