@@ -1,0 +1,68 @@
+﻿@using System.Globalization
+@using Domain
+@using Entity
+@using WebApplication.Models
+@model IEnumerable<MateriaTerceros>
+
+@{
+
+}
+<table class="table table-striped table-hover table-bordered table-condensed tabla small">
+    <thead>
+        <tr class="cabecera">
+            <th>Cod. Establecimiento</th>
+            <th>Razon Social</th>
+            <th>Mes</th>
+            <th>CIIU</th>
+            <th>Cod. Producto</th>
+            <th>
+                Descripci&oacute;n
+            </th>
+            <th style="width: 100px;">
+                um
+            </th>
+            <th>
+                Producci&oacute;n
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            //Html.RenderPartial("_ProductoMateriaPrimaPropia", item);
+            <tr>
+                <td>
+                    @item.VolumenProduccion.Encuesta.Establecimiento.IdentificadorInterno
+                </td>
+                <td>
+                    @item.VolumenProduccion.Encuesta.Establecimiento.RazonSocial
+                </td>
+                <td>
+                    @item.VolumenProduccion.Encuesta.Fecha.Month.GetMonthText()
+                </td>
+                <td>
+                    @item.LineaProducto.Ciiu.Codigo
+                </td>
+                <td>
+                    @item.LineaProducto.Codigo
+                </td>
+                <td>
+                    <span>@item.LineaProducto.Nombre</span>
+                </td>
+                <td>
+                    @item.UnidadMedida.Abreviatura
+                </td>
+                <td>
+                    @Html.LabelFor(modelItem => item.UnidadProduccion, String.Format("{0:0.000}", decimal.Parse(item.UnidadProduccion)))
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (!Model.Any())
+{
+    <div class="no-elements-notification">
+        No hay elementos para mostrar
+    </div>
+}

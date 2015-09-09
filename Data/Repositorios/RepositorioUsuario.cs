@@ -11,7 +11,7 @@ using Data.Contratos;
 using Data.DataAccess;
 using Entity;
 using PagedList;
-
+//esto es una prueba 
 namespace Data.Repositorios
 {
     public class RepositorioUsuario : IRepositorioUsuario
@@ -50,6 +50,16 @@ namespace Data.Repositorios
             }
         }
 
+        public IPagedList<UsuarioIntranet> GetUsuariosIntranetAnalista(Paginacion paginacion = null, Func<UsuarioIntranet, bool> filter = null)
+        {
+            return GetUsuariosIntranet(paginacion, filter);
+        }
+
+        public IPagedList<UsuarioIntranet> GetUsuariosIntranetAdministrador(Paginacion paginacion = null, Func<UsuarioIntranet, bool> filter = null)
+        {
+            return GetUsuariosIntranet(paginacion, filter);
+        }
+
         public UsuarioIntranet FindUsuarioIntranet(int codigo)
         {
             try
@@ -78,6 +88,16 @@ namespace Data.Repositorios
             {
                 return null;
             }
+        }
+
+        public UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UsuarioIntranet GetUsuarioIntranetById(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public IPagedList<UsuarioExtranet> GetUsuariosExtranet(Paginacion paginacion = null, Func<UsuarioExtranet, bool> filter = null)

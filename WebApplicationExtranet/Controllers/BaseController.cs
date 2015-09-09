@@ -213,7 +213,7 @@ namespace WebApplication.Controllers
 
             return File(path, "application/pdf");
         }
-        public virtual FileResult ExportExcel<TK>(IList<TK> source, string nombreHoja, string nombreReporte)
+        public virtual FileResult ExportExcel<TK>(List<TK> source, string nombreHoja, string nombreReporte)
         {
             var downloads = ConfigurationManager.AppSettings["Downloads"];
             var name = Guid.NewGuid().ToString() + ".xlsx";

@@ -2,7 +2,7 @@
 @using NPOI.SS.Formula.Functions
 @model WebApplication.Models.ExportGeneralEncuestaEstadistica
 @{
-   
+
 }
 
 <div class="panel panel-primary">
@@ -16,10 +16,11 @@
             </div>
             <div class="col-md-4">
                 <div>
-                    <span>Meses: 
+                    <span>
+                        Meses:
                         @foreach (var item in Model.Month)
                         {
-                            <span class="label label-primary">@item.GetMonthText()</span>
+                    <span class="label label-primary">@item.GetMonthText()</span>
                         }
                     </span>
                 </div>
@@ -29,18 +30,47 @@
                     <span>Variables: <span>@Model.Output.GetVariableNames()</span></span>
                 </div>
             </div>
-             <div class="col-md-4">
-                 <div>
-                     <span>Ámbito de Análisis: <span>@Model.InputTypes.GetAmbito()</span></span>
-                 </div>
-                 <div>
-                     @foreach (var item in Model.ScopeElements)
-                     {
-                         <div class="label label-primary">@item</div>
-                     }
-                 </div>
+            <div class="col-md-4">
+                <div>
+                    <span>Ámbito de Análisis: <span>@Model.InputTypes.GetAmbito()</span></span>
+                </div>
+                @*<div>
+                        @foreach (var item in Model.ScopeElements)
+                        {
+                            <div class="label label-primary">@item</div>
+                        }
+                    </div>*@
             </div>
         </div>
     </div>
 </div>
 
+
+@if (Model.Output == "VPMP")
+{
+    @Html.Partial("GeneralEncuestasEstadisticas/_VolumenProduccionMateriaPrimaPropia", Model.VolumenProduccionMateriaPropia)
+}
+@if (Model.Output == "VPMT")
+{
+    @Html.Partial("GeneralEncuestasEstadisticas/_VolumenProduccionMateriaPrimaTerceros", Model.VolumenProduccionMateriaTerceros)
+}
+@if (Model.Output == "VAPMP")
+{
+    @Html.Partial("GeneralEncuestasEstadisticas/_ValorProduccionMateriaPrimaPropia", Model.ValorProduccion)
+}
+@if (Model.Output == "VAPMT")
+{
+    @Html.Partial("GeneralEncuestasEstadisticas/_ValorProduccionMateriaPrimaTerceros", Model.ValorProduccion)
+}
+@if (Model.Output == "VVP")
+{
+    @Html.Partial("GeneralEncuestasEstadisticas/_ValorVentasPais", Model.VentasPaisExtranjeros)
+}
+@if (Model.Output == "VVE")
+{
+    @Html.Partial("GeneralEncuestasEstadisticas/_ValorVentasExtranjero", Model.VentasPaisExtranjeros)
+}
+@if (Model.Output == "NT")
+{
+    @Html.Partial("GeneralEncuestasEstadisticas/_TrabajadoresDiasTrabajados", Model.TrabajadoresDiasTrabajadoses)
+}

@@ -4,15 +4,21 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/Content/css")
 <h3 class="screen-title">Reporte General de Encuestas Estad&iacute;sticas</h3>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
 @using (Html.BeginForm())
 {
     <input type="hidden" name="InputTypes" id="InputTypes" />
-    <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
-        <strong>Alertas</strong>
-        <div>
-            <ul></ul>
-        </div>
-    </div>
+  
     <div class="panel panel-primary">
         <div class="panel-heading">1.Seleccione el &Aacute;mbito de An&aacute;lisis</div>
         <div class="panel-body">
@@ -81,7 +87,7 @@
                         <input type="radio" name="Output" value="VVE" />
                         <span>Valor de Ventas en el extranjero</span>
                     </div>
-                    <div id="NT" class="col-md-12 lp">
+                    <div id="NT" class="col-md-12">
                         <input type="radio" name="Output" value="NT" />
                         <span>N&uacute;mero de Trabajadores</span>
                     </div>
@@ -140,7 +146,7 @@
                 </div>
 
             </div>
-            <div class="row">
+            <div class="row margin-top-5">
                 <div class="col-md-2">
                     <input type="submit" class="btn-xs btn-primary" value="PDF" name="action:PDF" />
                     <input type="submit" class="btn-xs btn-primary" value="Excel" name="action:Excel" />
@@ -398,7 +404,7 @@
                     } else {
                         $("#NT").hide();
                     }
-                    if (elem.val() == "LineaProducto") {
+                    if (elem.val() != "LineaProducto") {
                         $(".lp").show();
 
                     } else {

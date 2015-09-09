@@ -10,6 +10,7 @@ using Data;
 using Data.Repositorios;
 using Entity;
 using Entity.Reportes;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using PagedList;
 
 namespace Domain.Managers
@@ -878,7 +879,119 @@ namespace Domain.Managers
             return result;
         }
 
+        public List<MateriaPropia> GetVolumenProduccionMateriaPropia(string type, int year, IEnumerable<int> month,
+            IEnumerable<long> ids, IEnumerable<long> idEstablecimientos = null)
+        {
+            switch (type.ToLower())
+            {
+                case "establecimiento":
+                    var materias = Manager.EncuestaEstadistica.Get(t => ids.Contains(t.IdEstablecimiento)
+                                                                         && t.Fecha.Year == year &&
+                                                                         month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.VolumenProduccionMensual.MateriasPropia);
+                    return materias.ToList();
+                case "ciiu":
+                    var materias2 = Manager.EncuestaEstadistica.Get(
+                        t => idEstablecimientos.Contains(t.IdEstablecimiento)
+                             && t.Fecha.Year == year &&
+                             month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.VolumenProduccionMensual.MateriasPropia).Where(t => ids.Contains(t.LineaProducto.IdCiiu));
+                    return materias2.ToList();
+                case "lineaproducto":
+                    var materias3 = Manager.EncuestaEstadistica.Get(
+                        t => idEstablecimientos.Contains(t.IdEstablecimiento)
+                             && t.Fecha.Year == year &&
+                             month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.VolumenProduccionMensual.MateriasPropia).Where(h => ids.Contains(h.IdLineaProducto));
+                    return materias3.ToList();
 
+            }
+            return new List<MateriaPropia>();
+        }
+        public List<MateriaTerceros> GetVolumenProduccionMateriaTerceros(string type, int year, IEnumerable<int> month,
+            IEnumerable<long> ids, IEnumerable<long> idEstablecimientos = null)
+        {
+            switch (type.ToLower())
+            {
+                case "establecimiento":
+                    var materias = Manager.EncuestaEstadistica.Get(t => ids.Contains(t.IdEstablecimiento)
+                                                                         && t.Fecha.Year == year &&
+                                                                         month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.VolumenProduccionMensual.MateriasTercero);
+                    return materias.ToList();
+                case "ciiu":
+                    var materias2 = Manager.EncuestaEstadistica.Get(
+                        t => idEstablecimientos.Contains(t.IdEstablecimiento)
+                             && t.Fecha.Year == year &&
+                             month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.VolumenProduccionMensual.MateriasTercero).Where(t => ids.Contains(t.LineaProducto.IdCiiu));
+                    return materias2.ToList();
+                case "lineaproducto":
+                    var materias3 = Manager.EncuestaEstadistica.Get(
+                        t => idEstablecimientos.Contains(t.IdEstablecimiento)
+                             && t.Fecha.Year == year &&
+                             month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.VolumenProduccionMensual.MateriasTercero).Where(h => ids.Contains(h.IdLineaProducto));
+                    return materias3.ToList();
+
+            }
+            return new List<MateriaTerceros>();
+        }
+
+
+        public List<ValorProduccion> GetValorProduccion(string type, int year, IEnumerable<int> month,
+            IEnumerable<long> ids, IEnumerable<long> idEstablecimientos = null)
+        {
+            switch (type.ToLower())
+            {
+                case "establecimiento":
+                    var materias = Manager.EncuestaEstadistica.Get(t => ids.Contains(t.IdEstablecimiento)
+                                                                         && t.Fecha.Year == year &&
+                                                                         month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.CAT_VALOR_PROD_MENSUAL);
+                    return materias.ToList();
+                case "ciiu":
+                    var materias2 = Manager.EncuestaEstadistica.Get(
+                        t => idEstablecimientos.Contains(t.IdEstablecimiento)
+                             && t.Fecha.Year == year &&
+                             month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.CAT_VALOR_PROD_MENSUAL).Where(t => ids.Contains(t.id_ciiu));
+                    return materias2.ToList();
+
+            }
+            return new List<ValorProduccion>();
+        }
+
+        public List<VentasPaisExtranjero> GetValorVentas(string type, int year, IEnumerable<int> month,
+           IEnumerable<long> ids, IEnumerable<long> idEstablecimientos = null)
+        {
+            switch (type.ToLower())
+            {
+                case "establecimiento":
+                    var materias = Manager.EncuestaEstadistica.Get(t => ids.Contains(t.IdEstablecimiento)
+                                                                         && t.Fecha.Year == year &&
+                                                                         month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.VentasProductosEstablecimiento.CAT_VENTAS_PAIS_EXTRANJERO);
+                    return materias.ToList();
+                case "ciiu":
+                    var materias2 = Manager.EncuestaEstadistica.Get(
+                        t => idEstablecimientos.Contains(t.IdEstablecimiento)
+                             && t.Fecha.Year == year &&
+                             month.Contains(t.Fecha.Month))
+                        .SelectMany(t => t.VentasProductosEstablecimiento.CAT_VENTAS_PAIS_EXTRANJERO).Where(t => ids.Contains(t.id_ciiu));
+                    return materias2.ToList();
+
+            }
+            return new List<VentasPaisExtranjero>();
+        }
+
+        public List<TrabajadoresDiasTrabajados> GetTrabajadoresDiasTrabajadoses(int year, IEnumerable<int> month,
+            IEnumerable<long> ids)
+        {
+            var result = Manager.EncuestaEstadistica.Get(t => ids.Contains(t.IdEstablecimiento)
+                && t.Fecha.Year == year && month.Contains(t.Fecha.Month)).Select(t=>t.TrabajadoresDiasTrabajados);
+            return result.ToList();
+        }
         #endregion
     }
 }

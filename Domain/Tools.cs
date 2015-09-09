@@ -20,6 +20,27 @@ namespace Domain
 {
     public static class Tools
     {
+
+        public static List<object> Convert(this IEnumerable<MateriaPropia> list)
+        {
+            return new List<object>();
+            //return list.Select(t => new
+            //{
+            //    Cod_Establecimiento=t.VolumenProduccion.Encuesta.Establecimiento.IdentificadorInterno,
+            //    Razon_Social = t.VolumenProduccion.Encuesta.Establecimiento.RazonSocial,
+            //    Mes=t.VolumenProduccion.Encuesta.Fecha.Month.GetMonthText(),
+            //    CIIU=t.LineaProducto.Ciiu.Codigo,
+            //    Cod_Producto=t.LineaProducto.Codigo,
+            //    Descripcion=t.LineaProducto.Nombre,
+            //    UM=t.UnidadMedida.Abreviatura,
+            //    t.Produccion,
+            //    Valor_Unitario=t.ValorUnitario,
+            //    Otros_Ingresos=t.OtrosIngresos,
+            //    Otras_Salidas=t.OtrasSalidas,
+            //    Ventas_extranjero=t.VentasExtranjero,
+            //    Ventas_Pais=t.VentasPais,
+            //}).ToList();
+        }
         public static void UpdateKey<T>(this T element, long value) where T : class
         {
             try
@@ -192,7 +213,7 @@ namespace Domain
             {
                 if (data.Any(t => prop.GetValue(t) != null))
                 {
-                    table.Columns.Add(prop.Name.Replace("_", ""),
+                    table.Columns.Add(prop.Name.Replace("_", " "),
                     Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
                 }
             }
@@ -203,7 +224,7 @@ namespace Domain
                 {
                     if (true)
                     {
-                         row[prop.Name.Replace("_", "")] = prop.GetValue(item) ?? DBNull.Value;
+                         row[prop.Name.Replace("_", " ")] = prop.GetValue(item) ?? DBNull.Value;
                     }
                 }
                 table.Rows.Add(row);
