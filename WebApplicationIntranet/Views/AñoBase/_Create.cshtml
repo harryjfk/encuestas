@@ -50,14 +50,7 @@
             <label for="id_linea_producto" class="col-md-4 control-label"> Linea de Producto</label>
             <div class="col-md-7">
                 <div id="drop-down-linea-producto">
-                    @{Html.RenderAction("GetDorpDownCiiu", "LineaProducto", new
-                    {
-                        id = (Model != null) ? Model.id_linea_producto : 0,
-                        idCiiu = (Model != null) ? Model.id_ciiu : 0,
-                        idEstablecimiento = (Model != null) ? Model.id_establecimiento : 0,
-                        nombre = "id_linea_producto",
-                        @default = "Seleccione elemento"
-                    });}
+                    @{Html.RenderAction("GetDorpDownCiiu", "LineaProducto", new { id = (Model != null) ? Model.id_linea_producto : 0, idCiiu = (Model != null) ? Model.id_ciiu : 0, idEstablecimiento = (Model != null) ? Model.id_establecimiento : 0, nombre = "id_linea_producto", @default = "Seleccione elemento"});}
                 </div>
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
@@ -257,7 +250,7 @@
                 idLine = selectL.val() != null ? selectL.val() : 0;
                 idEstab = selectE.val() != null ? selectE.val() : 0;
 
-                $.getDropDrown("/LineaProducto/GetDorpDownCiiu/", { "id": idLine, "nombre": "id_linea_producto", "idCiuu": idCiiu, "default": "Seleccione elemento", "idEstablecimiento": idEstab, }, "#drop-down-linea-producto", dropDownU, dropDownL);
+                $.getDropDrown("/LineaProducto/GetDorpDownCiiu/", { "id": idLine, "nombre": "id_linea_producto", "idCiiu": idCiiu, "default": "Seleccione elemento", "idEstablecimiento": idEstab, }, "#drop-down-linea-producto", dropDownU, dropDownL);
             }
         };
         dropDownU = function () {
