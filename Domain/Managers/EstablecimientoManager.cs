@@ -52,7 +52,7 @@ namespace Domain.Managers
             var all = Manager.EstablecimientoAnalistaManager.Get(t => t.id_analista == idAnalista).Select(t=>t.id_establecimiento);
             Func<Establecimiento, bool> filter = 
                 t => (query.Filter == null || query.Filter(t)) 
-                    && t.Activado && all.All(h => h != t.Id) && t.Ciius.Count>t.CAT_ESTAB_ANALISTA.Count;
+                    && t.Activado && /*all.All(h => h != t.Id) &&*/ t.Ciius.Count>t.CAT_ESTAB_ANALISTA.Count;
             var temp = Manager.Establecimiento.Get(filter, null, query.Order);
             
             if (query.Paginacion != null)

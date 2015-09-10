@@ -1,36 +1,43 @@
 ﻿@using Entity
 @using PagedList.Mvc
 @model Domain.Query<Entity.Establecimiento>
-@*@using (Html.BeginForm("BuscarEstablecimientosNoAsignados", "UsuarioIntranet", FormMethod.Post,new{id="formSearchEstNoAsig",name="formSearch"}))
-    {
-        <div class="panel panel-primary">
-            <div class="panel-heading">B&Uacute;SQUEDA</div>
+@using (Html.BeginForm("BuscarEstablecimientosNoAsignados", "UsuarioIntranet", FormMethod.Post, new { id = "formSearchEstNoAsig", name = "formSearch" }))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
 
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="input-group">
-                            <span class="input-group-addon">RAZ&Oacute;N SOCIAL</span>
-                            @*<input type="text" class="form-control">*@
-@*@Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">RAZ&Oacute;N SOCIAL</span>
+                        @if (Model.Criteria != null && Model.Criteria.Nombre != null)
+                        {
+                            <input type="text" name="Nombre" class="form-control" value="@Model.Criteria.Nombre" />
+                        }
+                        else
+                        {
+                            <input type="text" name="Nombre" class="form-control"  />
+                        }
+                        @*@Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })*@
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <input type="button" value="Buscar" name="buscarbtn" class="btn btn-default send" />
                 </div>
             </div>
-            <div class="col-md-4">
-                <input type="button" value="Buscar" name="buscarbtn" class="btn btn-default send" />
-            </div>
         </div>
-    </div>*@
 
 
-@*</div>
-    }*@
+    </div>
+}
 <table class="table table-striped table-hover table-bordered table-condensed tabla small">
     <thead>
         <tr class="cabecera">
             <th>RAZ&Oacute;N SOCIAL</th>
             <th>RUC</th>
             <th>CIIU</th>
-           <th style="width: 100px">ORDEN</th>
+            <th style="width: 100px">ORDEN</th>
             <th>ACCI&Oacute;N</th>
     </thead>
 
@@ -41,7 +48,7 @@
                 <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
                 <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
                 <td>@{Html.RenderAction("GetCiiuAsignarAnalista", "Establecimiento", new { nombre = "ciiu_" + item.Id, IdEstablecimiento = item.Id });}</td>
-                <td>@{Html.RenderAction("GetOrden", "Establecimiento", new { nombre = "orden_"+item.Id, IdEstablecimiento = item.Id});}</td>
+                <td>@{Html.RenderAction("GetOrden", "Establecimiento", new { nombre = "orden_" + item.Id, IdEstablecimiento = item.Id });}</td>
                 <td>
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Asignar" id="edit-@item.Id" role="@item.Id" class="asign-btn">
                         <i class="color-black glyphicon glyphicon-ok"></i>
@@ -73,7 +80,7 @@
                 cache: false,
                 type: "GET",
                 url: $.origin() + "/UsuarioIntranet/AsignarEstablecimiento/",
-                data: { "id": id,"idCiiu": idCiiu, "orden":orden},
+                data: { "id": id, "idCiiu": idCiiu, "orden": orden },
                 success: function (data) {
                     if (data.Success) {
                         $("#editItem .modal-body").html(data.NoAsignados);
@@ -101,15 +108,11 @@
             $.ajax({
                 cache: false,
                 type: "POST",
-                url: $.origin() + "/UsuarioIntranet/AsignarEstablecimiento/",
-                data: { "criteria": $("form[name='formSearch']").serialize() },
+                url: $.origin() + "/UsuarioIntranet/BuscarEstablecimientosNoAsignados/",
+                data: $("form[name='formSearch']").serialize(),
                 success: function (data) {
-                    if (data.Success) {
-                        $("#editItem .modal-body").html(data)
-
-                    } else {
-
-                    }
+                        $("#editItem .modal-body").html(data);
+                   
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Failed to retrieve data.');
@@ -137,5 +140,4 @@
         }
     }
 </script>
-
 
