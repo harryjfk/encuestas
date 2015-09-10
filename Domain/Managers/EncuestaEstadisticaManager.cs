@@ -601,10 +601,14 @@ namespace Domain.Managers
             var analistas = encuesta.CAT_ENCUESTA_ANALISTA.OrderBy(t => t.current);
             var tt = analistas.FirstOrDefault(t => t.IsCurrent);
             if (tt == null) return;
-            tt.current = 2;
-            tt.EstadoEncuesta = EstadoEncuesta.Validada;
-            Manager.EncuestaAnalistaManager.Modify(tt);
-            var next = analistas.FirstOrDefault(t => t.orden > tt.orden);
+            var rest = analistas.Where(t => t.id_analista == tt.id_analista);
+            foreach (var encuestaAnalista in rest)
+            {
+                encuestaAnalista.current = 2;
+                encuestaAnalista.EstadoEncuesta = EstadoEncuesta.Validada;
+                Manager.EncuestaAnalistaManager.Modify(encuestaAnalista);
+            }
+            var next = analistas.FirstOrDefault(t => t.orden > tt.orden && t.id_analista != tt.id_analista);
             if (next != null)
             {
                 next.current = 1;
@@ -1057,7 +1061,7 @@ namespace Domain.Managers
             IEnumerable<long> ids)
         {
             var result = Manager.EncuestaEstadistica.Get(t => ids.Contains(t.IdEstablecimiento)
-                && t.Fecha.Year == year && month.Contains(t.Fecha.Month)).Select(t=>t.TrabajadoresDiasTrabajados);
+                && t.Fecha.Year == year && month.Contains(t.Fecha.Month)).Select(t => t.TrabajadoresDiasTrabajados);
             return result.ToList();
         }
         #endregion

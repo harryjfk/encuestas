@@ -63,21 +63,21 @@
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
         @{
-                  var s1 = Model != null && Model.sub_sector == 1 ? "selected" : "";
-                  var s2 = Model != null && Model.sub_sector == 2 ? "selected" : "";
+                  var s1 = Model != null && Model.sub_sector == 2 ? "selected" : "";
+                  var s2 = Model != null && Model.sub_sector == 3 ? "selected" : "";
 
-                  var r1 = Model != null && Model.rubro == 1 ? "selected" : "";
-                  var r2 = Model != null && Model.rubro == 2 ? "selected" : "";
-                  var r3 = Model != null && Model.rubro == 3 ? "selected" : "";
-                  var r4 = Model != null && Model.rubro == 4 ? "selected" : "";
+                  var r1 = Model != null && Model.rubro == 2 ? "selected" : "";
+                  var r2 = Model != null && Model.rubro == 3 ? "selected" : "";
+                  var r3 = Model != null && Model.rubro == 4 ? "selected" : "";
+                  var r4 = Model != null && Model.rubro == 5 ? "selected" : "";
         }
         <div class="form-group">
             <label for="subsector" class="col-md-4 control-label">Sub Sector</label>
             <div class="col-md-7">
                 <select id="select-sub-sector" class="form-control chosen" name="sub_sector">
                     <option value="0">Seleccione uno</option>
-                    <option @s1 value="1">Manufactura primaria</option>
-                    <option @s2 value="2">Manufactura no primaria</option>
+                    <option @s1 value="2">Manufactura primaria</option>
+                    <option @s2 value="3">Manufactura no primaria</option>
                 </select>
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
@@ -87,10 +87,10 @@
             <div class="col-md-7">
                 <select id="select-rubro" class="form-control chosen" name="rubro">
                     <option value="0">Seleccione uno</option>
-                    <option @r1 value="1">Bienes de consumo</option>
-                    <option @r2 value="2">Bienes intermedios</option>
-                    <option @r3 value="3">Bienes de capital</option>
-                    <option @r4 value="4">Servicios</option>
+                    <option @r1 value="2">Bienes de consumo</option>
+                    <option @r2 value="3">Bienes intermedios</option>
+                    <option @r3 value="4">Bienes de capital</option>
+                    <option @r4 value="5">Servicios</option>
                 </select>
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
@@ -181,7 +181,7 @@
     function verifyRubro() {
        
         var value = $("select[name='sub_sector']").val();
-        if (value == 2) {
+        if (value == 3) {
             
             var selectRubro = $("#select-rubro");
 

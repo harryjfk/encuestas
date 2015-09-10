@@ -38,7 +38,7 @@ namespace WebApplication.Controllers
                 case "ciiu":
                     model =
                         establecimientos.SelectMany(t => t.Ciius).Distinct()
-                            .Select(t => new SelectListItem() { Text = t.Nombre, Value = t.Id.ToString() })
+                            .Select(t => new SelectListItem() { Text = t.ToString(), Value = t.Id.ToString() })
                             .ToList();
                     break;
                 case "lineaproducto":

@@ -108,7 +108,14 @@
                             <select class="form-control reset-max-width" id="yearDrop" name="Year">
                                 @for (var i = 2012; i <= DateTime.Now.Year; i++)
                                 {
-                                <option value="@i">@i</option>
+                                    if (i == DateTime.Now.Year)
+                                    {
+                                        <option selected="selected" value="@i">@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
                                 }
                             </select>
 
