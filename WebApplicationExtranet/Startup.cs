@@ -30,7 +30,9 @@ namespace WebApplication
             Bind<IRepositorioProvincia>().To<RepositorioProvincia>();
             Bind<IRepositorioDistrito>().To<RepositorioDistrito>();
             Bind<IRepositorioUbigeo>().To<RepositorioUbigeo>();
-            Bind<IRepositorioUsuario>().To<RepositorioUsuario>();
+            //brb
+            Bind<IRepositorioUsuario>().To<RepositorioUsuarioLocal>();
+            //endbrb
         }
     }
     public static class Tools

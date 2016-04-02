@@ -19,9 +19,17 @@ namespace Entity
            set { registro_obligatorio = value ? 1 : 0; }
        }
 
+       public bool PuedeElimiarse
+       {
+           get
+           {
+               return !RegistroObligatorio && !CAT_CIIU.Any();
+           }
+       }
+
        public override string ToString()
        {
-           return string.Format("{0}", nombre);
+           return nombre;
        }
     }
 }

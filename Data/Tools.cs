@@ -60,9 +60,9 @@ namespace Data
                 var message = new MailMessage(user, to, subject, content) { IsBodyHtml = true };
                 server.Send(message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return;
+                //throw ex;
             }
         }
 
@@ -111,14 +111,14 @@ namespace Data
                     typeof (Ciiu), 
                     new string[]
                     {
-                        "Estado","Activado","Id","id_metodo_calculo","rubro","sub_sector","EnumSubSector","EnumRubro"
+                        "Estado","Activado","Id","id_metodo_calculo","rubro","sub_sector","EnumSubSector","EnumRubro", "EnumRevision", "Revision"
                     }
                 },
                 {
                     typeof (MetodoCalculo), 
                     new string[]
                     {
-                        "Estado","Activado","Id"
+                        "estado", "Activado", "Id", "registro_obligatorio", "RegistroObligatorio", "PuedeElimiarse"
                     }
                 },
                 {
@@ -160,14 +160,14 @@ namespace Data
                     typeof (TipoCambio), 
                     new string[]
                     {
-                        "Estado","fecha","Activado","Id","tipo_cambio_ventas","tipo_cambio_compra","Año"
+                        "Estado","fecha","Activado","Id","tipo_cambio_venta","tipo_cambio_compra","Año"
                     }
                 },
                 {
                     typeof (IpmIpp), 
                     new string[]
                     {
-                        "Estado","fecha","Activado","Id","ipm","ipp","Año"
+                        "estado","fecha","Activado","Id","ipm","ipp","Año"
                     }
                 },
                 {
@@ -195,7 +195,7 @@ namespace Data
                     typeof (Establecimiento), 
                     new string[]
                     {
-                        "enviar_correo","EnviarCorreo","Estado","CiiuText","IsNew","Activado","Id","DesviacionDiasTrabajados","TrabajadoresProduccion","Administrativos"
+                        "enviar_correo","EnviarCorreo","Estado","CiiuText","IsNew","Activado","Id","DesviacionDiasTrabajados","TrabajadoresProduccion","Administrativos", "IdAnalistaFilter"
                     }
                 },
                 {
@@ -216,14 +216,14 @@ namespace Data
                     typeof (UsuarioIntranet), 
                     new string[]
                     {
-                        "Identificador","NombreApellidos","Seleccionado"
+                        "Identificador","NombreApellidos","IsAdministrador", "Ubigeo", "Trabajador", "CodigoDepartamento", "CodigoDistrito", "CodigoProvincia", "Telefono", "Login", "IdRol"
                     }
                 },
                  {
                     typeof (UsuarioExtranet), 
                     new string[]
                     {
-                        "Identificador","NombreApellidos","Seleccionado"
+                        "Identificador","NombreApellidos","Seleccionado", "IdRol", "Ruc"
                     }
                 },
                 {
@@ -237,7 +237,7 @@ namespace Data
                     typeof (Pregunta), 
                     new string[]
                     {
-                        "Estado","Activado","Id"
+                        "estado","Activado","Id", "PreguntasObligatorias"
                     }
                 },
                 {
@@ -251,7 +251,7 @@ namespace Data
                     typeof (EncuestaEstadistica), 
                     new string[]
                     {
-                        "Estado","Activado","Id","IdInformante","IdAnalista","Fecha","IdEstablecimiento","EstadoEncuesta","Year","Mes"
+                        "Estado","Activado","Id","IdInformante","IdAnalista","Fecha","IdEstablecimiento","EstadoEncuesta","Year","Mes","actualizacion"
                     }
                 },
 

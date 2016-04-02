@@ -1,7 +1,7 @@
 ﻿@using Entity
 @model Domain.Query<Entity.AñoBase>
 @{
-    ViewBag.Title = "AñoBase";
+    ViewBag.Title = "Año Base";
     
 }
 @Scripts.Render("~/bundles/jquery")
@@ -20,7 +20,7 @@
 @using (Html.BeginForm("Buscar", "AñoBase", FormMethod.Post))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-heading">B&uacute;squeda</div>
 
         <div class="panel-body">
             <div class="row">
@@ -61,7 +61,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Nuevo AñoBase</h4>
+                <h4 class="modal-title">title</h4>
             </div>
             <div class="modal-body">
             </div>
@@ -74,17 +74,11 @@
 
     $(document).ready(function () {
         $("#add-btn").click(function () { $("#editItem").attr("acction", "new"); });
-        $.CreateItemOpenModal("add-btn", "editItem", "AñoBase","","Nuevo Año Base");
+        $.CreateItemOpenModal("add-btn", "editItem", "AñoBase", "", "Nuevo Año Base");
+
         $("#Criteria_id_establecimiento").on("change", function (e) {
-
             $.getDropDrown("/CIIU/GetDorpDownEstablecimiento/", { "id": "@idCiiu", "nombre": "Criteria.id_ciiu", "default": "Todos", "idEstablecimiento": $("#Criteria_id_establecimiento").val() }, "#drop-ciiu");
-
-
-
         });
-
-
-
     })
 </script>
 

@@ -88,7 +88,7 @@ namespace Domain
             if(plength>length)
                 list.Add(string.Format("El campo \"{0}\" tiene un máximo de {1} caracteres", name, length));
         }
-
+        
         public static void ValidRUC<T, TK>(this List<string> list, T element, Func<T, TK> property, string name)
         {
             var temp = new List<T>() { element };

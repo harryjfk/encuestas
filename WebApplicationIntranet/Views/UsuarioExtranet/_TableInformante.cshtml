@@ -5,10 +5,11 @@
     <thead>
         <tr class="cabecera">
             <th style="width: 20px;"></th>
-            <th> NOMBRES </th>
-            <th> APELLIDOS </th>
-            <th> LOGIN </th>
-            <th> EMAIL </th>
+            <th> Nombres </th>
+            <th> Apellidos </th>
+            <th> Login </th>
+            <th> Ruc </th>
+            <th> Email </th>
             @*<th>ACCI&Oacute;N</th>*@
     </thead>
 
@@ -26,9 +27,10 @@
                         <a href="javascript:void(0);" class="toogleStatus" data-toggle="tooltip" data-placement="top" data-original-title="Adicionar" title="" data-id="@item.Identificador"><i class="glyphicon glyphicon-remove-sign"></i></a>
                     }
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Nombres) &nbsp; @item.Identificador</td>
+                <td>@Html.DisplayFor(modelItem => item.Nombres)</td>
                 <td>@Html.DisplayFor(modelItem => item.Apellidos)</td>
                 <td>@Html.DisplayFor(modelItem => item.Login)</td>
+                <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
                 @*<td>
                     <a href="/UsuarioExtranet/Establecimientos/@item.Identificador" data-toggle="tooltip" data-placement="top" title="" data-original-title="Asignar Establecimientos" id="asign-@item.Identificador" role="@item.Identificador" class="asign-btn">

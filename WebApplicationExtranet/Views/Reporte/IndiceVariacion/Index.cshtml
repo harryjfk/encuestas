@@ -1,0 +1,122 @@
+﻿@using Entity
+@model Entity.Reportes.IndiceVariacion
+@{
+    ViewBag.Title = "Reporte de Indice y Variacion";
+
+    var show2012 = !Model.IsVariacion;
+    var radCheckI = !Model.IsVariacion ? "checked=checked" : "";
+    var radCheckV = Model.IsVariacion ? "checked=checked" : "";
+    var isReport = Request.Params["report"];
+    var styleNormal = string.IsNullOrEmpty(isReport) ? "" : "display: none;";
+
+
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/Content/css")
+<h3 class="screen-title">&Iacute;ndice y Variaci&oacute;n</h3>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("BuscarIndiceVariacion", "Reporte", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 margin-bottom-5" style="z-index: 3;">
+                    <div class="input-group">
+                        <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Año</span>
+                        <select id="select-ano" name="Filter.Year" class="form-control">
+                            @for (int i = 2012; i <= DateTime.Now.Year; i++)
+                            {
+                                var selected = (Model.Year == i) ? "selected" : "";
+                                if (i == 2012)
+                                {
+                                    if (show2012)
+                                    {
+                                        <option id="opt2012" @selected value="@i">@i.ToString()</option>
+                                    }
+                                    else
+                                    {
+                                        <option style="display: none;" id="opt2012" @selected value="@i">@i.ToString()</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option @selected value="@i">@i.ToString()</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="radio" onclick="$('#IsVariacion').val('False'); $('#opt2012').show();" name="radio-filter" @radCheckI value="rdA"/><span>&Iacute;ndice</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="radio" @radCheckV onclick="$('#IsVariacion').val('True'); $('#opt2012').hide(); if ($('#select-ano').val() == 2012) { $('#select-ano').val(2013) }"  name="radio-filter" value="rdM" /><span>Variaci&oacute;n</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                   
+                </div>
+                <input type="hidden" id="IsVariacion" name="Filter.IsVariacionStr" value="@Model.IsVariacion.ToString()" />
+
+            </div>
+
+            <div class="row margin-top-5 pull-right" style="@styleNormal">
+                <div class="col-md-12">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                    <a target="_blank" class="btn btn-default btns-group" href="/Reporte/IndiceVariacionToExcel">Excel</a>
+                    <a target="_blank" class="btn btn-default btns-group" href="/Reporte/Export?url=@Url.Action("IndiceVariacionIndex", null, null, Request.Url.Scheme)&vertical=false">PDF</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>}
+
+<div id="table-container" class="margin-bottom-10">
+    @if (!Model.IsVariacion)
+    {
+        @Html.Partial("IndiceVariacion/_TableIndice", Model)
+    }
+    else
+    {
+        @Html.Partial("IndiceVariacion/_TableIndice", Model)
+    }
+    <br/>
+    <br/>
+</div>
+<div class="col-md-12">
+    @* Graficos ManufacturaPrimaria-ManufacturaNoPrimaria-CiiuInformante *@
+    @Html.Partial("IndiceVariacion/_Graphic1", Model)
+</div>
+<div class="col-md-12">
+    @* Graficos ManufacturaNoPrimaria, subsectores *@
+    @Html.Partial("IndiceVariacion/_Graphic2", Model)
+</div>
+<div class="col-md-12">
+    @* Graficos CIIU del informante *@
+    @Html.Partial("IndiceVariacion/_Graphic3", Model)
+</div>
+@*@Html.Partial("IndiceVariacion/_Graphic", Model)*@
+
+<script>
+    $(document).ready(function () {
+
+
+    });
+</script>

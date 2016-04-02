@@ -9,9 +9,9 @@
     <thead>
         <tr class="cabecera">
             <th style="width: 20px;"></th>
-            <th> NOMBRE </th>
+            <th> Nombre </th>
 
-            <th style="width: 100px;">ACCI&Oacute;N</th>
+            <th style="width: 100px;">Acci&oacute;n</th>
     </thead>
     <tbody>
         @foreach (var item in Model.Elements)
@@ -37,7 +37,7 @@
                     <a href="/MetodoCalculo/Details/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visualizar" id="details-@item.Id">
                         <i class="color-black glyphicon glyphicon-eye-open"></i>
                     </a>
-                    @if (!item.RegistroObligatorio)
+                    @if (item.PuedeElimiarse)
                     {
                         <span>|</span>
                         <a href="/MetodoCalculo/Delete/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" id="delete-@item.Id" role="@item.Id" class="delete-btn">

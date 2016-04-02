@@ -46,16 +46,36 @@ namespace Domain.Managers
         //{
         //    return Repository.Get(filter, paginacion);
         //}
+
+        public virtual List<T> GetByFilter(Func<T, bool> filter = null)
+        {
+            return Repository.GetByFilter(filter);
+        }
+
         public virtual IPagedList<T> Get(Func<T, bool> filter = null, Paginacion paginacion = null, Order<T> order = null)
         {
             return Repository.Get(filter, paginacion, order);
         }
+
+        public virtual IPagedList<T> Get(string include, Func<T, bool> filter = null, Paginacion paginacion = null, Order<T> order = null)
+        {
+            return Repository.Get(include, filter, paginacion, order);
+        }
+
         public virtual IPagedList<T> Get(Query<T>query)
         {
             var list= Repository.Get(query.Filter, query.Paginacion, query.Order);
             query.Elements = list;
             return list;
         }
+
+        public virtual IPagedList<T> Get(string include, Query<T> query)
+        {
+            var list = Repository.Get(include, query.Filter, query.Paginacion, query.Order);
+            query.Elements = list;
+            return list;
+        }
+
         public virtual T Find(params object[] keys)
         {
             var a = typeof(T);
@@ -79,7 +99,7 @@ namespace Domain.Managers
                     var entity = Repository.Add(element);
                     return new OperationResult<T>(entity) { Success = true };
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return new OperationResult<T>(null) { Errors = new List<string>() { "Imposible efectuar la operación." } };
                 }
@@ -122,7 +142,7 @@ namespace Domain.Managers
                     var entity = Repository.Modify(element,false,lis.ToArray());
                     return new OperationResult<T>(entity) { Success = true };
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     return new OperationResult<T>(null) { Errors = new List<string>() { "Imposible efectuar la operación." } };
                 }
@@ -137,7 +157,7 @@ namespace Domain.Managers
                 Repository.Delete(element);
                 return new OperationResult<T>(element) { Success = true };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new OperationResult<T>(null) { Errors = new List<string>() { "Imposible efectuar la operación." } };
             }
@@ -146,8 +166,9 @@ namespace Domain.Managers
         public virtual OperationResult<T> Delete(params object[] keys)
         {
             try
-            {
+            {               
                 var item = Find(keys);
+
                 if (item != null)
                 {
                     return Delete(item);
@@ -155,11 +176,10 @@ namespace Domain.Managers
                 }
                 return new OperationResult<T>(null) { Errors = new List<string>() { "No se pudo encontrar el elemento." } };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new OperationResult<T>(null) { Errors = new List<string>() { "Imposible efectuar la operación." } };
             }
-
         }
         public virtual int SaveChanges()
         {

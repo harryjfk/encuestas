@@ -4,14 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Domain.Managers;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class DepartamentoController : Controller
     {
-        public Manager Manager {
+        public Manager Manager
+        {
             get { return Tools.GetManager(); }
         }
+
         public ActionResult GetDropDown(string id="",string nombre="IdDepartamento",string @default=null)
         {
             var list = Manager.Departamento.Get().OrderBy(t => t.Nombre).Select(t => new SelectListItem()
@@ -29,7 +34,6 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
-
      
         public ActionResult GetNombreDepartamento(string idDepartamento)
         {

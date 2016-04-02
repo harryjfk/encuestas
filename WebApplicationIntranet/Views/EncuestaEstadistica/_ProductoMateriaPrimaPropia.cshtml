@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
 @using Entity
-@
+
 @using WebApplication.Models
 @model MateriaPropia
 
@@ -31,7 +31,7 @@
         <div class="form-group">
             <label for="LineaProducto" class="col-md-4 control-label">Producto</label>
             <div class="col-md-8">
-                @{ Html.RenderAction("GetDorpDown", "LineaProducto", new { id = (Model != null && Model.LineaProductoId != null) ? Model.LineaProductoId : 0 }); }
+                @{ Html.RenderAction("GetDorpDown", "LineaProducto", new { id = (Model != null && Model.LineaProducto.Id != null) ? Model.LineaProducto.Id : 0 }); }
 
                 @Html.ValidationMessageFor(model => model.LineaProducto)
             </div>
@@ -46,16 +46,16 @@
         <div class="form-group">
             <label for="ValorUnitario" class="col-md-4 control-label">Valor Unitario</label>
             <div class="col-md-8">
-                @Html.TextBoxFor(t => t.ValorUnirio, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ValorUnirio)
+                @Html.TextBoxFor(t => t.ValorUnitario, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ValorUnitario)
             </div>
         </div>
 
         <div class="form-group">
             <label for="Existencias" class="col-md-4 control-label">Existencias</label>
             <div class="col-md-8">
-                @Html.TextBoxFor(t => t.Existicia, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Existicia)
+                @Html.TextBoxFor(t => t.Existencia, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Existencia)
             </div>
         </div>
         <div class="form-group">
@@ -82,8 +82,8 @@
         <div class="form-group">
             <label for="VentasExtranjero" class="col-md-4 control-label">Ventas Extranjero</label>
             <div class="col-md-8">
-                @Html.TextBoxFor(t => t.VentasExtrajero, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.VentasExtrajero)
+                @Html.TextBoxFor(t => t.VentasExtranjero, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VentasExtranjero)
             </div>
         </div>
         <div class="form-group">

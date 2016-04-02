@@ -22,8 +22,7 @@ namespace Domain.Managers
             : base(context, manager)
         {
         }
-
-
+        
         public override OperationResult<Establecimiento> Add(Establecimiento element)
         {
             
@@ -31,12 +30,10 @@ namespace Domain.Managers
             return base.Add(element);
         }
 
-        
-
         public void FillIdentificador(Establecimiento element)
         {
             var conf = ConfigurationManager.AppSettings["identificadorInicialEstablecimiento"] ?? "1";
-            var last = Get().OrderBy(t => t.IdentificadorInterno).LastOrDefault();
+            var last = Get().OrderBy(t => Convert.ToInt32(t.IdentificadorInterno)).LastOrDefault();
             long n = 1;
             long.TryParse(conf, out n);
             if (last != null)
@@ -47,12 +44,12 @@ namespace Domain.Managers
             element.IdentificadorInterno = n.ToString().PadLeft(10, '0');
         }
 
-        public IPagedList GetNoAsignadosAnalistas(Query<Establecimiento> query,long idAnalista)
+        public IPagedList GetNoAsignadosAnalistas(Query<Establecimiento> query)
         {
-            var all = Manager.EstablecimientoAnalistaManager.Get(t => t.id_analista == idAnalista).Select(t=>t.id_establecimiento);
             Func<Establecimiento, bool> filter = 
                 t => (query.Filter == null || query.Filter(t)) 
-                    && t.Activado && all.All(h => h != t.Id) && t.Ciius.Count>t.CAT_ESTAB_ANALISTA.Count;
+                    && t.Activado && t.Ciius.Count>t.CAT_ESTAB_ANALISTA.Count;
+
             var temp = Manager.Establecimiento.Get(filter, null, query.Order);
             
             if (query.Paginacion != null)
@@ -65,11 +62,11 @@ namespace Domain.Managers
             {
                 var establecimientos = temp.ToArray();
                 var list = establecimientos.ToPagedList(1, establecimientos.Any() ? establecimientos.Count() : 1);
-               query.Elements = list;
+                query.Elements = list;
                 return list;
             }
-
         }
+
         public IPagedList GetNoAsignadosInformantes(Query<Establecimiento> query)
         {
             var temp = Repository.Get(query.Filter, null, query.Order).Where(t => t.IdInformante == null);
@@ -86,10 +83,7 @@ namespace Domain.Managers
                 query.Elements = list;
                 return list;
             }
-
-        }
-
-       
+        }       
 
         public override OperationResult<Establecimiento> Delete(Establecimiento element)
         {
@@ -144,7 +138,7 @@ namespace Domain.Managers
             var manager = Manager;
             var establecimiento = manager.Establecimiento.Find(idestablecimiento);
             if (establecimiento == null) return;
-            var ciiu = establecimiento.Ciius.Where(query.Filter);
+            var ciiu = establecimiento.Ciius.Select(t => t.Ciiu).Where(query.Filter);
             query.Elements = ciiu.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
         }
 
@@ -155,30 +149,34 @@ namespace Domain.Managers
             var ciiu = manager.Ciiu.Find(idCiiu);
             if (estab != null && ciiu != null)
             {
-                estab.Ciius.Add(ciiu);
+                Manager.CiiuEstablecimientoManager.Add(
+                        new CiiuEstablecimiento
+                        {
+                            IdCiiu = idCiiu,
+                            IdEstablecimiento = idEstablecimiento
+                        });
                 manager.Establecimiento.SaveChanges();
             }
-
         }
-        public void DeleteCiiu(long idCiiu, long idEstablecimiento)
-        {
-            var manager = Manager;
-            var estab = manager.Establecimiento.Find(idEstablecimiento);
-            var ciiu = manager.Ciiu.Find(idCiiu);
-            if (estab != null && ciiu != null)
-            {
-                estab.Ciius.Remove(ciiu);
-                manager.Establecimiento.SaveChanges();
-            }
 
-        }
+        //public void DeleteCiiu(long idCiiu, long idEstablecimiento)
+        //{
+        //    var manager = Manager;
+        //    var estab = manager.Establecimiento.Find(idEstablecimiento);
+        //    var ciiu = manager.Ciiu.Find(idCiiu);
+        //    if (estab != null && ciiu != null)
+        //    {
+        //        Manager.CiiuEstablecimientoManager.Delete(ciiuT.Id);
+        //        manager.Establecimiento.SaveChanges();
+        //    }
+        //}
 
         public void GetCiiuNoAsignados(Query<Ciiu> query, long idEstablecimiento)
         {
             var manager = Manager;
             var establecimiento = manager.Establecimiento.Find(idEstablecimiento);
             if (establecimiento == null) return;
-            var ciiu = manager.Ciiu.Get(query.Filter).Where(t => establecimiento.Ciius.All(h => h.Id != t.Id));
+            var ciiu = manager.Ciiu.Get(query.Filter).Where(t => establecimiento.Ciius.Select(x => x.Ciiu).All(h => h.Id != t.Id));
             query.Elements = ciiu.ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
         }
 
@@ -188,11 +186,12 @@ namespace Domain.Managers
             var establecimiento = manager.Establecimiento.Find(idEstablecimiento);
             if (establecimiento == null) return;
             var asig = establecimiento.Ciius;
-            var all = asig.Union(manager.Ciiu.Get());
+            var ciius = asig.Select(t => t.Ciiu);            
+            var all = ciius.Union(manager.Ciiu.Get(t=>t.Activado));
             var ciiu = all.Where(query.Filter).ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
             foreach (var c in ciiu)
             {
-                if (establecimiento.Ciius.Any(t => t.Id == c.Id))
+                if (ciius.Any(t => t.Id == c.Id))
                     c.Seleccionado = true;
             }
             query.Elements = ciiu;
@@ -204,14 +203,19 @@ namespace Domain.Managers
             var ciiu = Manager.Ciiu.Find(idCiiu);
             if (establecimiento != null && ciiu != null)
             {
-                var ciiuT = establecimiento.Ciius.FirstOrDefault(t => t.Id == idCiiu);
+                var ciiuT = establecimiento.Ciius.FirstOrDefault(t => t.Ciiu.Id == idCiiu);
                 if (ciiuT == null)
                 {
-                    establecimiento.Ciius.Add(ciiu);
+                    Manager.CiiuEstablecimientoManager.Add(
+                        new CiiuEstablecimiento
+                        {
+                            IdCiiu = idCiiu,
+                            IdEstablecimiento = idEstablecimiento
+                        });
                 }
                 else
                 {
-                    establecimiento.Ciius.Remove(ciiu);
+                    Manager.CiiuEstablecimientoManager.Delete(ciiuT.Id);
                 }
                 Manager.Establecimiento.SaveChanges();
             }

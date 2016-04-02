@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Entity.NumberTableItem>
+@using Domain
 
 <div style="background: #fff; border: 1px solid #ccc">
     <table class="table table-striped table-hover table-bordered table-condensed tabla small">
@@ -24,7 +25,7 @@
                         var text = "-";
                         if (este != null)
                         {
-                            text = este.Value.ToString("0.000");
+                            text = este.Value.ProduceFormat();
                         }
                         <td>@text</td>
                     }
@@ -40,11 +41,9 @@
         var first = Model.FirstOrDefault();
         if (first != null)
         {
-            <div class="padding-5">
-                <!--<div><b>Promedio:</b> @first.Promedio.ToString(".000")</div>
-                <div><b>Desviaci&oacute;n:</b> @first.Desviacion.ToString(".000")</div>-->
-                <div><b>Desviaci&oacute;n M&aacute;x.:</b> @first.Maximo.ToString(".000")</div>
-                <div><b>Desviaci&oacute;n M&iacute;n.:</b> @first.Minimo.ToString(".000")</div>
+            <div class="padding-5">                
+                <div><b>Desviaci&oacute;n M&aacute;x.:</b> @first.Maximo.ProduceFormat()</div>
+                <div><b>Desviaci&oacute;n M&iacute;n.:</b> @first.Minimo.ProduceFormat()</div>
             </div>
         }
     }

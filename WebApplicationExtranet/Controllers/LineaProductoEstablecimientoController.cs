@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class LineaProductoEstablecimientoController : BaseController<LineaProductoEstablecimiento>
     {
         private static long IdEstablecimiento { get; set; }
@@ -72,7 +75,7 @@ namespace WebApplication.Controllers
         }
         public override JsonResult CreatePost(LineaProductoEstablecimiento element, params string[] properties)
         {
-            element.IdEstablecimiento = IdEstablecimiento;
+            element.IdEstablecimiento = IdEstablecimiento;            
             return base.CreatePost(element);
         }
         public override ActionResult Buscar(LineaProductoEstablecimiento criteria)

@@ -27,11 +27,11 @@ namespace Domain.Managers
         public void Generate(long idEncuesta)
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.Find(idEncuesta);
+            var encuesta = manager.EncuestaEstadistica.FindById(idEncuesta);
             if (encuesta == null) return;
-            while (encuesta.CAT_VALOR_PROD_MENSUAL.Any(t=>t.ProductosMateriaPropia!=null))
+            while (encuesta.DAT_VALOR_PROD_MENSUAL.Any(t=>t.ProductosMateriaPropia!=null))
             {
-                var first = encuesta.CAT_VALOR_PROD_MENSUAL.FirstOrDefault(t=>t.ProductosMateriaPropia != null);
+                var first = encuesta.DAT_VALOR_PROD_MENSUAL.FirstOrDefault(t=>t.ProductosMateriaPropia != null);
                 if (first.ProductosMateriaTerceros == null)
                 {
                     manager.ValorProduccionManager.Delete(first);
@@ -80,7 +80,7 @@ namespace Domain.Managers
             foreach (var materia in list.Where(t=> t!=null&&t.LineaProducto!=null).GroupBy(t=>t.LineaProducto.IdCiiu))
             {
                 var tem =
-                    encuesta.CAT_VALOR_PROD_MENSUAL.FirstOrDefault(
+                    encuesta.DAT_VALOR_PROD_MENSUAL.FirstOrDefault(
                         t => t.id_ciiu == materia.Key);
                 if (tem == null)
                 {
@@ -94,7 +94,7 @@ namespace Domain.Managers
                 }
             }
             var delete = new List<long>();
-            foreach (var valor in encuesta.CAT_VALOR_PROD_MENSUAL.Where(t=>t.ProductosMateriaPropia==null))
+            foreach (var valor in encuesta.DAT_VALOR_PROD_MENSUAL.Where(t=>t.ProductosMateriaPropia==null))
             {
                 var tem = volumen.MateriasTercero.FirstOrDefault(t => t.LineaProducto.IdCiiu == valor.id_ciiu);
                 if (tem == null)
@@ -115,63 +115,71 @@ namespace Domain.Managers
             var materia = Manager.ValorProduccionManager.Find(id);
           
             if (materia == null) return false;
-            var encuesta = materia.CAT_ENCUESTA_ESTADISTICA;
+            var encuesta = materia.DAT_ENCUESTA_ESTADISTICA;
             var encuestas =
                 Manager.EncuestaEstadistica.Get(
                     t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Id != encuesta.Id && t.Fecha < encuesta.Fecha);
             var materias = encuestas.Select(
                  t =>
-                     t.CAT_VALOR_PROD_MENSUAL.FirstOrDefault(
+                     t.DAT_VALOR_PROD_MENSUAL.FirstOrDefault(
                          h => h.id_ciiu == idCiiu));
 
-            var historico = materias.Select(t => (double)t.ProductosMateriaPropia.GetValueOrDefault()).ToList();
-            historico.Add((double)valor.GetValueOrDefault());
+            var historico = materias.Where(t => t != null).Select(t => (double)t.ProductosMateriaPropia.GetValueOrDefault()).ToList();
+
+            if (historico.Count == 0)
+            {
+                return true;
+            }
+            
             var desviacion = historico.DesviacionEstandar();
             var avg = historico.Average();
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            //var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)valor.GetValueOrDefault() <= max && (double)valor.GetValueOrDefault() >= min;
         }
 
-        public bool ValidarMateriaTerceros(long id, decimal? valor, long idCiiu)
+        public bool ValidarMateriaTerceros(long id, decimal? valor)
         {
             var materia = Manager.ValorProduccionManager.Find(id);
 
             if (materia == null) return false;
-            var encuesta = materia.CAT_ENCUESTA_ESTADISTICA;
+            var encuesta = materia.DAT_ENCUESTA_ESTADISTICA;
             var encuestas =
                 Manager.EncuestaEstadistica.Get(
-                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Id != encuesta.Id && t.Fecha < encuesta.Fecha);
+                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Fecha < encuesta.Fecha);
             var materias = encuestas.SelectMany(
                  t =>
-                     t.CAT_VALOR_PROD_MENSUAL.Where(h=>h.id_ciiu==materia.id_ciiu));
+                     t.DAT_VALOR_PROD_MENSUAL.Where(h=>h.id_ciiu==materia.id_ciiu));
 
             var historico = materias.Where(t=>t!=null).Select(t => (double)t.ProductosMateriaTerceros.GetValueOrDefault()).ToList();
-            historico.Add((double)valor.GetValueOrDefault());
+            
+            if (historico.Count == 0) {
+                return true;
+            }
+
             var desviacion = historico.DesviacionEstandar();
             var avg = historico.Average();
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            //var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)valor.GetValueOrDefault() <= max && (double)valor.GetValueOrDefault() >= min;
         }
-
-
-
 
         public object GetHistoryMateriaPrimaTerceros(long id)
         {
             var materia = Manager.ValorProduccionManager.Find(id);
             if (materia == null) return new List<NumberTableItem>();
-            var encuesta = materia.CAT_ENCUESTA_ESTADISTICA;
+            var encuesta = materia.DAT_ENCUESTA_ESTADISTICA;
             var now = encuesta.Fecha;
             var encuestas =
                 Manager.EncuestaEstadistica.Get(
                     t => t.IdEstablecimiento == encuesta.IdEstablecimiento && (t.Fecha.Year == now.Year || t.Fecha.Year == now.Year - 1));
             var materias = encuestas.Select(
                  t =>
-                     t.CAT_VALOR_PROD_MENSUAL.FirstOrDefault(
+                     t.DAT_VALOR_PROD_MENSUAL.FirstOrDefault(
                          h => h.id_ciiu == materia.id_ciiu)).ToList();
 
             var encuestasd =
@@ -179,20 +187,29 @@ namespace Domain.Managers
                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Id != encuesta.Id && t.Fecha < encuesta.Fecha);
             var materiasd = encuestasd.Select(
                  t =>
-                     t.CAT_VALOR_PROD_MENSUAL.FirstOrDefault(
+                     t.DAT_VALOR_PROD_MENSUAL.FirstOrDefault(
                          h => h.id_ciiu == materia.id_ciiu));
-            var historico = materiasd.Select(t => (double)t.ProductosMateriaTerceros.GetValueOrDefault()).ToList();
-            var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
-            var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
-            var max = avg + mult;
-            return materias.Select(t => new NumberTableItem()
+            var historico = materiasd.Where(t => t != null).Select(t => (double)t.ProductosMateriaTerceros.GetValueOrDefault()).ToList();
+            double? desviacion = null;
+            double? avg = null;
+            double? mult = null;
+            double? min = null;
+            double? max = null;
+
+            if (historico.Count > 0)
             {
-                Month = t.CAT_ENCUESTA_ESTADISTICA.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("es")),
-                Year = t.CAT_ENCUESTA_ESTADISTICA.Fecha.Year,
+                desviacion = historico.DesviacionEstandar();
+                avg = historico.Average();
+                mult = desviacion * 3;
+                min = avg - mult;
+                max = avg + mult;
+            }
+            return materias.Where(t => t != null).Select(t => new NumberTableItem()
+            {
+                Month = t.DAT_ENCUESTA_ESTADISTICA.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("es")),
+                Year = t.DAT_ENCUESTA_ESTADISTICA.Fecha.Year,
                 Value = t.ProductosMateriaTerceros.GetValueOrDefault(),
-                MonthNumber = t.CAT_ENCUESTA_ESTADISTICA.Fecha.Month,
+                MonthNumber = t.DAT_ENCUESTA_ESTADISTICA.Fecha.Month,
                 Desviacion = desviacion,
                 Promedio = avg,
                 Maximo = max,

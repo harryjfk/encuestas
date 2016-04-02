@@ -25,10 +25,10 @@ namespace Domain.Managers
         {
             var list= base.Validate(element);
             list.Required(element,t=>t.IdEstablecimiento,"Establecimiento");
-            //list.Required(element,t=>t.IdLineaProducto,"Linea de Producto");
-            if (element.IdLineaProducto==null||element.IdLineaProducto<1)
+            
+            if (element.IdLineaProducto < 1)
             {
-                list.Add("La Línea de Producto es obligatoria.");
+                list.Add("El Producto es obligatorio.");
             }
           
             return list;

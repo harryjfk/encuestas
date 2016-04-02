@@ -62,8 +62,8 @@ namespace Domain.Managers
             var element = Find(id);
             if (element == null) return 0;
             var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
-            if (tipocambio == null || tipocambio.tipo_cambio_ventas == 0) return 0;
-            var result = tipocambio.tipo_cambio_ventas * element.fob_usd;
+            if (tipocambio == null || tipocambio.tipo_cambio_venta == 0) return 0;
+            var result = tipocambio.tipo_cambio_venta * element.fob_usd;
             element.fob_s = result;
             base.Modify(element);
             SaveChanges();
@@ -74,8 +74,8 @@ namespace Domain.Managers
             var element = Find(id);
             if (element == null) return 0;
             var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
-            if (tipocambio == null || tipocambio.tipo_cambio_ventas == 0) return 0;
-            var result = tipocambio.tipo_cambio_ventas * value;
+            if (tipocambio == null || tipocambio.tipo_cambio_venta == 0) return 0;
+            var result = tipocambio.tipo_cambio_venta * value;
             return result;
         }
         public decimal GetTipoCambioVenta(long id)
@@ -83,8 +83,8 @@ namespace Domain.Managers
             var element = Find(id);
             if (element == null) return 0;
             var tipocambio = Manager.TipoCambioManager.Get(t => t.fecha.Year == element.fecha.Year && t.fecha.Month == element.fecha.Month).FirstOrDefault();
-            if (tipocambio == null || tipocambio.tipo_cambio_ventas == 0) return 0;
-            var result = tipocambio.tipo_cambio_ventas;
+            if (tipocambio == null || tipocambio.tipo_cambio_venta == 0) return 0;
+            var result = tipocambio.tipo_cambio_venta;
             return result;
         }
     }

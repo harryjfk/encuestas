@@ -23,7 +23,6 @@
                 {
                     @Html.CheckBox("Producción Normal", new { disabled = "true", @checked = "true" })
                     <span>Producción Normal</span>
-
                 }
                 else
                 {
@@ -32,16 +31,13 @@
             </label>
         </div>
         <div class="col-md-4">
-
-            
-
             @if (Model.FactorProduccion.Incremento == 1)
             {
                 @Html.CheckBox("Incremento", new { disabled = "true", @checked = "true" })
                 <span>Incremento</span>
                 <div id="divIncremento" class="clear">
                     @{
-                Html.RenderAction("FillFactoresIncrementoReadOnly");
+                        Html.RenderAction("FillFactoresIncrementoReadOnly");
                     }
                 </div>
             }
@@ -54,18 +50,13 @@
         </div>
         <div class="col-md-4">
 
-
-            <label>
-
-                <span>Disminución</span>
-            </label>
             @if (Model.FactorProduccion.Decrecimiento == 1)
             {
                 @Html.CheckBox("Disminución", new { disabled = "true", @checked = "true" })
                 <span>Disminución</span>
                 <div id="divDecrecimiento" class="clear">
                     @{
-                Html.RenderAction("FillFactoresDecrecimientoReadOnly");
+                        Html.RenderAction("FillFactoresDecrecimientoReadOnly");
                     }
                 </div>
             }

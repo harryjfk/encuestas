@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "Reporte de Seguimiento Encuesta según Analistas";
+}
+
+@Scripts.Render("~/bundles/jquery")
+<h3 class="screen-title">@ViewBag.Title</h3>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">B&Uacute;SQUEDA</div>
+<div class="panel-body">
+    <div class="row">
+    <div class="col-md-3">
+        <div class="input-group" style="z-index: 3;">
+            <span class="input-group-addon">Desde</span>
+            <input type="text" class="form-control" name="FechaInicio" id="datetimepicker1" readonly="" value="@ViewBag.Fecha1"/>
+        </div>
+    </div>
+ <div class="col-md-3">
+        <div class="input-group" style="z-index: 3;">
+            <span class="input-group-addon">Hasta</span>
+            <input type="text" class="form-control" name="FechaInicio" id="datetimepicker2" readonly="" value="@ViewBag.Fecha2"/>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-default" id="btn-buscar">Buscar</button>
+        <button class="btn btn-default" id="btn-export-excel">Excel</button>
+        @*<button class="btn btn-default" id="btn-pdf">PDF</button>*@
+        @*@Html.ActionLink("PDF", "ExportContent", "Reporte", new { text = "hola Elmer" }, new { @class="btn btn-default" })*@
+    </div>
+</div>
+</div>
+</div>
+
+<span id="textProcess" style="color: #777; background-color: #f5f5f5; border-color: #ddd; padding: 10px 15px; display: none;">Procesando... Espere por favor.</span>
+<span id="alertaDatos" style="color: #777; background-color: #f5f5f5; border-color: #ddd; padding: 10px 15px; display: none;">No hay datos.</span>
+
+<div id="errors-container-general" class="alert alert-danger animated bounceIn hidden">
+    <strong>Error de consulta</strong>
+    <div>
+        <ul></ul>
+    </div>
+</div>
+
+<div id="contenedor-table">
+    @*@Html.Partial("_SeguimientoEncuestaTable")*@
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#datetimepicker1, #datetimepicker2').datepicker({
+                monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                pickTime: false,
+                language: "es",
+                dateFormat: 'dd-mm-yy',
+                nextText: ">",
+                prevText: "<",
+                dayNames: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+                dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"]
+            });
+            
+            $('#btn-buscar').click(function () {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    url: window.location.protocol + "//" + window.location.host + "/Reporte/SeguimientoEncuestaTable/",
+                    data: { fechaInicio: $('#datetimepicker1').val(), fechaFin: $('#datetimepicker2').val() },
+                    success: function (data) {
+                        var html = data.trim();
+                        $("#contenedor-table").html(html);
+                        $('#textProcess').css({ 'display': 'none' });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Ocurrió un error.');
+                    }
+                });
+            });
+
+            $('#btn-pdf').click(function () {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    url: window.location.protocol + "//" + window.location.host + "/Reporte/ExportarSeguimientoEncuesta_PDf/",
+                    data: { fechaInicio: $('#datetimepicker1').val(), fechaFin: $('#datetimepicker2').val() },
+                    success: function (data) {
+                        //var html = data.trim();
+                        //$("#contenedor-table").html(html);
+                        $('#textProcess').css({ 'display': 'none' });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Ocurrió un error.');
+                    }
+                });
+            });
+
+            $('#btn-export-excel').click(function (e) {
+                window.location = "/Reporte/ExportarSeguimientoEncuesta_Excel?fechaInicio=" + $('#datetimepicker1').val() + "&fechaFin=" + $('#datetimepicker2').val();
+            });
+
+            $('#btn-pdf').click(function (e) {
+                window.location = "/Reporte/ExportarSeguimientoEncuesta_PDf?fechaInicio=" + $('#datetimepicker1').val() + "&fechaFin=" + $('#datetimepicker2').val();
+            });
+
+            //$('#btn-pdf').click(function () {
+            //    $.ajax({
+            //        cache: false,
+            //        type: "GET",
+            //        contentType: "application/json; charset=utf-8",
+            //        dataType: "html",
+            //        url: window.location.protocol + "//" + window.location.host + "/Reporte/ExportarSeguimientoEncuesta_PDf/",
+            //        data: { fechaInicio: $('#datetimepicker1').val(), fechaFin: $('#datetimepicker2').val() },
+            //        success: function (data) {
+            //            //var html = data.trim();
+            //            //$("#contenedor-table").html(html);
+            //            $('#textProcess').css({ 'display': 'none' });
+            //        },
+            //        error: function (xhr, ajaxOptions, thrownError) {
+            //            alert('Ocurrió un error.');
+            //        }
+            //    });
+            //});
+        });
+    </script>
+}

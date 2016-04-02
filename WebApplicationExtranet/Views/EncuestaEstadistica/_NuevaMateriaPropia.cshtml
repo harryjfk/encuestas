@@ -1,34 +1,33 @@
 ﻿@using System.Diagnostics
 @model Entity.MateriaPropia
 
-
-
 @using (Html.BeginForm("NuevaMateriaPropia", "EncuestaEstadistica", FormMethod.Post, new { name = "addformMP" }))
 {
     @Html.AntiForgeryToken()
     <div class="panel panel-default">
         <div id="divNuevoContactoBodyp" class="form-horizontal panel-body">
-            <a id="asignarnueva" href="javascript:void(0);">Asignar Nueva L&iacute;nea de Producto/CIIU</a>
+            <a id="asignarnueva" href="javascript:void(0);">Asignar Nuevo Producto/CIIU</a>
             <br />
              <small class="animated bounceInLeft label label-info">Solo se mostraran las líneas de producto que tengan al menos una unidad de medida establecida.</small>
             <br />
             <br />
-             <div id="panelAsigLineaProd" class="animated bounceIn" style="display: none;">
-               
+             <div id="panelAsigLineaProd" class="animated bounceIn" style="display:none;">
                 <div class="form-group">
-                    <label for="Nombre" class="col-md-4 control-label">CIIU</label>
-                    <div class="col-md-7" id="mtciiup">
-                        @{ Html.RenderAction("GetDorpDownAllCiiu", "EncuestaEstadistica", new { nombre = "IdCiiuPn", id = (Model != null && Model.LineaProducto != null) ? Model.LineaProducto.IdCiiu.ToString() : "0" }); }
-                    </div>
-
+                    <label class="col-sm-4 control-label">Producto</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="filterProducto" class="form-control reset-max-width" placeholder="Filtrado de Producto" />
+                    </div>                        
                 </div>
                 <div class="form-group">
-                    <label for="Linea Produco" class="col-md-4 control-label">L&iacute;nea de Producto</label>
-
-                    <div class="col-md-7" id="mtlineaproductopn">
-
+                    <div class="col-sm-4"></div><div id="mtlineaproductopn" class="col-sm-8"></div>
+                </div>
+                <div class="form-group">
+                    <label for="mtciiup" class="col-sm-4 control-label">CIIU</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="ciiuText" class="form-control reset-max-width" value="" readonly="" />
+                        <input type="hidden" id="idCiiuMPN"/>
                     </div>
-
+                    @*@{ Html.RenderAction("GetDorpDownAllCiiu", "EncuestaEstadistica", new { nombre = "IdCiiuPn", id = (Model != null && Model.LineaProducto != null) ? Model.LineaProducto.IdCiiu.ToString() : "0" }); }*@
                 </div>
                 <div style="color: white">_</div>
                 <div style="color: white">_</div>
@@ -70,7 +69,7 @@
                     }
                 </div>
                 <div class="form-group">
-                    <label for="Linea Produco" class="col-md-4 control-label">L&iacute;nea de Producto</label>
+                    <label for="Linea Produco" class="col-md-4 control-label">Producto</label>
                     @if (Model == null || Model.Id == 0)
                     {
                         <div class="col-md-7" id="mtlineaproductop">
@@ -128,11 +127,13 @@
         $('#asignarnueva').click(function () {
             $('#panelAsigLineaProd').toggle();
             $('#nuevalineadiv').toggle();
-            $("#IdCiiuPn").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione CIIU" });
-            loadLineaProducto2();
-            $('#IdCiiuPn').on('change', function () {
-                loadLineaProducto2();
-            });
+            
+
+            //$("#IdCiiuPn").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione CIIU" });
+            
+            /*$('#IdCiiuPn').on('change', function () {
+                
+            });*/
         });
         $("button[name='aceptarbtnMPN']").click(function () {
             var $elem = $(this);
@@ -143,7 +144,7 @@
                 url: $.origin() + "/EncuestaEstadistica/AsignarNuevaLineaProducto/",
                 data: {
                     Id: $('#IdLineaProductopn').val(),
-                    IdCiiu: $('#IdCiiuPn').val()
+                    IdCiiu: $('#idCiiuMPN').val()
                 },//$("form[name='addformMP']").serialize(),
                 success: function (data) {
                     $elem.removeClass("disabled");
@@ -222,24 +223,63 @@
         $("#IdCiiuP").on('change', function () {
             loadLineaProducto();
         });
-        $("#UnidadProduccion").inputmask("9{1,8}.9{0,4}");
+        
         setTimeout(function () {
             $("#IdCiiuP").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione CIIU" });
 
         }, 500);
+
+        var timerFilterProducto, timeOutUserWrite = 750;
+
+        $('#filterProducto').keyup(function () {
+
+            if ($(this).val().length >= 3) {
+                if (typeof timerFilterProducto != undefined)
+                    clearTimeout(timerFilterProducto);
+
+                timerFilterProducto = setTimeout(function () {
+                    loadLineaProducto2();
+                }, timeOutUserWrite);
+            }
+        });
+
+        function loadCiiuByProducto() {
+            if($('#IdLineaProductopn').val() != '0'){
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/EncuestaEstadistica/GetCiiuTextByProducto/",
+                    data: {
+                        idProducto: $('#IdLineaProductopn').val(),
+                    },
+                    success: function (data) {
+                        $('#ciiuText').val(data.Codigo + '-' + data.Ciiu);
+                        $('#idCiiuMPN').val(data.IdCiiu);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            }
+        }
+
         function loadLineaProducto2() {
             $.ajax({
                 cache: false,
                 type: "POST",
-                url: $.origin() + "/EncuestaEstadistica/GetDorpDownLineaProductop/",
+                url: $.origin() + "/EncuestaEstadistica/GetDorpDownLineaProductoS/",
                 data: {
-                    idCiiu: $('#IdCiiuPn').val(),
-                    nombre: "IdLineaProductopn"
+                    filter: $('#filterProducto').val(),
+                    nombre: "IdLineaProductopn",
+                    default: "Seleccione Línea de Producto"
                 },
                 success: function (data) {
-                    $("#mtlineaproductopn").html(data);
+                    $("#mtlineaproductopn").html(data);                    
                     $("#IdLineaProductopn").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione Línea de Producto" });
-                    },
+                    $("#IdLineaProductopn").on('change', function () {
+                        loadCiiuByProducto();
+                    });
+                },
                 error: function (xhr, ajaxOptions, thrownError) {
                     //$elem.removeClass("disabled");
                     alert('Failed to retrieve data.');

@@ -14,7 +14,7 @@
     <RootNamespace>WebApplication</RootNamespace>
     <AssemblyName>WebApplication</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -41,6 +41,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.76.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.76.0\lib\net40-client\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -51,12 +59,16 @@
     <Reference Include="EPPlus">
       <HintPath>..\Domain\Office\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\iTextSharp.5.5.8\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\Domain\Office\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -189,6 +201,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Code\EncuestaReport.cs" />
+    <Content Include="App_Code\Static.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\BundleConfig2.cs" />
     <Compile Include="App_Start\BundleConfig3.cs" />
@@ -232,7 +246,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\EncuestaEstadisticaUploadModel.cs" />
     <Compile Include="Models\ExportExcelPorcentajeEstadisticaMensualModel.cs" />
     <Compile Include="Models\ExportExcelPorcentajeEstadisticaAnualModel.cs" />
     <Compile Include="Models\ImportacionExportacionHarinaTrigo.cs" />
@@ -246,6 +259,7 @@
     <Compile Include="Providers\CustomMembershipProvider.cs" />
     <Compile Include="Providers\CustomProfileProvider.cs" />
     <Compile Include="Providers\CustomRoleProvider.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\CiiuController.cs" />
     <Compile Include="Web References\ServiceSunat\Reference.cs">
@@ -265,6 +279,7 @@
     <Content Include="Content\darkly.css" />
     <Content Include="Content\flatly.css" />
     <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\GridviewScroll.css" />
     <Content Include="Content\img\cargando.gif" />
     <Content Include="Content\img\logo-apl.png" />
     <Content Include="Content\journal.css" />
@@ -291,6 +306,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Descargas\PRODUCE.Manual.Usuario.Analista.pdf" />
     <Content Include="bin\Select.Html.dep" />
+    <Content Include="Descargas\formato_encuesta.xlsx" />
     <None Include="Properties\PublishProfiles\IIS.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -305,9 +321,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\chart\highcharts.js" />
+    <Content Include="Scripts\FileSaver.js" />
     <Content Include="Scripts\function.tools\fast-functions.js" />
+    <Content Include="Rpt\RptEmpresaEnvioInformacion.rdlc" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
+    <Content Include="Scripts\gridviewScroll.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -323,6 +342,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jqueryMaxLength.js" />
+    <Content Include="Scripts\jspdf.js" />
+    <Content Include="Scripts\jspdf.plugin.cell_sav.js" />
+    <Content Include="Scripts\jspdf.plugin.table.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\respond.js" />
@@ -331,7 +353,33 @@
     <Content Include="Scripts\SmartNotification.min.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="TempFiles\test.txt" />
-    <Content Include="TempPrint\test.txt" />
+    <Content Include="TempPrint\text.txt" />
+    <Content Include="Views\IpmIpp\IndexCarga.cshtml" />
+    <Content Include="Views\EncuestaEstadistica\PreviousUpdate.cshtml" />
+    <Content Include="Views\UsuarioIntranet\EstablecimientosEncuestas.cshtml" />
+    <Content Include="Views\Reporte\EmpresaEnvioInformacion.cshtml" />
+    <Content Include="Views\Reporte\IVFMensual.cshtml" />
+    <Content Include="Views\Reporte\_IVFTable.cshtml" />
+    <Content Include="Views\Reporte\IVFPorEstablecimiento.cshtml" />
+    <Content Include="Views\Reporte\_IVFPorEstabTable.cshtml" />
+    <Content Include="Views\Reporte\DescargaArchivos.cshtml" />
+    <Content Include="Views\Reporte\IVFPorEstablecimientoVariacion.cshtml" />
+    <Content Include="Views\Reporte\_IVFPorEstabVarTable.cshtml" />
+    <Content Include="Views\Reporte\IVFMensualVariacion.cshtml" />
+    <Content Include="Views\Reporte\_IVFVariacionTable.cshtml" />
+    <Content Include="Views\Reporte\_IVFPorEstabVarTableMes.cshtml" />
+    <Content Include="Views\Reporte\IVFPorEstablecimientoVariacionMes.cshtml" />
+    <Content Include="Views\Reporte\CobeturaIVF.cshtml" />
+    <Content Include="Views\Reporte\_CoberturaIVFTable.cshtml" />
+    <Content Include="Views\Reporte\IVFCuadroResumen.cshtml" />
+    <Content Include="Views\Reporte\IVFPMIncidenciaActividad.cshtml" />
+    <Content Include="Views\Reporte\_SeguimientoEncuestaTable.cshtml" />
+    <Content Include="Views\Reporte\CoberturadeIVF.cshtml" />
+    <Content Include="Views\Reporte\_CoberturadeIVFTable.cshtml" />
+    <Content Include="Views\Reporte\_IVFPMIncidenciaActividadTable.cshtml" />
+    <Content Include="Views\Reporte\SeguimientoEncuesta.cshtml" />
+    <Content Include="Views\Reporte\_EmpresaEnvioInformacionTable.cshtml" />
+    <None Include="Web References\ServiceSunat\WCFSistemasService.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -349,7 +397,6 @@
     <Content Include="Views\Shared\_DropDown.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_Usuarios.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\LineaProducto\Index.cshtml" />
@@ -432,7 +479,6 @@
     <Content Include="Views\EncuestaEstadistica\_TrabajadoresDiasTrabajados.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_ValorProduccionEstablecimiento.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_ValorVentasProductosEstablecimiento.cshtml" />
-    <Content Include="Views\EncuestaEstadistica\_VentaServicios.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_VolumenProduccionMensual.cshtml" />
     <Content Include="Views\Shared\_TextView.cshtml" />
     <Content Include="Views\Establecimiento\Ciiu.cshtml" />
@@ -455,11 +501,11 @@
     <Content Include="Web References\ServiceSunat\BuscarEmpresaResult.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\ServiceSunat\Reference.map">
+    <None Include="Web References\ServiceSunat\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
-    <Content Include="Web References\ServiceSunat\WCFSistemasService.wsdl" />
+    </None>
+    <None Include="Web References\ServiceSunat\WCFSistemasService.wsdl" />
     <Content Include="Views\Seguridad\AccesoDenegado.cshtml" />
     <Content Include="Views\TipoCambio\Details.cshtml" />
     <Content Include="Views\TipoCambio\Index.cshtml" />
@@ -495,13 +541,7 @@
     <Content Include="Views\Auditoria\Index.cshtml" />
     <Content Include="Views\Auditoria\_Table.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_InfoAnalistas.cshtml" />
-    <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\Index.cshtml" />
-    <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\_Table.cshtml" />
-    <Content Include="Views\Reporte\PorcentajeEncuestaEstadistica\_TableCiiu.cshtml" />
     <Content Include="Views\Shared\_Graphic.cshtml" />
-    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\Index.cshtml" />
-    <Content Include="Views\Reporte\IndiceValorFisico\Index.cshtml" />
-    <Content Include="Views\Reporte\IndiceValorFisico\_Table.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -552,10 +592,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://srv-sunat.produccion.gob.pe:81/WCFSistemasService.svc%3fwsdl">
+    <WebReferenceUrl Include="http://172.20.11.9:7023/WCFSistemasService.svc">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\ServiceSunat\</RelPath>
-      <UpdateFromURL>http://srv-sunat.produccion.gob.pe:81/WCFSistemasService.svc%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://172.20.11.9:7023/WCFSistemasService.svc</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -585,7 +625,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2329</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:5000/</IISUrl>
+          <IISUrl>http://localhost:5004/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

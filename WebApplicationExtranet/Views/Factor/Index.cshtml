@@ -40,8 +40,8 @@
 	<div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">EFECTO</span>
-                        @*<input type="text" class="form-control">*@
-                        @*@Html.EnumDropDownListFor(t => t.Criteria.TipoFactor, new { @class = "form-control" })*@
+                        @*<input type="text" class="form-control">*@                        
+                        @Html.EnumDropDownListFor(t => t.Criteria.TipoFactor, new { @class = "form-control" })
                         <select name="Criteria.Tipo" class="form-control">
                             <option @sel3 value="-99999999">Todos</option>
                             <option @sel0 value="0">Incremento</option>

@@ -5,13 +5,14 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class ContactoController : BaseController<Contacto>
     {
-        private static long IdEstablecimiento { get; set; }
-
         public ActionResult GetDorpDown(string id, string nombre = "IdContacto", string @default = null)
         {
            var list =OwnManager.Get(t => t.Activado).Select(t => new SelectListItem()
@@ -32,6 +33,8 @@ namespace WebApplication.Controllers
        
         public JsonResult Toggle(long id)
         {
+            Query = GetQuery();
+
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)
@@ -48,37 +51,42 @@ namespace WebApplication.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-        public override ActionResult Index()
-        {
-            Query = Query ?? new Query<Contacto>().Validate();
-            Query.Criteria = Query.Criteria ?? new Contacto();
-            Query.Criteria.IdEstablecimiento = IdEstablecimiento;
-            Query.BuildFilter();
-            return base.Index();
-        }
+        
         public ActionResult Get(long id)
         {
-            var establecimiento = Manager.Establecimiento.Find(id);
-            if (establecimiento == null) return HttpNotFound("El establecimiento no existe");
-            IdEstablecimiento = id;
-            Query = Query ?? new Query<Contacto>().Validate();
-            Query.Criteria = Query.Criteria ?? new Contacto();
-            Query.Criteria.Establecimiento = establecimiento;
+            bool FirstLoad = false;
+
+            if (Session[CriteriaSesion] != null)
+            {
+                if (Session[CriteriaSesion] is Contacto == false)
+                {
+                    FirstLoad = true;
+                }
+            }
+            else
+            {
+                FirstLoad = true;
+            }
+
+            if (FirstLoad)
+            {
+                Contacto criteria = new Contacto();
+                criteria.IdEstablecimiento = id;
+                Session[CriteriaSesion] = criteria;
+            }
+
             return RedirectToAction("Index");
         }
 
         public override JsonResult CreatePost(Contacto element,params string [] properties)
         {
-            element.IdEstablecimiento = IdEstablecimiento;
+            element.IdEstablecimiento = ((Contacto)Session[CriteriaSesion]).IdEstablecimiento;
             return base.CreatePost(element);
         }
 
         public override ActionResult Buscar(Contacto criteria)
         {
-            Query = Query ?? new Query<Contacto>().Validate();
-            Query.Criteria = Query.Criteria ?? new Contacto();
-            criteria.Establecimiento = Query.Criteria.Establecimiento;
+            criteria.IdEstablecimiento = ((Contacto)Session[CriteriaSesion]).IdEstablecimiento;
             return base.Buscar(criteria);
         }
     }

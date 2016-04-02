@@ -25,13 +25,13 @@
 @using (Html.BeginForm("BuscarInformante", "UsuarioExtranet", FormMethod.Post))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-heading">B&uacute;squeda</div>
 
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">INFORMANTE</span>
+                        <span class="input-group-addon">Informante</span>
                         @*<input type="text" class="form-control">*@
                         @Html.TextBoxFor(t => t.Criteria.NombreApellidos, new { @class = "form-control" })
                     </div>
@@ -50,8 +50,6 @@
 <div id="table-container">
     @Html.Partial("_TableInformante", Model)
 </div>
-
-
 
 @*MODALS*@
 <div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

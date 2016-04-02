@@ -32,7 +32,14 @@ namespace Domain.Managers
         public override OperationResult<PosibleRespuesta> Add(PosibleRespuesta element)
         {
             var manager = Manager;
-            var list = element.Valores != null ? element.Valores.Where(t => t != null).Select(t => new Valor() { Texto = t.Texto, IdPregunta = (t.IdPregunta != 0 ? t.IdPregunta : null) }).ToList() : new List<Valor>();
+            var list = element.Valores != null ? element.Valores.Where(t => t != null)
+                .Select(t => new Valor()
+                {
+                    Personalizado = t.Personalizado,
+                    orden = t.orden,
+                    Texto = t.Texto,
+                    IdPregunta = (t.IdPregunta != 0 ? t.IdPregunta : null)
+                }).ToList() : new List<Valor>();
             if (element.Valores != null)
                 element.Valores.Clear();
             var pregunta = manager.Pregunta.Find(element.IdPregunta);
@@ -62,7 +69,8 @@ namespace Domain.Managers
             var manager = Manager;
             var list = el.Valores != null ? el.Valores.Where(t => t != null).Select(t => new Valor()
             {
-                Personalizado = t.Personalizado, 
+                Personalizado = t.Personalizado,
+                orden = t.orden,
                 Texto = t.Texto, 
                 IdPregunta = (t.IdPregunta != 0 ? t.IdPregunta : null)
             }).ToList() : new List<Valor>();

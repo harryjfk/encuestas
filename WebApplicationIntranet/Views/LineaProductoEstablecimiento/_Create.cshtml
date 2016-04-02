@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="LineaProducto" class="col-md-4 control-label">L&iacute;nea de Producto</label>
+            <label for="LineaProducto" class="col-md-4 control-label">Producto</label>
             <div class="col-md-7">
                 @if (Model == null || Model.Id == 0)
                 {
@@ -65,19 +65,12 @@
             {
                 <div class="col-md-1 txt-color-red"><span >(*)</span></div>
             }
+        </div>       
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         </div>
-        <div class="form-group">
-            <label for="Peso" class="col-md-4 control-label">Peso</label>
-            <div class="col-md-7">
-                <span style="max-width: 280px;" class="form-control">@Model.peso.GetValueOrDefault()</span>
-             
-            </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            </div>
-        </div>
+    </div>
 }
 
 <script type="text/javascript">

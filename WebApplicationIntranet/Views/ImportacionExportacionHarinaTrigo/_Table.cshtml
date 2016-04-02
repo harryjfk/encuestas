@@ -11,12 +11,12 @@
         <tr class="cabecera">
             <th style="width: 20px;"></th>
             <th> CIIU </th>
-            <th> MES </th>
+            <th> Mes </th>
             <th> FOB USD </th>
             <th> FOB S </th>
             
             
-            <th style="width: 100px;">ACCI&Oacute;N</th>
+            <th style="width: 100px;">Acci&oacute;n</th>
     </thead>
     <tbody>
         @foreach (var item in Model.Elements)
@@ -94,7 +94,7 @@
                 data: { "id": id },
                 success: function (data) {
                     if (data.Success) {
-                        $("#table-container").html(data.Data);
+                        $("#table-container-exportacion").html(data.Data);
                         $.smallBox({
                             title: "Confirmación",
                             content: "<i class='fa fa-clock-o'></i> <i>El elemento se cambió correctamente</i>",

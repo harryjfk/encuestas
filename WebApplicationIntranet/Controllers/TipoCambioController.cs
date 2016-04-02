@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class TipoCambioController : BaseController<TipoCambio>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdTipoCambio", string @default = null)
@@ -30,6 +33,7 @@ namespace WebApplication.Controllers
        
         public JsonResult Toggle(long id)
         {
+            Query = base.GetQuery();
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)
@@ -50,21 +54,37 @@ namespace WebApplication.Controllers
 
         public override ActionResult Index()
         {
-            var año=DateTime.Now.Year;
-            
-            Query = Query ?? new Query<TipoCambio>();
-            Query.Criteria = Query.Criteria ?? new TipoCambio();
-            Query.Criteria.Año = Query.Criteria.Año ?? DateTime.Now.Year.ToString();
-            if (Query.Criteria.Año != null)
+            bool FirstLoad = false;
+            if (Session[CriteriaSesion] != null)
             {
-                año = int.Parse(Query.Criteria.Año);
+                if (Session[CriteriaSesion] is TipoCambio == false)
+                {
+                    FirstLoad = true;
+                }
             }
-            Manager.TipoCambioManager.Generate(año);
-            Query.Order = Query.Order ?? new Order<TipoCambio>();
-            Query.Order.Func = t => t.fecha;
-            Query.BuildFilter();
+            else
+            {
+                FirstLoad = true;
+            }
+
+            if (FirstLoad)
+            {
+                var yearNow = DateTime.Now.Year;
+
+                Manager.TipoCambioManager.Generate(yearNow);
+
+                TipoCambio criteria = new TipoCambio();
+                criteria.Año = yearNow.ToString();
+                Session[CriteriaSesion] = criteria;
+            }
+          
+            Order<TipoCambio> order = new Order<TipoCambio>();
+            order.Func = t => t.fecha;
+            Session[OrderSesion] = order;
+
             return base.Index();
         }
+
         public override ActionResult Buscar(TipoCambio criteria)
         {
             Manager.TipoCambioManager.Generate(int.Parse(criteria.Año));

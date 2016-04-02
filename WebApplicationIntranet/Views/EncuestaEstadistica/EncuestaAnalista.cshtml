@@ -4,7 +4,6 @@
 @model EncuestaEstadistica
 @Scripts.Render("~/bundles/jquery")
 
-
 @{
     var hidden = Request.IsAuthenticated ? "" : "hidden";
 }
@@ -14,10 +13,7 @@
 </a>
 <a href="/EncuestaEstadistica/EncuestasAnalista/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 <div>
-    <div class="row">
-        <div class="col-md-5">
-            @*<img alt="semci" src="~/Content/img/logo-apl.png" />*@
-        </div>
+    <div class="row">       
         <div class="col-md-12 text-align-center">
             <h2>Estadística Industrial Mensual  @Model.Fecha.ToString("yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()</h2>
             <h4>Información del mes @Model.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper()</h4>
@@ -40,37 +36,26 @@
 
 @if (Model != null)
 {
-    using (Html.BeginForm("Enviar", "EncuestaEstadistica", FormMethod.Post, new { name = "encuestaEstadisticaForm" }))
-    {
-        @Html.HiddenFor(t => t.Id)
-        @*<h3 class="screen-title">
-                Encuesta de Manufactura Estad&iacute;stica
-                <span class="label label-primary">
-                    @Model.Fecha.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()
-                </span>
-            </h3>*@
-        <div id="cap1">
-            @{ Html.RenderPartial("_IdentificacionEstablecimientoV", Model); }
-        </div>
-        <div id="cap2">
-            @{ Html.RenderPartial("_VolumenProduccionMensualV", Model); }
-        </div>
-        <div id="cap3">
-            @{ Html.RenderPartial("_ValorProduccionEstablecimientoV", Model); }
-        </div>
-        <div id="cap4">
-            @{ Html.RenderPartial("_ValorVentasProductosEstablecimientoV", Model); }
-        </div>
-        <div id="cap5">
-            @{ Html.RenderPartial("_TrabajadoresDiasTrabajadosV", Model); }
-        </div>
-        <div id="cap6">
-            @{ Html.RenderPartial("_FactorProduccionV", Model); }
-        </div>
-
-    }
+    @Html.HiddenFor(t => t.Id)     
+    <div id="cap1">
+        @{ Html.RenderPartial("_IdentificacionEstablecimientoV", Model); }
+    </div>
+    <div id="cap2">
+        @{ Html.RenderPartial("_VolumenProduccionMensualV", Model); }
+    </div>
+    <div id="cap3">
+        @{ Html.RenderPartial("_ValorProduccionEstablecimientoV", Model); }
+    </div>
+    <div id="cap4">
+        @{ Html.RenderPartial("_ValorVentasProductosEstablecimientoV", Model); }
+    </div>
+    <div id="cap5">
+        @{ Html.RenderPartial("_TrabajadoresDiasTrabajadosV", Model); }
+    </div>
+    <div id="cap6">
+        @{ Html.RenderPartial("_FactorProduccionV", Model); }
+    </div>    
 }
-
 
 <div class="modal-footer">
     <input id="btn-observar" type="button" class="btn btn-primary pull-right margin-right-10" value="Observar" />
@@ -141,5 +126,8 @@
            
         });
         
+        @if(Request["ro"] != null){
+            <text>$('.btn').css('display', 'none');</text>
+        }
     });
 </script>

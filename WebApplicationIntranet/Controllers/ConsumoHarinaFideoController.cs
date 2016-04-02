@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class ConsumoHarinaFideoController : BaseController<ConsumoHarinaFideo>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdConsumo", string @default = null)
@@ -30,6 +33,7 @@ namespace WebApplication.Controllers
        
         public JsonResult Toggle(long id)
         {
+            Query = base.GetQuery();
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)
@@ -56,20 +60,36 @@ namespace WebApplication.Controllers
 
         public override ActionResult Index()
         {
-            var año = DateTime.Now.Year;
-            Query = Query ?? new Query<ConsumoHarinaFideo>();
-            Query.Criteria = Query.Criteria ?? new ConsumoHarinaFideo();
-            Query.Criteria.Año = Query.Criteria.Año ?? DateTime.Now.Year.ToString();
-            if (Query.Criteria.Año != null) 
+            bool FirstLoad = false;
+            if (Session[CriteriaSesion] != null)
             {
-                año = int.Parse(Query.Criteria.Año);
+                if (Session[CriteriaSesion] is ConsumoHarinaFideo == false)
+                {
+                    FirstLoad = true;
+                }
             }
-            Manager.ConsumoHarinaFideoManager.Generate(año);
-            Query.Order = Query.Order ?? new Order<ConsumoHarinaFideo>();
-            Query.Order.Func = t => t.fecha;
-            Query.BuildFilter();
+            else
+            {
+                FirstLoad = true;
+            }
+
+            if (FirstLoad)
+            {
+                var yearNow = DateTime.Now.Year;
+                Manager.ConsumoHarinaFideoManager.Generate(yearNow);
+
+                ConsumoHarinaFideo criteria = new ConsumoHarinaFideo();
+                criteria.Año = yearNow.ToString();
+                Session[CriteriaSesion] = criteria;
+            }
+
+            Order<ConsumoHarinaFideo> order = new Order<ConsumoHarinaFideo>();
+            order.Func = t => t.fecha;
+            Session[OrderSesion] = order;
+
             return base.Index();
         }
+        
         public override JsonResult CreatePost(ConsumoHarinaFideo element, params string[] properties)
         {
             return base.CreatePost(element, "fecha");

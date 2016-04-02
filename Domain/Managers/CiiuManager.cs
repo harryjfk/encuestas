@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Data;
 using Data.Repositorios;
 using Entity;
+using Entity.Parciales;
 
 namespace Domain.Managers
 {
@@ -18,6 +19,20 @@ namespace Domain.Managers
 
         public CiiuManager(Entities context, Manager manager) : base(context, manager)
         {
+        }
+
+        public override OperationResult<Ciiu> Add(Ciiu element)
+        {
+            if (element.EnumSubSector == EnumSubsector.Manufactura_Primaria)
+                element.rubro = 0;
+            return base.Add(element);
+        }
+
+        public override OperationResult<Ciiu> Modify(Ciiu element, params string[] properties)
+        {
+            if (element.EnumSubSector == EnumSubsector.Manufactura_Primaria)
+                element.rubro = 0;
+            return base.Modify(element, properties);
         }
 
         public override OperationResult<Ciiu> Delete(Ciiu element)
@@ -832,7 +847,14 @@ namespace Domain.Managers
             list.MaxLength(element, t => t.Revision, 10, "Revision");
 
             list.Number(element,t=>t.Codigo,"Código");
-
+            if (element.Id == 0)
+            {
+                var any = Manager.Ciiu.Get(t => t.Codigo == element.Codigo && t.Id != element.Id).Any();
+                if (any)
+                {
+                    list.Add(string.Format("Ya existe un CIIU con el código {0}", element.Codigo));
+                }
+            }
 
             return list;
         }

@@ -30,6 +30,18 @@ namespace Entity
            }
        }
 
+        public CiiuRevision EnumRevision
+        {
+            get
+            {
+                return (CiiuRevision)Enum.Parse(typeof(CiiuRevision), Revision.ToString());
+            }
+            set
+            {
+                Revision = (decimal)value;
+            }
+        }
+
        public EnumRubro EnumRubro
        {
            get
@@ -45,13 +57,14 @@ namespace Entity
        public override string ToString()
        {
            var subName = Nombre;
-           if (subName.Length > 1000)
+           if (subName.Length > 100)
            {
                subName = Nombre.Substring(0, 97)+"...";
            }
            return String.Format("{0}-{1}",Codigo,subName);
        }
 
-      
-   }
+        public double Peso { get; set; }
+        public double ValorAgregado { get; set; }
+    }
 }

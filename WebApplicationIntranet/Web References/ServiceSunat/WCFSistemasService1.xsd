@@ -1,42 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="anyType" nillable="true" type="xs:anyType" />
-  <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
-  <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
-  <xs:element name="boolean" nillable="true" type="xs:boolean" />
-  <xs:element name="byte" nillable="true" type="xs:byte" />
-  <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
-  <xs:element name="decimal" nillable="true" type="xs:decimal" />
-  <xs:element name="double" nillable="true" type="xs:double" />
-  <xs:element name="float" nillable="true" type="xs:float" />
-  <xs:element name="int" nillable="true" type="xs:int" />
-  <xs:element name="long" nillable="true" type="xs:long" />
-  <xs:element name="QName" nillable="true" type="xs:QName" />
-  <xs:element name="short" nillable="true" type="xs:short" />
-  <xs:element name="string" nillable="true" type="xs:string" />
-  <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
-  <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
-  <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
-  <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
-  <xs:element name="char" nillable="true" type="tns:char" />
-  <xs:simpleType name="char">
-    <xs:restriction base="xs:int" />
-  </xs:simpleType>
-  <xs:element name="duration" nillable="true" type="tns:duration" />
-  <xs:simpleType name="duration">
-    <xs:restriction base="xs:duration">
-      <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
-      <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
-      <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="guid" nillable="true" type="tns:guid" />
-  <xs:simpleType name="guid">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:attribute name="FactoryType" type="xs:QName" />
-  <xs:attribute name="Id" type="xs:ID" />
-  <xs:attribute name="Ref" type="xs:IDREF" />
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WCFSistemasService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WCFSistemasService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="BuscarEmpresaResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DatosEstablecimiento" nillable="true" type="tns:ArrayOfDatosEstablecimientoAnexo" />
+      <xs:element minOccurs="0" name="DatosSecundarios" nillable="true" type="tns:DatosSecundariosdelContribuyente" />
+      <xs:element minOccurs="0" name="ddp_ciiuField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_estadoField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_fecactField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_fecaltField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_fecbajField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_flag22Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_identiField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_inter1Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_llltttField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_nombreField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_nomviaField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_nomzonField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_numer1Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_numregField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_numrucField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_refer1Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_resultado" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_secuenField" type="xs:int" />
+      <xs:element minOccurs="0" name="ddp_tipviaField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_tipzonField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_tpoempField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ddp_ubigeoField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="desc_tipviaField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="representanteslegales" nillable="true" type="tns:ArrayOfListarRepLegales" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BuscarEmpresaResult" nillable="true" type="tns:BuscarEmpresaResult" />
+  <xs:complexType name="ArrayOfDatosEstablecimientoAnexo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DatosEstablecimientoAnexo" nillable="true" type="tns:DatosEstablecimientoAnexo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDatosEstablecimientoAnexo" nillable="true" type="tns:ArrayOfDatosEstablecimientoAnexo" />
+  <xs:complexType name="DatosEstablecimientoAnexo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="spr_correlField" type="xs:int" />
+      <xs:element minOccurs="0" name="spr_fecactField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_inter1Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_licencField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_nombreField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_nomviaField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_nomzonField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_numer1Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_numrucField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_refer1Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_tipestField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_tipviaField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_tipzonField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="spr_ubigeoField" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DatosEstablecimientoAnexo" nillable="true" type="tns:DatosEstablecimientoAnexo" />
+  <xs:complexType name="DatosSecundariosdelContribuyente">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="dds_asientField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_comextField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_constiField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_contabField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_docideField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_domiciField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_facturField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_fecactField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_fecnacField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_fichaField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_inicioField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_licencField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_nacionField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_nfolioField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_nomcomField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_nrodocField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_numfaxField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_numrucField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_orientField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_paispaField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_pasapoField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_patronField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_sexoField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_telef1Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_telef2Field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dds_telef3Field" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DatosSecundariosdelContribuyente" nillable="true" type="tns:DatosSecundariosdelContribuyente" />
+  <xs:complexType name="ArrayOfListarRepLegales">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ListarRepLegales" nillable="true" type="tns:ListarRepLegales" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfListarRepLegales" nillable="true" type="tns:ArrayOfListarRepLegales" />
+  <xs:complexType name="ListarRepLegales">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="num_ord_suceField" type="xs:short" />
+      <xs:element minOccurs="0" name="rso_cargooField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rso_docideField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rso_fecactField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rso_fecnacField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rso_nombreField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rso_nrodocField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rso_numrucField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rso_vdesdeField" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListarRepLegales" nillable="true" type="tns:ListarRepLegales" />
 </xs:schema>

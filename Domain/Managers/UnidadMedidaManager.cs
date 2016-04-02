@@ -35,7 +35,7 @@ namespace Domain.Managers
         public void GetAsignadas(Query<LineaProductoUnidadMedida> query, long idLineaProducto)
         {
             query.Filter = query.Filter ?? new Func<LineaProductoUnidadMedida, bool>(t => true);
-           // Get(query);
+           
             var lineaProd = Manager.LineaProducto.Find(idLineaProducto);
             if (lineaProd == null) return;
             var primeros = lineaProd.LineasProductoUnidadMedida.ToList();

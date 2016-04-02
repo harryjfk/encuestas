@@ -1,7 +1,7 @@
 ﻿@using Entity
 @model Domain.Query<Entity.IpmIpp>
 @{
-    ViewBag.Title = "Indice de Precio x Mayor – Indice de Precio Promedio";
+    ViewBag.Title = "Indice de Precio x Mayor – Indice de Precio Producción";
 }
 @Scripts.Render("~/bundles/jquery")
 @if (!ViewData.ModelState.IsValid)
@@ -15,17 +15,17 @@
     </div>
 
 }
-<h3 class="screen-title">&Iacute;ndice de Precio x Mayor – &Iacute;ndice de Precio Promedio</h3>
+<h3 class="screen-title">&Iacute;ndice de Precio x Mayor – &Iacute;ndice de Precio Producci&oacute;n</h3>
 @using (Html.BeginForm("Buscar", "IpmIpp", FormMethod.Post))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-heading">B&uacute;squeda</div>
 
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">AÑO</span>
+                        <span class="input-group-addon">Año</span>
                         <select id="selct-ano" name="Criteria.Año" class="form-control">
                             @for (int i = 2012; i <= DateTime.Now.Year; i++)
                             {
@@ -41,7 +41,7 @@
                 <div class ="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">CIIU</span>
-                        @{Html.RenderAction("GetDorpDown", "Ciiu", new { id = (Model != null && Model.Criteria != null) ? Model.Criteria.id_ciiu : 0, nombre = "Criteria.id_ciiu" });}
+                        @{Html.RenderAction("GetDorpDownIpmIpp", "Ciiu", new { id = (Model != null && Model.Criteria != null) ? Model.Criteria.id_ciiu : 0, nombre = "Criteria.id_ciiu", @default = "Seleccione" });}
 
                     </div>
                 </div>

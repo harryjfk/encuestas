@@ -19,69 +19,80 @@ namespace Domain.Managers
             : base(context, manager)
         {
         }
+
+        private List<MateriaPropia> GetMateriasPrimas(MateriaPropia materia)
+        {
+            var encuesta = materia.VolumenProduccion.Encuesta;
+            var encuestas =
+                Manager.EncuestaEstadistica.Get(
+                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Fecha < encuesta.Fecha);
+            return encuestas.Select(
+                 t =>
+                     t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
+                         h => h.IdLineaProducto == materia.IdLineaProducto)).ToList();
+        }
+
         public bool ValidarProduccion(long id, decimal? produccion)
         {
             var materia = Manager.MateriaPropiaManager.Find(id);
             if (materia == null) return false;
-            var encuesta = materia.VolumenProduccion.Encuesta;
-            var encuestas =
-                Manager.EncuestaEstadistica.Get(
-                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Id != encuesta.Id && t.Fecha<encuesta.Fecha);
-            var materias = encuestas.Select(
-                 t =>
-                     t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
-                         h => h.IdLineaProducto == materia.IdLineaProducto));
+
+            var materias = GetMateriasPrimas(materia);
 
             var historico = materias.Where(t=>t!=null).Select(t => (double)t.Produccion.GetValueOrDefault()).ToList();
-            historico.Add((double)produccion.GetValueOrDefault());
+            if (historico.Count == 0) {
+                return true;
+            }
+            
             var desviacion = historico.DesviacionEstandar();
             var avg = historico.Average();
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            //var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)produccion.GetValueOrDefault() <= max && (double)produccion.GetValueOrDefault() >= min;
         }
+
         public bool ValidarValorUnitario(long id, decimal? valorUnitario)
         {
             var materia = Manager.MateriaPropiaManager.Find(id);
             if (materia == null) return false;
-            var encuesta = materia.VolumenProduccion.Encuesta;
-            var encuestas =
-                Manager.EncuestaEstadistica.Get(
-                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Id != encuesta.Id && t.Fecha < encuesta.Fecha);
-            var materias = encuestas.Select(
-                 t =>
-                     t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
-                         h => h.IdLineaProducto == materia.IdLineaProducto));
+
+            var materias = GetMateriasPrimas(materia);
 
             var historico = materias.Where(t=>t!=null).Select(t => (double)t.ValorUnitario.GetValueOrDefault()).ToList();
-            historico.Add((double)valorUnitario.GetValueOrDefault());
+            if (historico.Count == 0)
+            {
+                return true;
+            }
+            
             var desviacion = historico.DesviacionEstandar();
             var avg = historico.Average();
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            //var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)valorUnitario.GetValueOrDefault() <= max && (double)valorUnitario.GetValueOrDefault() >= min;
         }
+
         public bool ValidarVentasPais(long id, decimal? ventasPais)
         {
             var materia = Manager.MateriaPropiaManager.Find(id);
-            if (materia == null) return false;
-            var encuesta = materia.VolumenProduccion.Encuesta;
-            var encuestas =
-                Manager.EncuestaEstadistica.Get(
-                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Id != encuesta.Id && t.Fecha < encuesta.Fecha);
-            var materias = encuestas.Select(
-                 t =>
-                     t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
-                         h => h.IdLineaProducto == materia.IdLineaProducto));
+            if (materia == null) return false;          
+
+            var materias = GetMateriasPrimas(materia);
 
             var historico = materias.Where(t => t != null).Select(t => (double)t.VentasPais.GetValueOrDefault()).ToList();
-            historico.Add((double)ventasPais.GetValueOrDefault());
+            if (historico.Count == 0)
+            {
+                return true;
+            }
+            
             var desviacion = historico.DesviacionEstandar();
             var avg = historico.Average();
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            //var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)ventasPais.GetValueOrDefault() <= max && (double)ventasPais.GetValueOrDefault() >= min;
         }
@@ -90,21 +101,20 @@ namespace Domain.Managers
         {
             var materia = Manager.MateriaPropiaManager.Find(id);
             if (materia == null) return false;
-            var encuesta = materia.VolumenProduccion.Encuesta;
-            var encuestas =
-                Manager.EncuestaEstadistica.Get(
-                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Id != encuesta.Id && t.Fecha < encuesta.Fecha);
-            var materias = encuestas.Select(
-                 t =>
-                     t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
-                         h => h.IdLineaProducto == materia.IdLineaProducto));
+
+            var materias = GetMateriasPrimas(materia);
 
             var historico = materias.Where(t => t != null).Select(t => (double)t.VentasExtranjero.GetValueOrDefault()).ToList();
-            historico.Add((double)ventasExtranjero.GetValueOrDefault());
+            if (historico.Count == 0)
+            {
+                return true;
+            }
+            
             var desviacion = historico.DesviacionEstandar();
             var avg = historico.Average();
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            //var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)ventasExtranjero.GetValueOrDefault() <= max && (double)ventasExtranjero.GetValueOrDefault() >= min;
         }
@@ -131,13 +141,23 @@ namespace Domain.Managers
                      t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
                          h => h.IdLineaProducto == materia.IdLineaProducto));
 
-            var historico = materiasd.Select(t => (double)t.Produccion.GetValueOrDefault()).ToList();
-            var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
-            var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
-            var max = avg + mult;
-            return materias.Select(t=> new NumberTableItem()
+            var historico = materiasd.Where(t => t != null).Select(t => (double)t.Produccion.GetValueOrDefault()).ToList();
+
+            double? desviacion = null;
+            double? avg = null;
+            double? mult = null;
+            double? min = null;
+            double? max = null;
+
+            if (historico.Count > 0)
+            {
+                desviacion = historico.DesviacionEstandar();
+                avg = historico.Average();
+                mult = desviacion * 3;
+                min = avg - mult;
+                max = avg + mult;
+            }
+            return materias.Where(t => t != null).Select(t=> new NumberTableItem()
             {
                 Month = t.VolumenProduccion.Encuesta.Fecha.ToString("MMMM",CultureInfo.GetCultureInfo("es")),
                 Year = t.VolumenProduccion.Encuesta.Fecha.Year,
@@ -149,6 +169,7 @@ namespace Domain.Managers
                 Promedio = avg
             }).ToList();
         }
+
         public List<NumberTableItem> GetHistoryValorUnitario(long idMateriaPropia)
         {
             var materia = Manager.MateriaPropiaManager.Find(idMateriaPropia);
@@ -170,13 +191,23 @@ namespace Domain.Managers
                  t =>
                      t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
                          h => h.IdLineaProducto == materia.IdLineaProducto));
-            var historico = materiasd.Select(t => (double)t.ValorUnitario.GetValueOrDefault()).ToList();
-            var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
-            var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
-            var max = avg + mult;
-            return materias.Select(t => new NumberTableItem()
+            var historico = materiasd.Where(t => t != null).Select(t => (double)t.ValorUnitario.GetValueOrDefault()).ToList();
+            double? desviacion = null;
+            double? avg = null;
+            double? mult = null;
+            double? min = null;
+            double? max = null;
+
+            if (historico.Count > 0)
+            {
+                desviacion = historico.DesviacionEstandar();
+                avg = historico.Average();
+                mult = desviacion * 3;
+                min = avg - mult;
+                max = avg + mult;
+            }
+
+            return materias.Where(t => t != null).Select(t => new NumberTableItem()
             {
                 Month = t.VolumenProduccion.Encuesta.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("es")),
                 Year = t.VolumenProduccion.Encuesta.Fecha.Year,
@@ -210,13 +241,22 @@ namespace Domain.Managers
                  t =>
                      t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
                          h => h.IdLineaProducto == materia.IdLineaProducto));
-            var historico = materiasd.Select(t => (double)t.VentasPais.GetValueOrDefault()).ToList();
-            var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
-            var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
-            var max = avg + mult;
-            return materias.Select(t => new NumberTableItem()
+            var historico = materiasd.Where(t => t != null).Select(t => (double)t.VentasPais.GetValueOrDefault()).ToList();
+            double? desviacion = null;
+            double? avg = null;
+            double? mult = null;
+            double? min = null;
+            double? max = null;
+
+            if (historico.Count > 0)
+            {
+                desviacion = historico.DesviacionEstandar();
+                avg = historico.Average();
+                mult = desviacion * 3;
+                min = avg - mult;
+                max = avg + mult;
+            }
+            return materias.Where(t => t != null).Select(t => new NumberTableItem()
             {
                 Month = t.VolumenProduccion.Encuesta.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("es")),
                 Year = t.VolumenProduccion.Encuesta.Fecha.Year,
@@ -228,6 +268,7 @@ namespace Domain.Managers
                 Minimo = min
             }).ToList();
         }
+
         public List<NumberTableItem> GetHistoryVentasExtranjero(long idMateriaPropia)
         {
             var materia = Manager.MateriaPropiaManager.Find(idMateriaPropia);
@@ -249,13 +290,22 @@ namespace Domain.Managers
                  t =>
                      t.VolumenProduccionMensual.MateriasPropia.FirstOrDefault(
                          h => h.IdLineaProducto == materia.IdLineaProducto));
-            var historico = materiasd.Select(t => (double)t.VentasExtranjero.GetValueOrDefault()).ToList();
-            var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
-            var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
-            var max = avg + mult;
-            return materias.Select(t => new NumberTableItem()
+            var historico = materiasd.Where(t => t != null).Select(t => (double)t.VentasExtranjero.GetValueOrDefault()).ToList();
+            double? desviacion = null;
+            double? avg = null;
+            double? mult = null;
+            double? min = null;
+            double? max = null;
+
+            if (historico.Count > 0)
+            {
+                desviacion = historico.DesviacionEstandar();
+                avg = historico.Average();
+                mult = desviacion * 3;
+                min = avg - mult;
+                max = avg + mult;
+            }
+            return materias.Where(t => t != null).Select(t => new NumberTableItem()
             {
                 Month = t.VolumenProduccion.Encuesta.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("es")),
                 Year = t.VolumenProduccion.Encuesta.Fecha.Year,
@@ -267,6 +317,7 @@ namespace Domain.Managers
                 Minimo = min
             }).ToList();
         }
+
         public override List<string> Validate(MateriaPropia element)
         {
             var list = base.Validate(element);

@@ -24,25 +24,32 @@ namespace Domain.Managers
 
         public bool ValidarProduccion(long idEncuesta,long idLineaProducto, decimal? produccion)
         {
-           var encuesta = Manager.EncuestaEstadistica.Find(idEncuesta);
-            if (encuesta == null) return false;
-            var encuestas =
+           var encuesta = Manager.EncuestaEstadistica.FindById(idEncuesta);
+           if (encuesta == null) return false;
+           var encuestas =
                 Manager.EncuestaEstadistica.Get(
-                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Id != encuesta.Id && t.Fecha < encuesta.Fecha);
+                    t => t.IdEstablecimiento == encuesta.IdEstablecimiento && t.Fecha < encuesta.Fecha);
+
             var materias = encuestas.Select(
-                 t =>
-                     t.VolumenProduccionMensual.MateriasTercero.FirstOrDefault(
-                         h => h.IdLineaProducto == idLineaProducto));
+                    t =>
+                        t.VolumenProduccionMensual.MateriasTercero.FirstOrDefault(
+                            h => h.IdLineaProducto == idLineaProducto));
 
             var historico = materias.Where(t=>t!=null).Select(t => double.Parse(t.UnidadProduccion)).ToList();
-            historico.Add((double)produccion.GetValueOrDefault());
+
+            if (historico.Count == 0) {
+                return true;
+            }
+
             var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
+            var avg = historico.Average();            
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            //var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)produccion.GetValueOrDefault() <= max && (double)produccion.GetValueOrDefault() >= min;
         }
+
         public override List<string> Validate(MateriaTerceros element)
         {
             var list = base.Validate(element);
@@ -81,13 +88,24 @@ namespace Domain.Managers
                  t =>
                      t.VolumenProduccionMensual.MateriasTercero.FirstOrDefault(
                          h => h.IdLineaProducto == materia.IdLineaProducto));
-            var historico = materiasd.Select(t => double.Parse(t.UnidadProduccion)).ToList();
-            var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
-            var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
-            var max = avg + mult;
-            return materias.Select(t => new NumberTableItem()
+            var historico = materiasd.Where(t => t != null).Select(t => double.Parse(t.UnidadProduccion)).ToList();
+
+            double? desviacion = null;
+            double? avg = null;
+            double? mult = null;
+            double? min = null;
+            double? max = null;
+
+            if (historico.Count > 0)
+            {
+                desviacion = historico.DesviacionEstandar();
+                avg = historico.Average();
+                mult = desviacion * 3;
+                min = avg - mult;
+                max = avg + mult;
+            }
+
+            return materias.Where(t => t != null).Select(t => new NumberTableItem()
             {
                 Month = t.VolumenProduccion.Encuesta.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("es")),
                 Year = t.VolumenProduccion.Encuesta.Fecha.Year,

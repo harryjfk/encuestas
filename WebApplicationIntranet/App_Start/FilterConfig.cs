@@ -11,6 +11,7 @@ namespace WebApplication
             //brb
             //filters.Add(new AutorizacionRol());
             //endbrb
+
             filters.Add(new HandleErrorAttribute());
         }
     }

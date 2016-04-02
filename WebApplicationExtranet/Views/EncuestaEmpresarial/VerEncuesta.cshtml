@@ -70,7 +70,7 @@
                         var pr = item.PosiblesRespuestas.FirstOrDefault();
                                 }
 
-                                @foreach (var v in pr.Valores)
+                                @foreach (var v in pr.Valores.OrderBy(t => t.orden))
                                 {
                                     var hasPrAso = v.IdPregunta != null;
 
@@ -98,7 +98,7 @@
                                                     @{var posResp = v.Pregunta.PosiblesRespuestas.FirstOrDefault();}
                                                     @if (posResp != null)
                                                     {
-                                                        foreach (var tv in posResp.Valores)
+                                                        foreach (var tv in posResp.Valores.OrderBy(t => t.orden))
                                                         {
                                                             if (tv.Seleccionado)
                                                             {
@@ -117,7 +117,8 @@
                                                             {
                                                                 if (tv.Seleccionado)
                                                                 {
-                                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="form-control">@tv.texto_personalizado</span>
+                                                                    <br />
+                                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="">@tv.texto_personalizado</span>
                                                                 }
                                                             }
 
@@ -129,7 +130,8 @@
                                             {
                                                 if (v.Seleccionado)
                                                 {
-                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="form-control">@v.texto_personalizado</span>
+                                                    <br/>
+                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="">@v.texto_personalizado</span>
                                                 }
 
                                             }

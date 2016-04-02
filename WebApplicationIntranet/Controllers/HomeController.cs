@@ -13,7 +13,6 @@ using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
-    
     /*[Authorize]
     [Autorizacion]*/
     public class HomeController : Controller
@@ -24,42 +23,55 @@ namespace WebApplication.Controllers
 
         public ActionResult Index(UserInformation user)
         {
-            //brb
-            user = new UserInformation()
+            var usuario = Manager.Usuario.Repositorio.GetUsuariosIntranet(null, t => t.Login == Session["login"].ToString());
+            if (usuario.Count > 0)
             {
-                Id = 2,
-                Tipo = "Tipo",
-                Nombre = "Nombre",
-                Login = "administrativo",
-                Ndocumento = "0012345",
-                Empresa = "Empresa",
-                Aplicaciones = new List<Aplicaciones>()
+                user = new UserInformation()
                 {
-                    new Aplicaciones()
+                    Id = Convert.ToInt32(usuario.First().Identificador),
+                    Tipo = "Tipo",
+                    Nombre = "Nombre",
+                    Login = "administrativo",
+                    Ndocumento = "0012345",
+                    Empresa = "Empresa",
+                    Aplicaciones = new List<Aplicaciones>()
                     {
-                        A = 123,
-                        R = "Administrador"
+                        new Aplicaciones()
+                        {
+                            A = 123,
+                            R = usuario.First().Roles.First().Nombre
+                        }
                     }
-                }
 
-            };
-            Session["uid"] = user.Id;
-            Session["pr"] = user.Aplicaciones.First().R;
-            //endbrb
+                };
 
+                Session["uid"] = user.Id;
+                Session["pr"] = user.Aplicaciones.First().R;
+            }
+            else
+            {
+                Session["uid"] = 0;
+                Session["pr"] = "";
+            }
+
+            //brb
             //Session["uid"] = user.Id;
 
             //string identificador = user.Aplicaciones.First().A.ToString();
             //string rol = "";
+
             //foreach (var item in user.Aplicaciones)
             //{
-            //    if (item.R == "Analista" || item.R == "Administrador") {
+            //    if (item.R == "Analista" || item.R == "Administrador")
+            //    {
             //        rol = item.R;
             //        break;
             //    }
             //}
+
             //ViewBag.Identificador = identificador;
-            //ViewBag.Rol = rol;            
+            //ViewBag.Rol = rol;
+            //Session["pr"] = rol;
             //ViewBag.Empresa = user.Empresa;
             //ViewBag.Id = user.Id;
             //ViewBag.Login = user.Login;
@@ -67,8 +79,8 @@ namespace WebApplication.Controllers
             //ViewBag.Nombre = user.Nombre;
             //ViewBag.Tipo = user.Tipo;
             //ViewBag.IdentityName = this.User.Identity.Name;
-
             //Manager.Usuario.AutenticateIntranetPRODUCE(user.Id.ToString(), user.Login, rol, user.Nombre);
+            //endbrb
 
             return View();
         }
@@ -98,7 +110,9 @@ namespace WebApplication.Controllers
                 if (Membership.ValidateUser(model.Login, model.Password))
                 {
                     var user = Manager.Usuario.Autenticate(model.Login, model.Password);
+                    
                     FormsAuthentication.SetAuthCookie(model.Login, false);
+                    Session["login"] = user.Login;
                     //this.WriteMessage("Iniciando sesion", model.Login);
                     //ViewData.Add("user",Manager.Usuario.FindRol(user.Id));
                     if (user.Roles.Any(t => t.Nombre.Equals("Informante")))
@@ -114,7 +128,7 @@ namespace WebApplication.Controllers
         public ActionResult SignOut()
         {
             //this.WriteMessage("Cerrando sesion");
-            FormsAuthentication.SignOut();;
+            FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
     }

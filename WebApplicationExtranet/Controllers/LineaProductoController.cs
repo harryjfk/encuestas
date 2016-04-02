@@ -6,9 +6,12 @@ using Domain;
 using Domain.Managers;
 using Entity;
 using WebApplication.Models;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class LineaProductoController : BaseController<LineaProducto>
     {
         public static Query<LineaProductoUnidadMedida> UmQuery { get; set; }

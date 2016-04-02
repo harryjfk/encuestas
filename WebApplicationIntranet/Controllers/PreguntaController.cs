@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class PreguntaController : BaseController<Pregunta>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdPregunta", string @default = null)
@@ -32,7 +35,7 @@ namespace WebApplication.Controllers
         {
             var list = OwnManager.Get(t => t.Activado && t.IdEncuestaEmpresarial==null && noIncluir.All(h=>h!=t.Id)).Select(t => new SelectListItem()
             {
-                Text = t.ToString(),
+                Text = string.Format("{0}-{1}", t.orden, t.ToString()),
                 Value = t.Id.ToString(),
                 Selected = t.Id.ToString() == id
             }).ToList();
@@ -48,6 +51,7 @@ namespace WebApplication.Controllers
        
         public JsonResult Toggle(long id)
         {
+            Query = base.GetQuery();
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)
@@ -66,24 +70,14 @@ namespace WebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public override ActionResult Index()
-        {
-            Query = Query ?? new Query<Pregunta>();
-            Query = Query.Validate();
-            Func<Pregunta, bool> nFilter = t => t.IdEncuestaEmpresarial == null;
-            if (Query.Filter != null)
-            {
-                var oFilter = (Func<Pregunta, bool>) Query.Filter.Clone();
-                Query.Filter = t => oFilter(t) && nFilter(t);
-            }
-            else
-            {
-                Query.Filter = nFilter;
-            }
-            OwnManager.Get(Query);
-            ModelState.Clear();
-            return View("Index", Query);
-        }
+        //public override ActionResult Index()
+        //{
+        //    Query = base.GetQuery();
+            
+        //    OwnManager.Get(Query);
+        //    ModelState.Clear();
+        //    return View("Index", Query);
+        //}
 
         public ActionResult CreatePosibleRespuesta(long id)
         {
@@ -108,6 +102,7 @@ namespace WebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
+                Query = base.GetQuery();
                 var manager = Manager;
                 var op = respuesta.Id == 0 ?
                     manager.PosibleRespuesta.Add(respuesta) :
@@ -115,6 +110,7 @@ namespace WebApplication.Controllers
                 if (op.Success)
                 {
                     manager.PosibleRespuesta.SaveChanges();
+                    OwnManager.Get(Query);
                     var c = RenderRazorViewToString("_Table", Query);
                     var result = new
                     {

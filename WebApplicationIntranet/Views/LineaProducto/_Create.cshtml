@@ -35,6 +35,7 @@
             <div class="col-md-7">
                 @Html.TextBoxFor(t => t.Codigo, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Codigo)
+                <div class="status" style="margin-top:5px;font-size:11px;">Formato: (4)CIIU(1)CR(2)COD</div>
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
@@ -113,7 +114,8 @@
         //    }
         //}, 1000);
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 250, statusText: 'caracteres restantes' });
-        $('#Codigo').maxlength({ events: ['blur'], slider: true, maxCharacters: 20, statusText: 'caracteres restantes' });
+        //$('#Codigo').maxlength({ events: ['blur'], slider: true, maxCharacters: 10, statusText: 'caracteres restantes' });
+        $('#Codigo').inputmask({ "mask": "[9999999]", greedy: false });
     })
 
 

@@ -1,6 +1,7 @@
 ﻿@using System.Globalization
 @using Entity
 @using WebApplication.Models
+@using Domain
 @model EncuestaEstadistica
 
 @{
@@ -56,10 +57,11 @@
                                 var elem = item.LineaProducto.LineasProductoEstablecimiento.FirstOrDefault(t => t.IdEstablecimiento == item.VolumenProduccion.Encuesta.IdEstablecimiento);
                                 var isnew = elem != null && elem.IsNew(Model.Fecha);
                                 var clase = isnew ? "bg-color-ligth-yellow" : "";
-                                //Html.RenderPartial("_ProductoMateriaPrimaPropia", item);
+                                
                                 <tr class="@clase">
                                     <td>
-                                        <span>@item.LineaProducto.Ciiu.Codigo-@item.LineaProducto.Codigo-@item.LineaProducto.Nombre</span>
+                                        @item.LineaProducto.Codigo<br />
+                                        @item.LineaProducto.Nombre
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.UnidadMedida.Abreviatura)
@@ -68,8 +70,9 @@
 
                                         @if (string.IsNullOrEmpty(item.JustificacionValorUnitario))
                                         {
-                                            @*@Html.DisplayFor(modelItem => item.ValorUnitario, new { style = "  width: 100%;", @class = "vu-" + item.Id, Value = String.Format("{0:0.0000}", item.ValorUnitario) })*@
-                                            @Html.Label("", item.ValorUnitario.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.ValorUnitario.GetValueOrDefault()) })
+                                            <div class="valorUnitarioPanel" data-elementid="@item.Id">                                   
+                                                @Html.Label("", item.ValorUnitario.GetValueOrDefault().ProduceFormat())
+                                            </div>
                                             <div class="panel panel-default div-jvu-@item.Id" style="display: none;margin-top: 5px; ">
                                                 <span>Justificaci&oacute;n</span>
                                                 @Html.DisplayFor(modelItem => item.JustificacionValorUnitario, new { style = "  width: 100%;", @class = "form-control jvu-" + item.Id })
@@ -79,30 +82,29 @@
                                         else
                                         {
                                             <div class="color-red panel panel-primary padding-10 valorUnitarioPanel" data-elementid="@item.Id">
-                                                @*@Html.DisplayFor(modelItem => item.ValorUnitario, new { style = "  width: 100%;", @class = "warning vu-" + item.Id, Value = String.Format("{0:0.0000}", item.ValorUnitario) })*@
-                                                @Html.Label("", item.ValorUnitario.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.ValorUnitario.GetValueOrDefault()) })
+                                                @Html.Label("", item.ValorUnitario.GetValueOrDefault().ProduceFormat())
                                                 <div style="margin-top: 5px;" class="panel panel-default div-jvu-@item.Id">
                                                     <span>Justificaci&oacute;n</span>
                                                     @Html.DisplayFor(modelItem => item.JustificacionValorUnitario, new { style = "  width: 100%;", @class = "form-control jvu-" + item.Id })
                                                 </div>
-                                            </div>
-                                            <div class="valorUnitarioError-@item.Id" style="display: none; position: absolute;">
-                                                @{
-                                            Html.RenderAction("GetHistoricoValorUnitario", new { id = item.Id });
-                                                }
-                                            </div>
+                                            </div>                                            
                                         }
-                                    </td>
-                                    <td>
-                                        @*@Html.Label("", item.Existencia.ToString(), new { @class = "reset-max-width", Value = String.Format("{0:0.0000}", item.Existencia) })*@
-                                        @Html.Label("", item.Existencia.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.Existencia.GetValueOrDefault()) })
-                                    </td>
-                                    <td>
 
+                                        <div class="valorUnitarioError-@item.Id" style="display: none; position: absolute;">
+                                        @{
+                                            Html.RenderAction("GetHistoricoValorUnitario", new { id = item.Id });
+                                        }
+                                        </div>
+                                    </td>
+                                    <td>                                        
+                                        @Html.Label("", item.Existencia.GetValueOrDefault().ProduceFormat())
+                                    </td>
+                                    <td>
                                         @if (string.IsNullOrEmpty(item.JustificacionProduccion))
                                         {
-                                            @*@Html.DisplayFor(modelItem => item.Produccion, new { style = "  width: 100%;", @class = "prod-" + item.Id, Value = String.Format("{0:0.0000}", item.Produccion) })*@
-                                            @Html.Label("", item.Produccion.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.Produccion.GetValueOrDefault()) })
+                                            <div class="produccionPanel" data-elementid="@item.Id">
+                                                @Html.Label("", item.Produccion.GetValueOrDefault().ProduceFormat())
+                                            </div>
                                             <div class="panel panel-default div-jp-@item.Id" style="display: none; margin-top: 5px;">
                                                 <span>Justificaci&oacute;n</span>
                                                 @Html.DisplayFor(modelItem => item.JustificacionProduccion, new { style = "  width: 100%;", @class = "jp-" + item.Id })
@@ -110,31 +112,30 @@
                                         }
                                         else
                                         {
-                                            <div class="color-red panel panel-primary padding-10 produccionPanel" data-elementid="@item.Id">
-                                                @*@Html.DisplayFor(modelItem => item.Produccion, new { style = "  width: 100%;", @class = "warning prod-" + item.Id, Value = String.Format("{0:0.0000}", item.Produccion) })*@
-                                                @Html.Label("", item.Produccion.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.Produccion.GetValueOrDefault()) })
+                                            <div class="color-red panel panel-primary padding-10 produccionPanel" data-elementid="@item.Id">                                                
+                                                @Html.Label("", item.Produccion.GetValueOrDefault().ProduceFormat())
                                                 <div style="margin-top: 5px;" class="panel panel-default div-jp-@item.Id">
                                                     <span>Justificaci&oacute;n</span>
                                                     @Html.DisplayFor(modelItem => item.JustificacionProduccion, new { style = "  width: 100%;", @class = "jp-" + item.Id })
                                                 </div>
-                                            </div>
-                                            <div class="produccionError-@item.Id" style="display: none; position: absolute;">
-                                                @{
-                                            Html.RenderAction("GetHistoricoProduccion", new { id = item.Id });
-                                                }
-                                            </div>
+                                            </div>                                          
                                         }
-                                    </td>
-                                    <td>
-                                        @* @Html.DisplayFor(modelItem => item.OtrosIngresos, new { style = "  width: 100%;", @class = "oi-" + item.Id, Value = String.Format("{0:0.0000}", item.OtrosIngresos) })*@
-                                        @Html.Label("", item.OtrosIngresos.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.OtrosIngresos.GetValueOrDefault()) })
-                                    </td>
-                                    <td>
 
+                                        <div class="produccionError-@item.Id" style="display: none; position: absolute;">
+                                            @{
+                                                Html.RenderAction("GetHistoricoProduccion", new { id = item.Id });
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>                                        
+                                        @Html.Label("", item.OtrosIngresos.GetValueOrDefault().ProduceFormat())
+                                    </td>
+                                    <td>
                                         @if (string.IsNullOrEmpty(item.justificacion_venta_pais))
                                         {
-                                            @*@Html.DisplayFor(modelItem => item.VentasPais, new { style = "  width: 100%;", @class = "vp-" + item.Id, Value = String.Format("{0:0.0000}", item.VentasPais) })*@
-                                            @Html.Label("", item.VentasPais.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.VentasPais.GetValueOrDefault()) })
+                                            <div class="ventaPaisPanel" data-elementid="@item.Id">
+                                                @Html.Label("", item.VentasPais.GetValueOrDefault().ProduceFormat())
+                                            </div>
                                             <div class="panel panel-default div-jvp-@item.Id" style="display: none;margin-top: 5px; ">
                                                 <span>Justificaci&oacute;n</span>
                                                 @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = "  width: 100%;", @class = "form-control jvp002-" + item.Id })
@@ -142,29 +143,27 @@
                                         }
                                         else
                                         {
-                                            <div class="color-red panel panel-primary padding-10 ventaPaisPanel" data-elementid="@item.Id">
-                                                @*@Html.DisplayFor(modelItem => item.VentasPais, new { style = "  width: 100%;", @class = "vp-" + item.Id, Value = String.Format("{0:0.0000}", item.VentasPais) })*@
-                                                @Html.Label("", item.VentasPais.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.VentasPais.GetValueOrDefault()) })
+                                            <div class="color-red panel panel-primary padding-10 ventaPaisPanel" data-elementid="@item.Id">                                                
+                                                @Html.Label("", item.VentasPais.GetValueOrDefault().ProduceFormat())
                                                 <div style="margin-top: 5px;" class="panel panel-default div-jvp-@item.Id" title="Debe insertar una justificación para las ventas en el pais">
                                                     <span>Justificaci&oacute;n</span>
                                                     @Html.DisplayFor(modelItem => item.justificacion_venta_pais, new { style = "  width: 100%;", @class = "form-control jvp002-" + item.Id })
                                                 </div>
-                                            </div>
-                                            <div class="ventaPaisError-@item.Id" style="display: none; position: absolute;">
-                                                @{
-                                            Html.RenderAction("GetHistoricoVentasPais", new { id = item.Id });
-                                                }
-                                            </div>
+                                            </div>                                           
                                         }
 
-
-
+                                        <div class="ventaPaisError-@item.Id" style="display: none; position: absolute;">
+                                            @{
+                                                Html.RenderAction("GetHistoricoVentasPais", new { id = item.Id });
+                                            }
+                                        </div>
                                     </td>
                                     <td>
                                         @if (string.IsNullOrEmpty(item.justificacion_venta_extranjero))
-                                        {
-                                            @*@Html.DisplayFor(modelItem => item.VentasExtranjero, new { style = "  width: 100%;", @class = " e-" + item.Id, Value = String.Format("{0:0.0000}", item.VentasExtranjero) })*@
-                                            @Html.Label("", item.VentasExtranjero.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.VentasExtranjero.GetValueOrDefault()) })
+                                        {       
+                                            <div class="ventaextPanel" data-elementid="@item.Id">
+                                                @Html.Label("", item.VentasExtranjero.GetValueOrDefault().ProduceFormat())
+                                            </div>
                                             <div class="panel panel-default div-jve-@item.Id" style="display: none;margin-top: 5px; ">
                                                 <span>Justificaci&oacute;n</span>
                                                 @Html.TextAreaFor(modelItem => item.justificacion_venta_extranjero, new { style = "  width: 100%;", @class = "form-control jve002-" + item.Id })
@@ -173,27 +172,22 @@
                                         else
                                         {
                                             <div class="color-red panel panel-primary padding-10 ventaextPanel" data-elementid="@item.Id">
-                                                @*@Html.DisplayFor(modelItem => item.VentasExtranjero, new { style = "  width: 100%;", @class = " e-" + item.Id, Value = String.Format("{0:0.0000}", item.VentasExtranjero) })*@
-                                                @Html.Label("", item.VentasExtranjero.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.VentasExtranjero.GetValueOrDefault()) })
+                                                @Html.Label("", item.VentasExtranjero.GetValueOrDefault().ProduceFormat())
                                                 <div style="margin-top: 5px;" class="panel panel-default div-jvp-@item.Id" title="Debe insertar una justificación para las ventas en el extranjero">
                                                     <span>Justificaci&oacute;n</span>
                                                     @Html.DisplayFor(modelItem => item.justificacion_venta_extranjero, new { style = "  width: 100%;", @class = "form-control jve002-" + item.Id })
                                                 </div>
-                                            </div>
-                                            <div class="ventaExtranjeroError-@item.Id" style="display: none; position: absolute;">
-                                                @{
-                                            Html.RenderAction("GetHistoricoVentasExtranjero", new { id = item.Id });
-                                                }
-                                            </div>
+                                            </div>                                            
                                         }
 
-
-
+                                        <div class="ventaExtranjeroError-@item.Id" style="display: none; position: absolute;">
+                                        @{
+                                            Html.RenderAction("GetHistoricoVentasExtranjero", new { id = item.Id });
+                                        }
+                                        </div>
                                     </td>
-                                    <td>
-                                        @*@Html.DisplayFor(modelItem => item.OtrasSalidas, new { style = "  width: 100%;", @class = "os-" + item.Id, Value = String.Format("{0:0.0000}", item.OtrasSalidas) })*@
-                                        @Html.Label("", item.OtrasSalidas.GetValueOrDefault().ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", item.OtrasSalidas.GetValueOrDefault()) })
-
+                                    <td>                                        
+                                        @Html.Label("", item.OtrasSalidas.GetValueOrDefault().ProduceFormat())
                                     </td>
 
                                 </tr>
@@ -228,10 +222,7 @@
                             <tr class="cabecera">
                                 <th>
                                     L&iacute;nea de Producto
-                                </th>
-                                @*<th>
-                                        Justificaci&oacute;n
-                                    </th>*@
+                                </th>                                
                                 <th>
                                     UM
                                 </th>
@@ -243,42 +234,38 @@
 
                         <tbody>
                             @foreach (var item in Model.VolumenProduccionMensual.MateriasTercero)
-                            {
-                                //Html.RenderPartial("_ProductoMateriaPrimaPropia", item);
+                            {                                
                                 <tr>
-                                    <td>
-                                        <span>@item.LineaProducto.Ciiu.Codigo-@item.LineaProducto.Codigo-@item.LineaProducto.Nombre</span>                                        
-                                    </td>
-                                    @*<td>
-                                            <span>@item.justificacion_produccion</span>
-                                        </td>*@
+                                    <td>                                        
+                                        <span>@item.LineaProducto.Ciiu.Codigo-@item.LineaProducto.Nombre</span>                                        
+                                    </td>                                    
                                     <td>
                                         @Html.DisplayFor(modelItem => item.UnidadMedida.Abreviatura)
                                     </td>
-                                    <td>
-                                        @*@Html.DisplayFor(modelItem => item.UnidadProduccion, String.Format("{0:0.0000}", decimal.Parse(item.UnidadProduccion)))*@
-                                        @*@Html.Label("", double.Parse(item.UnidadProduccion).ToString("0.0000"), new { @class = "", Value = String.Format("{0:0.0000}", double.Parse(item.UnidadProduccion)) })*@
+                                    <td>                                        
                                         @if (!string.IsNullOrWhiteSpace(item.justificacion_produccion) && !string.IsNullOrEmpty(item.justificacion_produccion))
                                         {
                                             <div class="color-red panel panel-primary padding-10 produccionTercpanel" data-elementid="@item.Id">
-                                                @Html.LabelFor(modelItem => item.UnidadProduccion, String.Format("{0:0.0000}", decimal.Parse(item.UnidadProduccion)))
-
+                                                @Html.Label("", decimal.Parse(item.UnidadProduccion).ProduceFormat())
                                                 <div style="margin-top: 5px;" class="panel panel-default">
                                                     <span>Justificaci&oacute;n</span>
                                                     <div>@Html.DisplayFor(modelItem => item.justificacion_produccion, new { style = " width: 100%;", @class = "form-control" })</div>
                                                 </div>
 
-                                            </div>
-                                            <div class="produccionTercError-@item.Id" style="display: none; position: absolute;">
-                                                @{
-                                            Html.RenderAction("GetHistoricoProduccionTerceros", new { id = item.Id });
-                                                }
-                                            </div>
+                                            </div>                                            
                                         }
                                         else
                                         {
-                                            @Html.LabelFor(modelItem => item.UnidadProduccion, String.Format("{0:0.0000}", decimal.Parse(item.UnidadProduccion)))
+                                            <div class="produccionTercpanel" data-elementid="@item.Id">
+                                                @Html.Label("", decimal.Parse(item.UnidadProduccion).ProduceFormat())
+                                            </div>
                                         }
+
+                                        <div class="produccionTercError-@item.Id" style="display: none; position: absolute;">
+                                            @{
+                                                Html.RenderAction("GetHistoricoProduccionTerceros", new { id = item.Id });
+                                            }
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -301,8 +288,8 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        
-        
+
+
         $('.produccionTercpanel').on('mouseenter', function (e) {
             var $elem = $(this);
             var id = $elem.attr("data-elementid");

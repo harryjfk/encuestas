@@ -43,6 +43,10 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>Office\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
+    <Reference Include="oracle.manageddataaccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Oracle.ManagedDataAccess\v4.0_4.121.1.0__89b483f429c47342\oracle.manageddataaccess.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -61,6 +65,8 @@
   <ItemGroup>
     <Compile Include="Filters.cs" />
     <Compile Include="Managers\AuditoriaManager.cs" />
+    <Compile Include="Managers\CiiuEstablecimientoManager.cs" />
+    <Compile Include="Managers\ReporteManager.cs" />
     <Compile Include="Managers\ViewPorcentajeEncuestaEstadisticaManager.cs" />
     <Compile Include="Managers\EncuestaAnalistaManager.cs" />
     <Compile Include="Managers\EstablecimientoAnalistaManager.cs" />

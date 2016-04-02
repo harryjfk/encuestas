@@ -26,21 +26,21 @@
 @using (Html.BeginForm("Buscar", "Ciiu", FormMethod.Post))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-heading">B&uacute;squeda</div>
 
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">C&Oacute;DIGO</span>
+                        <span class="input-group-addon">C&oacute;digo</span>
                         @*<input type="text" class="form-control" name="Codigo">*@
-                        @Html.TextBoxFor(t => t.Criteria.Codigo, new { @class = "form-control" })
+                        @Html.TextBoxFor(t => t.Criteria.Codigo, new { @class = "form-control mask4" })
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">DESCRIPCI&Oacute;N</span>
+                        <span class="input-group-addon">Descripci&oacute;n</span>
                         @*<input type="text" class="form-control">*@
                         @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
                     </div>
@@ -81,8 +81,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-       
+        $('.mask4').inputmask("9{1,4}");
         $.CreateItemOpenModal("add-btn", "editItem", "Ciiu","","Nuevo CIIU");
-
     })
 </script>

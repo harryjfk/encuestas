@@ -22,15 +22,24 @@ namespace Domain.Managers
         {
         }
 
-      
-
         public override List<string> Validate(AñoBase element)
         {
             var list= base.Validate(element);
-            list.RequiredAndNotZero(element,t=>t.id_ciiu,"CIIU");
             list.RequiredAndNotZero(element, t => t.id_establecimiento, "Establecimiento");
-            list.RequiredAndNotZero(element, t => t.id_linea_producto, "Línea de producto");
-            list.RequiredAndNotZero(element, t => t.id_unidad_medida, "Unidad de Medida");
+            list.RequiredAndNotZero(element,t=>t.id_ciiu,"CIIU");
+            long mc = Manager.Ciiu.Find(element.id_ciiu).id_metodo_calculo.Value;
+
+            if (mc == 2 || mc == 3)
+            {
+                element.id_linea_producto = null;
+                element.id_unidad_medida = null;
+            }
+            else
+            {
+                list.RequiredAndNotZero(element, t => t.id_linea_producto, "Línea de producto");
+                list.RequiredAndNotZero(element, t => t.id_unidad_medida, "Unidad de Medida");
+            }
+
             list.RequiredAndNotZero(element, t => t.produccion_anual, "Produccón Anual");
             list.RequiredAndNotZero(element, t => t.valor_produccion, "Valor de Produccón");
             list.RequiredAndNotZero(element, t => t.precio, "Precio");

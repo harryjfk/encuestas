@@ -17,99 +17,145 @@ namespace WebApplication.Controllers
     [Autorizacion]*/
     public class EncuestaEstadisticaController : BaseController<EncuestaEstadistica>
     {
-        private static Query<Contacto> QueryContacto { get; set; }
-        public static long IdEncuestaInformante { get; set; }
-        private static long IdEstablecimiento { get; set; }
-        private static EncuestaEstadistica Model { get; set; }
+        private Query<Contacto> QueryContacto { get; set; }
+        //public static long IdEncuestaInformante { get; set; }
 
-        public ActionResult GetDorpDown(string id, string nombre = "IdEncuestaEstadistica", string @default = null)
+        private long IdEstablecimiento
         {
-            var list = OwnManager.Get(t => true).Select(t => new SelectListItem()
-             {
-                 Text = t.ToString(),
-                 Value = t.Id.ToString(),
-                 Selected = t.Id.ToString() == id
-             }).ToList();
-            if (@default != null)
-                list.Insert(0, new SelectListItem()
+            get
+            {
+                if (Session["IdEstabEncuesta"] != null)
                 {
-                    Selected = id == "0",
-                    Value = "0",
-                    Text = @default
-                });
-            return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
+                    return (long)Session["IdEstabEncuesta"];
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+                Session["IdEstabEncuesta"] = value;
+            }
+        }
+        
+        private long IdEncuestaEstadistica
+        {
+            get
+            {
+                if (Session["IdEncuestaEstadistica"] != null)
+                {
+                    return (long)Session["IdEncuestaEstadistica"];
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+                Session["IdEncuestaEstadistica"] = value;
+            }
+        }
+        
+        private Query<Contacto> GetQueryContacto()
+        {
+            QueryContacto = QueryContacto ?? new Query<Contacto>();
+            QueryContacto = QueryContacto.Validate();
+            QueryContacto.Criteria = new Contacto();
+            QueryContacto.Paginacion = QueryContacto.Paginacion ?? new Paginacion();
+            QueryContacto.Paginacion.ItemsPerPage = 1;
+
+            if (Session["CriteriaContactoEncuesta"] != null)
+            {
+                if (Session["CriteriaContactoEncuesta"] is Contacto)
+                {
+                    QueryContacto.Criteria = (Contacto)Session["CriteriaContactoEncuesta"];
+                }
+                else
+                {
+                    Session["CriteriaContactoEncuesta"] = null;
+                    Session["PageContactoEncuesta"] = null;
+                    Session["OrdenContactoEncuesta"] = null;
+                }
+            }
+
+            if (Session["PageContactoEncuesta"] != null)
+            {
+                QueryContacto.Paginacion.Page = (int)Session["PageContactoEncuesta"];
+            }
+
+            if (Session["OrdenContactoEncuesta"] != null)
+            {
+                QueryContacto.Order = (Order<Contacto>)Session["OrderContactoEncuesta"];
+            }
+
+            QueryContacto.BuildFilter();
+
+            return QueryContacto;
         }
 
-        public ActionResult Encuestas(long id)
+        public ActionResult Encuestas(long id, UserInformation user)
         {
-            int s_userId;
-            if (Session["uid"] == null)
-            {
-                return HttpNotFound("Usuario no encontrado");
-            }
-            if (int.TryParse(Session["uid"].ToString(), out s_userId) == false)
-            {
-                return HttpNotFound("Usuario no encontrado");
-            }
-
-            //var user = this.GetLogued();
-            var user = Manager.Usuario.FindUsuarioExtranet(s_userId);
-            if (user == null) return HttpNotFound("Usuario no encontrado");
-
             var manager = Manager;
+            //brb
+            //var idUsuario = user.Id;
+            //endbrb
+
+            var idUsuario = this.GetLogued().Identificador;
             IdEstablecimiento = id;
+
             var establecimiento = Manager.Establecimiento.Find(id);
-            if (establecimiento == null)
-                return HttpNotFound("Establecimiento no encontrado");
+            if (establecimiento == null) return HttpNotFound("Establecimiento no encontrado");
+
             ViewBag.Establecimiento = establecimiento;
             manager.EncuestaEstadistica.GenerateCurrent(IdEstablecimiento);
-            Query = Query ?? new Query<EncuestaEstadistica>();
-            Query = Query.Validate();
-            Query.Criteria = Query.Criteria ?? new EncuestaEstadistica();
-            Query.Criteria.IdEstablecimiento = IdEstablecimiento;
-            Query.Criteria.IdInformante = user.Identificador;
-            Query.Paginacion = Query.Paginacion ?? new Paginacion();
-            Query.Paginacion.Page = 1;
-            Query.BuildFilter();
+            
+            bool FirstLoad = false;
+            EncuestaEstadistica criteria = new EncuestaEstadistica();
+
+            if (Session[CriteriaSesion] != null)
+            {
+                if (Session[CriteriaSesion] is EncuestaEstadistica == false)
+                {
+                    FirstLoad = true;
+                }
+            }
+            else
+            {
+                FirstLoad = true;
+            }
+
+            if (FirstLoad)
+            {                
+                criteria.IdEstablecimiento = IdEstablecimiento;
+                criteria.IdInformante = idUsuario;
+                criteria.Year = DateTime.Now.Year;                
+            }
+            else
+            {
+                criteria = (EncuestaEstadistica)Session[CriteriaSesion];
+                criteria.IdEstablecimiento = IdEstablecimiento;
+                criteria.IdInformante = idUsuario;
+            }
+
+            Session[CriteriaSesion] = criteria;
+
+            Query = GetQuery();
+
             Manager.EncuestaEstadistica.GetAsignadosInformante(Query);
+
             ModelState.Clear();
             return View("Index", Query);
         }
 
-        public ActionResult EncuestasAnalista(long id)
+        [HttpPost]
+        public ActionResult BuscarEncuestaInformante(EncuestaEstadistica criteria)
         {
-            int s_userId;
-            if (Session["uid"] == null)
-            {
-                return HttpNotFound("Usuario no encontrado");
-            }
-            if (int.TryParse(Session["uid"].ToString(), out s_userId) == false)
-            {
-                return HttpNotFound("Usuario no encontrado");
-            }
+            Session[CriteriaSesion] = criteria;
+            Session[PageSesion] = 1;
 
-            //var user = this.GetLogued();
-            var user = Manager.Usuario.FindUsuarioIntranet(s_userId);
-            if (user == null) return HttpNotFound("Usuario no encontrado");
-
-            var manager = Manager;
-            IdEstablecimiento = id;
-            var establecimiento = Manager.Establecimiento.Find(id);
-            if (establecimiento == null)
-                return HttpNotFound("Establecimiento no encontrado");
-            ViewBag.Establecimiento = establecimiento;
-            //manager.EncuestaEmpresarial.GenerateCurrent(IdEstablecimiento);
-            Query = Query ?? new Query<EncuestaEstadistica>();
-            Query = Query.Validate();
-            Query.Criteria = Query.Criteria ?? new EncuestaEstadistica();
-            Query.Criteria.IdEstablecimiento = IdEstablecimiento;
-           // Query.Criteria.IdAnalista = user.Identificador;
-            Query.Paginacion = Query.Paginacion ?? new Paginacion();
-            Query.Paginacion.Page = 1;
-            Query.BuildFilter();
-            Manager.EncuestaEstadistica.GetAsignadosAnalista(Query, (long)user.Identificador);
-            ModelState.Clear();
-            return View("IndexAnalista", Query);
+            return RedirectToAction("Encuestas", new { id = IdEstablecimiento });
         }
 
         public ActionResult Encuesta(long idEncuesta = 0)
@@ -117,47 +163,54 @@ namespace WebApplication.Controllers
             var manager = Manager;
             var encuesta = manager.EncuestaEstadistica.FindById(idEncuesta);
             if (encuesta == null) return HttpNotFound("Encuesta No encontrada");
-            Model = encuesta;
+            IdEncuestaEstadistica = encuesta.Id;
             if (encuesta.EstadoEncuesta == EstadoEncuesta.Observada || encuesta.EstadoEncuesta == EstadoEncuesta.NoEnviada)
                 return View("Encuesta", encuesta);
             return View("VerEncuesta", encuesta);
         }
 
-        public ActionResult EncuestaAnalista(long idEncuesta = 0)
+        [HttpPost]
+        public JsonResult Recreate(long id)
         {
-            var user = this.GetLogued();
+            var manager = Manager;
+            var encuesta = manager.EncuestaEstadistica.FindById(id);
+            var anio = encuesta.Fecha.Year;
+            var mes = encuesta.Fecha.Month;
+            var idEstablecimiento = encuesta.IdEstablecimiento;
             
-            var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(idEncuesta);
-            if (encuesta == null) return HttpNotFound("Encuesta No encontrada");
-            var analist = encuesta.CAT_ENCUESTA_ANALISTA.FirstOrDefault(t => t.id_analista == user.Identificador);
-            if (analist == null || analist.IsWaiting) return HttpNotFound("Encuesta No encontrada");
-            if (encuesta.EstadoEncuesta == EstadoEncuesta.Enviada || analist.IsCurrent)
-                return View("EncuestaAnalista", encuesta);
-            return View("VerEncuesta", encuesta);
-        }
-
-        public ActionResult VerEncuesta(long idEncuesta = 0)
-        {
-            var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(idEncuesta);
-            if (encuesta == null) return HttpNotFound("Encuestano encontrda");
-            if (encuesta.EstadoEncuesta == EstadoEncuesta.NoEnviada)
-            {
-                encuesta.EstadoEncuesta = EstadoEncuesta.Observada;
-                manager.EncuestaEstadistica.Modify(encuesta);
-                manager.EncuestaEstadistica.SaveChanges();
+            foreach (var auditoria in manager.AuditoriaManager.Get(t => t.id_encuesta == encuesta.Id)) {
+                manager.AuditoriaManager.Delete(auditoria.Id);
+                manager.AuditoriaManager.SaveChanges();
             }
-            return View("VerEncuesta", encuesta);
+            
+            manager.EncuestaEstadistica.Delete(manager.EncuestaEstadistica.FindById(id));
+            manager.EncuestaEstadistica.SaveChanges();
+            manager.EncuestaEstadistica.GenerateCurrent(idEstablecimiento, new DateTime(anio, mes, 1));
 
+            var idEncuestaNueva = manager.EncuestaEstadistica.Get(t => t.IdEstablecimiento == idEstablecimiento && t.Fecha.Year == anio && t.Fecha.Month == mes).FirstOrDefault().Id;
+
+            return Json(idEncuestaNueva.ToString());
         }
-
+        
         [HttpPost]
         public JsonResult Enviar(EncuestaEstadistica encuesta)
         {
             var manager = Manager;
-            var errors = manager.EncuestaEstadistica.Enviar(encuesta, true);
+
             var saved = manager.EncuestaEstadistica.FindById(encuesta.Id);
+            var encuestasAbiertas = manager.EncuestaEstadistica.Get(t => t.IdEstablecimiento == saved.IdEstablecimiento && t.Fecha < saved.Fecha && t.EstadoEncuesta != EstadoEncuesta.Validada);
+
+            List<string> errors;
+
+            if (encuestasAbiertas.Count() > 0)
+            {
+                errors = new List<string>() { "Existen encuestas anteriores que aún no han finalizado su proceso de envío o validación" };
+            }
+            else
+            {
+                errors = manager.EncuestaEstadistica.Enviar(encuesta, true);
+            }
+            
             if (errors.Count == 0)
             {
 
@@ -172,31 +225,18 @@ namespace WebApplication.Controllers
             else
             {
                 ModelState.AddModelError("Error", "Error al enviar la Encuesta");
-                var data = RenderRazorViewToString("Encuesta", saved);
+                //var data = RenderRazorViewToString("Encuesta", saved);
                 var res = new
                 {
                     Success = false,
-                    Data = data,
+                    //Data = data,
                     Errors = errors
                 };
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
 
         }
-
-        [HttpPost]
-        public ActionResult Observar(long id, string observacion)
-        {
-            Manager.EncuestaEstadistica.Observar(id, observacion);
-            return RedirectToAction("EncuestasAnalista", new { id = IdEstablecimiento });
-        }
-
-        public ActionResult Validar(long id)
-        {
-            Manager.EncuestaEstadistica.Validar(id);
-            return RedirectToAction("EncuestasAnalista", new { id = IdEstablecimiento });
-        }
-
+        
         public ActionResult GetNombreDistrito(string idDistrito)
         {
             var distrito = Manager.Distrito.Find(idDistrito);
@@ -205,6 +245,7 @@ namespace WebApplication.Controllers
                 name = distrito.Nombre;
             return PartialView("_TextView", name);
         }
+
         public ActionResult GetNombreDepartamento(string idDepartamento)
         {
             var departamento = Manager.Departamento.Find(idDepartamento);
@@ -260,28 +301,29 @@ namespace WebApplication.Controllers
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
         }
-        [Authorize(Roles = "Informante")]
+                
         public ActionResult EditProdMatTer(long id = 0)
         {
             var producto = Manager.MateriaTercerosManager.Find(id);
             producto = producto ?? new MateriaTerceros();
             return PartialView("_ProductoMateriaPrimaTerceros", producto);
         }
-        [HttpPost]
-        [Authorize(Roles = "Informante")]
+
+        [HttpPost]        
         public JsonResult CreateProdMatTer(MateriaTerceros producto)
         {
             if (ModelState.IsValid)
             {
                 var manager = Manager;
-                producto.IdVolumenProduccion = Model.VolumenProduccionMensual.Identificador;
+                var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+                producto.IdVolumenProduccion = encuesta.VolumenProduccionMensual.Identificador;
                 var op = producto.Id == 0 ?
                     manager.MateriaTercerosManager.Add(producto) :
                     manager.MateriaTercerosManager.Modify(producto);
                 if (op.Success)
                 {
                     manager.MateriaTercerosManager.SaveChanges();
-                    var elements = Manager.MateriaTercerosManager.Get(t => t.IdVolumenProduccion == Model.VolumenProduccionMensual.Identificador);
+                    var elements = Manager.MateriaTercerosManager.Get(t => t.IdVolumenProduccion == encuesta.VolumenProduccionMensual.Identificador);
                     var data = RenderRazorViewToString("_TableProductoMateriaPrimaTerceros", elements);
                     var res = new
                     {
@@ -315,44 +357,32 @@ namespace WebApplication.Controllers
 
             }
         }
-
-        [HttpPost]
-        public ActionResult BuscarEncuestaInformante(EncuestaEstadistica criteria)
-        {
-            Query = Query ?? new Query<EncuestaEstadistica>().Validate();
-            Query.Criteria = criteria;
-            Query.Paginacion = Query.Paginacion ?? new Paginacion();
-            Query.Paginacion.Page = 1;
-            Query.Criteria.IdEstablecimiento = IdEstablecimiento;
-            //Query.BuildFilter();
-            return RedirectToAction("Encuestas", new { id = IdEstablecimiento });
-        }
-        [HttpPost]
-        public ActionResult BuscarEncuestaAnalista(EncuestaEstadistica criteria)
-        {
-            Query = Query ?? new Query<EncuestaEstadistica>().Validate();
-            Query.Criteria = criteria;
-            Query.Paginacion = Query.Paginacion ?? new Paginacion();
-            Query.Paginacion.Page = 1;
-            Query.Criteria.IdEstablecimiento = IdEstablecimiento;
-            //Query.BuildFilter();
-            return RedirectToAction("EncuestasAnalista", new { id = IdEstablecimiento });
-        }
-
+                
         public ActionResult ContactosEncuesta(long id)
         {
             //var id = IdEstablecimiento;
             var manager = Manager;
             var establecimiento = manager.Establecimiento.Find(id);
             if (establecimiento == null) return HttpNotFound("Establecimiento no encontrado");
-            QueryContacto = QueryContacto ?? new Query<Contacto>().Validate();
-            QueryContacto.Criteria = QueryContacto.Criteria ?? new Contacto();            
-            QueryContacto.Criteria.IdEstablecimiento = id;
-            QueryContacto.Paginacion.ItemsPerPage = 5;
-            QueryContacto.BuildFilter();
+            Contacto criteria;
+            if (Session["CriteriaContactoEncuesta"] == null)
+            {
+                criteria = new Contacto();
+            }
+            else {
+                criteria = (Contacto)Session["CriteriaContactoEncuesta"];
+            }
+
+            criteria.IdEstablecimiento = id;
+            Session["CriteriaContactoEncuesta"] = criteria;
+
+            QueryContacto = GetQueryContacto();
+            
+            
             Manager.Contacto.Get(QueryContacto);
             return PartialView("_ContactosEncuesta", Tuple.Create<Contacto, Query<Contacto>>(null, QueryContacto));
         }
+
         [HttpPost]
         public virtual JsonResult CreateNuevoContacto(Contacto element)
         {
@@ -370,10 +400,22 @@ namespace WebApplication.Controllers
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
                 element.IdEstablecimiento = IdEstablecimiento;
-                QueryContacto = QueryContacto ?? new Query<Contacto>().Validate();
-                QueryContacto.Criteria = QueryContacto.Criteria ?? new Contacto();
-                QueryContacto.Criteria.IdEstablecimiento = IdEstablecimiento;
-                QueryContacto.BuildFilter();
+
+                Contacto criteria;
+                if (Session["CriteriaContactoEncuesta"] == null)
+                {
+                    criteria = new Contacto();
+                }
+                else
+                {
+                    criteria = (Contacto)Session["CriteriaContactoEncuesta"];
+                }
+
+                criteria.IdEstablecimiento = id;
+                Session["CriteriaContactoEncuesta"] = criteria;
+
+                QueryContacto = GetQueryContacto();                
+                
                 var manager = Manager.Contacto;
                 var op = manager.Add(element);
 
@@ -414,17 +456,18 @@ namespace WebApplication.Controllers
 
             }
         }
+
         public virtual ActionResult PageContactoEncuesta(int page)
         {
-            QueryContacto = QueryContacto ?? new Query<Contacto>().Validate();
-            QueryContacto.Paginacion.Page = page;
-            return RedirectToAction("ContactosEncuesta");
+            Session["PageContactoEncuesta"] = page;
+            return RedirectToAction("ContactosEncuesta", new { id = IdEstablecimiento });
         }
+
         public ActionResult ToggleContacto(int id)
         {
             Manager.Contacto.EstablecerPredeterminado(id);
-            Model = Manager.EncuestaEstadistica.FindById(Model.Id);
-            return PartialView("_IdentificacionEstablecimiento", Model);
+            var encuesta = Manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+            return PartialView("_IdentificacionEstablecimiento", encuesta);
         }
 
         [HttpPost]
@@ -436,49 +479,83 @@ namespace WebApplication.Controllers
             var ventaPais = new List<long>();
             var ventaExtranjero = new List<long>();
             var errors = new List<string>();
+            
             foreach (var materia in materias)
             {
                 var mat = manager.MateriaPropiaManager.Find(materia.Id);
                 if (mat != null)
                 {
                     if (!materia.IsValid)
-                    {
-                        errors.Add(string.Format("Los valores insertados para la línea de producto {0} no son correctos. (Existencias + Produccion + Otros Ingresos) ≥ (VentasPais + Ventas Extranjeros + Otras Salidas)", mat.LineaProducto.Nombre));
+                    {                        
+                        errors.Add(string.Format("Los valores insertados para la línea de producto {0} no son correctos. (Existencias + Producción + Otros Ingresos) ≥ (VentasPais + Ventas Extranjeros + Otras Salidas)", mat.LineaProducto.Nombre));
                         continue;
                     }
+                    if (!materia.IsValidProduccionValorUnitario)
+                    {
+                        errors.Add(string.Format("Los valores insertados para la línea de producto {0} no son correctos. Sí digitó Valor Unitario o Producción, ambos campos son requeridos.", mat.LineaProducto.Nombre));
+                        continue;
+                    }
+
                     if (mat.IsFirst)
                     {
                         mat.Existencia = materia.Existencia;
-                        // manager.EncuestaEstadistica.UpdateExistenciasEncuestas(mat.VolumenProduccion.Encuesta.Id,mat.IdLineaProducto);
-                        //MODIFICAR RESTO DE LAS ENCUESTA AQUI
                     }
-                    mat.IdUnidadMedida = materia.IdUnidadMedida > 0 ? materia.IdUnidadMedida : mat.IdUnidadMedida;
-                    mat.JustificacionProduccion = materia.JustificacionProduccion;
-                    mat.JustificacionValorUnitario = materia.JustificacionValorUnitario;
-                    mat.justificacion_venta_extranjero = materia.justificacion_venta_extranjero;
-                    mat.justificacion_venta_pais = materia.justificacion_venta_pais;
-                    mat.OtrasSalidas = materia.OtrasSalidas;
-                    mat.OtrosIngresos = materia.OtrosIngresos;
-                    mat.Produccion = materia.Produccion;
-                    mat.ValorUnitario = materia.ValorUnitario;
-                    mat.VentasExtranjero = materia.VentasExtranjero;
-                    mat.VentasPais = materia.VentasPais;
-                    manager.MateriaPropiaManager.Modify(mat);
-                    manager.MateriaPropiaManager.SaveChanges();
+                                      
                     var validProduccion = !Manager.MateriaPropiaManager.ValidarProduccion(materia.Id, materia.Produccion);
                     var validValorUnitario = !Manager.MateriaPropiaManager.ValidarValorUnitario(materia.Id, materia.ValorUnitario);
                     var validVentasPais = !Manager.MateriaPropiaManager.ValidarVentasPais(materia.Id, materia.VentasPais);
                     var validVentasExtranjero = !Manager.MateriaPropiaManager.ValidarVentasExtranjero(materia.Id, materia.VentasExtranjero);
 
                     if (validProduccion && materia.Produccion != null)
+                    {
                         produccion.Add(materia.Id);
-                    if (validValorUnitario && materia.ValorUnitario != null)
-                        valorUnitario.Add(materia.Id);
-                    if (validVentasPais && materia.VentasPais != null)
-                        ventaPais.Add(materia.Id);
-                    if (validVentasExtranjero && materia.VentasExtranjero != null)
-                        ventaExtranjero.Add(materia.Id);
+                        mat.JustificacionProduccion = (materia.JustificacionProduccion == null) ? " " : materia.JustificacionProduccion;
+                    }
+                    else
+                    {
+                        mat.JustificacionProduccion = null;
+                    }
 
+                    if (validValorUnitario && materia.ValorUnitario != null)
+                    {
+                        valorUnitario.Add(materia.Id);
+                        mat.JustificacionValorUnitario = (materia.JustificacionValorUnitario == null) ? " " : materia.JustificacionValorUnitario;
+                    }
+                    else
+                    {
+                        mat.JustificacionValorUnitario = null;
+                    }
+
+                    if (validVentasPais && materia.VentasPais != null)
+                    {
+                        ventaPais.Add(materia.Id);
+                        mat.justificacion_venta_pais = (materia.justificacion_venta_pais == null) ? " " : materia.justificacion_venta_pais;
+                    }
+                    else
+                    {
+                        mat.justificacion_venta_pais = null;
+                    }
+                        
+                    if (validVentasExtranjero && materia.VentasExtranjero != null)
+                    {
+                        ventaExtranjero.Add(materia.Id);
+                        mat.justificacion_venta_extranjero = (materia.justificacion_venta_extranjero == null) ? " " : materia.justificacion_venta_extranjero;
+                    }
+                    else
+                    {
+                        mat.justificacion_venta_extranjero = null;
+                    }
+
+                    mat.IdUnidadMedida = materia.IdUnidadMedida > 0 ? materia.IdUnidadMedida : mat.IdUnidadMedida;
+                    mat.OtrasSalidas = materia.OtrasSalidas;
+                    mat.OtrosIngresos = materia.OtrosIngresos;
+                    mat.Produccion = materia.Produccion;
+                    mat.ValorUnitario = materia.ValorUnitario;
+                    mat.VentasExtranjero = materia.VentasExtranjero;
+                    mat.VentasPais = materia.VentasPais;
+
+                    manager.MateriaPropiaManager.Modify(mat);
+                    manager.MateriaPropiaManager.SaveChanges();
                 }
                 //else
                 //{
@@ -488,7 +565,7 @@ namespace WebApplication.Controllers
                 //    };
                 //    return Json(result, JsonRequestBehavior.AllowGet);
                 //}
-                Manager.EncuestaEstadistica.UpdateExistenciasEncuestas(mat.VolumenProduccion.Encuesta.Id, mat.IdLineaProducto);
+                //Manager.EncuestaEstadistica.UpdateExistenciasEncuestas(mat.VolumenProduccion.Encuesta.Id, mat.IdLineaProducto);
             }
             if (errors.Any())
             {
@@ -499,10 +576,10 @@ namespace WebApplication.Controllers
                 };
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
-            var model = Manager.EncuestaEstadistica.FindById(Model.Id);
-            manager.ValorProduccionManager.Generate(Model.Id);
-            var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", model);
-            var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", model);
+            var encuesta = Manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+            Manager.ValorProduccionManager.Generate(encuesta.Id);
+            var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", encuesta);
+            var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", encuesta);
             var result = new
             {
                 Success = true,
@@ -524,7 +601,6 @@ namespace WebApplication.Controllers
             var errors = new List<string>();
             foreach (var materia in valores)
             {
-
                 var valor = manager.ValorProduccionManager.Find(materia.Id);
                 if (valor != null)
                 {
@@ -533,19 +609,25 @@ namespace WebApplication.Controllers
                         errors.Add(string.Format("Debe ingresar un valor en  Materia prima de terceros para el CIIU {0}", valor.CAT_CIIU.Nombre));
                         continue;
                     }
-                    //valor.ProductosMateriaPropia = materia.ProductosMateriaPropia;
-                    valor.ProductosMateriaTerceros = materia.ProductosMateriaTerceros;
-                    valor.justificacion_materia_terc = materia.justificacion_materia_terc;
-                    var validmateriaTerceros = !Manager.ValorProduccionManager.ValidarMateriaTerceros(materia.Id, materia.ProductosMateriaTerceros, materia.id_ciiu);
-                    manager.ValorProduccionManager.Modify(valor);
-                    manager.ValorProduccionManager.SaveChanges();
-                    if (validmateriaTerceros && (string.IsNullOrEmpty(valor.justificacion_materia_terc) || string.IsNullOrWhiteSpace(valor.justificacion_materia_terc)))
+                    
+                    valor.ProductosMateriaTerceros = materia.ProductosMateriaTerceros;                    
+                    var validmateriaTerceros = !Manager.ValorProduccionManager.ValidarMateriaTerceros(materia.Id, materia.ProductosMateriaTerceros);
+                   
+                    if (validmateriaTerceros && materia.ProductosMateriaTerceros != null)
                     {
                         list.Add(materia.Id);
+                        valor.justificacion_materia_terc = (materia.justificacion_materia_terc == null) ? " " : materia.justificacion_materia_terc;
+                    }
+                    else
+                    {
+                        valor.justificacion_materia_terc = null;
                     }
 
+                    manager.ValorProduccionManager.Modify(valor);
+                    manager.ValorProduccionManager.SaveChanges();
                 }
             }
+
             if (errors.Count > 0)
             {
                 var res = new
@@ -555,23 +637,15 @@ namespace WebApplication.Controllers
                     Errors = errors
                 };
                 return Json(res, JsonRequestBehavior.AllowGet);
-            }
-            if (list.Count > 0)
-            {
-                var res = new
-                {
-                    Elements = list,
-                    Success = false,
-                    Errors = new List<string>() { "Debe establecer una justificación para el valor de materia prima de terceros." }
-                };
-                return Json(res, JsonRequestBehavior.AllowGet);
-            }
+            }            
             var result = new
             {
-                Success = true
+                Success = true,
+                Elements = list
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult SaveVentas(List<VentasPaisExtranjero> ventas)
         {
@@ -579,6 +653,7 @@ namespace WebApplication.Controllers
             var ext = new List<long>();
             var pais = new List<long>();
             var errors = new List<string>();
+            bool esJustificado = true;
             foreach (var venta in ventas)
             {
                 var valor = manager.VentasPaisExtranjeroManager.Find(venta.Id);
@@ -597,6 +672,39 @@ namespace WebApplication.Controllers
                         s = true;
                     }
                     if (s) continue;
+                    
+                    var validExt =
+                       !manager.VentasPaisExtranjeroManager.ValidarVentaExtranjero(venta.Id, venta.VentaExtranjero);
+                    var validPais =
+                        !manager.VentasPaisExtranjeroManager.ValidarVentaPais(venta.Id, venta.VentaPais);
+                    
+                    if (validExt && venta.VentaExtranjero != null)
+                    {
+                        ext.Add(venta.Id);
+                        if (venta.justificacion_venta_ext == null)
+                        {
+                            esJustificado = false;
+                        }
+                        venta.justificacion_venta_ext = (venta.justificacion_venta_ext == null) ? " " : venta.justificacion_venta_ext;                        
+                    }
+                    else
+                    {
+                        venta.justificacion_venta_ext = null;
+                    }
+                    
+                    if (validPais && venta.VentaPais != null)
+                    {
+                        pais.Add(venta.Id);
+                        if (venta.justificacion_venta_pais == null)
+                        {
+                            esJustificado = false;
+                        }
+                        venta.justificacion_venta_pais = (venta.justificacion_venta_pais == null) ? " " : venta.justificacion_venta_pais;                        
+                    }
+                    else
+                    {
+                        venta.justificacion_venta_pais = null;
+                    }
 
                     valor.VentaExtranjero = venta.VentaExtranjero;
                     valor.VentaPais = venta.VentaPais;
@@ -605,15 +713,6 @@ namespace WebApplication.Controllers
 
                     manager.VentasPaisExtranjeroManager.Modify(valor);
                     manager.VentasPaisExtranjeroManager.SaveChanges();
-
-                    var validExt =
-                       !manager.VentasPaisExtranjeroManager.ValidarVentaExtranjero(venta.Id, venta.VentaExtranjero);
-                    var validPais =
-                        !manager.VentasPaisExtranjeroManager.ValidarVentaPais(venta.Id, venta.VentaPais);
-                    if (validExt && (string.IsNullOrWhiteSpace(valor.justificacion_venta_ext) || string.IsNullOrEmpty(valor.justificacion_venta_ext)))
-                        ext.Add(venta.Id);
-                    if (validPais && (string.IsNullOrWhiteSpace(valor.justificacion_venta_pais) || string.IsNullOrEmpty(valor.justificacion_venta_pais)))
-                        pais.Add(venta.Id);
                 }
             }
             if (errors.Count > 0)
@@ -627,7 +726,7 @@ namespace WebApplication.Controllers
                 };
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
-            if (ext.Count > 0 || pais.Count > 0)
+            if ((ext.Count > 0 || pais.Count > 0) && esJustificado == false)
             {
                 var res = new
                 {
@@ -640,7 +739,9 @@ namespace WebApplication.Controllers
             }
             var result = new
             {
-                Success = true
+                Success = true,
+                Pais = pais,
+                Extranjero = ext,
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -648,8 +749,8 @@ namespace WebApplication.Controllers
         public ActionResult GetDorpDownLineaProducto(string id, long idCiiu = 0, string nombre = "IdLineaProducto", string @default = null)
         {
             var list = Manager.LineaProducto.Get(t => t.Activado
-                && t.MateriaTercero.All(h => h.VolumenProduccion.Encuesta.Id != Model.Id)
-                /*&& t.Ciiu.Establecimientos.Any(h=>h.Id==IdEstablecimiento*/
+                && t.MateriaTercero.All(h => h.VolumenProduccion.Encuesta.Id != IdEncuestaEstadistica)
+                && t.Ciiu.Establecimientos.Any(h=>h.Id==IdEstablecimiento)
                 && t.IdCiiu == idCiiu && t.LineasProductoEstablecimiento.All(h => h.IdEstablecimiento != IdEstablecimiento))
                 .Select(t => new SelectListItem()
                 {
@@ -670,7 +771,7 @@ namespace WebApplication.Controllers
         public ActionResult GetDorpDownLineaProductoNotIncluded(string id, long idCiiu = 0, string nombre = "IdLineaProducto", string @default = null)
         {
             var list = Manager.LineaProducto.Get(t => t.Activado && t.LineasProductoUnidadMedida.Any()
-                && t.MateriaTercero.All(h => h.VolumenProduccion.Encuesta.Id != Model.Id)
+                && t.MateriaTercero.All(h => h.VolumenProduccion.Encuesta.Id != IdEncuestaEstadistica)
                 /*&& t.Ciiu.Establecimientos.Any(h=>h.Id==IdEstablecimiento*/
                 && t.IdCiiu == idCiiu && t.LineasProductoEstablecimiento.All(h => h.IdEstablecimiento != IdEstablecimiento))
                 .Select(t => new SelectListItem()
@@ -691,11 +792,12 @@ namespace WebApplication.Controllers
 
         public ActionResult GetDorpDownLineaProductop(string id, long idCiiu = 0, string nombre = "IdLineaProducto", string @default = null)
         {
-            var list = Manager.LineaProducto.Get(t => t.Activado && t.LineasProductoUnidadMedida.Any()
-                //&& t.MateriasPropia.All(h => h.VolumenProduccion.Encuesta.Id != Model.Id)
-                /*&& t.Ciiu.Establecimientos.Any(h=>h.Id==IdEstablecimiento*/
-                && t.IdCiiu == idCiiu && t.LineasProductoEstablecimiento.All(h => h.IdEstablecimiento != IdEstablecimiento))
-                .Select(t => new SelectListItem()
+            var notInclude = Manager.LineaProductoEstablecimiento.Get("LineaProducto", h => h.IdEstablecimiento == IdEstablecimiento);
+
+            var list = Manager.LineaProducto.Get("LineasProductoUnidadMedida", t => t.Activado && t.LineasProductoUnidadMedida.Any()
+                && !(notInclude.Any(p2 => p2.IdLineaProducto == t.Id) || notInclude.Any(p2 => p2.LineaProducto.Codigo.Substring(0, 7) == t.Codigo))
+                && t.Codigo.Length == 7
+                && t.IdCiiu == idCiiu).Select(t => new SelectListItem()
                 {
                     Text = t.ToString(),
                     Value = t.Id.ToString(),
@@ -709,6 +811,42 @@ namespace WebApplication.Controllers
                     Text = @default
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
+        }
+
+        public ActionResult GetDorpDownLineaProductoS(string id, string filter, string nombre = "IdLineaProducto", string @default = null, bool mt = false)
+        {
+            var notIncludeMT = Manager.MateriaTercerosManager.Get("LineaProducto", h => h.IdVolumenProduccion == IdEncuestaEstadistica);
+            var notInclude = Manager.LineaProductoEstablecimiento.Get("LineaProducto", h => h.IdEstablecimiento == IdEstablecimiento);
+
+            var list = Manager.LineaProducto.Get("LineasProductoUnidadMedida", t => t.Activado && t.LineasProductoUnidadMedida.Any()
+                && ((mt == false && !(notInclude.Any(p2 => p2.IdLineaProducto == t.Id) || notInclude.Any(p2 => p2.LineaProducto.Codigo.Substring(0, 7) == t.Codigo))) 
+                ||  (mt == true && !(notIncludeMT.Any(p => p.IdLineaProducto == t.Id) || notIncludeMT.Any(p2 => p2.LineaProducto.Codigo.Substring(0, 7) == t.Codigo))))
+                && t.Nombre.ToUpper().Contains(filter.ToUpper())
+                && t.Codigo.Length == 7).Select(t => new SelectListItem()
+                {
+                    Text = t.ToString(),
+                    Value = t.Id.ToString(),
+                    Selected = t.Id.ToString() == id
+                }).ToList();
+            if (@default != null)
+                list.Insert(0, new SelectListItem()
+                {
+                    Selected = id == "0",
+                    Value = "0",
+                    Text = @default
+                });
+            return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
+        }
+
+        public JsonResult GetCiiuTextByProducto(string idProducto)
+        {
+            var ciiu = Manager.LineaProducto.Get(t => t.Id.ToString() == idProducto).First().Ciiu;
+            return Json(new {
+                        Ciiu = ciiu.Nombre,
+                        Codigo = ciiu.Codigo,
+                        IdCiiu = ciiu.Id
+                    }
+                );
         }
 
         public ActionResult GetDorpDownCiiu(string id = "0", string nombre = "IdCiiu", string @default = null)
@@ -768,9 +906,10 @@ namespace WebApplication.Controllers
         [HttpPost]
         public JsonResult NuevaMateriaTerceros(MateriaTerceros materia)
         {
-            materia.IdVolumenProduccion = Model.VolumenProduccionMensual.Identificador;
+            var encuesta = Manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+            materia.IdVolumenProduccion = encuesta.VolumenProduccionMensual.Identificador;
             var manager = Manager;
-            var valid = !Manager.MateriaTercerosManager.ValidarProduccion(Model.Id, materia.IdLineaProducto,
+            var valid = !Manager.MateriaTercerosManager.ValidarProduccion(encuesta.Id, materia.IdLineaProducto,
                    decimal.Parse(materia.UnidadProduccion));
             if (valid && (string.IsNullOrEmpty(materia.justificacion_produccion) || string.IsNullOrWhiteSpace(materia.justificacion_produccion)))
             {
@@ -782,18 +921,22 @@ namespace WebApplication.Controllers
                 };
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
+            if(!valid)
+            {
+                materia.justificacion_produccion = null;
+            }
             var op = materia.Id == 0
                 ? manager.MateriaTercerosManager.Add(materia)
                 : manager.MateriaTercerosManager.Modify(materia);
             if (op.Success)
             {
                 manager.MateriaTercerosManager.SaveChanges();
-                manager.ValorProduccionManager.Generate(Model.Id);
-                var model = Manager.EncuestaEstadistica.FindById(Model.Id);
-                var list = model.VolumenProduccionMensual.MateriasTercero;
+                manager.ValorProduccionManager.Generate(IdEncuestaEstadistica);
+                var encuestaSuccess = Manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+                var list = encuestaSuccess.VolumenProduccionMensual.MateriasTercero;
                 var c = this.RenderRazorViewToString("_TableProductoMateriaPrimaTerceros", list);
-                var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", model);
-                var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", model);
+                var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", encuestaSuccess);
+                var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", encuestaSuccess);
 
                 var res = new
                 {
@@ -820,7 +963,8 @@ namespace WebApplication.Controllers
         public JsonResult NuevaMateriaPropia(MateriaPropia materia)
         {
             //adicionar linea de producto al establecimiento
-            materia.IdVolumenProduccion = Model.VolumenProduccionMensual.Identificador;
+            var encuesta = Manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+            materia.IdVolumenProduccion = encuesta.VolumenProduccionMensual.Identificador;
             var manager = Manager;
             var op = materia.Id == 0
                 ? manager.MateriaPropiaManager.Add(materia)
@@ -828,14 +972,14 @@ namespace WebApplication.Controllers
             var lin = Manager.LineaProducto.Find(materia.IdLineaProducto);
             if (op.Success && lin != null)
             {
-                manager.EncuestaEstadistica.AddLineaProducto(Model.Id, new LineaProducto() { IdCiiu = lin.IdCiiu, Id = materia.IdLineaProducto }, false);
+                manager.EncuestaEstadistica.AddLineaProducto(IdEncuestaEstadistica, new LineaProducto() { IdCiiu = lin.IdCiiu, Id = materia.IdLineaProducto }, false);
                 manager.MateriaPropiaManager.SaveChanges();
-                manager.ValorProduccionManager.Generate(Model.Id);
-                var model = Manager.EncuestaEstadistica.FindById(Model.Id);
-                var list = model.VolumenProduccionMensual.MateriasPropia;
+                manager.ValorProduccionManager.Generate(IdEncuestaEstadistica);
+                var encuestaSuccess = Manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+                var list = encuestaSuccess.VolumenProduccionMensual.MateriasPropia;
                 var c = this.RenderRazorViewToString("_TableProductoMateriaPrimaPropia", list);
-                var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", model);
-                var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", model);
+                var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", encuestaSuccess);
+                var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", encuestaSuccess);
                 var res = new
                 {
                     Success = true,
@@ -860,7 +1004,7 @@ namespace WebApplication.Controllers
         public JsonResult AsignarNuevaLineaProducto(LineaProducto linea)
         {
             var manager = Manager;
-            manager.EncuestaEstadistica.AddLineaProducto(Model.Id, linea);
+            manager.EncuestaEstadistica.AddLineaProducto(IdEncuestaEstadistica, linea);
             var op = new List<string>();
             if (linea == null)
                 op.Add("Datos Erroneos");
@@ -871,12 +1015,12 @@ namespace WebApplication.Controllers
             if (!op.Any())
             {
                 manager.MateriaPropiaManager.SaveChanges();
-                manager.ValorProduccionManager.Generate(Model.Id);
-                var model = Manager.EncuestaEstadistica.FindById(Model.Id);
-                var list = model.VolumenProduccionMensual.MateriasPropia;
+                manager.ValorProduccionManager.Generate(IdEncuestaEstadistica);
+                var encuesta = Manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+                var list = encuesta.VolumenProduccionMensual.MateriasPropia;
                 var c = this.RenderRazorViewToString("_TableProductoMateriaPrimaPropia", list);
-                var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", model);
-                var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", model);
+                var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", encuesta);
+                var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", encuesta);
                 var res = new
                 {
                     Success = true,
@@ -904,12 +1048,12 @@ namespace WebApplication.Controllers
             if (op.Success)
             {
                 manager.MateriaTercerosManager.SaveChanges();
-                manager.ValorProduccionManager.Generate(Model.Id);
-                var model = Manager.EncuestaEstadistica.FindById(Model.Id);
-                var list = model.VolumenProduccionMensual.MateriasTercero;
+                manager.ValorProduccionManager.Generate(IdEncuestaEstadistica);
+                var encuesta = Manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+                var list = encuesta.VolumenProduccionMensual.MateriasTercero;
                 var c = this.RenderRazorViewToString("_TableProductoMateriaPrimaTerceros", list);
-                var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", model);
-                var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", model);
+                var d = this.RenderRazorViewToString("_ValorProduccionEstablecimiento", encuesta);
+                var e = this.RenderRazorViewToString("_ValorVentasProductosEstablecimiento", encuesta);
                 var res = new
                 {
                     Success = true,
@@ -932,13 +1076,16 @@ namespace WebApplication.Controllers
 
         public ActionResult GetDorpDownUnidadMedida(long idLineaProducto, string id, string nombre = "IdUnidadMedida", string @default = null)
         {
+            var include = Manager.LineaProductoUnidadMedidaManager.Get(h => h.id_linea_producto == idLineaProducto);
+
             var list = Manager.UnidadMedida.Get(t =>
-                t.LineasProductoUnidadMedida.Any(h => h.id_linea_producto == idLineaProducto)).Select(t => new SelectListItem()
+                    include.Any(p2 => p2.id_unidad_medida == t.Id)).Select(t => new SelectListItem()
                 {
                     Text = t.ToString(),
                     Value = t.Id.ToString(),
                     Selected = t.Id.ToString() == id
                 }).ToList();
+
             if (@default != null)
                 list.Insert(0, new SelectListItem()
                 {
@@ -946,13 +1093,14 @@ namespace WebApplication.Controllers
                     Value = "0",
                     Text = @default
                 });
+
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
 
         public ActionResult FillFactoresIncremento()
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             if (encuesta == null) return HttpNotFound("Encuesta no encontrada");
             var factores = encuesta.FactorProduccion.CAT_FACTOR1.Select(t => t.Id);
             encuesta.FactorProduccion.IncrementoB = true;
@@ -970,12 +1118,23 @@ namespace WebApplication.Controllers
                     Selected = enumerable.Any(t => t == f.Id)
                 });
             }
+            
+            incremento.Add(new SelectListItem()
+            {
+                Text = "Otros",
+                Value = "0",
+                Selected = string.IsNullOrEmpty(encuesta.FactorProduccion.OtroFactor) ? false : true
+            });
+
+            ViewBag.OtroFactor = encuesta.FactorProduccion.OtroFactor;
+
             return PartialView("_FactoresIncremento", incremento);
         }
+
         public ActionResult FillFactoresIncrementoReadOnly()
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             if (encuesta == null) return HttpNotFound("Encuesta no encontrada");
             var factores = encuesta.FactorProduccion.CAT_FACTOR1.Select(t => t.Id);
             encuesta.FactorProduccion.IncrementoB = true;
@@ -993,12 +1152,22 @@ namespace WebApplication.Controllers
                     Selected = enumerable.Any(t => t == f.Id)
                 });
             }
+
+            ViewBag.OtroFactor = encuesta.FactorProduccion.OtroFactor;
+
+            incremento.Add(new SelectListItem()
+            {
+                Text = "Otros",
+                Value = "0",
+                Selected = string.IsNullOrEmpty(encuesta.FactorProduccion.OtroFactor) ? false : true
+            });
             return PartialView("_FactoresIncrementoReadOnly", incremento);
         }
+
         public ActionResult FillFactoresDecrecimiento()
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             if (encuesta == null) return HttpNotFound("Encuesta no encontrada");
             var factores = encuesta.FactorProduccion.CAT_FACTOR1.Select(t => t.Id);
             var allFactores = Manager.Factor.Get(t => t.Activado);
@@ -1009,7 +1178,6 @@ namespace WebApplication.Controllers
             manager.EncuestaEstadistica.SaveChanges();
             foreach (var f in allFactores.Where(t => t.TipoFactor == TipoFactor.Disminución))
             {
-
                 disminucion.Add(new SelectListItem()
                 {
                     Text = f.Nombre,
@@ -1017,13 +1185,22 @@ namespace WebApplication.Controllers
                     Selected = enumerable.Any(t => t == f.Id)
                 });
             }
+
+            ViewBag.OtroFactor = encuesta.FactorProduccion.OtroFactor;
+
+            disminucion.Add(new SelectListItem()
+            {
+                Text = "Otros",
+                Value = "0",
+                Selected = string.IsNullOrEmpty(encuesta.FactorProduccion.OtroFactor) ? false : true
+            });
             return PartialView("_FactoresIncremento", disminucion);
         }
 
         public ActionResult FillFactoresDecrecimientoReadOnly()
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             if (encuesta == null) return HttpNotFound("Encuesta no encontrada");
             var factores = encuesta.FactorProduccion.CAT_FACTOR1.Select(t => t.Id);
             var allFactores = Manager.Factor.Get(t => t.Activado);
@@ -1034,7 +1211,6 @@ namespace WebApplication.Controllers
             manager.EncuestaEstadistica.SaveChanges();
             foreach (var f in allFactores.Where(t => t.TipoFactor == TipoFactor.Disminución))
             {
-
                 disminucion.Add(new SelectListItem()
                 {
                     Text = f.Nombre,
@@ -1042,13 +1218,22 @@ namespace WebApplication.Controllers
                     Selected = enumerable.Any(t => t == f.Id)
                 });
             }
+
+            ViewBag.OtroFactor = encuesta.FactorProduccion.OtroFactor;
+
+            disminucion.Add(new SelectListItem()
+            {
+                Text = "Otros",
+                Value = "0",
+                Selected = string.IsNullOrEmpty(encuesta.FactorProduccion.OtroFactor) ? false : true
+            });
             return PartialView("_FactoresIncrementoReadOnly", disminucion);
         }
 
         public void ProduccionNormal()
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             if (encuesta == null) return;
             encuesta.FactorProduccion.ProduccionNormalB = true;
             manager.EncuestaEstadistica.Modify(encuesta);
@@ -1058,18 +1243,32 @@ namespace WebApplication.Controllers
         public void SetService(bool value)
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             if (encuesta == null) return;
             encuesta.VentasProductosEstablecimiento.ServiciosActivados = value;
             manager.VentasProductosEstablecimientoManager.Modify(encuesta.VentasProductosEstablecimiento);
             manager.VentasProductosEstablecimientoManager.SaveChanges();
+
+            if (value == false)
+            {
+                foreach (var venta in manager.VentaServicioManufacturaManager.Get(t => t.IdVentaProductoestablecimiento == encuesta.Id))
+                {
+                    venta.venta = null;
+                    venta.venta_extranjero = null;
+                    venta.justificacion_venta_pais = null;
+                    venta.justificacion_venta_ext = null;
+                    manager.VentaServicioManufacturaManager.Modify(venta);
+                }
+
+                manager.VentaServicioManufacturaManager.SaveChanges();
+            }
         }
 
         public JsonResult SaveTrabajadoresDiasTrabajados(int? diasTrabajados, int? trabajadoresProduccion,
              int? administrativoPlanta)
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             if (encuesta == null)
             {
                 var res = new
@@ -1132,8 +1331,9 @@ namespace WebApplication.Controllers
         public JsonResult SaveServicio(List<VentasServicioManufactura> services)
         {
             var manager = Manager;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             var errors = new List<string>();
+            bool esJustificado = true;
             if (encuesta == null)
             {
                 var res = new
@@ -1168,21 +1368,46 @@ namespace WebApplication.Controllers
 
                     servicio.venta_extranjero = se.venta_extranjero;
                     servicio.venta = se.venta;
-                    servicio.justificacion_venta_ext = se.justificacion_venta_ext;
-                    servicio.justificacion_venta_pais = se.justificacion_venta_pais;
-                    manager.VentaServicioManufacturaManager.Modify(servicio);
-                    manager.VentaServicioManufacturaManager.SaveChanges();
-
+                                       
                     var validPais = !manager.VentaServicioManufacturaManager.ValidarVentaPais(se.Id, se.venta);
                     var validExt = !manager.VentaServicioManufacturaManager.ValidarVentaExtranjero(se.Id, se.venta_extranjero);
-
-                    if (validExt && (string.IsNullOrEmpty(se.justificacion_venta_ext) || string.IsNullOrWhiteSpace(se.justificacion_venta_ext)))
+                    
+                    if (validExt && se.venta_extranjero != null)
+                    {
                         ext.Add(se.Id);
-                    if (validPais && (string.IsNullOrEmpty(se.justificacion_venta_pais) || string.IsNullOrWhiteSpace(se.justificacion_venta_pais)))
+                        if (se.justificacion_venta_ext == null)
+                        {
+                            esJustificado = false;
+                        }
+                        se.justificacion_venta_ext = (se.justificacion_venta_ext == null) ? " " : se.justificacion_venta_ext;
+                    }
+                    else
+                    {
+                        se.justificacion_venta_ext = null;
+                    }
+                    
+                    if (validPais && se.venta != null)
+                    {
                         pais.Add(se.Id);
+                        if (se.justificacion_venta_pais == null)
+                        {
+                            esJustificado = false;
+                        }
+                        se.justificacion_venta_pais = (se.justificacion_venta_pais == null) ? " " : se.justificacion_venta_pais;
+                    }
+                    else
+                    {
+                        se.justificacion_venta_pais = null;
+                    }
+
+                    servicio.justificacion_venta_ext = se.justificacion_venta_ext;
+                    servicio.justificacion_venta_pais = se.justificacion_venta_pais;
+
+                    manager.VentaServicioManufacturaManager.Modify(servicio);
+                    manager.VentaServicioManufacturaManager.SaveChanges();
                 }
             }
-            if (pais.Count > 0 || ext.Count > 0)
+            if ((pais.Count > 0 || ext.Count > 0) && esJustificado == false)
             {
                 var te = new List<string>()
                 {
@@ -1212,6 +1437,8 @@ namespace WebApplication.Controllers
             var resp = new
             {
                 Success = true,
+                Pais = pais,
+                Extranjero = ext
             };
             return Json(resp, JsonRequestBehavior.AllowGet);
         }
@@ -1237,30 +1464,54 @@ namespace WebApplication.Controllers
             };
             return Json(resp, JsonRequestBehavior.AllowGet);
         }
+
         public void SetFactorProduccion(long id, bool put)
         {
             var manager = Manager;
-            var factor = manager.Factor.Find(id);
-            if (factor == null)
-                return;
-            var encuesta = manager.EncuestaEstadistica.FindById(Model.Id);
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
             if (encuesta == null)
                 return;
+
+            if (id != 0)            
+            {
+                var factor = manager.Factor.Find(id);
+                if (factor == null)
+                    return;
+
+                if (put)
+                {
+                    encuesta.FactorProduccion.CAT_FACTOR1.Add(factor);
+                    manager.EncuestaEstadistica.SaveChanges();
+                }
+                else
+                {
+                    var fr = encuesta.FactorProduccion.CAT_FACTOR1.FirstOrDefault(t => t.Id == id);
+                    if (fr != null)
+                    {
+                        encuesta.FactorProduccion.CAT_FACTOR1.Remove(fr);
+                        manager.FactorProducccionManager.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        [HttpPost]
+        public void SetOtroFactorProduccion(bool put, string otroFactor)
+        {
+            var manager = Manager;
+            var encuesta = manager.EncuestaEstadistica.FindById(IdEncuestaEstadistica);
+
             if (put)
             {
-                encuesta.FactorProduccion.CAT_FACTOR1.Add(factor);
-                manager.EncuestaEstadistica.SaveChanges();
+                encuesta.FactorProduccion.OtroFactor = otroFactor;
             }
             else
             {
-                var fr = encuesta.FactorProduccion.CAT_FACTOR1.FirstOrDefault(t => t.Id == id);
-                if (fr != null)
-                {
-                    encuesta.FactorProduccion.CAT_FACTOR1.Remove(fr);
-                    manager.FactorProducccionManager.SaveChanges();
-                }
+                encuesta.FactorProduccion.OtroFactor = "";
             }
 
+            manager.FactorProducccionManager.Modify(encuesta.FactorProduccion);
+            manager.FactorProducccionManager.SaveChanges();
         }
 
         public ActionResult GetHistoricoProduccion(long id)
@@ -1268,36 +1519,43 @@ namespace WebApplication.Controllers
             var historico = Manager.MateriaPropiaManager.GetHistoryProduccion(id);
             return PartialView("_TableNumbers", historico);
         }
+
         public ActionResult GetHistoricoValorUnitario(long id)
         {
             var historico = Manager.MateriaPropiaManager.GetHistoryValorUnitario(id);
             return PartialView("_TableNumbers", historico);
         }
+
         public ActionResult GetHistoricoVentasPais(long id)
         {
             var historico = Manager.MateriaPropiaManager.GetHistoryVentasPais(id);
             return PartialView("_TableNumbers", historico);
         }
+
         public ActionResult GetHistoricoVentasExtranjero(long id)
         {
             var historico = Manager.MateriaPropiaManager.GetHistoryVentasExtranjero(id);
             return PartialView("_TableNumbers", historico);
         }
+
         public ActionResult GetHistoricoProduccionTerceros(long id)
         {
             var historico = Manager.MateriaTercerosManager.GetHistoryProduccion(id);
             return PartialView("_TableNumbers", historico);
         }
+
         public ActionResult GetHistoricoMateriaPrimaTerceros(long id)
         {
             var historico = Manager.ValorProduccionManager.GetHistoryMateriaPrimaTerceros(id);
             return PartialView("_TableNumbers", historico);
         }
+
         public ActionResult GetHistoricoValorVentasVentasPais(long id)
         {
             var historico = Manager.VentasPaisExtranjeroManager.GetHistoryVentasPais(id);
             return PartialView("_TableNumbers", historico);
         }
+
         public ActionResult GetHistoricoValorVentasVentasExtranjero(long id)
         {
             var historico = Manager.VentasPaisExtranjeroManager.GetHistoryVentasExtranjero(id);
@@ -1309,6 +1567,7 @@ namespace WebApplication.Controllers
             var historico = Manager.VentaServicioManufacturaManager.GetHistoryVentasPais(id);
             return PartialView("_TableNumbers", historico);
         }
+
         public ActionResult GetHistoricoValorServicioVentasExtranjero(long id)
         {
             var historico = Manager.VentaServicioManufacturaManager.GetHistoryVentasExtranjero(id);

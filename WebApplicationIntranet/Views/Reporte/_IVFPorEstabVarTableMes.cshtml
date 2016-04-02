@@ -1,0 +1,64 @@
+﻿@model List<Entity.Reportes.IVFMEstVarReport>
+@using WebApplication.App_Code;
+
+<style>
+    .table {
+        white-space: nowrap;
+    }
+    th {
+    text-align:center;    
+}
+</style>
+
+@if (Model.Count > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="tbl-ivf" class="table table-striped table-hover table-bordered table-condensed tabla small">
+                    <thead>
+                        <tr class="cabecera">
+                            <th>CIIU </th>
+                            <th>Código </th>
+                            <th>Establecimiento </th>
+                            @foreach (var mes in Model[0].Meses)
+                            {
+                                <th>@Static.GetMesAbreviaturaByIndex(mes.Nro)-@ViewBag.MesX</th>
+                                <th>@Static.GetMesAbreviaturaByIndex(mes.Nro)-@ViewBag.MesY</th>
+                                <th>Var%</th>    
+                            }
+                            @*<th>Ver</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.Raw(item.CodigoCiiu)</td>
+                                <td>@Html.Raw(item.CodigoEst)</td>
+                                <td>@Html.Raw(item.NomEst)</td>
+                                @foreach (var mes in item.Meses)
+                                {
+                                    <td>@mes.MesX</td>
+                                    <td>@mes.MesY</td>
+                                    <td>@mes.VariacionPorcentual</td>    
+                                }
+                                @*<td>
+                                    <a href="javascript:void(0);">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>*@
+                            </tr> 
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>   
+}
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>

@@ -24,7 +24,7 @@ namespace Domain
         public static Func<Ciiu, bool> FilterCiiu(string text)
         {
             text = text.ToLower();
-            return t => t.Nombre.ToLower().Contains(text) || t.Revision.ToLower().Contains(text);
+            return t => t.Nombre.ToLower().Contains(text) || t.Revision.ToString().Contains(text);
         }
         public static Func<LineaProducto, bool> FilterLineaProducto(string text)
         {

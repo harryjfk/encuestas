@@ -181,9 +181,14 @@
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
 
         $('#datetimepicker1').datepicker({
+            monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
             pickTime: false,
             language: "es",
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'dd-mm-yy',
+            nextText: ">",
+            prevText: "<",
+            dayNames: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+            dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"]
         });
 
 

@@ -4,10 +4,9 @@
 <table class="table table-striped table-hover table-bordered table-condensed tabla small">
     <thead>
         <tr class="cabecera">
-            <th> LINEA PRODUCTO </th>
-            <th> CIIU </th>
-            <th> PESO </th>
-            <th style="width: 100px;">ACCI&Oacute;N</th>
+            <th> Producto </th>
+            <th> CIIU </th>            
+            <th style="width: 100px;">Acci&oacute;n</th>
     </thead>
 
     <tbody>
@@ -15,8 +14,7 @@
         {
             <tr>
                 <td>@item.LineaProducto.ToString()</td>
-                <td ><span data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.LineaProducto.Ciiu.Nombre">@item.LineaProducto.Ciiu.ToString()</span></td>
-              <td>@item.peso.GetValueOrDefault()</td>
+                <td ><span data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.LineaProducto.Ciiu.Nombre">@item.LineaProducto.Ciiu.ToString()</span></td>              
                 <td>
                     @*<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" id="edit-@item.Id" role="@item.Id" class="edit-btn">
                         <i class="color-yellow glyphicon glyphicon-pencil"></i>
@@ -25,10 +23,15 @@
                     <a href="/LineaProductoEstablecimiento/Details/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visualizar" id="details-@item.Id">
                         <i class="color-black glyphicon glyphicon-eye-open"></i>
                     </a>
-                    |
-                    <a href="/LineaProductoEstablecimiento/Delete/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" id="delete-@item.Id" role="@item.Id" class="delete-btn">
-                        <i class="color-red glyphicon glyphicon-remove"></i>
-                    </a>
+                    @{
+                        if (item.LineaProducto.Codigo.ToString().Length == 7)
+                        {
+                            @Html.Raw("|")
+                            <a href = "/LineaProductoEstablecimiento/Delete/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title = "Eliminar" id="delete-@item.Id" role="@item.Id" class="delete-btn">
+                                <i class="color-red glyphicon glyphicon-remove"></i>
+                            </a>                            
+                        }
+                    }
                 </td>
 
             </tr>

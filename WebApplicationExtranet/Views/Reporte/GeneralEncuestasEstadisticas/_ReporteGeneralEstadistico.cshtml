@@ -17,10 +17,13 @@
             <div class="col-md-4">
                 <div>
                     <span>Meses: 
-                        @foreach (var item in Model.Month)
+                       @if (Model.Month!=null)
+                       {
+                        foreach (var item in Model.Month)
                         {
                             <span class="label label-primary">@item.GetMonthText()</span>
                         }
+                       }
                     </span>
                 </div>
             </div>
@@ -34,9 +37,12 @@
                      <span>Ámbito de Análisis: <span>@Model.InputTypes.GetAmbito()</span></span>
                  </div>
                  <div>
-                     @foreach (var item in Model.ScopeElements)
+                     @if (Model.ScopeElements != null)
                      {
-                         <div class="label label-primary">@item</div>
+                        foreach (var item in Model.ScopeElements)
+                        {
+                            <div class="label label-primary">@item</div>
+                        }
                      }
                  </div>
             </div>

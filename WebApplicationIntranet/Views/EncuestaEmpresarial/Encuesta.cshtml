@@ -66,7 +66,7 @@
                         var pr = item.PosiblesRespuestas.FirstOrDefault();
                                 }
 
-                                @foreach (var v in pr.Valores)
+                                @foreach (var v in pr.Valores.OrderBy(t => t.orden))
                                 {
                                     var hasPrAso = v.IdPregunta != null;
                                     var ch = v.Seleccionado ? "true" : "false";
@@ -84,8 +84,7 @@
                                                                    datavalueasoc = "false",
                                                                    @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
                                                                    dataorigpregid = pr.Id,
-                                                                   datavalorid = v.Id,
-                                                                   datanumero = v.Numero,
+                                                                   datavalorid = v.Id,                                                                   
                                                                    datatexto = v.Texto,
                                                                    datapospregid = v.IdPosibleRespuesta,
                                                                    datapregid = v.IdPregunta
@@ -101,8 +100,7 @@
                                                                 datavalueasoc = "false",
                                                                 @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
                                                                 dataorigpregid = pr.Id,
-                                                                datavalorid = v.Id,
-                                                                datanumero = v.Numero,
+                                                                datavalorid = v.Id,                                                                
                                                                 datatexto = v.Texto,
                                                                 datapospregid = v.IdPosibleRespuesta,
                                                                 datapregid = v.IdPregunta
@@ -116,8 +114,7 @@
                                                            datavalueasoc = "false",
                                                            @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
                                                            dataorigpregid = pr.Id,
-                                                           datavalorid = v.Id,
-                                                           datanumero = v.Numero,
+                                                           datavalorid = v.Id,                                                           
                                                            datatexto = v.Texto,
                                                            datapospregid = v.IdPosibleRespuesta,
                                                            datapregid = v.IdPregunta
@@ -128,11 +125,11 @@
                                             {
                                                 if (v.Seleccionado)
                                                 {
-                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { @checked = "chequed", datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { @checked = "chequed", datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
                                                 }
                                                 else
                                                 {
-                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
                                                 }
                                             }
                                             @*@(
@@ -157,7 +154,7 @@
                                                     }
                                                     @if (posResp != null)
                                                     {
-                                                        foreach (var tv in posResp.Valores)
+                                                        foreach (var tv in posResp.Valores.OrderBy(t => t.orden))
                                                         {
                                                             var see = tv.Seleccionado ? "true" : "false";
                                                             if (tv.PosibleRespuesta.Tipo == TipoPosibleRespuesta.Excluyente)
@@ -306,8 +303,7 @@
                     checks.each(function (j, v) {
                         var $obj = $(v);
                         var tempValue = {
-                            Id: $obj.attr("datavalorid"),
-                            Numero: $obj.attr("datanumero"),
+                            Id: $obj.attr("datavalorid"),                            
                             Seleccionado: v.checked ? 1 : 0,
                             Texto: $obj.attr("datatexto"),
                             IdPosibleRespuesta: $obj.attr("datapospregid"),
@@ -340,8 +336,7 @@
                     radios.each(function (j, v) {
                         var $obj = $(v);
                         var tempValue = {
-                            Id: $obj.attr("datavalorid"),
-                            Numero: $obj.attr("datanumero"),
+                            Id: $obj.attr("datavalorid"),                            
                             Seleccionado: v.checked ? 1 : 0,
                             Texto: $obj.attr("datatexto"),
                             IdPosibleRespuesta: $obj.attr("datapospregid"),
@@ -448,8 +443,7 @@
                     checks.each(function (j, v) {
                         var $obj = $(v);
                         var tempValue = {
-                            Id: $obj.attr("datavalorid"),
-                            Numero: $obj.attr("datanumero"),
+                            Id: $obj.attr("datavalorid"),                            
                             Seleccionado: v.checked ? 1 : 0,
                             Texto: $obj.attr("datatexto"),
                             IdPosibleRespuesta: $obj.attr("datapospregid"),
@@ -478,8 +472,7 @@
                     radios.each(function (j, v) {
                         var $obj = $(v);
                         var tempValue = {
-                            Id: $obj.attr("datavalorid"),
-                            Numero: $obj.attr("datanumero"),
+                            Id: $obj.attr("datavalorid"),                            
                             Seleccionado: v.checked ? 1 : 0,
                             Texto: $obj.attr("datatexto"),
                             IdPosibleRespuesta: $obj.attr("datapospregid"),

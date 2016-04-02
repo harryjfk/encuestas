@@ -25,7 +25,7 @@
 @using (Html.BeginForm("Buscar", "Factor", FormMethod.Post))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-heading">B&uacute;squeda</div>
         @{
     var sel0 = Model == null||Model.Criteria==null || Model.Criteria.Tipo != 0 ? "" : "selected";
     var sel1 = Model == null || Model.Criteria == null || Model.Criteria.Tipo != 1 ? "" : "selected";
@@ -39,7 +39,7 @@
             <div class="row">
 	<div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">EFECTO</span>
+                        <span class="input-group-addon">Efecto</span>
                         @*<input type="text" class="form-control">*@
                         @*@Html.EnumDropDownListFor(t => t.Criteria.TipoFactor, new { @class = "form-control" })*@
                         <select name="Criteria.Tipo" class="form-control">
@@ -51,7 +51,7 @@
                 </div>
 		<div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">FACTOR</span>
+                        <span class="input-group-addon">Factor</span>
                         @*<input type="text" class="form-control">*@
                         @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
                     </div>

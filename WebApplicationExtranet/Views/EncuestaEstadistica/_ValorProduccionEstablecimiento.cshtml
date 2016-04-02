@@ -1,9 +1,6 @@
 ﻿@model Entity.EncuestaEstadistica
+@using Domain
 
-@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap3form"}))
-
-
-    {*@
 <div class="panel panel-primary">
     <div class="panel-heading">Capítulo III: Valor total de la producción mensual del establecimiento</div>
     <div class="panel-body">
@@ -16,65 +13,48 @@
         <table class="table table-striped table-hover table-bordered table-condensed tabla small">
 
             <thead>
-                <tr class="cabecera">
-
-
-
-
+                <tr class="cabecera" style="width: 60%">
                     <th>
                         CIIU
                     </th>
-                    <th>
+                    <th style="width: 20%">
                         Materia prima propia
-
-
                     </th>
-                    <th>
+                    <th style="width: 20%">
                         Materia prima de terceros
-
-
-
                     </th>
                 </tr>
             </thead>
 
 
             <tbody>
-                @foreach (var item in Model.CAT_VALOR_PROD_MENSUAL.OrderBy(t=>t.CAT_CIIU.ToString()))
-
+                @foreach (var item in Model.DAT_VALOR_PROD_MENSUAL.OrderBy(t=>t.CAT_CIIU.ToString()))
                 {
-                    <input type="hidden" class="valIds" role="@item.Id" />
-
-
                     <tr>
                         <td>
+                            <input type="hidden" class="valIds" role="@item.Id" />
                             @item.CAT_CIIU.ToString()
-
-
                         </td>
                         <td>
-                            @*@Html.DisplayFor(modelItem => item.ProductosMateriaPropia, new { style = "  width: 100%;", @class = "mask4 form-control pmp-" + item.Id, Value = String.Format("{0:0.0000}", item.ProductosMateriaPropia) })*@
-
-
-                            @Html.Label("", item.ProductosMateriaPropia.GetValueOrDefault().ToString("0.0000"), new { @class = "form-control reset-max-width", Value = String.Format("{0:0.0000}", item.ProductosMateriaPropia.GetValueOrDefault()) })
+                            @Html.Label("", item.ProductosMateriaPropia.GetValueOrDefault().ProduceFormat(), new { @class = "form-control reset-max-width", Value = item.ProductosMateriaPropia.GetValueOrDefault().ProduceFormat() })
                         </td>
                         <td>
                             @if (item.MateriaPrimaTercerosActivada)
                             {
-                                @Html.TextBoxFor(modelItem => item.ProductosMateriaTerceros, new { style = "  width: 100%;", @class = "mask4 form-control pmt-" + item.Id, Value = String.Format("{0:0.0000}", item.ProductosMateriaTerceros) })
-                                if (!string.IsNullOrEmpty(item.justificacion_materia_terc) || !string.IsNullOrWhiteSpace(item.justificacion_materia_terc))
+                                @Html.TextBoxFor(modelItem => item.ProductosMateriaTerceros, new { style = "  width: 100%;", @class = "mask4 form-control pmt-" + item.Id, Value = item.ProductosMateriaTerceros.GetValueOrDefault().ProduceFormat() })
+                                if (item.justificacion_materia_terc == null)
                                 {
-
-
-
-
-
-
-                                        @Html.TextAreaFor(modelItem => item.justificacion_materia_terc, new { style = " width: 100%;", @class = "form-control justValorProd jvmt-" + item.Id })
+                                    <div class="panel justValorProd panel-default pnl-just div-jvmt-@item.Id" style="display: none; margin-top: 5px;">
+                                        <span>Justificaci&oacute;n</span>
+                                        @Html.TextAreaFor(modelItem => item.justificacion_materia_terc, new { style = " width: 100%;", @class = "form-control jvmt-" + item.Id })
+                                    </div>
                                 }
                                 else
                                 {
-                                    @Html.TextAreaFor(modelItem => item.justificacion_materia_terc, new { style = "display:none; width: 100%;", @class = "form-control justValorProd jvmt-" + item.Id })
+                                    <div class="panel justValorProd panel-default pnl-just div-jvmt-@item.Id" style="margin-top: 5px;">
+                                        <span>Justificaci&oacute;n</span>
+                                        @Html.TextAreaFor(modelItem => item.justificacion_materia_terc, new { style = " width: 100%;", @class = "form-control jvmt-" + item.Id })
+                                    </div>
                                 }
                             }
                         </td>
@@ -84,16 +64,10 @@
         </table>
         <div class="pull-right">
             <a href="javascript:void(0);" id="edit-btnPE" data-toggle="tooltip" data-placement="top" title="" data-original-title="Guardar" class="btn btn-primary">Guardar</a>
-
-
-
-
-
-
-
+            
         </div>
 
-        @if (Model.CAT_VALOR_PROD_MENSUAL.Count == 0)
+        @if (Model.DAT_VALOR_PROD_MENSUAL.Count == 0)
         {
             <div class="no-elements-notification">
                 No hay elementos para mostrar
@@ -102,18 +76,16 @@
     </div>
 
 </div>
-@*}*@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".mask4").inputmask("9{1,20}.9{0,4}");
-        $(".mask4").each(function (i, e) {
-            $(e).focusout(function () {
-                var val = parseFloat($(e).val());
-                $(e).val(val.toFixed(4));
 
-            });
+        $('.justValorProd textarea').each(function (i, el) {
+            var value = $(this).val().trim();
+            $(this).val(value);
         });
+
+        maskEstadistico();
     });
     $("#edit-btnPE").click(function (e) {
         $(".justValorProd").hide();
@@ -127,7 +99,7 @@
             }
             var pmt = null;
             if ($('.pmt-' + id)[0]) {
-                pmt = $('.pmt-' + id)[0].value;
+                pmt = getValueEstadistico('.pmt-' + id);
             }
             var jus = null;
             if ($('.jvmt-' + id)[0])
@@ -150,6 +122,10 @@
             success: function (data) {
                 if (data.Success) {
 
+                    for (var j = 0; j < data.Elements.length; j++) {                        
+                        $($('.div-jvmt-' + data.Elements[j])[0]).show();
+                    }
+
                     $("#errors-containervpe").addClass("hidden");
                     $.smallBox({
                         title: "Confirmación",
@@ -159,21 +135,10 @@
                         timeout: 4000
                     });
                 } else {
-
-
-
-
-
-
-
                     var errors = "";
                     for (var i = 0; i < data.Errors.length; i++) {
                         errors += "<li>" + data.Errors[i] + "</li>";
-                    }
-                    for (var j = 0; j < data.Elements.length; j++) {
-                        console.log(data.Elements[j]);
-                        $($('.jvmt-' + data.Elements[j])[0]).show();
-                    }
+                    }                   
                     $("#errors-containervpe").removeClass("hidden").find("ul").html(errors);
                 }
             },
