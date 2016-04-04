@@ -5,15 +5,19 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class ImportacionExportacionHarinaTrigoController : BaseController<ExportacionHarinaTrigo>
     {
-        public static Query<ImportacionHarinaTrigo> QueryImportacion { get; set; }
+        public Query<ImportacionHarinaTrigo> QueryImportacion { get; set; }
+
         public ActionResult GetDorpDown(string id, string nombre = "IdExportacion", string @default = null)
         {
-           var list =OwnManager.Get(t => t.Activado).Select(t => new SelectListItem()
+            var list = OwnManager.Get(t => t.Activado).Select(t => new SelectListItem()
             {
                 Text = t.ToString(),
                 Value = t.Id.ToString(),
@@ -28,9 +32,11 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
-       
+
         public JsonResult Toggle(long id)
         {
+            Query = base.GetQuery();
+
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)
@@ -48,76 +54,113 @@ namespace WebApplication.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult ToggleImportacion(long id)
+        {
+            var managerImportacion = Manager.ImportacionHarinaTrigoManager;
+            QueryImportacion = GetQueryImportacion();
+            
+            var element = managerImportacion.Find(id);
+            if (element != null)
+            {
+                element.Activado = !element.Activado;
+                managerImportacion.Modify(element);
+                managerImportacion.SaveChanges();
+            }
+            Manager.ImportacionHarinaTrigoManager.Get(QueryImportacion);
+            var c = RenderRazorViewToString("_TableImportacion", QueryImportacion);
+            var result = new
+            {
+                Success = true,
+                Data = c
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         public override ActionResult Index()
         {
-            var año = DateTime.Now.Year;
-            Query = Query ?? new Query<ExportacionHarinaTrigo>();
-            Query.Criteria = Query.Criteria ?? new ExportacionHarinaTrigo();
-            Query.Criteria.Año = Query.Criteria.Año ?? DateTime.Now.Year.ToString();
-            if (Query.Criteria.Año != null)
+            bool FirstLoad = false;
+            if (Session[CriteriaSesion] != null)
             {
-                año = int.Parse(Query.Criteria.Año);
+                if (Session[CriteriaSesion] is ExportacionHarinaTrigo == false)
+                {
+                    FirstLoad = true;
+                }
             }
-            Manager.ExportacionHarinaTrigoManager.Generate(año);
-            Query.Order = Query.Order ?? new Order<ExportacionHarinaTrigo>();
-            Query.Order.Func = t => t.fecha;
-            Query.BuildFilter();
+            else
+            {
+                FirstLoad = true;
+            }
+
+            if (FirstLoad)
+            {
+                var yearNow = DateTime.Now.Year;
+                Manager.ExportacionHarinaTrigoManager.Generate(yearNow);
+                Manager.ImportacionHarinaTrigoManager.Generate(yearNow);
+
+                ExportacionHarinaTrigo criteria = new ExportacionHarinaTrigo();
+                criteria.Año = yearNow.ToString();
+                Session[CriteriaSesion] = criteria;
+
+                ImportacionHarinaTrigo criteriaImportacion = new ImportacionHarinaTrigo();
+                criteriaImportacion.Año = yearNow.ToString();
+                Session["criteriaImportacion"] = criteriaImportacion;
+            }
+
+            Order<ExportacionHarinaTrigo> order = new Order<ExportacionHarinaTrigo>();
+            order.Func = t => t.fecha;
+            Session[OrderSesion] = order;
+
+            Order<ImportacionHarinaTrigo> orderImportacion = new Order<ImportacionHarinaTrigo>();
+            orderImportacion.Func = t => t.fecha;
+            Session["OrdenImportacion"] = orderImportacion;
+
+            Query = base.GetQuery();
+            QueryImportacion = GetQueryImportacion();
+
             Manager.ExportacionHarinaTrigoManager.Get(Query);
-            
-            //ImportacionHarinaTrigo
-            QueryImportacion = QueryImportacion ?? new Query<ImportacionHarinaTrigo>();
-            QueryImportacion.Criteria = QueryImportacion.Criteria ?? new ImportacionHarinaTrigo();
-            QueryImportacion.Criteria.Año = QueryImportacion.Criteria.Año ?? DateTime.Now.Year.ToString();
-            if (QueryImportacion.Criteria.Año != null)
-            {
-                año = int.Parse(QueryImportacion.Criteria.Año);
-            }
-            Manager.ImportacionHarinaTrigoManager.Generate(año);
-            QueryImportacion.Order = QueryImportacion.Order ?? new Order<ImportacionHarinaTrigo>();
-            QueryImportacion.Order.Func = t => t.fecha;
-            QueryImportacion.BuildFilter();
             Manager.ImportacionHarinaTrigoManager.Get(QueryImportacion);
+
             return View("Index", new Models.ImportacionExportacionHarinaTrigo() { ExportacionHarinaTrigo = Query, ImportacionHarinaTrigo = QueryImportacion });
         }
+
         public override ActionResult Buscar(ExportacionHarinaTrigo criteria)
         {
             Manager.ExportacionHarinaTrigoManager.Generate(int.Parse(criteria.Año));
             Manager.ImportacionHarinaTrigoManager.Generate(int.Parse(criteria.Año));
+            
+            ImportacionHarinaTrigo criteriaImportacion = new ImportacionHarinaTrigo();
+            criteriaImportacion.Año = criteria.Año;            
 
-            Query = Query ?? new Query<ExportacionHarinaTrigo>().Validate();
-            Query.Criteria = criteria;
-            Query.Paginacion = Query.Paginacion ?? new Paginacion();
-            Query.Paginacion.Page = 1;
-            Query.Paginacion.ItemsPerPage = 12;
-            Query.BuildFilter();
+            Session[CriteriaSesion] = criteria;
+            Session[PageSesion] = 1;
 
-            //Importacion
-            QueryImportacion = QueryImportacion ?? new Query<ImportacionHarinaTrigo>().Validate();
-            QueryImportacion.Criteria = QueryImportacion.Criteria ?? new ImportacionHarinaTrigo();
-            QueryImportacion.Criteria.Año = criteria.Año;
-            QueryImportacion.Paginacion = QueryImportacion.Paginacion ?? new Paginacion();
-            QueryImportacion.Paginacion.ItemsPerPage = 12;
-            QueryImportacion.Paginacion.Page = 1;
-            QueryImportacion.BuildFilter();
+            Session["CriteriaImportacion"] = criteriaImportacion;
+            Session["PageImportacion"] = 1;
+
+            ModelState.Clear();            
+
             return RedirectToAction("Index");
         }
-        public  ActionResult PageImportacion(int page)
+
+        public ActionResult PageImportacion(int page)
         {
-            QueryImportacion = QueryImportacion ?? new Query<ImportacionHarinaTrigo>().Validate();
-            QueryImportacion.Paginacion.Page = page;
+            Session["PageImportacion"] = page;
             return RedirectToAction("Index");
         }
+
         public override JsonResult CreatePost(ExportacionHarinaTrigo element, params string[] properties)
         {
             return base.CreatePost(element, "fecha");
         }
-        public  JsonResult CreatePostImportacion(ImportacionHarinaTrigo element, params string[] properties)
+
+        public JsonResult CreatePostImportacion(ImportacionHarinaTrigo element, params string[] properties)
         {
             if (ModelState.IsValid)
             {
-                QueryImportacion = QueryImportacion ?? new Query<ImportacionHarinaTrigo>().Validate();
+                QueryImportacion = GetQueryImportacion();
                 var manager = Manager.ImportacionHarinaTrigoManager;
-                var op = manager.Modify(element,"fecha");
+                var op = manager.Modify(element, "fecha");
                 if (op.Success)
                 {
                     manager.SaveChanges();
@@ -155,29 +198,74 @@ namespace WebApplication.Controllers
 
             }
         }
-        public  ActionResult EditImportacion(long id)
+
+        public ActionResult EditImportacion(long id)
         {
             var element = Manager.ImportacionHarinaTrigoManager.Find(id);
             element = element ?? new ImportacionHarinaTrigo();
             return PartialView("_CreateImportacion", element);
         }
-        public  ActionResult DetailsImportaccion(long id)
+
+        public ActionResult DetailsImportaccion(long id)
         {
             var manager = Manager.ImportacionHarinaTrigoManager;
             var element = manager.Find(id);
             if (element != null)
+            {
                 return View("DetailsImportacion", element);
-            ModelState.AddModelError("Error", "No se pudo encontrar el elemento.");
-            return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("Error", "No se pudo encontrar el elemento.");
+
+                return RedirectToAction("Index");
+            }            
         }
 
         public JsonResult GetTipoCambioVenta(long id)
         {
             return Json(Manager.ExportacionHarinaTrigoManager.GetTipoCambioVenta(id), JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult GetTipoCambioCompra(long id)
         {
             return Json(Manager.ImportacionHarinaTrigoManager.GetTipoCambioVenta(id), JsonRequestBehavior.AllowGet);
+        }
+
+        public Query<ImportacionHarinaTrigo> GetQueryImportacion()
+        {
+            QueryImportacion = QueryImportacion ?? new Query<ImportacionHarinaTrigo>();
+            QueryImportacion = QueryImportacion.Validate();
+            QueryImportacion.Paginacion = QueryImportacion.Paginacion ?? new Paginacion();
+
+            if (Session["CriteriaImportacion"] != null)
+            {
+                if (Session["CriteriaImportacion"] is ImportacionHarinaTrigo)
+                {
+                    QueryImportacion.Criteria = (ImportacionHarinaTrigo)Session["CriteriaImportacion"];
+                }
+                else
+                {
+                    Session["CriteriaImportacion"] = null;
+                    Session["PageImportacion"] = null;
+                    Session["OrdenImportacion"] = null;
+                }
+            }
+
+            if (Session["PageImportacion"] != null)
+            {
+                QueryImportacion.Paginacion.Page = (int)Session["PageImportacion"];
+            }
+
+            if (Session["OrdenImportacion"] != null)
+            {
+                QueryImportacion.Order = (Order<ImportacionHarinaTrigo>)Session["OrderImportacion"];
+            }
+
+            QueryImportacion.BuildFilter();
+
+            return QueryImportacion;
         }
     }
 }

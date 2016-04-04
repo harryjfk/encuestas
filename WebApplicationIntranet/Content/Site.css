@@ -293,3 +293,20 @@ right: 105px;
 .estado-encuesta {
     padding-left: 10px;
 }
+
+.filter-rpt {    
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+}
+
+.filter-rpt .filter-text {
+    padding: 6px 10px;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 1;
+    color: #777;
+    text-align: center;
+    background-color: #eee;
+    border-right: 1px solid #ccc;
+    display: inline-block;
+}

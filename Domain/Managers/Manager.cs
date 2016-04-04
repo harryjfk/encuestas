@@ -31,6 +31,7 @@ namespace Domain.Managers
         public PosibleRespuestaManager PosibleRespuesta { get; set; }
         public EncuestaManager Encuesta { get; set; }
         public LineaProductoEstablecimientoManager LineaProductoEstablecimiento { get; set; }
+        public CiiuEstablecimientoManager CiiuEstablecimientoManager { get; set; }
         public EncuestaEmpresarialManager EncuestaEmpresarial { get; set; }
         public EncuestaEstadisticaManager EncuestaEstadistica { get; set; }
         public VolumenProduccionManager VolumenProduccionManager { get; set; }
@@ -55,7 +56,8 @@ namespace Domain.Managers
         public AuditoriaManager AuditoriaManager { get; set; }
         public EstablecimientoAnalistaManager EstablecimientoAnalistaManager { get; set; }
         public EncuestaAnalistaManager EncuestaAnalistaManager { get; set; }
-        public ViewProcentajeEncuestaExtadisticaManager ViewProcentajeEncuestaExtadisticaManager { get; set; }
+        public ViewProcentajeEncuestaExtadisticaManager ViewProcentajeEncuestaExtadisticaManager { get; set; }        
+        public ReporteManager ReporteManager { get; set; }
 
         public Manager(IRepositorioUsuario repositorioUsuario,IRepositorioDepartamento departamentoRepository,IRepositorioProvincia provinciaRepository,IRepositorioDistrito distritoRepository,IRepositorioUbigeo ubigeoRepository)
         {
@@ -75,6 +77,7 @@ namespace Domain.Managers
             Distrito = new DistritoManager(distritoRepository, this);
             Ubigeo = new UbigeoManager(ubigeoRepository, this);
             LineaProductoEstablecimiento = new LineaProductoEstablecimientoManager(context, this);
+            CiiuEstablecimientoManager = new CiiuEstablecimientoManager(context, this);
             Valor = new ValorManager(context, this);
             Encuesta = new EncuestaManager(context, this);
             PosibleRespuesta = new PosibleRespuestaManager(context, this);
@@ -101,7 +104,8 @@ namespace Domain.Managers
             AuditoriaManager = new AuditoriaManager(context, this);
             EstablecimientoAnalistaManager = new EstablecimientoAnalistaManager(context, this);
             EncuestaAnalistaManager = new EncuestaAnalistaManager(context, this);
-            ViewProcentajeEncuestaExtadisticaManager = new ViewProcentajeEncuestaExtadisticaManager(context, this);
+            ViewProcentajeEncuestaExtadisticaManager = new ViewProcentajeEncuestaExtadisticaManager(context, this);            
+            ReporteManager = new ReporteManager(context);
         }
 
         public void Seed()

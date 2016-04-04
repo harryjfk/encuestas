@@ -22,14 +22,14 @@
         }
         <div class="col-md-6">
             @*@if (Model != null && Model.Id != 0)
-            {*@
-                <div class="form-group">
-                    <label for="IdentificadorInterno" class="col-md-4 control-label">Nro Identificador</label>
-                    <div class="col-md-7">
-                        <span class="form-control">@Model.IdentificadorInterno</span>
-                    </div>
+                {*@
+            <div class="form-group">
+                <label for="IdentificadorInterno" class="col-md-4 control-label">Nro Identificador</label>
+                <div class="col-md-7">
+                    <span class="form-control">@Model.IdentificadorInterno</span>
                 </div>
-                @Html.HiddenFor(t=>t.IdentificadorInterno)
+            </div>
+            @Html.HiddenFor(t => t.IdentificadorInterno)
             @*}*@
             <div class="form-group">
                 <label for="Ruc" class="col-md-4 control-label">Ruc</label>
@@ -41,18 +41,18 @@
                 <i class="fa fa-search" onclick="getSunat(event);" style="cursor:pointer; cursor: hand;" title="buscar en SUNAT"></i>
             </div>
             @*@if (Model != null && Model.Id != 0)
-            {
-                <div class="form-group">
-                    <label for="RazonSocial" class="col-md-4 control-label">Raz&oacute;n Social</label>
-                    <div class="col-md-7">
-                        <span class="form-control">@Model.RazonSocial</span>
+                {
+                    <div class="form-group">
+                        <label for="RazonSocial" class="col-md-4 control-label">Raz&oacute;n Social</label>
+                        <div class="col-md-7">
+                            <span class="form-control">@Model.RazonSocial</span>
+                        </div>
                     </div>
-                </div>
-            }*@
+                }*@
             <div class="form-group">
                 <label for="Nombre" class="col-md-4 control-label">Raz&oacute;n Social</label>
                 <div class="col-md-7">
-                    @Html.TextBoxFor(t => t.Nombre, new { @class = "form-control", @onfocus="getSunat(event);" })
+                    @Html.TextBoxFor(t => t.Nombre, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Nombre)
                 </div>
                 <div class="col-md-1 txt-color-red" style="margin-left: -25px!important"><span>(*)</span></div>
@@ -66,8 +66,8 @@
                 <div class="col-md-1 txt-color-red" style="margin-left: -25px!important"><span>(*)</span></div>
             </div>
             @{
-            var sel1 = "";
-            var sel2 = "selected";
+                var sel1 = "";
+                var sel2 = "selected";
                 if (Model != null)
                 {
                     sel1 = Model.TipoEnum == TipoEstablecimiento.Servicio ? "selected" : "";
@@ -82,22 +82,22 @@
                         <option @sel2 value="1">Servicio/Producto</option>
                     </select>
                     @*@Html.TextBoxFor(t => t.Direccion, new { @class = "form-control" })*@
-                    
+
                 </div>
                 <div class="col-md-1 txt-color-red" style="margin-left: -25px!important"><span>(*)</span></div>
             </div>
-           
+
             @*<div class="form-group">
-                <label for="SituacionJuridica" class="col-md-4 control-label">Sit. Jur&iacute;dica</label>
-                <div class="col-md-7">
-                    @Html.TextBoxFor(t => t.SituacionJuridica, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SituacionJuridica)
-                </div>
-                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-            </div>*@
+                    <label for="SituacionJuridica" class="col-md-4 control-label">Sit. Jur&iacute;dica</label>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(t => t.SituacionJuridica, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SituacionJuridica)
+                    </div>
+                    <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+                </div>*@
         </div>
         <div class="col-md-6">
-            
+
             <div class="form-group">
                 <label for="Departamento" class="col-md-4 control-label">Departamento</label>
                 <div class="col-md-7" id="divDepartamento">
@@ -139,29 +139,29 @@
             </div>
 
             @*<div class="form-group">
-                <label for="Administrativos" class="col-md-4 control-label">Trab. Administrativos</label>
-                <div class="col-md-7">
-                    @Html.TextBoxFor(t => t.Administrativos, new { @class = "form-control" })
-                </div>
-                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-            </div>*@
+                    <label for="Administrativos" class="col-md-4 control-label">Trab. Administrativos</label>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(t => t.Administrativos, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+                </div>*@
 
             @*<div class="form-group">
-                <label for="DesviacionDiasTrabajados" class="col-md-4 control-label">Desviaci&oacute;n D&iacute;as Trabajados</label>
-                <div class="col-md-7">
-                    @Html.TextBoxFor(t => t.DesviacionDiasTrabajados, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.DesviacionDiasTrabajados)
-                </div>
-                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-            </div>*@
+                    <label for="DesviacionDiasTrabajados" class="col-md-4 control-label">Desviaci&oacute;n D&iacute;as Trabajados</label>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(t => t.DesviacionDiasTrabajados, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.DesviacionDiasTrabajados)
+                    </div>
+                    <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+                </div>*@
             @*<div class="form-group">
-                <label for="TrabajadoresProduccion" class="col-md-4 control-label">Trab. Producci&oacute;n</label>
-                <div class="col-md-7">
-                    @Html.TextBoxFor(t => t.TrabajadoresProduccion, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.TrabajadoresProduccion)
-                </div>
-                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
-            </div>*@
+                    <label for="TrabajadoresProduccion" class="col-md-4 control-label">Trab. Producci&oacute;n</label>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(t => t.TrabajadoresProduccion, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TrabajadoresProduccion)
+                    </div>
+                    <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+                </div>*@
         </div>
         <div class="col-md-12">
             <div class="form-group">
@@ -173,6 +173,15 @@
 
             </div>
         </div>
+        @*<div class="col-md-12">
+            <div class="form-group">
+                <label for="Peso" class="col-md-2 control-label">Peso</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(t => t.Peso, new { @class = "form-control", style = "width: 106%; max-width: inherit;" })
+                    @Html.ValidationMessageFor(model => model.Peso)
+                </div>
+            </div>
+        </div>*@
         <div>
             <div class="form-group">
                 <label for="Activado" class="col-md-2 control-label">Activado</label>
@@ -199,7 +208,7 @@
 
 
     </div>
-}
+                }
 @{
     var idDepartamento = (Model != null && Model.IdDepartamento != null) ? Model.IdDepartamento : "";
     var idProvincia = (Model != null && Model.IdProvincia != null) ? Model.IdProvincia : "";
@@ -240,6 +249,11 @@
                             iconSmall: "fa fa-check fa-2x fadeInRight animated",
                             timeout: 4000
                         });
+                        //
+                        $.post($.origin() + "/Establecimiento/CreatePostPeso/", { id: $('input[type="hidden"][name="Id"]'), peso: $('input[name="Peso"]') }, function (data) {
+
+                        });
+                        //
                     } else {
                         var errors = "";
                         for (var i = 0; i < data.Errors.length; i++) {
@@ -258,13 +272,13 @@
 
         });
         LoadDepartamento();
-        $('#Ruc').maxlength({ events: ['blur'],slider:true,maxCharacters:11,statusText:'caracteres restantes' });
-        $('#Nombre').maxlength({ events: ['blur'],slider:true,maxCharacters:150,statusText:'caracteres restantes' });
-        $('#RazonSocial').maxlength({ events: ['blur'],slider:true,maxCharacters:1000,statusText:'caracteres restantes' });
-        $('#Direccion').maxlength({ events: ['blur'],slider:true,maxCharacters:255,statusText:'caracteres restantes' });
-        $('#Telefono').maxlength({ events: ['blur'],slider:true,maxCharacters:10,statusText:'caracteres restantes' });
-        $('#Fax').maxlength({ events: ['blur'],slider:true,maxCharacters:100,statusText:'caracteres restantes' });
-        $('#Observaciones').maxlength({ events: ['blur'],slider:true,maxCharacters:1000,statusText:'caracteres restantes' });
+        $('#Ruc').maxlength({ events: ['blur'], slider: true, maxCharacters: 11, statusText: 'caracteres restantes' });
+        $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 150, statusText: 'caracteres restantes' });
+        $('#RazonSocial').maxlength({ events: ['blur'], slider: true, maxCharacters: 1000, statusText: 'caracteres restantes' });
+        $('#Direccion').maxlength({ events: ['blur'], slider: true, maxCharacters: 255, statusText: 'caracteres restantes' });
+        $('#Telefono').maxlength({ events: ['blur'], slider: true, maxCharacters: 10, statusText: 'caracteres restantes' });
+        $('#Fax').maxlength({ events: ['blur'], slider: true, maxCharacters: 100, statusText: 'caracteres restantes' });
+        $('#Observaciones').maxlength({ events: ['blur'], slider: true, maxCharacters: 1000, statusText: 'caracteres restantes' });
     });
     function LoadDepartamento() {
         var dep = $('#IdDepartamento');
@@ -420,4 +434,3 @@
         }
     }
 </script>
-

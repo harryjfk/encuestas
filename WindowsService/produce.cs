@@ -47,10 +47,11 @@ namespace WindowsService
             var message = String.Format("Produce starts on {0} {1}", DateTime.Now.ToString("dd-MMM-yyyy"),
                 DateTime.Now.ToString("hh:mm:ss tt"));
             LogEvent(message, EventLogEntryType.Information);
-           
+            
             Timer = new Timer(72000000) { AutoReset = true };
-            Timer.Elapsed += Timer_Elapsed;
+            Timer.Elapsed += Timer_Elapsed;            
             Timer.Start();
+            Timer_Elapsed(null, null);            
         }
 
         protected override void OnStop()
@@ -66,7 +67,7 @@ namespace WindowsService
         void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             try
-            {
+            {                
                 GetManager().ParametrizacionEnvioManager.EnviarNotificaciones();
                 LogEvent("Verificando establecimientos sin encuestas enviadas", EventLogEntryType.Information);
             }

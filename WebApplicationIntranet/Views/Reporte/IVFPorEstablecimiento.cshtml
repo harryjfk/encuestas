@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "Índice Mensual del Volumen Físico por Establecimiento";
+    var meses = new[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+}
+
+@Scripts.Render("~/bundles/jquery")
+<h3 class="screen-title">@ViewBag.Title</h3>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">B&Uacute;SQUEDA</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Año</span>
+                    <select id="select-ano" name="Year" class="form-control">
+                        @for (int i = DateTime.Now.Year; i >= 2012; i--)
+                        {
+                            <option value="@i">@i.ToString()</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">Mes Incio</span>
+                    <select id="select-mes-desde" name="MonthFrom" class="form-control">
+                        @for (int i = 0; i < meses.Length; i++)
+                        {
+                            <option value="@(i+1)">@meses[i]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">Mes Fin</span>
+                    <select id="select-mes-fin" name="MonthTo" class="form-control">
+                        @for (int i = 0; i < meses.Length; i++)
+                        {
+                            <option value="@(i+1)" @(i == 11 ? "selected='selected'" : "")>@meses[i]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>        
+        <div class="row">
+            <div class="col-md-4 margin-top-5">
+                <input type="submit" value="Buscar" id="btn-buscar" class="btn btn-default" />
+                <a id="btn-export-excel" class="btn btn-default  btns-group">Excel</a>                
+                <a id="btn-pdf" class="btn btn-default  btns-group">PDF</a>                
+            </div>
+        </div>
+    </div>
+</div>
+<span id="textProcess" style="color: #777;background-color: #f5f5f5;border-color: #ddd;padding:10px 15px;display:none;">Procesando... Espere por favor.</span>
+
+<div id="errors-container-general" class="alert alert-danger animated bounceIn hidden">
+    <strong>Error de consulta</strong>
+    <div>
+        <ul></ul>
+    </div>
+</div>
+
+<div id="contenedor-table">
+
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/jspdf.js"></script>
+    <script src="~/Scripts/jspdf.plugin.cell_sav.js"></script>
+    <script src="~/Scripts/FileSaver.js"></script>
+
+    <script>
+        $('#btn-buscar').click(function (e) {
+            e.preventDefault();
+
+            $('#tbl-ivf').css({ 'display': 'none' });
+            $('#textProcess').css({ 'display': '' });
+
+            if (parseInt($('#select-mes-desde').val()) > parseInt($('#select-mes-fin').val())) {
+                var errors = "";
+                errors += "<li>Mes inicio no puede ser mayor a mes fin.</li>";
+                $("#errors-container-general").removeClass("hidden").find("ul").html(errors);
+                $('#textProcess').css({ 'display': 'none' });
+
+                return;
+            } else {
+                $("#errors-container-general").addClass("hidden");
+            }
+
+            $.ajax({
+                cache: false,
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                url: window.location.protocol + "//" + window.location.host + "/Reporte/IVFPorEstablecimientoTable/",
+                data: {                   
+                    year: $('#select-ano').val(),                   
+                    inicio: $('#select-mes-desde').val(),
+                    fin: $('#select-mes-fin').val()
+                },
+                success: function (data) {
+                    var html = data.trim();
+                    $("#contenedor-table").html(html);
+                    $('#textProcess').css({ 'display': 'none' });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Ocurrió un error.');
+                }
+            });
+        });
+
+        $('#btn-export-excel').click(function (e) {
+            window.location = "/Reporte/ExportarExcelEstablecimiento?year=" + $('#select-ano').val() + "&inicio=" + $('#select-mes-desde').val() + "&fin=" + $('#select-mes-fin').val();
+        });
+
+        $('#btn-pdf').click(function () {
+            //jspdfTable('tbl-ivf');
+        });
+    </script>
+}

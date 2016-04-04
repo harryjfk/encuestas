@@ -66,7 +66,7 @@
                         var pr = item.PosiblesRespuestas.FirstOrDefault();
                                 }
 
-                                @foreach (var v in pr.Valores)
+                                @foreach (var v in pr.Valores.OrderBy(t=>t.orden))
                                 {
                                     var hasPrAso = v.IdPregunta != null;
                                     var ch = v.Seleccionado ? "true" : "false";
@@ -84,8 +84,7 @@
                                                                    datavalueasoc = "false",
                                                                    @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
                                                                    dataorigpregid = pr.Id,
-                                                                   datavalorid = v.Id,
-                                                                   datanumero = v.Numero,
+                                                                   datavalorid = v.Id,                                                                   
                                                                    datatexto = v.Texto,
                                                                    datapospregid = v.IdPosibleRespuesta,
                                                                    datapregid = v.IdPregunta
@@ -101,8 +100,7 @@
                                                                 datavalueasoc = "false",
                                                                 @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
                                                                 dataorigpregid = pr.Id,
-                                                                datavalorid = v.Id,
-                                                                datanumero = v.Numero,
+                                                                datavalorid = v.Id,                                                                
                                                                 datatexto = v.Texto,
                                                                 datapospregid = v.IdPosibleRespuesta,
                                                                 datapregid = v.IdPregunta
@@ -116,8 +114,7 @@
                                                            datavalueasoc = "false",
                                                            @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
                                                            dataorigpregid = pr.Id,
-                                                           datavalorid = v.Id,
-                                                           datanumero = v.Numero,
+                                                           datavalorid = v.Id,                                                           
                                                            datatexto = v.Texto,
                                                            datapospregid = v.IdPosibleRespuesta,
                                                            datapregid = v.IdPregunta
@@ -128,11 +125,11 @@
                                             {
                                                 if (v.Seleccionado)
                                                 {
-                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { @checked = "chequed", datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { @checked = "chequed", datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
                                                 }
                                                 else
                                                 {
-                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
                                                 }
                                             }
                                             @*@(
@@ -158,7 +155,7 @@
                                                         }
                                                         @if (posResp != null)
                                                         {
-                                                            foreach (var tv in posResp.Valores)
+                                                            foreach (var tv in posResp.Valores.OrderBy(t => t.orden))
                                                             {
                                                                 <td class="">
                                                                     @{
@@ -208,7 +205,7 @@
                                             }
                                             @if (v.Personalizado)
                                             {
-                                                if (v.Seleccionado)
+                                                if (v.Seleccionado || item.PreguntasObligatorias)
                                                 {
                                                     <input value="@v.texto_personalizado" style="margin-left: 10px;  width: 100%" type="text" class="personalizado" data-vid="@v.Id" />
                                                 }
@@ -235,8 +232,7 @@
             </div>
         </div>
 
-        <div class="modal-footer">
-            @*<input id="btn-guardar" name="submit" type="button" class="btn btn-primary pull-right" value="Guardar" />*@
+        <div class="modal-footer">            
             <input id="btn-enviar" name="submit" type="button" class="btn btn-primary pull-right" value="Enviar" />
         </div>
 
@@ -262,7 +258,8 @@
                 }
             });
         });
-
+        //$('.personalizado').inputmask("*| {1,255}");
+        $('.personalizado').maxlength({ events: ['blur'], slider: true, maxCharacters: 255, statusText: 'caracteres restantes' });
         $(".preg-asoc-input").click(function () {
             var pregId = $(this).attr("dataorigpregid");
             var valorId = $(this).attr("datavalorid");
@@ -435,131 +432,5 @@
             });
 
         });
-        $("#btn-guardar").click(function () {
-
-            var preg = $(".pregunta-container");
-
-            var preguntasjs = [];
-
-            preg.each(function (i, e) {
-
-                var valores = [];
-
-                var idPreg = $(e).attr("data-id");
-                var text = $(e).find(".pregunta-text").html();
-                var checks = $(e).find("input[type='checkbox'][datavalueasoc='false']");
-                var radios = $(e).find("input[type='radio'][datavalueasoc='false']");
-
-                if (checks.length > 0) {
-                    checks.each(function (j, v) {
-                        var $obj = $(v);
-                        var tempValue = {
-                            Id: $obj.attr("datavalorid"),
-                            Numero: $obj.attr("datanumero"),
-                            Seleccionado: v.checked ? 1 : 0,
-                            Texto: $obj.attr("datatexto"),
-                            IdPosibleRespuesta: $obj.attr("datapospregid"),
-                            IdPregunta: $obj.attr("datapregid")
-                        };
-                        if ($obj.attr("datapregid") != "") {
-                            var pregAsocValues = [];
-                            var valPregAsoc = $(e).find(".preg-asoc-" + $obj.attr("datavalorid") + " [datavalueasoc='true']");
-                            valPregAsoc.each(function (ind, ob) {
-                                pregAsocValues.push({
-                                    Id: $(ob).attr("datavalueasocid"),
-                                    Texto: $(ob).attr("datavalueasoctext"),
-                                    Seleccionado: ob.checked ? 1 : 0,
-                                });
-                            });
-                            tempValue.Pregunta = {
-                                Id: $obj.attr("datapregid"),
-                                Valores: pregAsocValues
-                            };
-                        }
-                        valores.push(tempValue);
-                    });
-                }
-
-                if (radios.length > 0) {
-                    radios.each(function (j, v) {
-                        var $obj = $(v);
-                        var tempValue = {
-                            Id: $obj.attr("datavalorid"),
-                            Numero: $obj.attr("datanumero"),
-                            Seleccionado: v.checked ? 1 : 0,
-                            Texto: $obj.attr("datatexto"),
-                            IdPosibleRespuesta: $obj.attr("datapospregid"),
-                            IdPregunta: $obj.attr("datapregid")
-                        };
-                        if ($obj.attr("datapregid") != "") {
-                            var pregAsocValues = [];
-                            var valPregAsoc = $(e).find(".preg-asoc-" + $obj.attr("datavalorid") + " [datavalueasoc='true']");
-                            valPregAsoc.each(function (ind, ob) {
-                                pregAsocValues.push({
-                                    Id: $(ob).attr("datavalueasocid"),
-                                    Texto: $(ob).attr("datavalueasoctext"),
-                                    Seleccionado: ob.checked ? 1 : 0,
-                                });
-                            });
-                            tempValue.Pregunta = {
-                                Id: $obj.attr("datapregid"),
-                                Valores: pregAsocValues
-                            };
-                        }
-                        valores.push(tempValue);
-                    });
-                }
-
-
-                preguntasjs.push({
-                    Id: idPreg,
-                    Texto: text,
-                    Valores: valores
-                });
-
-            });
-
-            var sendData = {
-                Id: $("input[name='encid']").val(),
-                Preguntas: preguntasjs
-            };
-
-
-            $.ajax({
-                cache: false,
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                url: window.location.origin + "/EncuestaEmpresarial/Guardar/",
-                data: JSON.stringify(sendData),
-                success: function (data) {
-                    if (data.Success) {
-                        //window.location.href = window.location.origin + "/EncuestaEmpresarial";
-                        $.smallBox({
-                            title: "Confirmación",
-                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
-                            color: "#659265",
-                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                            timeout: 4000
-                        });
-                        $(".body-content").html(data.Data);
-                    } else {
-                        var errors = "";
-                        for (var i = 0; i < data.Errors.length; i++) {
-                            errors += "<li>" + data.Errors[i] + "</li>";
-                        }
-                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert('Failed to retrieve data.');
-                }
-            });
-
-
-        });
-
-
-
     });
 </script>

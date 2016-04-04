@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class FactorController : BaseController<Factor>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdFactor", string @default = null)
@@ -30,6 +33,7 @@ namespace WebApplication.Controllers
        
         public JsonResult Toggle(long id)
         {
+            Query = base.GetQuery();
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)

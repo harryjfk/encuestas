@@ -205,7 +205,7 @@ namespace Domain.Managers
                 var te = Find(usr.Identificador);
                 if (te == null) continue;
                 usr.Roles = te.Roles.ToList();
-               // usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+                // usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
             }
             query.Elements = list;
             return list;
@@ -226,26 +226,15 @@ namespace Domain.Managers
         }
         public IPagedList<UsuarioExtranet> GetUsuariosExtranetContacto(Query<UsuarioExtranet> query, long idEstablecimiento)
         {
-            var list = Repositorio.GetUsuariosExtranet();
-            if (string.IsNullOrEmpty(query.Criteria.NombreApellidos) || string.IsNullOrWhiteSpace(query.Criteria.NombreApellidos))
-            {
-                //consultar
-                //list =
-                //    Get(t => t.EstablecimientosInformante.Any(h => h.Id == idEstablecimiento))
-                //    .Select(t => Repositorio.FindUsuarioExtranet((int)t.Identificador))
-                //    .ToPagedList(query.Paginacion.Page, query.Paginacion.ItemsPerPage);
-            }
-            else
-            {
-                list = Repositorio.GetUsuariosExtranet(query.Paginacion, query.Filter);
-            }
+            var list = Repositorio.GetUsuariosExtranet(query.Paginacion, query.Filter);
+            
             foreach (var usr in list)
             {
                 var te = Find(usr.Identificador);
                 if (te == null) continue;
                 usr.Roles = te.Roles.ToList();
                 usr.EstablecimientosInformante = te.EstablecimientosInformante.ToList();
-                usr.Seleccionado = te.EstablecimientosInformante.Any(t=>t.Id==idEstablecimiento);
+                usr.Seleccionado = te.EstablecimientosInformante.Any(t => t.Id == idEstablecimiento);
             }
             query.Elements = list;
             return list;
@@ -270,15 +259,15 @@ namespace Domain.Managers
             return usr;
         }
 
-        public UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol)
-        {
-            var usr = Repositorio.FindUsuarioIntranet(codigo, idRol);
-            var te = Find(usr.Identificador);
-            if (te == null) return usr;
-            usr.Roles = te.Roles.ToList();
-           // usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
-            return usr;
-        }
+        //public UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol)
+        //{
+        //    var usr = Repositorio.FindUsuarioIntranet(codigo, idRol);
+        //    var te = Find(usr.Identificador);
+        //    if (te == null) return usr;
+        //    usr.Roles = te.Roles.ToList();
+        //    // usr.EstablecimientosAnalista = te.EstablecimientosAnalista.ToList();
+        //    return usr;
+        //}
 
         public void MarcarAdministrador(int codigo)
         {
@@ -314,7 +303,7 @@ namespace Domain.Managers
 
         }
 
-        public void AsignarEstablecimientoAnalista(int idUsuario, long idEstablecimiento,long idCiiu,int orden)
+        public void AsignarEstablecimientoAnalista(int idUsuario, long idEstablecimiento, long idCiiu, int orden)
         {
             var manager = Manager;
             var se = manager.Usuario.FindUsuarioIntranet(idUsuario);
@@ -337,29 +326,45 @@ namespace Domain.Managers
                 id_ciiu = idCiiu,
                 id_analista = user.Identificador,
                 id_establecimiento = idEstablecimiento,
-                orden=orden
+                orden = orden
             };
 
             manager.EstablecimientoAnalistaManager.Add(estabecimientoAnalista);
             manager.EstablecimientoAnalistaManager.SaveChanges();
 
-            //foreach (var enc in establecimiento.Encuestas)
-            //{
-            //    if (enc.IdAnalista == null)
-            //    {
-            //        enc.IdAnalista = idUsuario;
-            //        manager.Encuesta.Modify(enc);
-            //    }
-            //}
+            foreach (var enc in establecimiento.Encuestas)
+            {
+                var elem = enc.DAT_ENCUESTA_ANALISTA.FirstOrDefault(t => t.id_ciiu == idCiiu && t.SEG_USUARIO == null);
+                if (elem != null)
+                {
+                    elem.id_analista = user.Identificador;
+                    manager.EncuestaAnalistaManager.Modify(elem);
+                    manager.EncuestaAnalistaManager.SaveChanges();
+                }
+                else
+                {
+                    elem = new EncuestaAnalista()
+                    {
+                        id_analista = user.Identificador,
+                        id_ciiu = idCiiu,
+                        id_encuesta = enc.Id,
+                        orden = enc.DAT_ENCUESTA_ANALISTA.Count() + 1,
+                        estado = enc.DAT_ENCUESTA_ANALISTA.Any() ? 1 : 2
+                    };
+                    manager.EncuestaAnalistaManager.Add(elem);
+                    manager.EncuestaAnalistaManager.SaveChanges();
+                }
+            }
             manager.Encuesta.SaveChanges();
         }
 
-        public void AsignarEstablecimientoAnalista(UsuarioIntranet usuario, long idEstablecimiento,long idCiiu,int orden)
+        public void AsignarEstablecimientoAnalista(UsuarioIntranet usuario, long idEstablecimiento, long idCiiu, int orden)
         {
             var idUsuario = (int)usuario.Identificador;
-            var idRol = (int)usuario.IdRol;
+            
             var manager = Manager;
-            var se = manager.Usuario.FindUsuarioIntranet(idUsuario, idRol);
+            
+            var se = manager.Usuario.FindUsuarioIntranet(idUsuario);
             var establecimiento = manager.Establecimiento.Find(idEstablecimiento);
             if (se == null || establecimiento == null) return;
             var user = manager.Usuario.Find(idUsuario);
@@ -381,7 +386,7 @@ namespace Domain.Managers
                 id_establecimiento = idEstablecimiento,
                 orden = orden
             };
-         
+
             manager.EstablecimientoAnalistaManager.Add(estabecimientoAnalista);
             manager.EstablecimientoAnalistaManager.SaveChanges();
 

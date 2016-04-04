@@ -19,13 +19,13 @@
 </thead>
 
     <tbody>
-        @foreach (var item in Model.Elements)
+        @foreach (var item in Model.Elements.OrderByDescending(t => t.Fecha))
         {
             <tr>
                 <td>
                     @switch (item.EstadoEncuesta)
                     {
-                        case EstadoEncuesta.Enviada:<span data-toggle="tooltip" data-placement="top" data-original-title="ENVIADA @item.fecha_ultimo_envio.GetValueOrDefault().ToString("F",CultureInfo.GetCultureInfo("es"))" title=""><i class="fa fa-sign-out text-success"></i></span>
+                        case EstadoEncuesta.Enviada:<span data-toggle="tooltip" data-placement="top" data-original-title="ENVIADA @item.fecha_ultimo_envio.GetValueOrDefault().ToString("F", CultureInfo.GetCultureInfo("es"))" title=""><i class="fa fa-sign-out text-success"></i></span>
                             break;
                         case EstadoEncuesta.NoEnviada:<span data-toggle="tooltip" data-placement="top" data-original-title="NO ENVIADA" title=""><i class="glyphicon glyphicon-eye-close text-danger"></i></span>
                             break;
@@ -44,14 +44,21 @@
                 <td>
                     @item.Establecimiento.Nombre
                 </td>
-
                 <td>
-                    <a href="/EncuestaEstadistica/EncuestaAnalista?idEncuesta=@item.Id" data-toggle="tooltip" data-placement="top" data-original-title="Ver" title="">
-                        <i class="color-yellow glyphicon glyphicon-pencil"></i>
-                    </a>
-                </td>
-                 
-</tr>
+                    @if (item.actualizacion == 1 && item.EstadoEncuesta == EstadoEncuesta.Validada)
+                    {
+                        <a href="/EncuestaEstadistica/Encuesta?idEncuesta=@item.Id" data-toggle="tooltip" data-placement="top" data-original-title="Actualizar" title="">
+                            <i class="color-black glyphicon glyphicon-pencil"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/EncuestaEstadistica/EncuestaAnalista?idEncuesta=@item.Id" data-toggle="tooltip" data-placement="top" data-original-title="Ver" title="">
+                            <i class="color-black glyphicon glyphicon-eye-open"></i>
+                        </a>
+                    }
+                </td>                 
+        </tr>
         }
     </tbody>
 </table>

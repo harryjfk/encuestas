@@ -36,11 +36,17 @@ namespace Domain.Managers
                      t.VentasProductosEstablecimiento.VentasServicioManufactura.Where(h => h.ciiu == materia.ciiu));
 
             var historico = materias.Where(t => t != null).Select(t => (double)t.venta.GetValueOrDefault()).ToList();
-            historico.Add((double)valor.GetValueOrDefault());
+
+            if (historico.Count == 0)
+            {
+                return true;
+            }
+
             var desviacion = historico.DesviacionEstandar();
             var avg = historico.Average();
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            //var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)valor.GetValueOrDefault() <= max && (double)valor.GetValueOrDefault() >= min;
         }
@@ -60,11 +66,16 @@ namespace Domain.Managers
                      t.VentasProductosEstablecimiento.VentasServicioManufactura.Where(h => h.ciiu == materia.ciiu));
 
             var historico = materias.Where(t => t != null).Select(t => (double)t.venta_extranjero.GetValueOrDefault()).ToList();
-            historico.Add((double)valor.GetValueOrDefault());
+
+            if (historico.Count == 0)
+            {
+                return true;
+            }
+
             var desviacion = historico.DesviacionEstandar();
             var avg = historico.Average();
             var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
+            var min = avg - mult;
             var max = avg + mult;
             return (double)valor.GetValueOrDefault() <= max && (double)valor.GetValueOrDefault() >= min;
         }
@@ -90,12 +101,21 @@ namespace Domain.Managers
                  t =>
                      t.VentasProductosEstablecimiento.VentasServicioManufactura.FirstOrDefault(
                          h => h.ciiu == materia.ciiu)).Where(t => t != null);
-            var historico = materiasd.Select(t => (double)t.venta.GetValueOrDefault()).ToList();
-            var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
-            var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
-            var max = avg + mult;
+            var historico = materiasd.Where(t => t != null).Select(t => (double)t.venta.GetValueOrDefault()).ToList();
+            double? desviacion = null;
+            double? avg = null;
+            double? mult = null;
+            double? min = null;
+            double? max = null;
+
+            if (historico.Count > 0)
+            {
+                desviacion = historico.DesviacionEstandar();
+                avg = historico.Average();
+                mult = desviacion * 3;
+                min = avg - mult;
+                max = avg + mult;
+            }
             return materias.Where(t => t != null).Select(t => new NumberTableItem()
             {
                 Month = t.VentaProductoEstablecimiento.Encuesta.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("es")),
@@ -108,6 +128,7 @@ namespace Domain.Managers
                 Minimo = min
             }).ToList();
         }
+
         public object GetHistoryVentasExtranjero(long id)
         {
             var materia = Manager.VentaServicioManufacturaManager.Find(id);
@@ -129,12 +150,21 @@ namespace Domain.Managers
                  t =>
                      t.VentasProductosEstablecimiento.VentasServicioManufactura.FirstOrDefault(
                          h => h.ciiu == materia.ciiu)).Where(t => t != null);
-            var historico = materiasd.Select(t => (double)t.venta_extranjero.GetValueOrDefault()).ToList();
-            var desviacion = historico.DesviacionEstandar();
-            var avg = historico.Average();
-            var mult = desviacion * 3;
-            var min = Math.Abs(avg - mult);
-            var max = avg + mult;
+            var historico = materiasd.Where(t => t != null).Select(t => (double)t.venta_extranjero.GetValueOrDefault()).ToList();
+            double? desviacion = null;
+            double? avg = null;
+            double? mult = null;
+            double? min = null;
+            double? max = null;
+
+            if (historico.Count > 0)
+            {
+                desviacion = historico.DesviacionEstandar();
+                avg = historico.Average();
+                mult = desviacion * 3;
+                min = avg - mult;
+                max = avg + mult;
+            }
             return materias.Where(t => t != null).Select(t => new NumberTableItem()
             {
                 Month = t.VentaProductoEstablecimiento.Encuesta.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("es")),

@@ -15,7 +15,7 @@
                 <ul></ul>
             </div>
         </div>
-        <a href="javascript:void(0);" class="btn btn-primary btn-xs" id="nuevoProdPropio">Nueva L&iacute;nea de Producto</a>
+        <a href="javascript:void(0);" class="btn btn-primary btn-xs" id="nuevoProdPropio">Nuevo Producto</a>
         <div class="panel panel-default" id="divmpgeneral" style="display:none">
             <div class="panel-heading">Producto con materia prima propia</div>
             <div class="panel-body" id="divmp">
@@ -26,7 +26,7 @@
             <thead>
                 <tr class="cabecera">
                     <th>
-                        L&iacute;nea de Producto
+                        Producto
                     </th>
                     <th style="width: 100px;">
                         um
@@ -51,10 +51,7 @@
                     </th>
                     <th>
                         Otras Salidas
-                    </th>
-                    @*<th>
-                        GUARDAR
-                    </th>*@
+                    </th>                    
                 </tr>
             </thead>
             <tbody>
@@ -63,57 +60,59 @@
                     var elem = item.LineaProducto.LineasProductoEstablecimiento.FirstOrDefault(t => t.IdEstablecimiento == item.VolumenProduccion.Encuesta.IdEstablecimiento);
                     var isnew = elem != null && elem.IsNew(item.VolumenProduccion.Encuesta.Fecha);
                     var clase = isnew ? "bg-color-ligth-yellow" : "";
-                    <input type="hidden"  class="matIds" role="@item.Id"/>
-                    //Html.RenderPartial("_ProductoMateriaPrimaPropia", item);
-
+                    
                     <tr class="@clase">
                         <td>
-                            <span>@item.LineaProducto.Ciiu.Codigo-@item.LineaProducto.Nombre</span>
+                            <input type="hidden"  class="matIds" role="@item.Id"/>
+                            <span>
+                                @item.LineaProducto.Codigo<br />
+                                @item.LineaProducto.Nombre
+                            </span>
                         </td>
                         <td>
                             @{ Html.RenderAction("GetDorpDownLineaProducto", "UnidadMedida", new { idLineaProducto = item.LineaProducto.Id, id = item.IdUnidadMedida, nombre = "um-" + item.Id }); }
                         </td>
                         <td>
                             @Html.TextBoxFor(modelItem => item.ValorUnitario, new { style = "  width: 100%;", @class = "mask4 form-control vu-" + item.Id, Value = String.Format("{0:0.0000}", item.ValorUnitario) })
-                            @if (string.IsNullOrEmpty(item.JustificacionValorUnitario))
+                            @if (item.JustificacionValorUnitario == null)
                             {
-                                <div class="panel justMatProp panel-default div-jvu-@item.Id" style="display: none;margin-top: 5px; ">
+                                <div class="panel justMatProp panel-default pnl-just div-jvu-@item.Id" style="display: none;margin-top: 5px; ">
                                     <span>Justificaci&oacute;n</span>
-                                    @Html.TextAreaFor(modelItem => item.JustificacionValorUnitario, new { style = "  width: 100%;", @class = "form-control  jvu-" + item.Id })
+                                    @Html.TextAreaFor(modelItem => item.JustificacionValorUnitario, new { style = " width: 100%;", @class = "form-control jvu-" + item.Id })
                                 </div>
                             }
                             else
                             {
-                                <div style="margin-top: 5px;" class="panel justMatProp panel-default div-jvu-@item.Id" title="Debe insertar una justificación para el valor unitario">
+                                <div style="margin-top: 5px;" class="panel justMatProp panel-default pnl-just div-jvu-@item.Id" title="Debe insertar una justificación para el valor unitario">
                                     <span>Justificaci&oacute;n</span>
-                                    @Html.TextAreaFor(modelItem => item.JustificacionValorUnitario, new { style = "  width: 100%;", @class = "form-control jvu-" + item.Id })
+                                    @Html.TextAreaFor(modelItem => item.JustificacionValorUnitario, new { style = " width: 100%;", @class = "form-control jvu-" + item.Id })
                                 </div>
                             }
                         </td>
                         <td>
                             @if (item.IsFirst)
                             {
-                                @Html.TextBoxFor(modelItem => item.Existencia, new { style = "  width: 100%;", @class = "mask4 form-control ex-" + item.Id, Value = String.Format("{0:0.0000}", item.Existencia) })
+                                @Html.TextBoxFor(modelItem => item.Existencia, new { style = " width: 100%;", @class = "mask4 form-control ex-" + item.Id, Value = String.Format("{0:0.0000}", item.Existencia) })
                             }
                             else
                             {
-                                @Html.Label("", item.Existencia.GetValueOrDefault().ToString("0.0000"), new { @class = "form-control reset-max-width", Value = String.Format("{0:0.0000}", item.Existencia.GetValueOrDefault()) })
+                                @Html.TextBoxFor(modelItem => item.Existencia, new { style = " width: 100%;", @class = "mask4 form-control ex-" + item.Id, Value = String.Format("{0:0.0000}", item.Existencia), @disabled = "disabled" })
                             }
                         </td>
                         <td>
                             @Html.TextBoxFor(modelItem => item.Produccion, new { style = "  width: 100%;", @class = "mask4 form-control prod-" + item.Id, Value = String.Format("{0:0.0000}", item.Produccion) })
-                            @if (string.IsNullOrEmpty(item.JustificacionProduccion))
+                            @if (item.JustificacionProduccion == null)
                             {
-                                <div class="panel justMatProp panel-default div-jp-@item.Id" style="display: none; margin-top: 5px;">
+                                <div class="panel justMatProp panel-default pnl-just div-jp-@item.Id" style="display: none; margin-top: 5px;">
                                     <span>Justificaci&oacute;n</span>
-                                    @Html.TextAreaFor(modelItem => item.JustificacionProduccion, new { style = "  width: 100%;", @class = "form-control jp-" + item.Id })
+                                    @Html.TextAreaFor(modelItem => item.JustificacionProduccion, new { style = " width: 100%;", @class = "form-control jp-" + item.Id })
                                 </div>
                             }
                             else
                             {
-                                <div style="margin-top: 5px;" class="panel justMatProp panel-default div-jp-@item.Id" title="Debe insertar una justificación para la producción">
+                                <div style="margin-top: 5px;" class="panel justMatProp panel-default pnl-just div-jp-@item.Id" title="Debe insertar una justificación para la producción">
                                     <span>Justificaci&oacute;n</span>
-                                    @Html.TextAreaFor(modelItem => item.JustificacionProduccion, new { style = "  width: 100%;", @class = "form-control jp-" + item.Id })
+                                    @Html.TextAreaFor(modelItem => item.JustificacionProduccion, new { style = " width: 100%;", @class = "form-control jp-" + item.Id })
                                 </div>
                             }
                         </td>
@@ -122,57 +121,45 @@
                         </td>
                         <td>
                             @Html.TextBoxFor(modelItem => item.VentasPais, new { style = "  width: 100%;", @class = "mask4 form-control vp-" + item.Id, Value = String.Format("{0:0.0000}", item.VentasPais) })
-                            @if (string.IsNullOrEmpty(item.justificacion_venta_pais))
+                            @if (item.justificacion_venta_pais == null)
                             {
-                                <div class="panel panel-default justMatProp div-jvp-@item.Id" style="display: none;margin-top: 5px; ">
+                                <div class="panel panel-default justMatProp pnl-just div-jvp-@item.Id" style="display: none;margin-top: 5px; ">
                                     <span>Justificaci&oacute;n</span>
-                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = "  width: 100%;", @class = "form-control jvp002-" + item.Id })
+                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = " width: 100%;", @class = "form-control jvp002-" + item.Id })
                                 </div>
                             }
                             else
                             {
-                                <div style="margin-top: 5px;" class="panel justMatProp panel-default div-jvp-@item.Id" title="Debe insertar una justificación para las ventas en el pais">
+                                <div style="margin-top: 5px;" class="panel justMatProp panel-default pnl-just div-jvp-@item.Id" title="Debe insertar una justificación para las ventas en el pais">
                                     <span>Justificaci&oacute;n</span>
-                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = "  width: 100%;", @class = "form-control jvp002-" + item.Id })
+                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = " width: 100%;", @class = "form-control jvp002-" + item.Id })
                                 </div>
-                            }
-                            @* @Html.TextBoxFor(modelItem => item.VentasPais, new { style = "  width: 100%;", @class = "mask4 form-control vp-" + item.Id, Value = String.Format("{0:0.0000}", item.VentasPais) })*@
+                            }                            
                         </td>
                         <td>
                             @Html.TextBoxFor(modelItem => item.VentasExtranjero, new { style = "  width: 100%;", @class = "mask4 form-control ve-" + item.Id, Value = String.Format("{0:0.0000}", item.VentasExtranjero) })
-                            @if (string.IsNullOrEmpty(item.justificacion_venta_extranjero))
+                            @if (item.justificacion_venta_extranjero == null)
                             {
-                                <div class="panel justMatProp panel-default div-jve-@item.Id" style="display: none;margin-top: 5px; ">
+                                <div class="panel justMatProp panel-default pnl-just div-jve-@item.Id" style="display: none;margin-top: 5px; ">
                                     <span>Justificaci&oacute;n</span>
-                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_extranjero, new { style = "  width: 100%;", @class = "form-control jve002-" + item.Id })
+                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_extranjero, new { style = " width: 100%;", @class = "form-control jve002-" + item.Id })
                                 </div>
                             }
                             else
                             {
-                                <div style="margin-top: 5px;" class="panel justMatProp panel-default div-jvp-@item.Id" title="Debe insertar una justificación para las ventas en el extranjero">
+                                <div style="margin-top: 5px;" class="panel justMatProp pnl-just panel-default div-jve-@item.Id" title="Debe insertar una justificación para las ventas en el extranjero">
                                     <span>Justificaci&oacute;n</span>
-                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_extranjero, new { style = "  width: 100%;", @class = "form-control jve002-" + item.Id })
+                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_extranjero, new { style = " width: 100%;", @class = "form-control jve002-" + item.Id })
                                 </div>
                             }
-                            @*@Html.TextBoxFor(modelItem => item.VentasExtranjero, new { style = "  width: 100%;", @class = "mask4 form-control ve-" + item.Id, Value = String.Format("{0:0.0000}", item.VentasExtranjero) })*@
                         </td>
                         <td>
                             @Html.TextBoxFor(modelItem => item.OtrasSalidas, new { style = "  width: 100%;", @class = "mask4 form-control os-" + item.Id, Value = String.Format("{0:0.0000}", item.OtrasSalidas) })
                         </td>
-                        @*<td>
-                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Guardar" id="edit-@item.Id" role="@item.Id" class="edit-btnMp btn btn-primary">
-                                <i class="text-center glyphicon glyphicon-ok"></i>
-                            </a>
-                        </td>*@
-
                     </tr>
-                }
-              
+                }              
             </tbody>
         </table>
-
-
-
        
         @if (!Model.Any())
         {
@@ -206,7 +193,19 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        maskEstadistico();
+
+        $('.justMatProp textarea').each(function (i, el) {
+            var value = $(this).val().trim();
+            $(this).val(value);
+        });
+
         $("#edit-btnMp").click(function (e) {
+            var $btn = $(this);
+            var btnText = $btn.text();
+            $btn.addClass('disabled');
+            $btn.text('Procesando...');
             $(".justMatProp").hide();
             var list = [];
             $(".matIds").each(function (i, el) {
@@ -215,7 +214,7 @@
                 var um = $('#um-' + id).val();
                 var ex = 0;
                 if ($('.ex-' + id)[0]) {
-                    ex = $('.ex-' + id)[0].value;
+                    ex = getValueEstadistico('.ex-' + id);
                 }
                 var jvu = null;
                 if ($('.jvu-' + id)[0]) {
@@ -233,12 +232,12 @@
                 if ($('.jp-' + id)[0]) {
                     jp = $('.jp-' + id)[0].value;
                 }
-                var vu = $('.vu-' + id)[0].value;
-                var prod = $('.prod-' + id)[0].value;
-                var oi = $('.oi-' + id)[0].value;
-                var vp = $('.vp-' + id)[0].value;
-                var ve = $('.ve-' + id)[0].value;
-                var os = $('.os-' + id)[0].value;
+                var vu = getValueEstadistico('.vu-' + id);
+                var prod = getValueEstadistico('.prod-' + id);
+                var oi = getValueEstadistico('.oi-' + id);
+                var vp = getValueEstadistico('.vp-' + id);
+                var ve = getValueEstadistico('.ve-' + id);
+                var os = getValueEstadistico('.os-' + id);
                 var obj = {
                     Id: id,
                     IdUnidadMedida: um,
@@ -256,7 +255,7 @@
                 };
                 list.push(obj);
             });
-            console.log(list);
+            
             $.ajax({
                 cache: false,
                 dataType: "json",
@@ -272,7 +271,6 @@
                             $(".div-jvu-" + id1).show();
                         }
                         for (var i2 in data.Produccion) {
-
                             var id2 = data.Produccion[i2];
                             $(".div-jp-" + id2).show();
                         }
@@ -312,26 +310,17 @@
                         //    timeout: 4000
                         //});
                     }
+
+                    $btn.removeClass('disabled');
+                    $btn.text(btnText);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Failed to retrieve data.');
                 }
             });
             e.preventDefault();
-        });
-        $(".mask4").inputmask("9{1,20}.9{0,4}");
-        $(".mask4").each(function (i, e) {
-            $(e).focusout(function () {
-                var val = parseFloat($(e).val());
-                $(e).val(val.toFixed(4));
-
-            });
-        });
-        //$(".mask4").on('change', function() {
-        //    var el = $(this);
-        //    console.log(el);
-        //    el.css("text-align", "right");
-        //});
+        });        
+        
         $("#nuevoProdPropio").click(function () {
             $.ajax({
                 cache: false,

@@ -15,7 +15,7 @@ namespace Entity
                try
                {
                    return
-                       this.CAT_ENCUESTA_ESTADISTICA.VolumenProduccionMensual.MateriasTercero.Any(
+                       this.DAT_ENCUESTA_ESTADISTICA.VolumenProduccionMensual.MateriasTercero.Any(
                            t => t.LineaProducto.IdCiiu == this.id_ciiu);
                }
                catch (Exception)

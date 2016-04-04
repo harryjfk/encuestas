@@ -61,6 +61,10 @@
                                 <input type="text" name="valortexto" class="form-control" />
                             </div>
                             <div class="form-group">
+                                <label for="Orden" class="col-md-4 control-label">&Oacute;rden</label>
+                                <input type="text" name="valororden" class="form-control" />
+                            </div>
+                            <div class="form-group">
                                 <label for="Pregunta" class="col-md-4 control-label">Pregunta Asociada</label>
                                 @{Html.RenderAction("GetDorpDownAsociada", "Pregunta", new { id = 0, noIncluir = new List<long>() { Model.IdPregunta }, nombre = "PreguntaId", @default = "Ninguna" });}
                             </div>
@@ -80,31 +84,35 @@
                             <thead>
                                 <tr class="cabecera">
                                     <th>
-                                        TEXTO
+                                        Texto
+                                    </th>
+                                    <th style="width: 25px;">
+                                        &Oacute;rden
                                     </th>
                                     <th>
-                                        PREGUNTA
+                                        Pregunta
                                     </th>
                                     <th>
-                                        VALOR PERSONALIZADO
+                                        Valor Personalizado
                                     </th>
                                     <th>
-                                        ACCI&Oacute;N
+                                        Acci&oacute;n
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model.Valores)
                                 {
-                                    
+
                                     <tr>
                                         <td>
 
                                             @{
-                                    var item1 = item;
+                                                var item1 = item;
                                             }
                                             @Html.DisplayFor(modelItem => item1.Texto)
                                         </td>
+                                        <td> @item1.orden.GetValueOrDefault().ToString("0.")</td>
                                         <td>
                                             @if (item1.Pregunta != null)
                                             {
@@ -171,8 +179,12 @@
 
         @foreach (var v in Model.Valores)
         {
-            @Html.Raw("valores.push({   IdPosResp:'" + v.IdPosibleRespuesta + "',Texto:'" + v.Texto + "', IdPregunta: '" + v.IdPregunta + "', PreguntaText: '" + (v.Pregunta != null ? v.Pregunta.Texto : "Ninguna") + "',Personalizado:"+v.Personalizado.ToString().ToLower()+"});")
+            @Html.Raw("valores.push({   IdPosResp:'" + v.IdPosibleRespuesta + "',Texto:'" + v.Texto + "',orden:'" + v.orden + "', IdPregunta: '" + v.IdPregunta + "', PreguntaText: '" + (v.Pregunta != null ? v.Pregunta.Texto : "Ninguna") + "',Personalizado:" + v.Personalizado.ToString().ToLower() + "});")
         }
+
+
+        console.log(valores);
+
         setTimeout(function () {
             $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
             $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
@@ -187,32 +199,58 @@
 
         $("#nuevoValor").click(function () {
             $("input[name='valortexto']").val("");
+            $("input[name='valororden']").val("");
             $("select[name='PreguntaId']").val(0);
             $("select[name='personalizado']").checked = false;
             var cont = $(".create-value-container");
             if (cont.hasClass("hidden")) {
                 cont.removeClass("hidden");
             }
+            setTimeout(function () {
+                $("#PreguntaId").chosen('destroy');
+                $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+                $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+                $('#PreguntaId_chosen').css('width', '280px');
+                var a = $("a[class*='chosen-single']");
+                if (a != null) {
+                    a.css("border", "0");
+                    a.css("background", "white");
+                    a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                }
+                $("input[name='valororden']").inputmask("9{1,3}");
+            }, 1);
+
         });
 
         $("#btn-guardar-valor").click(function () {
             var idP = $("select[name='PreguntaId']").val();
             var texto = $("input[name='valortexto']").val();
+            var orden = $("input[name='valororden']").val();
+            if (!texto || texto.trim() == '') {
+                var errors = "";
+                errors += "<li>" + 'El campo texto es obligatorio' + "</li>";
+
+                $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                return;
+            };
+            $("#errors-container").addClass("hidden");
             var idPosResp = $("input[name='Id']").val();
             var personalizado = $("input[name='personalizado']")[0].checked;
             var preTexto = $($("select[name='PreguntaId']")[0]).find("option[value=" + idP + "]")[0].innerHTML;
             if (tempEdit == undefined) {
                 valores.push({
                     Texto: texto,
+                    orden:orden,
                     IdPregunta: idP,
                     PreguntaText: preTexto,
                     IdPosResp: idPosResp,
-                    Personalizado:personalizado
+                    Personalizado: personalizado
                 });
             } else {
                 for (var i in valores) {
                     if (tempEdit.Texto == valores[i].Texto) {
                         valores[i].Texto = texto;
+                        valores[i].orden = orden;
                         valores[i].IdPregunta = idP;
                         valores[i].PreguntaText = preTexto;
                         valores[i].IdPosResp = idPosResp;
@@ -240,7 +278,6 @@
             refresh();
         });
         $(".edit-btn-val").click(function () {
-          
             var texto = $(this).attr("role");
             var temp = {};
             for (var i in valores) {
@@ -249,8 +286,12 @@
                 }
             }
             $("input[name='valortexto']").val(temp.Texto);
-            $("input[name='personalizado']")[0].checked=temp.Personalizado;
+            $("input[name='valororden']").val(temp.orden);
+            $("input[name='personalizado']")[0].checked = temp.Personalizado;
             $("select[name='PreguntaId']").val(temp.IdPregunta != "" ? temp.IdPregunta : 0);
+            $("input[name='valororden']").inputmask("9{1,3}");
+            //$("select[name='PreguntaId']").val(temp.IdPregunta);
+            console.log(temp.IdPregunta);
             tempEdit = temp;
             $(".create-value-container").removeClass("hidden");
             setTimeout(function () {
@@ -269,12 +310,14 @@
 
         function refresh() {
             var tbody = $("#table-valores tbody").html("");
+            $("input[name='valororden']").inputmask("9{1,3}");
             for (var i in valores) {
                 var temp = valores[i];
                 tbody.append("<tr>" +
                     "<td>" + temp.Texto + "</td>" +
+                    "<td>" + temp.orden + "</td>" +
                     "<td>" + temp.PreguntaText + "</td>" +
-                     "<td>" + (temp.Personalizado?"SI":"NO") + "</td>" +
+                     "<td>" + (temp.Personalizado ? "SI" : "NO") + "</td>" +
                     "<td><a href='javascript:void(0);' data-toggle='tooltip' data-placement='top' data-original-title='Editar' title='' id='edit' role='" + temp.Texto + "' class='edit-btn-val'>" +
                                                 "<i class='color-yellow glyphicon glyphicon-pencil'></i>" +
                                             "</a>|" +
@@ -301,22 +344,23 @@
                     }
                 }
                 $("input[name='valortexto']").val(temp.Texto);
+                $("input[name='valororden']").val(temp.orden);
                 $("input[name='personalizado']")[0].checked = temp.Personalizado;
                 $("select[name='PreguntaId']").val(temp.IdPregunta != "" ? temp.IdPregunta : 0);
                 tempEdit = temp;
                 $(".create-value-container").removeClass("hidden");
-                //setTimeout(function () {
-                //    $("#PreguntaId").chosen('destroy');
-                //    $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
-                //    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
-                //    $('#PreguntaId_chosen').css('width', '280px');
-                //    var a = $("a[class*='chosen-single']");
-                //    if (a != null) {
-                //        a.css("border", "0");
-                //        a.css("background", "white");
-                //        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
-                //    }
-                //}, 1);
+                setTimeout(function () {
+                    $("#PreguntaId").chosen('destroy');
+                    $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+                    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+                    $('#PreguntaId_chosen').css('width', '280px');
+                    var a = $("a[class*='chosen-single']");
+                    if (a != null) {
+                        a.css("border", "0");
+                        a.css("background", "white");
+                        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                    }
+                }, 1);
             });
             $.InitTooltip();
         }
@@ -349,7 +393,7 @@
                         $("#editItem").modal("hide");
                         $(document.body).removeClass('modal-open');
                         $("#table-container").html(data.Data);
-                       
+
                         $.smallBox({
                             title: "Confirmación",
                             content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",

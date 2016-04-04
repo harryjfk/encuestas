@@ -5,12 +5,12 @@
     <thead>
         <tr class="cabecera">
           <th style="width: 20px;"></th>
-            <th> IDENTIFICADOR </th>
+            <th> Identificador </th>
             <th> RUC </th>
             <th> CIIU </th>
-            <th>RAZ&Oacute;N SOCIAL</th>
-            <th> DIRECCION </th>
-            <th style="width: 200px;">ACCI&Oacute;N</th>
+            <th>Raz&oacute;n Social</th>
+            <th> Direcci&oacute;n </th>
+            <th style="width: 220px;">Acci&oacute;n</th>
         </tr>
     </thead>
 
@@ -33,7 +33,7 @@
                 <td>
                     @if (item.Ciius.Any())
                     {
-                        foreach (var ciiu in item.Ciius)
+                        foreach (var ciiu in item.Ciius.Select(t => t.Ciiu))
                         {
                             <span class="label label-primary" title="@ciiu.ToString()">@ciiu.Codigo</span>
                         }
@@ -62,19 +62,22 @@
                         <i class="color-black glyphicon glyphicon-comment"></i>
                     </a>
                     |
-                    <a href="/LineaProductoEstablecimiento/Get/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Líneas de Producto" id="edit-@item.Id" role="@item.Id">
+                    <a href="/LineaProductoEstablecimiento/Get/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Productos" id="edit-@item.Id" role="@item.Id">
                         <i class="color-black glyphicon glyphicon-list-alt"></i>
                     </a>
                     |
                     <a href="/UsuarioExtranet/IndexInformante/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Contactos Externos" id="edit-@item.Id" role="@item.Id">
-                        <i class="color-black glyphicon glyphicon-user"></i><span style="  color: #333; position: relative; bottom: 8px; right: 2px; text-transform: uppercase; font-size: 8px; }">E</span>
+                        <i class="color-black glyphicon glyphicon-user"></i><span style="color: #333; position: relative; bottom: 8px; right: 2px; text-transform: uppercase; font-size: 8px; }">E</span>
                     </a>                    
+                    |
+                    <a href="/EncuestaEstadistica/PreviousUpdate/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Actualizar Encuestas Estadísticas">
+                        <i class="color-black glyphicon glyphicon-folder-open"></i>
+                    </a>
                     |
                     <a href="/Establecimiento/Delete/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" id="delete-@item.Id" role="@item.Id" class="delete-btn">
                         <i class="color-red glyphicon glyphicon-remove"></i>
-                    </a>                    
+                    </a>
                 </td>
-
             </tr>
         }
     </tbody>

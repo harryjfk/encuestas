@@ -5,11 +5,14 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class UnidadMedidaController : BaseController<UnidadMedida>
-    {
+    {        
         public ActionResult GetDorpDown(string id, string nombre = "IdUnidadMedida", string @default = null)
         {
            var list =OwnManager.Get(t => t.Activado).Select(t => new SelectListItem()

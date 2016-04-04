@@ -11,10 +11,10 @@
         <tr class="cabecera">
             <th style="width: 20px;"></th>
             <th> CIIU </th>
-            <th> MES </th>
+            <th> Mes </th>
             <th> CIF USD </th>
             <th> CIF S </th>            
-            <th style="width: 100px;">ACCI&Oacute;N</th>
+            <th style="width: 100px;">Acci&oacute;n</th>
     </thead>
     <tbody>
         @foreach (var item in Model.Elements)
@@ -23,11 +23,11 @@
                 <td>
                     @if (item.Activado)
                     {
-                        <a href="javascript:void(0);" class="toogleStatus txt-color-green" data-toggle="tooltip" data-placement="top" data-original-title="Desactivar" title="" data-id="@item.Id"><i class="glyphicon glyphicon-ok"></i></a>
+                        <a href="javascript:void(0);" class="toogleStatusImportacion txt-color-green" data-toggle="tooltip" data-placement="top" data-original-title="Desactivar" title="" data-id="@item.Id"><i class="glyphicon glyphicon-ok"></i></a>
                     }
                     else
                     {
-                        <a href="javascript:void(0);" class="toogleStatus" data-toggle="tooltip" data-placement="top" data-original-title="Activar" title="" data-id="@item.Id"><i class="glyphicon glyphicon-remove-sign"></i></a>
+                        <a href="javascript:void(0);" class="toogleStatusImportacion" data-toggle="tooltip" data-placement="top" data-original-title="Activar" title="" data-id="@item.Id"><i class="glyphicon glyphicon-remove-sign"></i></a>
                     }
                 </td>
                 <td>1071 – Elaboración de productos de panadería.</td>
@@ -81,7 +81,7 @@
 
         });
 
-        $(".toogleStatus").click(function () {
+        $(".toogleStatusImportacion").click(function () {
             var $elem = $(this);
             var id = $elem.attr("data-id");
             $.ajax({
@@ -91,7 +91,7 @@
                 data: { "id": id },
                 success: function (data) {
                     if (data.Success) {
-                        $("#table-container").html(data.Data);
+                        $("#table-container-importacion").html(data.Data);
                         $.smallBox({
                             title: "Confirmación",
                             content: "<i class='fa fa-clock-o'></i> <i>El elemento se cambió correctamente</i>",

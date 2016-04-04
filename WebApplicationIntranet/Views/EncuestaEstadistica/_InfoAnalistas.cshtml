@@ -29,6 +29,12 @@
             </div>
             <br />
         }
+        @if (!Model.Any())
+        {
+            <div class="no-elements-notification">
+                No hay elementos para mostrar
+            </div>
+        }
     </div>
 </div>
 

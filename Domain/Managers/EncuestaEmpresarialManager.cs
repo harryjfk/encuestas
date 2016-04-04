@@ -165,6 +165,7 @@ namespace Domain.Managers
                         Texto = v.Texto,
                         IdPregunta = pId,
                         Personalizado=v.Personalizado,
+                        orden=v.orden,
                         texto_personalizado = v.texto_personalizado
                     };
                     manager.Valor.Add(vt);
@@ -296,7 +297,7 @@ namespace Domain.Managers
 
         }
 
-        public IPagedList GetAsignadosAnalista(Query<EncuestaEmpresarial> query,long idAnalista)
+        public IPagedList GetAsignadosAnalista(Query<EncuestaEmpresarial> query, long idAnalista)
         {
             var estab = new long?();
             

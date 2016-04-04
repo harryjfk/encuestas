@@ -17,8 +17,12 @@ namespace Entity
 
        public override string ToString()
        {
-           
-           return String.Format("{0}-{1}",Codigo, Nombre);
+          return String.Format("{0} - {1}", Codigo, Nombre);                     
        }
+
+        public Func<LineaProducto, bool> BuildFilter()
+        {
+            return t => t.Codigo.Length == 7;
+        }
     }
 }

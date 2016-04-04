@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class ContactoController : BaseController<Contacto>
     {
         private static long IdEstablecimiento { get; set; }

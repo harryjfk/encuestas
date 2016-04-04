@@ -1,0 +1,62 @@
+﻿@model List<Entity.Reportes.CoberturaIvf>
+@using WebApplication.App_Code;
+
+<style>
+    .table {
+        white-space: nowrap;
+    }
+    th {
+    text-align:center;    
+}
+</style>
+
+@if (Model.Count > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="tbl-ivf" class="table table-striped table-hover table-bordered table-condensed tabla small">
+                    <thead>
+                        <tr class="cabecera">
+                            <th>CIIU </th>
+                            <th>Establecimiento </th>
+                            <th>Nombre </th>
+                            <th>Ponderación </th>
+                            <th>@(Static.GetMesAbreviaturaByIndex(ViewBag.Mes))</th>
+                            @*<th>Ver Producción</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{decimal conta_peso = 0, conta_peso_llego = 0;}
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.Raw(item.ciiu_codigo)</td>
+                                <td>@Html.Raw(item.establecimiento_ruc)</td>
+                                <td>@Html.Raw(item.establecimiento_nombre)</td>
+                                <td>@Html.Raw(item.establecimiento_peso)</td>
+                                <td>@Html.Raw(item.establecimiento_peso_llego)</td>
+                                @{conta_peso += item.establecimiento_peso;
+                              conta_peso_llego += item.establecimiento_peso_llego;}
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="3" style="text-align:center">Total</td>
+                            <td>@conta_peso</td>
+                            <td>@conta_peso_llego</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+
+
+

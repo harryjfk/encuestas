@@ -64,17 +64,6 @@ namespace Domain.Managers
 
         public override OperationResult<Contacto> Delete(Contacto element)
         {
-            if (element.Activado)
-            {
-                var manager = Manager;
-                var establecimiento = manager.Establecimiento.Find(element.IdEstablecimiento);
-                if (establecimiento != null)
-                {
-                    establecimiento.IdInformante = null;
-                    manager.Establecimiento.Modify(establecimiento);
-                    manager.Establecimiento.SaveChanges();
-                }
-            }
             return base.Delete(element);
         }
 
@@ -84,15 +73,13 @@ namespace Domain.Managers
             list.Required(element, t => t.Nombre, "Nombre");
             list.Required(element, t => t.Telefono, "Telefono");
             list.Required(element, t => t.Correo, "Correo");
-            // list.Required(element, t => t.Celular, "Celular");
-            // list.Required(element, t => t.Anexo, "Anexo");
-            // list.Required(element, t => t.IdCargo, "Cargo");
+            
             list.Required(element, t => t.IdEstablecimiento, "Establecimiento");
 
             list.MaxLength(element, t => t.Nombre, 100, "Nombre");
             list.MaxLength(element, t => t.Telefono, 10, "Telefono");
             list.MaxLength(element, t => t.Correo, 50, "Correo");
-            list.MaxLength(element, t => t.Anexo, 5, "Correo");
+            list.MaxLength(element, t => t.Anexo, 5, "Anexo");
             list.MaxLength(element, t => t.Celular, 10, "Celular");
 
             list.PhoneNumber(element, t => t.Celular, "Celular");

@@ -10,11 +10,11 @@
     <thead>
         <tr class="cabecera">
             <th style="width: 20px;"></th>
-            <th> MES </th>
-            <th> AÑO </th>
-            <th> TIPO CAMBIO VENTA </th>
-            <th> TIPO CAMBIO COMPRA </th>
-            <th style="width: 100px;">ACCI&Oacute;N</th>
+            <th> Mes </th>
+            <th> Año </th>
+            <th> Tipo Cambio Venta </th>
+            <th> Tipo Cambio Compra </th>
+            <th style="width: 100px;">Acci&oacute;n</th>
     </thead>
     <tbody>
         @foreach (var item in Model.Elements)
@@ -32,7 +32,7 @@
                 </td>
                 <td class="text-capitalize">@item.fecha.ToString("MMMM",CultureInfo.GetCultureInfo("ES"))</td>
                 <td>@item.fecha.ToString("yyyy", CultureInfo.GetCultureInfo("ES"))</td>
-                <td>@item.tipo_cambio_ventas.ToString("0.0000")</td>
+                <td>@item.tipo_cambio_venta.ToString("0.0000")</td>
                 <td>@item.tipo_cambio_compra.ToString("0.0000")</td>
                 <td>
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" id="edit-@item.Id" role="@item.Id" class="edit-btn">

@@ -13,8 +13,12 @@
                 <div>
                     @Html.CheckBox(item.Text, new {disabled = "true", @checked = "chequed", value = @item.Value ,@class="chfactor"})
                     <span>@item.Text</span>
-                </div>
 
+                    @if (item.Value == "0")
+                    {
+                        <input type="text" id="otro_factor" value="@ViewBag.OtroFactor" class="animated fadeInLeft fast" readonly="readonly" />
+                    }
+                </div>
             }
             else
             {

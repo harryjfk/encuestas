@@ -2,7 +2,7 @@
 @model Domain.Query<Entity.LineaProductoEstablecimiento>
 
 @{
-    ViewBag.Title = "Lineas de Productos por Establecimiento";
+    ViewBag.Title = "Productos por Establecimiento";
 }
 
 @Scripts.Render("~/bundles/jquery")
@@ -30,10 +30,10 @@
     
 }
 
-<h3 class="screen-title">Lineas de Productos por Establecimiento @name</h3>
+<h3 class="screen-title">Productos por Establecimiento @name</h3>
 
 <p>
-    <a href="javascript:void(0);" id="add-btn" class="btn btn-primary btn-custom-add">Nuevo Linea de Producto por Establecimiento</a>
+    <a href="javascript:void(0);" id="add-btn" class="btn btn-primary btn-custom-add">Nuevo Producto por Establecimiento</a>
 </p>
 <div id="table-container">
     @Html.Partial("_Table", Model)
@@ -47,7 +47,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Nuevo Linea de Producto por Establecimiento</h4>
+                <h4 class="modal-title">Nuevo Producto por Establecimiento</h4>
             </div>
             <div class="modal-body">
             </div>

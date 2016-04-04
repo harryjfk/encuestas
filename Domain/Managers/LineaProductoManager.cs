@@ -20,12 +20,12 @@ namespace Domain.Managers
         {
         }
 
-        public void ToggleUnidadMedida(long idLineaProducto, long idUnidadMedida, long? idUnidadConversion = null, decimal? factorConversion = null)
+        public bool ToggleUnidadMedida(long idLineaProducto, long idUnidadMedida, long? idUnidadConversion = null, decimal? factorConversion = null)
         {
             var manager = Manager;
             var unidadMedida = manager.UnidadMedida.Find(idUnidadMedida);
             var lineaProducto = manager.LineaProducto.Find(idLineaProducto);
-            if (unidadMedida == null || lineaProducto == null) return;
+            if (unidadMedida == null || lineaProducto == null) return false;
             var asigned = unidadMedida.LineasProductoUnidadMedida.FirstOrDefault(t => t.id_linea_producto == lineaProducto.Id);
             idUnidadConversion = idUnidadConversion > 0 ? idUnidadConversion : null;
             if (asigned == null)
@@ -45,9 +45,17 @@ namespace Domain.Managers
             {
                // unidadMedida.LineasProducto.Remove(lineaProducto);
                 //lineaProducto.UnidadesMedida.Remove(unidadMedida);
+                //asigned.UnidadMedida.
+                var any =
+                    Manager.AñoBaseManager.Get(
+                        t =>
+                            t.id_linea_producto == asigned.id_linea_producto &&
+                            t.id_unidad_medida == asigned.id_unidad_medida).Any();
+                if (any) return false;
                 manager.LineaProductoUnidadMedidaManager.Delete(asigned.Id);
                 manager.UnidadMedida.SaveChanges();
             }
+            return true;
         }
 
         public override OperationResult<LineaProducto> Delete(LineaProducto element)
@@ -63,7 +71,13 @@ namespace Domain.Managers
             list.Required(element,t=>t.Nombre,"Nombre");
             list.Required(element,t=>t.Codigo,"Codigo");
             list.Required(element,t=>t.IdCiiu,"CIIU");
-            list.MaxLength(element,t=>t.Codigo,20,"Codigo");
+            
+            var lengthCodigo = element.Codigo.ToString().Length;
+            if (!(lengthCodigo == 7 || lengthCodigo == 10))
+            {
+                list.Add(string.Format("El campo \"{0}\" no cuenta con la cantidad de caracteres válidos", "Código"));
+            }
+            
             list.MaxLength(element,t=>t.Nombre,255,"Codigo");
             return list;
         }

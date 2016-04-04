@@ -8,10 +8,10 @@ namespace WebApplication
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
             //brb
             //filters.Add(new AutorizacionRol());
             //endbrb
+            filters.Add(new HandleErrorAttribute());            
         }
     }
 }

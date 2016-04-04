@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class FactorController : BaseController<Factor>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdFactor", string @default = null)

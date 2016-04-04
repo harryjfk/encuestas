@@ -6,7 +6,7 @@
 
 @Html.DropDownList(Model.Item2, Model.Item1, new { @class = "form-control", name = Model.Item2 })
 
-<script type="text/javascript">
+<script>
     $(document).ready(function() {
         setTimeout(function () {
             $.search("#@Model.Item2.Replace(".","_")");

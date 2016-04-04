@@ -5,18 +5,21 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class LineaProductoEstablecimientoController : BaseController<LineaProductoEstablecimiento>
     {
-        private static long IdEstablecimiento { get; set; }
-
         public ActionResult GetDorpDownLineaProducto(string id, long idCiiu = 0, string nombre = "IdLineaProducto", string @default = null)
         {
+            long IdEstablecimiento = ((LineaProductoEstablecimiento)Session[CriteriaSesion]).IdEstablecimiento;
+            var notInclude = Manager.LineaProductoEstablecimiento.Get(h => h.IdEstablecimiento == IdEstablecimiento);
             var list = Manager.LineaProducto.Get(t => t.Activado
-                && t.LineasProductoEstablecimiento.All(h => h.IdEstablecimiento != IdEstablecimiento)
-                /*&& t.Ciiu.Establecimientos.Any(h=>h.Id==IdEstablecimiento*/
+                && !notInclude.Any(p2 => p2.IdLineaProducto == t.Id)
+                && t.Codigo.Length == 7
                 && t.IdCiiu == idCiiu)
                 .Select(t => new SelectListItem()
             {
@@ -33,10 +36,12 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
+
         public ActionResult GetDorpDownCiiu(string id="0", string nombre = "IdCiiu", string @default = null)
         {
+            long IdEstablecimiento = ((LineaProductoEstablecimiento)Session[CriteriaSesion]).IdEstablecimiento;
             var list = Manager.Ciiu.Get(t => t.Activado
-                && t.Establecimientos.Any(h => h.Id == IdEstablecimiento))
+                && t.Establecimientos.Any(h => h.IdEstablecimiento == IdEstablecimiento))
                 .Select(t => new SelectListItem()
                 {
                     Text = t.ToString(),
@@ -52,34 +57,42 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
-        public override ActionResult Index()
-        {
-            Query = Query ?? new Query<LineaProductoEstablecimiento>().Validate();
-            Query.Criteria = Query.Criteria ?? new LineaProductoEstablecimiento();
-            Query.Criteria.IdEstablecimiento = IdEstablecimiento;
-            Query.BuildFilter();
-            return base.Index();
-        }
+       
         public ActionResult Get(long id)
         {
-            var establecimiento = Manager.Establecimiento.Find(id);
-            if (establecimiento == null) return HttpNotFound("El establecimiento no existe");
-            IdEstablecimiento = id;
-            Query = Query ?? new Query<LineaProductoEstablecimiento>().Validate();
-            Query.Criteria = Query.Criteria ?? new LineaProductoEstablecimiento();
-            Query.Criteria.Establecimiento = establecimiento;
+            bool FirstLoad = false;
+
+            if (Session[CriteriaSesion] != null)
+            {
+                if (Session[CriteriaSesion] is LineaProductoEstablecimiento == false)
+                {
+                    FirstLoad = true;
+                }
+            }
+            else
+            {
+                FirstLoad = true;
+            }
+
+            if (FirstLoad)
+            {
+                LineaProductoEstablecimiento criteria = new LineaProductoEstablecimiento();
+                criteria.IdEstablecimiento = id;
+                Session[CriteriaSesion] = criteria;
+            }
+
             return RedirectToAction("Index");
         }
+
         public override JsonResult CreatePost(LineaProductoEstablecimiento element, params string[] properties)
-        {
-            element.IdEstablecimiento = IdEstablecimiento;
+        {   
+            element.IdEstablecimiento = ((LineaProductoEstablecimiento)Session[CriteriaSesion]).IdEstablecimiento;            
             return base.CreatePost(element);
         }
+
         public override ActionResult Buscar(LineaProductoEstablecimiento criteria)
         {
-            Query = Query ?? new Query<LineaProductoEstablecimiento>().Validate();
-            Query.Criteria = Query.Criteria ?? new LineaProductoEstablecimiento();
-            criteria.Establecimiento = Query.Criteria.Establecimiento;
+            criteria.IdEstablecimiento = ((LineaProductoEstablecimiento)Session[CriteriaSesion]).IdEstablecimiento;
             return base.Buscar(criteria);
         }
     }

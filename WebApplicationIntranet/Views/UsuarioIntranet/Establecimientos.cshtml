@@ -25,20 +25,20 @@
 @using (Html.BeginForm("BuscarEstablecimientosAsignados", "UsuarioIntranet", FormMethod.Post))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-heading">B&uacute;squeda</div>
 
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">RAZ&Oacute;N SOCIAL</span>
+                        <span class="input-group-addon">Raz&oacute;n Social</span>
                         @*<input type="text" class="form-control">*@
                         @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.Nombre, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">IDENTIFICADOR</span>
+                        <span class="input-group-addon">Identificador</span>
                         @*<input type="text" class="form-control">*@
                         @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.IdentificadorInterno, new { @class = "form-control" })
                     </div>

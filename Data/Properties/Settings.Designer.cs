@@ -37,9 +37,9 @@ namespace Data.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
         [global::System.Configuration.DefaultSettingValueAttribute("http://172.20.11.9:7000/UsuarioIntranetService.svc")]
-        public string Data_UsuarioIntranetService_UsuarioIntranetService {
+        public string Data_UsuarioIntranetService1_UsuarioIntranetService {
             get {
-                return ((string)(this["Data_UsuarioIntranetService_UsuarioIntranetService"]));
+                return ((string)(this["Data_UsuarioIntranetService1_UsuarioIntranetService"]));
             }
         }
     }

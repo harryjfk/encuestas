@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using Data.Contratos;
 using Entity;
 using PagedList;
+using System.Collections.Generic;
 
 namespace Data.Repositorios
 {
@@ -80,6 +81,17 @@ namespace Data.Repositorios
         //    return new PagedList<T>(arr, 1, !arr.Any() ? 1 : arr.Count);
         //}
 
+        public List<T> GetByFilter(Func<T, bool> filter = null)
+        {
+            if (filter != null)
+            {
+                return Context.Set<T>().Where(filter).ToList();
+            }
+            else
+            {
+                return Context.Set<T>().ToList();
+            }            
+        }
 
         public IPagedList<T> Get(Func<T, bool> filter = null, Paginacion paginacion = null, Order<T> order = null)
         {
@@ -96,6 +108,47 @@ namespace Data.Repositorios
                 if (paginacion != null) return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);
                 var arr1 = list.ToList();
                 return new PagedList<T>(arr1, 1, !arr1.Any() ? 1 : arr1.Count);
+            }
+        }
+
+        public IPagedList<T> Get(string include, Func<T, bool> filter = null, Paginacion paginacion = null, Order<T> order = null)
+        {
+            if (filter != null)
+            {
+                if (include != null)
+                {
+                    var list = Context.Set<T>().Include(include).Where(filter).Order(order);
+                    if (paginacion != null) return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);
+                    var arr = list.ToList();
+                    return new PagedList<T>(arr, 1, !arr.Any() ? 1 : arr.Count);
+                }
+
+                else
+                {
+                    var list = Context.Set<T>().Where(filter).Order(order);
+                    if (paginacion != null) return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);
+                    var arr = list.ToList();
+                    return new PagedList<T>(arr, 1, !arr.Any() ? 1 : arr.Count);
+                }                
+            }
+            else
+            {
+                if (include != null)
+                {
+                    var list = Context.Set<T>().Include(include).Order(order);
+                    if (paginacion != null) return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);
+                    var arr1 = list.ToList();
+                    return new PagedList<T>(arr1, 1, !arr1.Any() ? 1 : arr1.Count);
+                }
+                else
+                {
+                    var list = Context.Set<T>().Order(order);
+                    if (paginacion != null) return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);
+                    var arr1 = list.ToList();
+                    return new PagedList<T>(arr1, 1, !arr1.Any() ? 1 : arr1.Count);
+                }
+                
+                
             }
         }
 

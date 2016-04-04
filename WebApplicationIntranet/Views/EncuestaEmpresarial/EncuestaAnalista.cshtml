@@ -111,11 +111,12 @@ var hidden = Request.IsAuthenticated ? "" : "hidden";
                                                             : Html.CheckBox(tv.Texto, new { disabled = "true" }))
                                                             }
                                                             <span class="margin-right-10">@tv.Texto</span>
-                                                         if (tv.Personalizado)
+                                                            if (tv.Personalizado)
                                                             {
                                                                 if (tv.Seleccionado)
                                                                 {
-                                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="form-control">@tv.texto_personalizado</span>
+                                                                    <br />
+                                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="">@tv.texto_personalizado</span>
                                                                 }
                                                             }
 
@@ -127,7 +128,8 @@ var hidden = Request.IsAuthenticated ? "" : "hidden";
                                             {
                                                 if (v.Seleccionado)
                                                 {
-                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="form-control">@v.texto_personalizado</span>
+                                                    <br />
+                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="">@v.texto_personalizado</span>
                                                 }
 
                                             }

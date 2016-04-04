@@ -8,6 +8,10 @@ namespace WebApplication
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/chart").Include(
+                "~/Scripts/chart/highcharts.js"));
+            bundles.Add(new ScriptBundle("~/bundles/tools").Include(
+                "~/Scripts/function.tools/fast-functions.js"));
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js", "~/Scripts/jqueryMaxLength.js"));
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
@@ -35,10 +39,10 @@ namespace WebApplication
             bundles.Add(new ScriptBundle("~/bundles/mask").Include(
                // "~/Scripts/jquery.inputmask/jquery.inputmask.date.extensions.js",
                 //"~/Scripts/jquery.inputmask/jquery.inputmask.extensions.js",
-                "~/Scripts/jquery.inputmask/jquery.inputmask.js"//,
-                //"~/Scripts/jquery.inputmask/jquery.inputmask.numeric.extensions.js",
+                "~/Scripts/jquery.inputmask/jquery.inputmask.js",
+                "~/Scripts/jquery.inputmask/jquery.inputmask.numeric.extensions.js"//,
                // "~/Scripts/jquery.inputmask/jquery.inputmask.phone.extensions.js",
-               /* "~/Scripts/jquery.inputmask/jquery.inputmask.regex.extensions.js"*/));
+                /*"~/Scripts/jquery.inputmask/jquery.inputmask.regex.extensions.js"*/));
 
             bundles.Add(new ScriptBundle("~/bundles/customscripts").Include(
                         "~/Scripts/Scripts.js"));

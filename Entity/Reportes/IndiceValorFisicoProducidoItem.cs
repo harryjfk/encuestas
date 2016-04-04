@@ -8,6 +8,7 @@ namespace Entity.Reportes
    public  class IndiceValorFisicoProducidoItem
     {
        public long IdCiiu { get; set; }
+       public string CodigoCiiu { get; set; }
        public string Ciiu { get; set; }
        public double Ponderacion { get; set; }
        public long IdEstablecimiento { get; set; }

@@ -25,13 +25,13 @@
 @using (Html.BeginForm("BuscarEstablecimientosEncuestaEmpresarial", "UsuarioIntranet", FormMethod.Post))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-heading">B&uacute;squeda</div>
 
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-10">
                     <div class="input-group">
-                        <span class="input-group-addon">NOMBRE</span>
+                        <span class="input-group-addon">Nombre</span>
                         @*<input type="text" class="form-control">*@
                         @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.Nombre, new { @class = "form-control", style = "max-width: inherit;" })
                     </div>

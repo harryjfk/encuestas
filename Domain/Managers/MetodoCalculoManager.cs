@@ -58,6 +58,18 @@ namespace Domain.Managers
                 Add(vd);
                 SaveChanges();
             }
+            var vm = Get(t => t.nombre.Equals("VD-IPM")).FirstOrDefault();
+            if (vm == null)
+            {
+                vm = new MetodoCalculo()
+                {
+                    nombre = "VD-IPM",
+                    Activado = true,
+                    RegistroObligatorio = true
+                };
+                Add(vm);
+                SaveChanges();
+            }
             var ca = Get(t => t.nombre.Equals("Consumo Aparente")).FirstOrDefault();
             if (ca == null)
             {

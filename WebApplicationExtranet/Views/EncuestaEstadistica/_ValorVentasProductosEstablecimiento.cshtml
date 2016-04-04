@@ -1,13 +1,9 @@
 ﻿@using System.Globalization
 @using Entity
 @using WebApplication.Models
+@using Domain
 @model EncuestaEstadistica
 
-@{
-
-}
-@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap4form"}))
-    {*@
 <div class="panel panel-primary">
     <div class="panel-heading">Capítulo IV: Valor total de ventas mensuales de productos elaborados en el establecimiento</div>
     <div class="panel-body">
@@ -37,7 +33,7 @@
                     </thead>
 
                     <tbody>
-                        @foreach (var item in Model.VentasProductosEstablecimiento.CAT_VENTAS_PAIS_EXTRANJERO.OrderBy(t=>t.CAT_CIIU.ToString()))
+                        @foreach (var item in Model.VentasProductosEstablecimiento.DAT_VENTAS_PAIS_EXTRANJERO.OrderBy(t=>t.CAT_CIIU.ToString()))
                         {
                             <input type="hidden" class="prodEstIds" role="@item.Id" />
                             <tr>
@@ -47,28 +43,40 @@
                                 <td>
                                     @if (item.VentaPaisActivado)
                                     {
-                                        @Html.TextBoxFor(modelItem => item.VentaPais, new { style = "width: 100%;", @class = "mask4 form-control vpv-" + item.Id, Value = String.Format("{0:0.0000}", item.VentaPais) })
-                                        if (!string.IsNullOrWhiteSpace(item.justificacion_venta_pais) && !string.IsNullOrEmpty(item.justificacion_venta_pais))
+                                        @Html.TextBoxFor(modelItem => item.VentaPais, new { style = "width: 100%;", @class = "mask4 form-control vpv-" + item.Id, Value = item.VentaPais.GetValueOrDefault().ProduceFormat() })
+                                        if (item.justificacion_venta_pais == null)
                                         {
-                                            @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = " width: 100%;", @class = "form-control justvp jvp1-" + item.Id })
+                                            <div class="panel justvp panel-default pnl-just div-jvp1-@item.Id" style="display: none;margin-top: 5px; ">
+                                                <span>Justificaci&oacute;n</span>
+                                                @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = "width: 100%;", @class = "form-control jvp1-" + item.Id })
+                                            </div>
                                         }
                                         else
                                         {
-                                            @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = "display:none; width: 100%;", @class = "form-control justvp jvp1-" + item.Id })
+                                            <div class="panel justvp panel-default pnl-just div-jvp1-@item.Id" style="margin-top: 5px; ">
+                                                <span>Justificaci&oacute;n</span>
+                                                @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = "width: 100%;", @class = "form-control jvp1-" + item.Id })
+                                            </div>
                                         }
                                     }
                                 </td>
                                 <td>
                                     @if (item.VentaExtranjeroActivado)
                                     {
-                                        @Html.TextBoxFor(modelItem => item.VentaExtranjero, new { style = "  width: 100%;", @class = "mask4 form-control vev-" + item.Id, Value = String.Format("{0:0.0000}", item.VentaExtranjero) })
-                                        if (!string.IsNullOrWhiteSpace(item.justificacion_venta_ext) && !string.IsNullOrEmpty(item.justificacion_venta_ext))
+                                        @Html.TextBoxFor(modelItem => item.VentaExtranjero, new { style = "  width: 100%;", @class = "mask4 form-control vev-" + item.Id, Value = item.VentaExtranjero.GetValueOrDefault().ProduceFormat() })
+                                        if (item.justificacion_venta_ext == null)
                                         {
-                                            @Html.TextAreaFor(modelItem => item.justificacion_venta_ext, new { style = " width: 100%;", @class = "form-control justvp jve1-" + item.Id })
+                                            <div class="panel justvp panel-default pnl-just div-jve1-@item.Id" style="display: none;margin-top: 5px; ">
+                                                <span>Justificaci&oacute;n</span>
+                                                @Html.TextAreaFor(modelItem => item.justificacion_venta_ext, new { style = "width: 100%;", @class = "form-control jve1-" + item.Id })                                            
+                                            </div>
                                         }
                                         else
                                         {
-                                            @Html.TextAreaFor(modelItem => item.justificacion_venta_ext, new { style = "display:none; width: 100%;", @class = "form-control justvp jve1-" + item.Id })
+                                            <div class="panel justvp panel-default pnl-just div-jve1-@item.Id" style="margin-top: 5px; ">
+                                                <span>Justificaci&oacute;n</span>
+                                                @Html.TextAreaFor(modelItem => item.justificacion_venta_ext, new { style = " width: 100%;", @class = "form-control jve1-" + item.Id })
+                                            </div>
                                         }
                                     }
                                 </td>
@@ -76,13 +84,13 @@
                         }
                     </tbody>
                 </table>
-                @if (Model.VentasProductosEstablecimiento.CAT_VENTAS_PAIS_EXTRANJERO.Any(t => t.VentaExtranjeroActivado || t.VentaPaisActivado))
+                @if (Model.VentasProductosEstablecimiento.DAT_VENTAS_PAIS_EXTRANJERO.Any(t => t.VentaExtranjeroActivado || t.VentaPaisActivado))
                 {
                     <div class="pull-right">
                         <a href="javascript:void(0);" id="edit-prodEstab" data-toggle="tooltip" data-placement="top" title="" data-original-title="Guardar" class="btn btn-primary">Guardar</a>
                     </div>
                 }
-                @if (!Model.VentasProductosEstablecimiento.CAT_VENTAS_PAIS_EXTRANJERO.Any())
+                @if (!Model.VentasProductosEstablecimiento.DAT_VENTAS_PAIS_EXTRANJERO.Any())
                 {
                     <div class="no-elements-notification">
                         No hay elementos para mostrar
@@ -97,18 +105,17 @@
     </div>
 
 </div>
-@*}*@
+
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".mask4").inputmask("9{1,20}.9{0,4}");
-        $(".mask4").each(function (i, e) {
-            $(e).focusout(function () {
-                var val = parseFloat($(e).val());
-                $(e).val(val.toFixed(4));
-
-            });
+        $('.justvp textarea').each(function (i, el) {
+            var value = $(this).val().trim();
+            $(this).val(value);
         });
+
+        maskEstadistico();       
     });
+
     $("#edit-prodEstab").click(function (e) {
         $(".justvp").hide();
         var list = [];
@@ -117,11 +124,11 @@
             var id = $elem.attr("role");
             var vp = 0;
             if ($('.vpv-' + id)[0]) {
-                vp = $('.vpv-' + id)[0].value;
+                vp = getValueEstadistico('.vpv-' + id);
             }
             var ve = null;
             if ($('.vev-' + id)[0]) {
-                ve = $('.vev-' + id)[0].value;
+                ve = getValueEstadistico('.vev-' + id);
             }
             var jvp = null;
             if ($('.jvp1-' + id)[0]) {
@@ -137,8 +144,7 @@
                 VentaPais: vp,
                 justificacion_venta_ext: jve,
                 justificacion_venta_pais: jvp
-            };
-            console.log(obj);
+            };            
             list.push(obj);
         });
         $.ajax({
@@ -151,6 +157,13 @@
             success: function (data) {
                 if (data.Success) {
                     $("#errors-containervenpaext").addClass("hidden");
+
+                    for (var j = 0; j < data.Pais.length; j++) {
+                        $($('.div-jvp1-' + data.Pais[j])[0]).show();
+                    }
+                    for (var k = 0; k < data.Extranjero.length; k++) {
+                        $($('.div-jve1-' + data.Extranjero[k])[0]).show();
+                    }
 
                     $.smallBox({
                         title: "Confirmación",
@@ -165,10 +178,10 @@
                         errors += "<li>" + data.Errors[i] + "</li>";
                     }
                     for (var j = 0; j < data.Pais.length; j++) {
-                        $($('.jvp1-' + data.Pais[j])[0]).show();
+                        $($('.div-jvp1-' + data.Pais[j])[0]).show();
                     }
                     for (var k = 0; k < data.Extranjero.length; k++) {
-                        $($('.jve1-' + data.Extranjero[k])[0]).show();
+                        $($('.div-jve1-' + data.Extranjero[k])[0]).show();
                     }
                     $("#errors-containervenpaext").removeClass("hidden").find("ul").html(errors);
                 }

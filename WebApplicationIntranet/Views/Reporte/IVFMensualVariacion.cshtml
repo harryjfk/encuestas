@@ -1,0 +1,144 @@
+﻿    
+@{
+    ViewBag.Title = "Variación (%) del Índice de Volumen Físico de la Producción Manufacturera";
+    var meses = new[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+}
+
+@Scripts.Render("~/bundles/jquery")
+<h3 class="screen-title">@ViewBag.Title</h3>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">B&Uacute;SQUEDA</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Año</span>
+                    <select id="select-ano" name="Year" class="form-control">
+                        @for (int i = DateTime.Now.Year; i >= 2012; i--)
+                        {
+                            <option value="@i">@i.ToString()</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">Mes Incio</span>
+                    <select id="select-mes-desde" name="MonthFrom" class="form-control">
+                        @for (int i = 0; i < meses.Length; i++)
+                        {
+                            <option value="@(i+1)">@meses[i]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">Mes Fin</span>
+                    <select id="select-mes-fin" name="MonthTo" class="form-control">
+                        @for (int i = 0; i < meses.Length; i++)
+                        {
+                            <option value="@(i+1)" @(i == 11 ? "selected='selected'": "")>@meses[i]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">            
+            <div class="col-md-3">
+                <div class="input-group margin-top-5">
+                    <span class="input-group-addon">Decimales</span>
+                    <select id="select-decimales" class="form-control">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group margin-top-5">
+                    <span class="input-group-addon">Niveles</span>
+                    <select id="select-nivel" class="form-control">
+                        <option value="0">Sector</option>
+                        <option value="1">Sub-Sector</option>
+                        <option value="2">Ciiu 2 dígitos</option>
+                        <option value="3">Ciiu 3 dígitos</option>
+                        <option value="4" selected="selected">Ciiu 4 dígitos</option>
+                        <option value="5">Sólo Ciiu 2 dígitos</option>
+                        <option value="6">Sólo Ciiu 3 dígitos</option>
+                        <option value="7">Sólo Ciiu 4 dígitos</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 margin-top-5">
+                <input type="submit" value="Buscar" id="btn-buscar" class="btn btn-default" />
+                <a id="btn-export-excel" class="btn btn-default  btns-group">Excel</a>                
+            </div>
+        </div>
+    </div>
+</div>
+<span id="textProcess" style="color: #777;background-color: #f5f5f5;border-color: #ddd;padding:10px 15px;display:none;">Procesando... Espere por favor.</span>
+
+<div id="errors-container-general" class="alert alert-danger animated bounceIn hidden">
+    <strong>Error de consulta</strong>
+    <div>
+        <ul></ul>
+    </div>
+</div>
+
+<div id="contenedor-table">
+
+</div>
+@section scripts{
+<script>
+    $('#btn-buscar').click(function (e) {
+        e.preventDefault();
+
+        $('#tbl-ivf').css({ 'display': 'none' });
+        $('#textProcess').css({ 'display': '' });
+
+        if (parseInt($('#select-mes-desde').val()) > parseInt($('#select-mes-fin').val())) {
+            var errors = "";
+            errors += "<li>Mes inicio no puede ser mayor a mes fin.</li>";
+            $("#errors-container-general").removeClass("hidden").find("ul").html(errors);
+            $('#textProcess').css({ 'display': 'none' });
+
+            return;
+        } else {
+            $("#errors-container-general").addClass("hidden");
+        }
+
+        $.ajax({
+            cache: false,
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            url: window.location.protocol + "//" + window.location.host + "/Reporte/IVFVariacionTable/",
+            data: {
+                decimales: $('#select-decimales').val(),
+                year: $('#select-ano').val(),
+                nivel: $('#select-nivel').val(),
+                inicio: $('#select-mes-desde').val(),
+                fin: $('#select-mes-fin').val()
+            },
+            success: function (data) {               
+                var html = data.trim();
+                $("#contenedor-table").html(html);
+                $('#textProcess').css({ 'display': 'none' });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Ocurrió un error.');
+            }
+        });
+    });
+
+    $('#btn-export-excel').click(function (e) {
+        e.preventDefault();
+        window.location = "/Reporte/ExportarExcel_IVFMensualVariacion?decimales=" + $('#select-decimales').val() + "&year=" + $('#select-ano').val() + "&nivel=" + $('#select-nivel').val()
+       + "&inicio=" + $('#select-mes-desde').val() + "&fin=" + $('#select-mes-fin').val();
+    });
+</script>
+}

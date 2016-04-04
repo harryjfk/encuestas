@@ -41,8 +41,8 @@
         <div class="form-group">
             <label for="tipo_cambio_ventas" class="col-md-4 control-label"> Tipo de Cambio Venta</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.tipo_cambio_ventas, new { @class = "form-control mask4" , Value =Model.tipo_cambio_ventas.ToString("0.0000", CultureInfo.InvariantCulture)})
-                @Html.ValidationMessageFor(model => model.tipo_cambio_ventas)
+                @Html.TextBoxFor(t => t.tipo_cambio_venta, new { @class = "form-control mask4" , Value =Model.tipo_cambio_venta.ToString("0.0000", CultureInfo.InvariantCulture)})
+                @Html.ValidationMessageFor(model => model.tipo_cambio_venta)
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>

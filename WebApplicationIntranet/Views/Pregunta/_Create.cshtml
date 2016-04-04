@@ -75,7 +75,7 @@
                 <label for="Comienzo" class="col-md-4 control-label">Comienzo</label>
                 <div class="col-md-7">
                     @*@Html.TextBoxFor(model => model.Comienza, new { @class = "form-control", id = "datetimepicker1" })*@
-                    <input type="text" value="@date" class="form-control" name="Comienza"  id="datetimepicker1" />
+                    <input type="text" value="@date" class="form-control" name="Comienza" id="datetimepicker1"/>
                     <span class="input-group-addon input-group-addon-datetimepicker">
                         <span style="margin-top: 2px;" class="fa fa-calendar"></span>
                     </span>
@@ -86,12 +86,14 @@
                         </span>
                     </div>*@
                 </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
             </div>
             <div class="form-group">
                 <label for="Intervalo" class="col-md-4 control-label">Intervalo (Meses)</label>
-                <div class="col-md-8">
-                    @Html.TextBoxFor(t => t.Intervalo, new { @class = "form-control" })
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.Intervalo, new {@class = "form-control"})
                 </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
             </div>
         </div>
 
@@ -133,6 +135,7 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
+        $('input[name="Intervalo"]').inputmask("9{1,20}");
         var id = parseInt($("input[name='Id']").val());
         var cn = $('div#editItem div div div h4.modal-title');
         if (id > 0) {
@@ -148,9 +151,14 @@
 
 
         $('#datetimepicker1').datepicker({
+            monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
             pickTime: false,
             language: "es",
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'dd-mm-yy',
+            nextText: ">",
+            prevText: "<",
+            dayNames: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+            dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"]
         });
         
 
@@ -169,6 +177,33 @@
         });
 
         $("button[name='aceptarbtn']").click(function () {
+            $("#errors-container").addClass("hidden");
+            var texto = $("input[name='Texto']").val();
+            if (!texto || texto == '') {
+                var errors = "";
+                errors += "<li>" + 'El campo texto es obligatorio' + "</li>";
+                $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                return;
+            };
+            var temp = $("input[name='tipo']:checked").val();
+            if (temp =='temporal') {
+                var comienza = $('input[name="Comienza"]').val();
+                var intervalo = $('input[name="Intervalo"]').val();
+                if (!comienza) {
+                    var errors = "";
+                    errors += "<li>" + 'El campo comienzo es obligatorio' + "</li>";
+                    $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    return;
+                }
+                if (!intervalo) {
+                    var errors = "";
+                    errors += "<li>" + 'El campo intervalo es obligatorio' + "</li>";
+                    $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    return;
+                }
+
+            }
+            
             var $elem = $(this);
             $elem.addClass("disabled");
             $.ajax({

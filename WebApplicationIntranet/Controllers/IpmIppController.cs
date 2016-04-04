@@ -5,9 +5,13 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using System.Globalization;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class IpmIppController : BaseController<IpmIpp>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdIpmIpp", string @default = null)
@@ -30,6 +34,7 @@ namespace WebApplication.Controllers
        
         public JsonResult Toggle(long id)
         {
+            Query = base.GetQuery();
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)
@@ -47,28 +52,41 @@ namespace WebApplication.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
         public override ActionResult Index()
         {
-           
-            Query = Query ?? new Query<IpmIpp>();
-            Query.Criteria = Query.Criteria ?? new IpmIpp();
-            Query.Criteria.Año = Query.Criteria.Año ?? DateTime.Now.Year.ToString();
-            var idCiiu = Query.Criteria.id_ciiu > 0 ? Query.Criteria.id_ciiu : Manager.Ciiu.Get().FirstOrDefault().Id;
-            var año = DateTime.Now.Year;
-            if (Query.Criteria.Año != null)
+            bool FirstLoad = false;
+            
+            if (Session[CriteriaSesion] != null)
             {
-                año = int.Parse(Query.Criteria.Año);
+                if (Session[CriteriaSesion] is IpmIpp == false)
+                {
+                    FirstLoad = true;
+                }
             }
-            Manager.IpmIppManager.Generate(idCiiu, año);
-            Query.Order = Query.Order ?? new Order<IpmIpp>();
-            Query.Criteria.id_ciiu =idCiiu ;
-            Query.Order.Func = t => t.fecha;
-            Query.BuildFilter();
+            else
+            {
+                FirstLoad = true;
+            }
+
+            if (FirstLoad)
+            {
+                IpmIpp criteria = new IpmIpp();
+                criteria.id_ciiu = -1;
+                criteria.Año = DateTime.Now.Year.ToString();
+                Session[CriteriaSesion] = criteria;
+            }
+
+            Order<IpmIpp> order = new Order<IpmIpp>();
+            order.Func = t => t.fecha;
+            Session[OrderSesion] = order;
+
             return base.Index();
         }
+
         public override ActionResult Buscar(IpmIpp criteria)
         {
-            Manager.IpmIppManager.Generate(criteria.id_ciiu,int.Parse(criteria.Año));
+            Manager.IpmIppManager.Generate(criteria.id_ciiu, int.Parse(criteria.Año));
             return base.Buscar(criteria);
         }
 
@@ -76,5 +94,39 @@ namespace WebApplication.Controllers
         {
             return base.CreatePost(element, "fecha", "id_ciiu", "ipp");
         }
+
+        #region LoadIpp
+        public ActionResult IndexCarga()
+        {
+            List<DateTime> fechas = new List<DateTime>();
+            for (int i = 1; i <= 12; ++i)
+            {
+                fechas.Add(new DateTime(2015, i, 1));
+            }
+
+            CultureInfo esEs = CultureInfo.CreateSpecificCulture("es-ES");
+            List<string> meses = new List<string>();
+            foreach (var fecha in fechas)
+            {
+                meses.Add(fecha.Month.ToString() + "," + fecha.ToString("MMMM", esEs).Substring(0, 1).ToUpper() + fecha.ToString("MMMM", esEs).Substring(1, fecha.ToString("MMMM", esEs).Length - 1));
+            }
+
+            ViewBag.Meses = meses;
+            return View();
+        }
+
+        [HttpGet]
+        public JsonResult GetIpp(int anio, int mes)
+        {
+            return Json(Manager.IpmIppManager.GetValorIppPorAnioMes(anio, mes), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult ProcessIpp(int anio, int mes)
+        {
+            Manager.IpmIppManager.ProcessIpp(anio, mes);
+            return Json(true);
+        }
+        #endregion 
     }
 }

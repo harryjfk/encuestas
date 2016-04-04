@@ -27,7 +27,7 @@
                 <div>
                     <div class="col-md-6 ">
                         <div class="input-group padding-5">
-                           <span class="input-group-addon">Razón Social</span>
+                            <span class="input-group-addon">Razón Social</span>
                            @if (string.IsNullOrEmpty(Model.Establecimiento.Nombre))
                            {
                                <span class="form-control">Sin Establecer</span>
@@ -43,7 +43,15 @@
                         </div>
                         <div class="input-group padding-5">
                             <span class="input-group-addon">Dirección</span>
-                            @Html.Label("", Model.Establecimiento.Direccion, new { @class = "form-control reset-max-width" })
+                            @*@Html.Label("", Model.Establecimiento.Direccion, new { @class = "form-control reset-max-width" })*@
+							@if (Model.Establecimiento.Direccion != null)
+                            {
+                                <input type="text" class="form-control reset-max-width" value="@Model.Establecimiento.Direccion" name="Establecimiento.Direccion" />
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control reset-max-width" value="" name="Establecimiento.Direccion" />
+                            }
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -57,7 +65,15 @@
                         </div>
                         <div class="input-group padding-5">
                             <span class="input-group-addon">Teléfono</span>
-                            @Html.Label("", Model.Establecimiento.Telefono, new { @class = "form-control reset-max-width" })
+                            @*@Html.Label("", Model.Establecimiento.Telefono, new { @class = "form-control reset-max-width" })*@
+							@if (Model.Establecimiento.Telefono != null)
+                            {
+                                <input type="text" class="form-control reset-max-width phone" value="@Model.Establecimiento.Telefono" name="Establecimiento.Telefono" />
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control reset-max-width phone" value="" name="Establecimiento.Telefono" />
+                            }
                         </div>
                     </div>
                 </div>
@@ -65,19 +81,30 @@
                     <div class="col-md-4">
                         <div class="input-group padding-5">
                             <span class="input-group-addon">Departamento</span>
-                            @{Html.RenderAction("GetNombreDepartamento", new { idDepartamento = Model.Establecimiento.IdDepartamento });}
+                            <div  @*class="col-md-7"*@ id="divDepartamento">
+                                @* @{Html.RenderAction("GetDropDown", "Departamento", new { id = (Model != null && Model.IdDepartamento != null) ? Model.IdDepartamento : "", nombre = "IdDepartamento" });}*@
+                            </div>
+                           @* @{Html.RenderAction("GetDropDown", "Departamento", new { id = (Model != null && Model.Establecimiento.IdDepartamento != null) ? Model.Establecimiento.IdDepartamento : "", nombre = "Establecimiento.IdDepartamento" });}*@
+                           @* @{Html.RenderAction("GetNombreDepartamento", new { idDepartamento = Model.Establecimiento.IdDepartamento });}*@
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="input-group padding-5">
                             <span class="input-group-addon">Provincia</span>
-                            @{Html.RenderAction("GetNombreProvincia", new { idProvincia = Model.Establecimiento.IdProvincia });}
+                            <div  id="divProvincia">
+                                @* @{Html.RenderAction("GetDropDown", "Provincia", new { id = (Model != null && Model.IdProvincia != null) ? Model.IdProvincia : "", nombre = "IdProvincia" });}*@
+                            </div>
+                            @*@{Html.RenderAction("GetDropDown", "Provincia", new { id = (Model != null && Model.Establecimiento.IdProvincia != null) ? Model.Establecimiento.IdProvincia : "", nombre = "Establecimiento.IdProvincia" });}*@
+                           @* @{Html.RenderAction("GetNombreProvincia", new { idProvincia = Model.Establecimiento.IdProvincia });}*@
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="input-group padding-5">
                             <span class="input-group-addon">Distrito</span>
-                            @{Html.RenderAction("GetNombreDistrito", new { idDistrito = Model.Establecimiento.IdDistrito });}
+                            <div  id="divDistrito">
+                                @* @{Html.RenderAction("GetDropDown", "Distrito", new { id = (Model != null && Model.IdDistrito != null) ? Model.IdDistrito : "", nombre = "IdDistrito" });}*@
+                            </div>
+                            @*@{Html.RenderAction("GetNombreDistrito", new { idDistrito = Model.Establecimiento.IdDistrito });}*@
                         </div>
                     </div>
                 </div>
@@ -182,11 +209,17 @@
         </div>
     </div>
 </div>
+@{
+    var idDepartamento = (Model != null && Model.Establecimiento.IdDepartamento != null) ? Model.Establecimiento.IdDepartamento : "";
+    var idProvincia = (Model != null && Model.Establecimiento.IdProvincia != null) ? Model.Establecimiento.IdProvincia : "";
+    var idDistrito = (Model != null && Model.Establecimiento.IdDistrito != null) ? Model.Establecimiento.IdDistrito : "";
+    var defaultD = idDepartamento == "" ? null : "Seleccione Departamento";
+}
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnNewContact").click(function () {
             var $elem = $(this);
-            var establecimiento=$elem.attr("data-establecimiento");
+            var establecimiento = $elem.attr("data-establecimiento");
             $.ajax({
                 cache: false,
                 type: "GET",
@@ -212,7 +245,7 @@
                 type: "POST",
                 //contentType: "application/json",
                 url: $.origin() + "/EncuestaEstadistica/SaveInformante/",
-                data:  encuesta ,
+                data: encuesta,
                 success: function (data) {
                     if (data.Success) {
                         $.smallBox({
@@ -238,5 +271,139 @@
             });
             e.preventDefault();
         });
-    })
+
+        $(".phone").inputmask("9{1,10}");
+        LoadDepartamento();
+    });
+
+    function LoadDepartamento() {
+        var dep = $('#Establecimiento_IdDepartamento');
+        var pro = $('#Establecimiento_IdProvincia');
+        var dis = $('#Establecimiento_IdDistrito');
+        if (dep)
+            dep.addClass("disabled");
+        if (pro)
+            pro.addClass("disabled");
+        if (dis)
+            dis.addClass("disabled");
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $.origin() + "/Departamento/GetDropDown/",
+            data: {
+                'default': '@defaultD',
+                id: '@idDepartamento',
+                nombre: "Establecimiento_IdDepartamento",
+            },
+            success: function (data) {
+                $('#divDepartamento').html(data);
+                LoadProvincia();
+                $('#Establecimiento_IdDepartamento').removeClass("disabled");
+                $('#Establecimiento_IdDepartamento').on("change", function () {
+                    LoadProvincia();
+                });
+                setTimeout(function () {
+                    $("#Establecimiento_IdDepartamento").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione departamento" });
+                    $("div[class*='chosen-container']").addClass("form-control max-z-index");
+                    var a = $("a[class*='chosen-single chosen-default']");
+                    if (a != null) {
+                        a.css("border", "0");
+                        a.css("background", "white");
+                        a.css("box-shadow", "0 0 0 white inset, 0 0 0 rgba(0, 0, 0, .1)");
+                    }
+                }, 500);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+    }
+
+
+    function LoadProvincia() {
+        var pro = $('#Establecimiento_IdProvincia');
+        var dis = $('#Establecimiento_IdDistrito');
+        if (pro)
+            pro.addClass("disabled");
+        if (dis)
+            dis.addClass("disabled");
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $.origin() + "/Provincia/GetDropDown/",
+            data: {
+                id: '@idProvincia',
+                nombre: "Establecimiento_IdProvincia",
+                idDepartamento: $('#Establecimiento_IdDepartamento').val()
+            },
+            success: function (data) {
+                $('#divProvincia').html(data);
+                LoadDistrito();
+                $('#Establecimiento_IdProvincia').removeClass("disabled");
+                $('#Establecimiento_IdProvincia').on("change", function () {
+                    LoadDistrito();
+                });
+                setTimeout(function () {
+                    $("#Establecimiento_IdProvincia").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione provincia" });
+                    $("div[class*='chosen-container']").addClass("form-control max-z-index");
+                    var a = $("a[class*='chosen-single chosen-default']");
+                    var a1 = $("a[class*='chosen-single']");
+                    if (a != null) {
+                        a.css("border", "0");
+                        a.css("background", "white");
+                        a.css("box-shadow", "0 0 0 white inset, 0 0 0 rgba(0, 0, 0, .1)");
+                    }
+                    if (a1 != null) {
+                        a1.css("border", "0");
+                        a1.css("background", "white");
+                        a1.css("box-shadow", "0 0 0 white inset, 0 0 0 rgba(0, 0, 0, .1)");
+                    }
+                }, 500);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+    }
+
+    function LoadDistrito() {
+        var dis = $('#Establecimiento_IdDistrito');
+        if (dis)
+            dis.addClass("disabled");
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $.origin() + "/Distrito/GetDropDown/",
+            data: {
+                id: '@idDistrito',
+                nombre: "Establecimiento.IdDistrito",
+                idProvincia: $('#Establecimiento_IdProvincia').val()
+            },
+            success: function (data) {
+                $('#divDistrito').html(data);
+                $('#Establecimiento_IdDistrito').removeClass("disabled");
+                setTimeout(function () {
+                    $("#Establecimiento_IdDistrito").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione distrito" });
+                    $("div[class*='chosen-container']").addClass("form-control max-z-index");
+                    var a = $("a[class*='chosen-single chosen-default']");
+                    var a1 = $("a[class*='chosen-single']");
+                    if (a != null) {
+                        a.css("border", "0");
+                        a.css("background", "white");
+                        a.css("box-shadow", "0 0 0 white inset, 0 0 0 rgba(0, 0, 0, .1)");
+                    }
+                    if (a1 != null) {
+                        a1.css("border", "0");
+                        a1.css("background", "white");
+                        a1.css("box-shadow", "0 0 0 white inset, 0 0 0 rgba(0, 0, 0, .1)");
+                    }
+                }, 500);
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+    }
 </script>

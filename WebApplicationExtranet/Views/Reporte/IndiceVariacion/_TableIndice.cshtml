@@ -1,0 +1,74 @@
+﻿@using System.Globalization
+@using Entity
+@model Entity.Reportes.IndiceVariacion
+@{
+    var isReport = Request.Params["report"];
+    var style = string.IsNullOrEmpty(isReport) ? "display: none;" : "";
+}
+
+<table class="table table-striped table-hover table-bordered table-condensed tabla small margin-bottom-10">
+    <thead>
+        <tr class="cabecera">
+
+            <th style="width: 200px;">
+                Sector - Divisi&oacute;n - Grupo - Clase
+            </th>
+            @foreach (var item in Model.Header.OrderBy(t => t.Number))
+            {
+                <th>@item.Text</th>
+            }
+
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Indice)
+        {
+            <tr>
+                <td>
+                    <span>
+                        @for (var i = 0; i < item.Level; i++)
+                        {
+                            <span>&nbsp;&nbsp;</span>
+                        }
+                        <span>-</span>  @item.Name
+                    </span>
+
+                </td>
+                @for (var i = 0; i < Model.Header.OrderBy(t => t.Number).Count(); i++)
+                {
+                    <td>
+                        @{
+                            var current = Model.Header.OrderBy(t => t.Number).ElementAt(i);
+                            var m = item.Values.FirstOrDefault(t => t.Number == current.Number);
+                            if (m != null)
+                            {
+                                <span>@m.Value.ToString("0.00", CultureInfo.CreateSpecificCulture("en"))</span>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        }
+                    </td>
+
+                            }
+            </tr>
+                            }
+    </tbody>
+</table>
+
+@if (Model.Indice.Count == 0)
+{
+    <div class="no-elements-notification">
+        No hay elementos para mostrar
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+

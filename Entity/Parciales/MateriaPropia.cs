@@ -13,13 +13,13 @@ namespace Entity
            get
            {
                try
-               {
+               {                   
                    return !this.VolumenProduccion.Encuesta.Establecimiento.Encuestas.Where(
                        t => t.Id != VolumenProduccion.Encuesta.Id && t.Fecha < VolumenProduccion.Encuesta.Fecha).OfType<EncuestaEstadistica>().Any(t => t.VolumenProduccionMensual.MateriasPropia.Any(h => h.IdLineaProducto == this.IdLineaProducto));
                }
-               catch (Exception)
+               catch (Exception ex)
                {
-                   return true;
+                   return false;
                }
            }
        }
@@ -35,5 +35,18 @@ namespace Entity
            }
        }
 
+        public bool IsValidProduccionValorUnitario
+        {
+            get {
+                if (Produccion.GetValueOrDefault() > 0 || ValorUnitario.GetValueOrDefault() > 0)
+                {
+                    if (Produccion.GetValueOrDefault() == 0 || ValorUnitario.GetValueOrDefault() == 0)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
     }
 }

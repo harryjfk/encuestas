@@ -1,0 +1,180 @@
+﻿@using System.Globalization
+@model Entity.Reportes.IndiceVariacion
+@{
+    var guid = Guid.NewGuid().ToString();
+    var guid2 = Guid.NewGuid().ToString();
+   
+}
+@Scripts.Render("~/bundles/jquery")
+
+
+<div id="@guid" class="col-md-6" style="margin: 0 auto"></div>
+<div id="@guid2" class="col-md-6" style="margin: 0 auto"></div>
+<script type="text/javascript">
+    var datamp = [];
+    var datamnp = [];
+    var ciiu = [];
+    @{
+        var yAxisTitle = "Indice";
+        if (Model.IsVariacion)
+        {
+            yAxisTitle = "Variacion";
+        }
+        var idPrimaria = "Manufactura Primaria".GetHashCode();
+        var primaria = Model.Indice.FirstOrDefault(t => t.Id == idPrimaria);
+        if (primaria != null)
+        {
+            foreach (var d in primaria.Values.OrderBy(t => t.Number))
+            {
+                @Html.Raw("datamp.push([" + d.Value + "]);");
+            }
+        }
+        var idNoPrimaria = "Manufactura no Primaria".GetHashCode();
+        var noPrimaria = Model.Indice.FirstOrDefault(t => t.Id == idNoPrimaria);
+        if (noPrimaria != null)
+        {
+            foreach (var d in noPrimaria.Values.OrderBy(t => t.Number))
+            {
+                @Html.Raw("datamnp.push([" + d.Value + "]);");
+            }
+        }
+        var idciiu = "CIIU del Informante".GetHashCode();
+        var ciiu = Model.Indice.FirstOrDefault(t => t.Id == idciiu);
+        if (ciiu != null)
+        {
+            foreach (var d in ciiu.Values.OrderBy(t => t.Number))
+            {
+                @Html.Raw("ciiu.push([" + d.Value + "]);");
+            }
+        }
+    }
+    $(document).ready(function () {
+
+        $('#@guid').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'TOTAL MANUFACTURA PRIMARIA, TOTAL MANUFACTURA NO PRIMARIA Y TOTAL CIIU DEL INFORMANTE'
+            },
+            subtitle: {
+                text: 'Barras'
+            },
+            xAxis: {
+                categories: [
+                    'Ene',
+                    'Feb',
+                    'Mar',
+                    'Abr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Ago',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dic'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '@yAxisTitle'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Manufactura Primaria',
+                data: datamp
+
+            }, {
+                name: 'Manufactura no primaria',
+                data: datamnp
+
+            }, {
+                name: 'CIIU del informante',
+                data: ciiu
+
+            }]
+        });
+
+
+        $('#@guid2').highcharts({
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'TOTAL MANUFACTURA PRIMARIA, TOTAL MANUFACTURA NO PRIMARIA Y TOTAL CIIU DEL INFORMANTE'
+            },
+            subtitle: {
+                text: 'Lineas Superpuestas'
+            },
+            xAxis: {
+                categories: [
+                    'Ene',
+                    'Feb',
+                    'Mar',
+                    'Abr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Ago',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dic'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '@yAxisTitle'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Manufactura Primaria',
+                data: datamp
+
+            }, {
+                name: 'Manufactura no primaria',
+                data: datamnp
+
+            }, {
+                name: 'CIIU del informante',
+                data: ciiu
+
+            }]
+        });
+
+        $("text:contains('Highcharts.com')").hide();
+    });
+</script>

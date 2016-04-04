@@ -31,7 +31,7 @@ namespace Domain.Managers
         public override List<string> Validate(Pregunta element)
         {
             var list= base.Validate(element);
-            list.Required(element,t=>t.Texto,"Texto");
+            //list.Required(element,t=>t.Texto,"Texto");
             list.Required(element,t=>t.Estado,"Estado");
 
             list.MaxLength(element, t => t.Texto, 1000, "Texto");

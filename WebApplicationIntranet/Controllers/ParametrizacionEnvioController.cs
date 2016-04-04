@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class ParametrizacionEnvioController : BaseController<ParametrizacionEnvio>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdParametrizacion", string @default = null)
@@ -30,6 +33,7 @@ namespace WebApplication.Controllers
        
         public JsonResult Toggle(long id)
         {
+            Query = base.GetQuery();
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)
@@ -47,11 +51,11 @@ namespace WebApplication.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
         public override ActionResult Index()
         {
             Manager.ParametrizacionEnvioManager.Generate();
             return base.Index();
         }
-        
     }
 }

@@ -8,7 +8,7 @@ namespace Entity
 {
    public partial class UsuarioExtranet:Usuario
     {
-       public string Login { get; set; }
+       public string Ruc { get; set; }
        public string Email { get; set; }
 
        public bool Seleccionado { get; set; }

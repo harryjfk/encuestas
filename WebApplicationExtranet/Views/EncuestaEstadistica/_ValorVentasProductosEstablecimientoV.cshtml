@@ -1,13 +1,9 @@
 ﻿@using System.Globalization
 @using Entity
 @using WebApplication.Models
+@using Domain
 @model EncuestaEstadistica
 
-@{
-
-}
-@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap4form"}))
-    {*@
 <div class="panel panel-primary">
     <div class="panel-heading">Capítulo IV: Valor total de ventas mensuales de productos elaborados en el establecimiento</div>
     <div class="panel-body">
@@ -31,9 +27,8 @@
                     </thead>
 
                     <tbody>
-                        @foreach (var item in Model.VentasProductosEstablecimiento.CAT_VENTAS_PAIS_EXTRANJERO.OrderBy(t => t.CAT_CIIU.ToString()))
+                        @foreach (var item in Model.VentasProductosEstablecimiento.DAT_VENTAS_PAIS_EXTRANJERO.OrderBy(t => t.CAT_CIIU.ToString()))
                         {
-                            //Html.RenderPartial("_ProductoMateriaPrimaPropia", item);
                             <tr>
                                 <td>
                                     @item.CAT_CIIU.ToString()
@@ -43,7 +38,7 @@
                                     @if (!string.IsNullOrWhiteSpace(item.justificacion_venta_pais) && !string.IsNullOrEmpty(item.justificacion_venta_pais))
                                     {
                                         <div class="color-red panel panel-primary padding-10 ventaVentaPaisPanel" data-elementid="@item.Id">
-                                            @Html.LabelFor(modelItem => item.VentaPais, String.Format("{0:0.0000}", item.VentaPais))
+                                            @Html.Label("", item.VentaPais.GetValueOrDefault().ProduceFormat())
 
                                             <div style="margin-top: 5px;" class="panel panel-default">
                                                 <span>Justificaci&oacute;n</span>
@@ -61,15 +56,14 @@
                                     }
                                     else
                                     {
-                                        @Html.LabelFor(modelItem => item.VentaPais, String.Format("{0:0.0000}", item.VentaPais))
+                                        @Html.Label("", item.VentaPais.GetValueOrDefault().ProduceFormat())
                                     }
                                 </td>
                                 <td>
-
                                     @if (!string.IsNullOrWhiteSpace(item.justificacion_venta_ext) && !string.IsNullOrEmpty(item.justificacion_venta_ext))
                                     {
                                         <div class="color-red panel panel-primary padding-10 ventaVentaExtranjeroPanel" data-elementid="@item.Id">
-                                            @Html.LabelFor(modelItem => item.VentaExtranjero, String.Format("{0:0.0000}", item.VentaExtranjero))
+                                            @Html.Label("", item.VentaExtranjero.GetValueOrDefault().ProduceFormat())
 
                                             <div style="margin-top: 5px;" class="panel panel-default">
                                                 <span>Justificaci&oacute;n</span>
@@ -85,13 +79,13 @@
 
                                     }
                                     else
-                                    { @Html.LabelFor(modelItem => item.VentaExtranjero, String.Format("{0:0.0000}", item.VentaExtranjero))}
+                                    { @Html.Label("", item.VentaExtranjero.GetValueOrDefault().ProduceFormat())}
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-                @if (!Model.VentasProductosEstablecimiento.CAT_VENTAS_PAIS_EXTRANJERO.Any())
+                @if (!Model.VentasProductosEstablecimiento.DAT_VENTAS_PAIS_EXTRANJERO.Any())
                 {
                     <div class="no-elements-notification">
                         No hay elementos para mostrar
@@ -112,7 +106,7 @@
                                         CIIU
                                     </th>
                                     <th>
-                                        detalle
+                                        Detalle
                                     </th>
                                     <th>
                                         Venta pais
@@ -126,7 +120,6 @@
                             <tbody>
                                 @foreach (var item in Model.VentasProductosEstablecimiento.VentasServicioManufactura)
                                 {
-                                    //Html.RenderPartial("_ProductoMateriaPrimaPropia", item);
                                     <tr>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.ciiu)
@@ -138,9 +131,8 @@
                                         <td>
                                             @if (!string.IsNullOrWhiteSpace(item.justificacion_venta_pais) && !string.IsNullOrEmpty(item.justificacion_venta_pais))
                                             {
-                                                <div class="color-red panel panel-primary padding-10 servicioVentaPaisPanel" data-elementid="@item.Id">
-                                                    @* @Html.DisplayFor(modelItem => item.venta, new { @class = "val-" + item.Id, Value = String.Format("{0:0.0000}", item.venta) })*@
-                                                    @Html.LabelFor(modelItem => item.venta, String.Format("{0:0.0000}", item.venta.GetValueOrDefault()))
+                                                <div class="color-red panel panel-primary padding-10 servicioVentaPaisPanel" data-elementid="@item.Id">                                                    
+                                                    @Html.Label("", item.venta.GetValueOrDefault().ProduceFormat())
                                                     <div style="margin-top: 5px;" class="panel panel-default">
                                                         <span>Justificaci&oacute;n</span>
                                                         <div>
@@ -156,22 +148,18 @@
                                                 </div>
                                             }
                                             else
-                                            {
-                                                @*@Html.DisplayFor(modelItem => item.venta, new { @class = "val-" + item.Id, Value = String.Format("{0:0.0000}", item.venta) })*@
-                                                @Html.LabelFor(modelItem => item.venta, String.Format("{0:0.0000}", item.venta.GetValueOrDefault()))
+                                            {                                                
+                                                @Html.Label("", item.venta.GetValueOrDefault().ProduceFormat())
                                             }
                                         </td>
                                         <td>
-
                                             @if (!string.IsNullOrWhiteSpace(item.justificacion_venta_ext) && !string.IsNullOrEmpty(item.justificacion_venta_ext))
                                             {
-                                                <div class="color-red panel panel-primary padding-10 servicioVentaExtranjeroPanel" data-elementid="@item.Id">
-                                                    @*@Html.DisplayFor(modelItem => item.venta_extranjero, new { @class = "val-" + item.Id, Value = String.Format("{0:0.0000}", item.venta_extranjero) })*@
-                                                    @Html.LabelFor(modelItem => item.venta_extranjero, String.Format("{0:0.0000}", item.venta_extranjero.GetValueOrDefault()))
+                                                <div class="color-red panel panel-primary padding-10 servicioVentaExtranjeroPanel" data-elementid="@item.Id">                                                    
+                                                    @Html.Label("", item.venta_extranjero.GetValueOrDefault().ProduceFormat())
                                                     <div style="margin-top: 5px;" class="panel panel-default">
                                                         <span>Justificaci&oacute;n</span>
-                                                        <div>@Html.DisplayFor(modelItem => item.justificacion_venta_ext, new { style = " width: 100%;", @class = "form-control" + item.Id })
-                                                             @*@Html.DisplayFor(modelItem => item.justificacion_venta_pais, new { style = " width: 100%;", @class = "form-control" + item.Id })*@</div>
+                                                        <div>@Html.DisplayFor(modelItem => item.justificacion_venta_ext, new { style = " width: 100%;", @class = "form-control" + item.Id })</div>
                                                     </div>
 
                                                 </div>
@@ -183,8 +171,7 @@
                                             }
                                             else
                                             {
-                                                @*@Html.DisplayFor(modelItem => item.venta_extranjero, new { @class = "val-" + item.Id, Value = String.Format("{0:0.0000}", item.venta_extranjero) })*@
-                                                @Html.LabelFor(modelItem => item.venta_extranjero, String.Format("{0:0.0000}", item.venta_extranjero.GetValueOrDefault()))
+                                                @Html.Label("", item.venta_extranjero.GetValueOrDefault().ProduceFormat())
                                             }
                                         </td>
                                     </tr>
@@ -260,4 +247,4 @@
         });
     });
 </script>
-@*}*@
+

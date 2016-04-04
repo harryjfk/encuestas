@@ -18,8 +18,6 @@
             </div>
         </div>
 
-
-
         @if (Model != null)
         {
             <input type="hidden" name="Id" value="@Model.Id" />
@@ -47,7 +45,8 @@
         <div class="form-group">
             <label for="Revision" class="col-md-4 control-label">Revisi&oacute;n</label>
             <div class="col-md-7">
-                @Html.TextBoxFor(t => t.Revision, new { @class = "form-control" })
+                @Html.EnumDropDownListFor(t => t.EnumRevision, "Seleccione una revisión", htmlAttributes: new { @class = "form-control" })
+                @*@Html.TextBoxFor(t => t.Revision, new { @class = "form-control" })*@
                 @*<input class="text-box single-line form-control" id="Nombre" name="Nombre" type="text" value="">*@
                 @Html.ValidationMessageFor(model => model.Revision)
             </div>
@@ -56,20 +55,20 @@
         <div class="form-group">
             <label for="tipoCalculo" class="col-md-4 control-label">Tipo de C&aacute;lculo</label>
             <div class="col-md-7">
-                @{Html.RenderAction("GetDorpDown", "MetodoCalculo", new { id = (Model != null && Model.id_metodo_calculo != null) ? Model.id_metodo_calculo : 0, nombre = "id_metodo_calculo" ,@default="Seleccione uno"});}
+                @{Html.RenderAction("GetDorpDown", "MetodoCalculo", new { id = (Model != null && Model.id_metodo_calculo != null) ? Model.id_metodo_calculo : 0, nombre = "id_metodo_calculo", @default = "Seleccione uno" });}
 
                 @Html.ValidationMessageFor(model => model.id_metodo_calculo)
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
         @{
-                  var s1 = Model != null && Model.sub_sector == 1 ? "selected" : "";
-                  var s2 = Model != null && Model.sub_sector == 2 ? "selected" : "";
+            var s1 = Model != null && Model.sub_sector == 1 ? "selected" : "";
+            var s2 = Model != null && Model.sub_sector == 2 ? "selected" : "";
 
-                  var r1 = Model != null && Model.rubro == 1 ? "selected" : "";
-                  var r2 = Model != null && Model.rubro == 2 ? "selected" : "";
-                  var r3 = Model != null && Model.rubro == 3 ? "selected" : "";
-                  var r4 = Model != null && Model.rubro == 4 ? "selected" : "";
+            var r1 = Model != null && Model.rubro == 1 ? "selected" : "";
+            var r2 = Model != null && Model.rubro == 2 ? "selected" : "";
+            var r3 = Model != null && Model.rubro == 3 ? "selected" : "";
+            var r4 = Model != null && Model.rubro == 4 ? "selected" : "";
         }
         <div class="form-group">
             <label for="subsector" class="col-md-4 control-label">Sub Sector</label>
@@ -95,6 +94,25 @@
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
+        @*<div class="col-md-12">
+            <div class="form-group">
+                <label for="Peso" class="col-md-2 control-label">Peso</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(t => t.Peso, new { @class = "form-control", style = "width: 106%; max-width: inherit;" })
+                    @Html.ValidationMessageFor(model => model.Peso)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="ValorAgregado" class="col-md-2 control-label">Valor Agregado</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(t => t.ValorAgregado, new { @class = "form-control", style = "width: 106%; max-width: inherit;" })
+                    @Html.ValidationMessageFor(model => model.ValorAgregado)
+                </div>
+
+            </div>
+        </div>*@
         <div class="form-group">
             <label for="Activado" class="col-md-4 control-label">Activado</label>
             <div class="col-md-1">
@@ -103,24 +121,21 @@
                 @Html.ValidationMessageFor(model => model.Activado)
             </div>
         </div>
-
-
-
-
         <div class="modal-footer">
             <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         </div>
-
     </div>
 }
-
-<script type="text/javascript">
+<script>
     $(document).ready(function () {
-       
-        var selectSubSector = $("#select-sub-sector");        
+        var selectSubSector = $("#select-sub-sector");
         $.search(selectSubSector);
-        $("button[name='aceptarbtn']").click(function() {
+
+        var selectEnumRevision = $("#EnumRevision");
+        $.search(selectEnumRevision);
+
+        $("button[name='aceptarbtn']").click(function () {
             var $elem = $(this);
             $elem.addClass("disabled");
             $.ajax({
@@ -128,7 +143,7 @@
                 type: "POST",
                 url: $.origin() + "/Ciiu/CreatePost/",
                 data: $("form[name='addform']").serialize(),
-                success: function(data) {
+                success: function (data) {
                     $elem.removeClass("disabled");
                     if (data.Success) {
                         $("#table-container").html(data.Data);
@@ -150,16 +165,17 @@
                     //$("#editItem .modal-body").html(data);
                     //$("#editItem").modal("show");
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
+                error: function (xhr, ajaxOptions, thrownError) {
                     $elem.removeClass("disabled");
                     alert('Failed to retrieve data.');
                 }
             });
 
         });
+
         $('#Codigo').maxlength({ events: ['blur'], slider: true, maxCharacters: 4, statusText: 'caracteres restantes' });
         $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 255, statusText: 'caracteres restantes' });
-        $('#Revision').maxlength({ events: ['blur'], slider: true, maxCharacters: 10, statusText: 'caracteres restantes' });
+        //$('#Revision').maxlength({ events: ['blur'], slider: true, maxCharacters: 10, statusText: 'caracteres restantes' });
         verifyRubro();
         //setTimeout(function () {
         //    $("select[name='sub_sector']").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione un elemento" });
@@ -171,18 +187,18 @@
         //        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
         //    }
         //}, 500);
-        $("select[name='sub_sector']").change(function() {
+        $("select[name='sub_sector']").change(function () {
             verifyRubro();
-            
+
         });
-      
+
     });
-    
+
     function verifyRubro() {
-       
+
         var value = $("select[name='sub_sector']").val();
         if (value == 2) {
-            
+
             var selectRubro = $("#select-rubro");
 
             $.search(selectRubro);

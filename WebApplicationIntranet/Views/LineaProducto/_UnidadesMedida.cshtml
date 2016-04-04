@@ -11,10 +11,10 @@
     <thead>
         <tr class="cabecera">
             <th style="width: 20px;"></th>
-            <th> ABREVIATURA </th>
-            <th> DESCRIPCI&Oacute;N </th>
-            <th> UNIDAD DE CONVERSI&Oacute;N </th>
-            <th> FACTOR DE CONVERSI&Oacute;N </th>
+            <th> Abreviatura </th>
+            <th> Descripci&oacute;n </th>
+            <th> Unidad de Conversi&oacute;n </th>
+            <th> Factor de Conversi&oacute;n </th>
     </thead>
 
     <tbody>
@@ -124,7 +124,7 @@
         var pag = $(".modal-body .pagination-container");
         pag.removeClass("pagination-container");
         $("#unidadesMedida .modal-dialog .modal-content .modal-header h4[class='modal-title']")
-            .html('Asignación de unidad de medida a la línea de producto ' + "@ViewBag.LineaProductoSeleccionada");
+            .html('Asignación de unidad de medida al producto ' + "@ViewBag.LineaProductoSeleccionada");
         $.InitTooltip();
         
         $('.mask4').inputmask("9{1,20}.9{0,4}");

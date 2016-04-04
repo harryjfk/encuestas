@@ -14,7 +14,7 @@
     <RootNamespace>WebApplication</RootNamespace>
     <AssemblyName>WebApplication</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BundleConfig2.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
@@ -201,12 +202,12 @@
     <Compile Include="Controllers\SeguridadController.cs" />
     <Compile Include="Controllers\UnidadMedidaController.cs" />
     <Compile Include="Controllers\UsuarioExtranetController.cs" />
-    <Compile Include="Controllers\UsuarioIntranetController.cs" />
     <Compile Include="Models\Credenciales.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ExportIndiceVariacionToExcel.cs" />
     <Compile Include="Models\ExportGeneralEncuestaEstadistica.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -259,7 +260,9 @@
     <None Include="Properties\PublishProfiles\PRODUCE-INTRANET.pubxml" />
     <None Include="Properties\PublishProfiles\Produce.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\chart\highcharts.js" />
     <Content Include="Scripts\chosen.jquery.js" />
+    <Content Include="Scripts\function.tools\fast-functions.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -300,12 +303,12 @@
     <Content Include="Views\Shared\_DropDown.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_Usuarios.cshtml" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\LineaProducto\Index.cshtml" />
     <Content Include="Views\LineaProducto\_Create.cshtml" />
-    <Content Include="Views\LineaProducto\Details.cshtml" />
     <Content Include="Views\LineaProducto\_Table.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -326,7 +329,6 @@
     <Content Include="Views\Establecimiento\_Create.cshtml" />
     <Content Include="Views\Establecimiento\_Table.cshtml" />
     <Content Include="Views\Establecimiento\Index.cshtml" />
-    <Content Include="Views\Establecimiento\Details.cshtml" />
     <Content Include="Views\Contacto\Index.cshtml" />
     <Content Include="Views\Contacto\_Table.cshtml" />
     <Content Include="Views\Contacto\_Create.cshtml" />
@@ -365,11 +367,8 @@
     <Content Include="Views\EncuestaEmpresarial\_TableAnalista.cshtml" />
     <Content Include="Views\EncuestaEmpresarial\EncuestaAnalista.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_Table.cshtml" />
-    <Content Include="Views\EncuestaEstadistica\_TableAnalista.cshtml" />
     <Content Include="Views\EncuestaEstadistica\Encuesta.cshtml" />
-    <Content Include="Views\EncuestaEstadistica\EncuestaAnalista.cshtml" />
     <Content Include="Views\EncuestaEstadistica\Index.cshtml" />
-    <Content Include="Views\EncuestaEstadistica\IndexAnalista.cshtml" />
     <Content Include="Views\EncuestaEstadistica\VerEncuesta.cshtml" />
     <Content Include="Views\UsuarioExtranet\EstablecimientosEncuestaEstadistica.cshtml" />
     <Content Include="Views\UsuarioExtranet\_TableEstablecimientosEncuestaEstadistica.cshtml" />
@@ -383,7 +382,6 @@
     <Content Include="Views\EncuestaEstadistica\_TrabajadoresDiasTrabajados.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_ValorProduccionEstablecimiento.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_ValorVentasProductosEstablecimiento.cshtml" />
-    <Content Include="Views\EncuestaEstadistica\_VentaServicios.cshtml" />
     <Content Include="Views\EncuestaEstadistica\_VolumenProduccionMensual.cshtml" />
     <Content Include="Views\Shared\_TextView.cshtml" />
     <Content Include="Views\Establecimiento\Ciiu.cshtml" />
@@ -410,6 +408,13 @@
     <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\Index.cshtml" />
     <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_MultiSelectListView.cshtml" />
     <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_ReporteGeneralEstadistico.cshtml" />
+    <Content Include="Views\Reporte\IndiceVariacion\Index.cshtml" />
+    <Content Include="Views\Reporte\IndiceVariacion\_TableIndice.cshtml" />
+    <Content Include="Views\Shared\_Graphic.cshtml" />
+    <Content Include="Views\Reporte\IndiceVariacion\_Graphic1.cshtml" />
+    <Content Include="Views\Reporte\IndiceVariacion\_Graphic2.cshtml" />
+    <Content Include="Views\Reporte\IndiceVariacion\_Graphic3.cshtml" />
+    <Content Include="Views\UsuarioExtranet\EstablecimientosEncuestas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

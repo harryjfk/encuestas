@@ -29,20 +29,20 @@
 @using (Html.BeginForm("Buscar", "Contacto", FormMethod.Post))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-heading">B&uacute;squeda</div>
 
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">NOMBRE</span>
+                        <span class="input-group-addon">Nombre</span>
                         @*<input type="text" class="form-control">*@
                         @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">TEL&Eacute;FONO</span>
+                        <span class="input-group-addon">Tel&eacute;fono</span>
                         @*<input type="text" class="form-control">*@
                         @Html.TextBoxFor(t => t.Criteria.Telefono, new { @class = "form-control" })
                     </div>

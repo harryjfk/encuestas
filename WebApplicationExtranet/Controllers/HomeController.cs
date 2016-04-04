@@ -16,36 +16,14 @@ namespace WebApplication.Controllers
     [Autorizacion]*/
     public class HomeController : Controller
     {
-        public Manager Manager {
+        public Manager Manager
+        {
             get { return Tools.GetManager(); }
         }
 
         public ActionResult Index(UserInformation user)
         {
             //brb
-            user = new UserInformation()
-            {
-                Id = 1,
-                Tipo = "Tipo",
-                Nombre = "Nombre",
-                Login = "informante",
-                Ndocumento = "0012345",
-                Empresa = "Empresa",
-                Aplicaciones = new List<Aplicaciones>()
-                {
-                    new Aplicaciones()
-                    {
-                        A = 123,
-                        R = "Informante"
-                    }
-                }
-
-            };
-            Session["uid"] = user.Id;
-            Session["ulogin"] = user.Nombre;
-            Session["pr"] = user.Aplicaciones.First().R;
-            //endbrb
-
             //Session["uid"] = user.Id;
             //Session["ulogin"] = null;
             //var userTemp = Manager.Usuario.FindUsuarioExtranet(user.Id);
@@ -82,7 +60,41 @@ namespace WebApplication.Controllers
             //ViewBag.Tipo = user.Tipo;
             //ViewBag.IdentityName = this.User.Identity.Name;
 
-            return View();
+            //return RedirectToAction("EstablecimientosEncuestas", "UsuarioExtranet");
+            //endbrb
+
+            var usuarioLocal = this.GetLogued();
+            if (usuarioLocal != null)
+            {
+                user = new UserInformation()
+                {
+                    Id = Convert.ToInt32(usuarioLocal.Identificador),
+                    Nombre = usuarioLocal.Login,
+                    Login = usuarioLocal.Login,
+
+                    Aplicaciones = new List<Aplicaciones>()
+                    {
+                        new Aplicaciones()
+                        {
+                            A = 123,
+                            R = "Informante"
+                        }
+                    }
+                };
+
+                Session["uid"] = user.Id;
+                Session["ulogin"] = user.Nombre;
+                Session["pr"] = user.Aplicaciones.First().R;
+
+                return RedirectToAction("EstablecimientosEncuestas", "UsuarioExtranet");
+            }
+            else
+            {
+                Session["uid"] = null;
+                Session["ulogin"] = null;
+                Session["pr"] = "";
+                return View();
+            }
         }
 
         public ActionResult About()
@@ -109,9 +121,9 @@ namespace WebApplication.Controllers
                     var user = Manager.Usuario.Autenticate(model.Login, model.Password);
                     FormsAuthentication.SetAuthCookie(model.Login, false);
                     this.WriteMessage("Iniciando sesion", model.Login);
-                    //ViewData.Add("user",Manager.Usuario.FindRol(user.Id));
-                    if (user.Roles.Any(t => t.Nombre.Equals("Informante")))
-                        return RedirectToAction("EstablecimientosEncuestaEmpresarial", "UsuarioExtranet");
+                    //ViewData.Add("user", "Bryan");
+                    /*if (user.Roles.Any(t => t.Nombre.Equals("Informante")))
+                        return RedirectToAction("EstablecimientosEncuestaEmpresarial", "UsuarioExtranet");*/
                     return RedirectToAction("Index");
                 }
                 ModelState.AddModelError("Error", "Usuario o contraseña incorrecto.");
@@ -120,11 +132,44 @@ namespace WebApplication.Controllers
             return View(model);
 
         }
+
         public ActionResult SignOut()
         {
-            this.WriteMessage("Cerrando sesion");
-            FormsAuthentication.SignOut();;
+            HttpCookie aCookie;
+            string cookieName = FormsAuthentication.FormsCookieName;
+            Response.Cookies.Remove(cookieName);
+            int limit = Request.Cookies.Count;
+            for (int i = 0; i < limit; i++)
+            {
+                cookieName = Request.Cookies[i].Name;
+                aCookie = new HttpCookie(cookieName);
+                aCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(aCookie);
+            }
+
+            Session.Abandon();
+            Session.RemoveAll();
+
+            FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
+        }
+
+        private void CerrarSesion()
+        {
+            HttpCookie aCookie;
+            string cookieName = FormsAuthentication.FormsCookieName;
+            Response.Cookies.Remove(cookieName);
+            int limit = Request.Cookies.Count;
+            for (int i = 0; i < limit; i++)
+            {
+                cookieName = Request.Cookies[i].Name;
+                aCookie = new HttpCookie(cookieName);
+                aCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(aCookie);
+            }
+
+            Session.Abandon();
+            Session.RemoveAll();
         }
     }
 }

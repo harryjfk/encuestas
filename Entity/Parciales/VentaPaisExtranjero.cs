@@ -14,7 +14,7 @@ namespace Entity
             {
                 try
                 {
-                    var encuesta = this.CAT_VENTAS_PROD_ESTAB.Encuesta;
+                    var encuesta = this.DAT_VENTAS_PROD_ESTAB.Encuesta;
                     var volumenes =
                         encuesta.VolumenProduccionMensual.MateriasPropia.Where(
                             t => t.LineaProducto.IdCiiu == this.id_ciiu);
@@ -33,7 +33,7 @@ namespace Entity
             {
                 try
                 {
-                    var encuesta = this.CAT_VENTAS_PROD_ESTAB.Encuesta;
+                    var encuesta = this.DAT_VENTAS_PROD_ESTAB.Encuesta;
                     var volumenes =
                         encuesta.VolumenProduccionMensual.MateriasPropia.Where(
                             t => t.LineaProducto.IdCiiu == this.id_ciiu);

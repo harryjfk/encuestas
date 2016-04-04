@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class CiiuController : BaseController<Ciiu>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdCiiu", string @default = null)

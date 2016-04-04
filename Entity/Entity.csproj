@@ -63,6 +63,9 @@
     <Compile Include="Ciiu.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="CiiuEstablecimiento.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
     <Compile Include="ConsumoHarinaFideo.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
@@ -125,9 +128,12 @@
     </Compile>
     <Compile Include="Parciales\AccionEnum.cs" />
     <Compile Include="Parciales\Auditoria.cs" />
+    <Compile Include="Parciales\CiiuRevision.cs" />
     <Compile Include="Parciales\EncuestaAnalista.cs" />
+    <Compile Include="Parciales\EncuestaEstadisticaUploadModel.cs" />
     <Compile Include="Parciales\EstablecimientoAnalista.cs" />
     <Compile Include="Parciales\AñoBase.cs" />
+    <Compile Include="Parciales\IppCiiuValor.cs" />
     <Compile Include="Parciales\ParametrizacionEnvio.cs" />
     <Compile Include="Parciales\LineaProductoUnidadMedida.cs" />
     <Compile Include="Parciales\EnumRubro.cs" />
@@ -184,12 +190,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>
+    <Compile Include="Reportes\EmpresaEnvioInformacion.cs" />
     <Compile Include="Reportes\GraphicModel.cs" />
     <Compile Include="Reportes\IndiceValorFisicoProducido.cs" />
     <Compile Include="Reportes\IndiceValorFisicoProducidoItem.cs" />
+    <Compile Include="Reportes\IndiceVariacion.cs" />
+    <Compile Include="Reportes\IVFM.cs" />
     <Compile Include="Reportes\PorcentajeEncuestaEstadistica.cs" />
     <Compile Include="Reportes\PorcentajeEncuestaEstadisticaFilter.cs" />
     <Compile Include="Reportes\PorcentajeEncuestaEstadisticaItem.cs" />
+    <Compile Include="Reportes\VariacionEstablecimiento.cs" />
     <Compile Include="Rol.cs">
       <DependentUpon>Entidades.tt</DependentUpon>
     </Compile>

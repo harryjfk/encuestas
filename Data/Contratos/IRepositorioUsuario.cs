@@ -14,9 +14,9 @@ namespace Data.Contratos
 
         UsuarioIntranet FindUsuarioIntranet(int codigo);
 
-        UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol);
+        /*UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol);
         
-        UsuarioIntranet GetUsuarioIntranetById(int id);
+        UsuarioIntranet GetUsuarioIntranetById(int id);*/
 
         IPagedList<UsuarioExtranet> GetUsuariosExtranet(Paginacion paginacion = null, Func<UsuarioExtranet, bool> filter = null);
         UsuarioExtranet FindUsuarioExtranet(int codigo);

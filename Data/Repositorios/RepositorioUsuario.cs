@@ -16,7 +16,7 @@ namespace Data.Repositorios
 {
     public class RepositorioUsuario : IRepositorioUsuario
     {
-        UsuarioIntranetService.UsuarioIntranetService miUsuarioService;
+        UsuarioIntranetService1.UsuarioIntranetService miUsuarioService;
         UsuarioExtranetService.UsuarioExtranetService usuarioExtranetService;
 
         public IPagedList<UsuarioIntranet> GetUsuariosIntranetAnalista(Paginacion paginacion = null, Func<UsuarioIntranet, bool> filter = null)
@@ -26,26 +26,26 @@ namespace Data.Repositorios
                 var list = new List<UsuarioIntranet>();
                 if (miUsuarioService == null)
                 {
-                    miUsuarioService = new UsuarioIntranetService.UsuarioIntranetService();
+                    miUsuarioService = new UsuarioIntranetService1.UsuarioIntranetService();
                 }
-                
-                foreach (var item in miUsuarioService.GetUsuarios(int.Parse(ConfigurationManager.AppSettings["idrol_analista"]), true, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true, 1, true, 10, true))
-                {                    
+
+                var wsUsuariosIntranet = miUsuarioService.GetUsuarios(int.Parse(ConfigurationManager.AppSettings["idrol_analista"]), true, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true, 1, true, 100, true);
+
+                foreach (var item in wsUsuariosIntranet)
+                {
                     UsuarioIntranet obj = new UsuarioIntranet();
                     obj.Identificador = item.codigotrabajador;
                     obj.Nombres = item.nombres;
                     obj.Apellidos = item.apellidos;
                     obj.DNI = item.dni;
                     obj.IdRol = item.idrol;
-                    list.Add(obj);                    
+                    list.Add(obj);
                 }
-
-                int listcount = list.Count;
 
                 if (filter != null)
                     list = list.Where(filter).ToList();
                 if (paginacion == null)
-                    return new PagedList<UsuarioIntranet>(list, 1, !list.Any() ? 1 : listcount);
+                    return new PagedList<UsuarioIntranet>(list, 1, !list.Any() ? 1 : list.Count());
                 paginacion.Validate();
                 return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);
             }
@@ -62,9 +62,12 @@ namespace Data.Repositorios
                 var list = new List<UsuarioIntranet>();
                 if (miUsuarioService == null)
                 {
-                    miUsuarioService = new UsuarioIntranetService.UsuarioIntranetService();
+                    miUsuarioService = new UsuarioIntranetService1.UsuarioIntranetService();
                 }
-                foreach (var item in miUsuarioService.GetUsuarios(int.Parse(ConfigurationManager.AppSettings["idrol_administrador"]), true, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true, 1, true, 10, true))
+
+                var wsUsuariosIntranet = miUsuarioService.GetUsuarios(int.Parse(ConfigurationManager.AppSettings["idrol_administrador"]), true, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true, 1, true, 100, true);
+
+                foreach (var item in wsUsuariosIntranet)
                 {
                     UsuarioIntranet obj = new UsuarioIntranet();
                     obj.Identificador = item.codigotrabajador;
@@ -74,14 +77,11 @@ namespace Data.Repositorios
                     obj.IdRol = item.idrol;
                     list.Add(obj);
                 }
-
-
-                int listcount = list.Count;
-
+                
                 if (filter != null)
                     list = list.Where(filter).ToList();
                 if (paginacion == null)
-                    return new PagedList<UsuarioIntranet>(list, 1, !list.Any() ? 1 : listcount);
+                    return new PagedList<UsuarioIntranet>(list, 1, !list.Any() ? 1 : list.Count());
                 paginacion.Validate();
                 return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);
             }
@@ -96,34 +96,12 @@ namespace Data.Repositorios
             try
             {
                 var list = new List<UsuarioIntranet>();
-                //var connection = Conexion.CrearConexion().Crear();
-                //var query = string.Format("SELECT * FROM {0}",
-                //    ConfigurationManager.AppSettings["administrados"] ?? "vw_administrados");
-                //var result = Operacion.Ejecutar(connection, query);
-                //if (result != null)
-                //{
-                //    list.AddRange(from DataRowView item in result
-                //                  select new UsuarioIntranet
-                //                  {
-                //                      Nombres = Convert.ToString(item[ConfigurationManager.AppSettings["administrados.nombres"] ?? "NOMBRES"]),
-                //                      Login = Convert.ToString(item[ConfigurationManager.AppSettings["administrados.nombres"] ?? "NOMBRES"]),
-                //                      Apellidos = Convert.ToString(item[ConfigurationManager.AppSettings["administrados.apellidos"] ?? "APELLIDOS"]),
-                //                      DNI = Convert.ToString(item[ConfigurationManager.AppSettings["administrados.numeroDocumento"] ?? "NRO_DOCUMENTO"]),
-                //                      Identificador = Convert.ToInt32(item[ConfigurationManager.AppSettings["administrados.id"] ?? "ID"]),
-                //                  });
-                //}
+                
+                UsuarioIntranetService1.UsuarioIntranetService miUsuarioService = new UsuarioIntranetService1.UsuarioIntranetService();
 
-                ////list.Add(new UsuarioIntranet()
-                ////{
-                ////    Nombres = "Usuario",
-                ////    Apellidos = "Analista",
-                ////    Login = "analista",
-                ////    DNI = "48490453",
-                ////    Identificador = 2
-                ////});
-                UsuarioIntranetService.UsuarioIntranetService miUsuarioService = new UsuarioIntranetService.UsuarioIntranetService();
-
-                foreach (var item in miUsuarioService.GetUsuarios(int.Parse(ConfigurationManager.AppSettings["idrol_analista"]), true, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true, 1, true, 10, true))
+                var wsUsuariosIntranet = miUsuarioService.GetUsuarios(0, false, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true, 1, true, 100, true);
+                
+                foreach (var item in wsUsuariosIntranet)
                 {
                     UsuarioIntranet obj = new UsuarioIntranet();
                     obj.Identificador = item.codigotrabajador;
@@ -132,64 +110,31 @@ namespace Data.Repositorios
                     obj.DNI = item.dni;
                     obj.IdRol = item.idrol;
                     list.Add(obj);
-
                 }
-
-                int listcount = list.Count;
-
+                
                 if (filter != null)
                     list = list.Where(filter).ToList();
                 if (paginacion == null)
-                    return new PagedList<UsuarioIntranet>(list, 1, !list.Any() ? 1 : listcount);
+                    return new PagedList<UsuarioIntranet>(list, 1, !list.Any() ? 1 : list.Count);
                 paginacion.Validate();
-                return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);                
+                return list.ToPagedList(paginacion.Page, paginacion.ItemsPerPage);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new PagedList<UsuarioIntranet>(new List<UsuarioIntranet>(), 1, 1);
             }
         }
-        
+
         public UsuarioIntranet FindUsuarioIntranet(int codigo)
         {
             try
             {
-                //var list = new List<UsuarioIntranet>();
-                //var connection = Conexion.CrearConexion().Crear();
-                //var query = string.Format("SELECT * FROM {0} WHERE {0}.{1}=@codigo",
-                //    ConfigurationManager.AppSettings["administrados"] ?? "vw_administrados"
-                //    , ConfigurationManager.AppSettings["administrados.id"] ?? "ID");
-                //var result = Operacion.Ejecutar(connection, query, new SqlParameter("@codigo", codigo));
-
-                //if (result != null)
-                //{
-                //    list.AddRange(from DataRowView item in result
-                //                  select new UsuarioIntranet
-                //                  {
-                //                      Nombres = Convert.ToString(item[ConfigurationManager.AppSettings["administrados.nombres"] ?? "NOMBRES"]),
-                //                      Login = Convert.ToString(item[ConfigurationManager.AppSettings["administrados.nombres"] ?? "NOMBRES"]),
-                //                      Apellidos = Convert.ToString(item[ConfigurationManager.AppSettings["administrados.apellidos"] ?? "APELLIDOS"]),
-                //                      DNI = Convert.ToString(item[ConfigurationManager.AppSettings["administrados.numeroDocumento"] ?? "NRO_DOCUMENTO"]),
-                //                      Identificador = Convert.ToInt32(item[ConfigurationManager.AppSettings["administrados.id"] ?? "ID"]),
-                //                  });
-                //}
-                //return list.FirstOrDefault();
-
-                ////return new UsuarioIntranet()
-                ////{
-                ////    Nombres = "Usuario",
-                ////    Apellidos = "Analista",
-                ////    Login = "analista",
-                ////    DNI = "48490453",
-                ////    Identificador = 2
-                ////};
-
                 if (miUsuarioService == null)
                 {
-                    miUsuarioService = new UsuarioIntranetService.UsuarioIntranetService();
+                    miUsuarioService = new UsuarioIntranetService1.UsuarioIntranetService();
                 }
 
-                UsuarioIntranetService.UsuarioIntranetExtendidoResponse usu = miUsuarioService.GetUsuario(codigo, true, 0, false, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true);
+                UsuarioIntranetService1.UsuarioIntranetExtendidoResponse usu = miUsuarioService.GetUsuario(codigo, true, 0, false, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true);
 
                 if (usu != null)
                 {
@@ -212,54 +157,28 @@ namespace Data.Repositorios
             }
         }
 
-        public UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol)
-        {
-            throw new NotImplementedException();
-        }
+        //public UsuarioIntranet FindUsuarioIntranet(int codigo, int idRol)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public UsuarioIntranet GetUsuarioIntranetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //public UsuarioIntranet GetUsuarioIntranetById(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public IPagedList<UsuarioExtranet> GetUsuariosExtranet(Paginacion paginacion = null, Func<UsuarioExtranet, bool> filter = null)
         {
             try
             {
                 var list = new List<UsuarioExtranet>();
-                //var connection = Conexion.CrearConexion().Crear();
-                //var query = string.Format("SELECT * FROM {0}",
-                //    ConfigurationManager.AppSettings["extranet"] ?? "vw_usuarios_extranet");
-                //var result = Operacion.Ejecutar(connection, query);
-                //if (result != null)
-                //{
-                //    list.AddRange(from DataRowView item in result
-                //                  select new UsuarioExtranet
-                //                  {
-                //                      Nombres = Convert.ToString(item[ConfigurationManager.AppSettings["extranet.nombres"] ?? "NOMBRES"]),
-                //                      Apellidos = Convert.ToString(item[ConfigurationManager.AppSettings["extranet.apellidos"] ?? "APELLIDOS"]),
-                //                      Email = Convert.ToString(item[ConfigurationManager.AppSettings["extranet.email"] ?? "EMAIL"]),
-                //                      Login = Convert.ToString(item[ConfigurationManager.AppSettings["extranet.login"] ?? "LOGIN"]),
-                //                      Identificador = Convert.ToInt32(item[ConfigurationManager.AppSettings["extranet.id"] ?? "ID"]),
-                //                  });
-                //}
-
-                ////list.Add(new UsuarioExtranet()
-                ////{
-                ////    Nombres = "Bryan Fernando",
-                ////    Apellidos = "Chauca Hinostroza",
-                ////    NombreApellidos = "Bryan Fernando Chauca Hinostroza",
-                ////    Email = "brayan_che_6@hotmail.com",
-                ////    Login = "informante",
-                ////    Identificador = 1
-                ////});
 
                 if (usuarioExtranetService == null)
                 {
                     usuarioExtranetService = new UsuarioExtranetService.UsuarioExtranetService();
                 }
-                
-                foreach (var item in usuarioExtranetService.GetUsuarios(0, true, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true, 1, true, 10, true))
+
+                foreach (var item in usuarioExtranetService.GetUsuarios(int.Parse(ConfigurationManager.AppSettings["idrol_informante"]), true, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true, 1, true, 100, true))
                 {
                     UsuarioExtranet obj = new UsuarioExtranet();
                     obj.Identificador = item.idcontactoextranet;
@@ -267,6 +186,7 @@ namespace Data.Repositorios
                     obj.Nombres = item.nombres;
                     obj.Apellidos = item.apellidos;
                     obj.Email = item.email;
+                    obj.Ruc = item.ruc;
                     list.Add(obj);
                 }
 
@@ -289,54 +209,25 @@ namespace Data.Repositorios
         {
             try
             {
-                //var connection = Conexion.CrearConexion().Crear();
-                //var query = string.Format("SELECT * FROM {0} WHERE {0}.{1}=@codigo",
-                //    ConfigurationManager.AppSettings["extranet"] ?? "vw_usuarios_extranet",
-                //    ConfigurationManager.AppSettings["extranet.id"] ?? "ID");
-                //var result = Operacion.Ejecutar(connection, query, new SqlParameter("@codigo", codigo));
-                //var list = new List<UsuarioExtranet>();
-                //if (result != null)
-                //{
-                //    list.AddRange(from DataRowView item in result
-                //                  select new UsuarioExtranet
-                //                  {
-                //                      Nombres = Convert.ToString(item[ConfigurationManager.AppSettings["extranet.nombres"] ?? "NOMBRES"]),
-                //                      Apellidos = Convert.ToString(item[ConfigurationManager.AppSettings["extranet.apellidos"] ?? "APELLIDOS"]),
-                //                      Email = Convert.ToString(item[ConfigurationManager.AppSettings["extranet.email"] ?? "EMAIL"]),
-                //                      Login = Convert.ToString(item[ConfigurationManager.AppSettings["extranet.login"] ?? "LOGIN"]),
-                //                      Identificador = Convert.ToInt32(item[ConfigurationManager.AppSettings["extranet.id"] ?? "ID"]),
-                //                  });
-                //}
-                //return list.FirstOrDefault();
-
-                return new UsuarioExtranet()
+                if (usuarioExtranetService == null)
                 {
-                    Nombres = "Bryan Fernando",
-                    Apellidos = "Chauca Hinostroza",
-                    NombreApellidos = "Bryan Fernando Chauca Hinostroza",
-                    Email = "brayan_che_6@hotmail.com",
-                    Login = "informante",
-                    Identificador = 1
-                };
+                    usuarioExtranetService = new UsuarioExtranetService.UsuarioExtranetService();
+                }
 
-                //if (usuarioExtranetService == null)
-                //{
-                //    usuarioExtranetService = new UsuarioExtranetService.UsuarioExtranetService();
-                //}
+                UsuarioExtranetService.UsuarioExtranetExtendidoResponse usu = usuarioExtranetService.GetUsuario(codigo, true, 0, false, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true);
 
-                //UsuarioExtranetService.UsuarioExtranetExtendidoResponse usu = usuarioExtranetService.GetUsuario(codigo, true, 0, false, int.Parse(ConfigurationManager.AppSettings["IdApp"]), true);
-
-                //if (usu != null)
-                //{
-                //    UsuarioExtranet obj = new UsuarioExtranet();
-                //    obj.Identificador = usu.idcontactoextranet;
-                //    obj.Login = usu.login;
-                //    obj.Nombres = usu.nombres;
-                //    obj.Apellidos = usu.apellidos;
-                //    obj.Email = usu.email;
-                //    return obj;
-                //}
-                //return null;
+                if (usu != null)
+                {
+                    UsuarioExtranet obj = new UsuarioExtranet();
+                    obj.Identificador = usu.idcontactoextranet;
+                    obj.Login = usu.login;
+                    obj.Nombres = usu.nombres;
+                    obj.Apellidos = usu.apellidos;
+                    obj.Email = usu.email;
+                    obj.Ruc = usu.ruc;
+                    return obj;
+                }
+                return null;
             }
             catch (Exception)
             {
@@ -346,33 +237,11 @@ namespace Data.Repositorios
 
         public UsuarioIntranet AutenticateIntranet(string login, string password)
         {
-            if (login == "superAdmin")
-                return new UsuarioIntranet()
-                {
-                    Identificador = -1,
-                    Nombres = "Lola",
-                    Apellidos = "Perez",
-                    Login = login
-                };
-            if (login == "analista")
-                return new UsuarioIntranet()
-                {
-                    Identificador = 2,
-                    Nombres = "analista",
-                    Apellidos = "analista",
-                    Login = login
-                };
             return null;
         }
 
         public UsuarioExtranet AutenticateExtranet(string login, string password)
         {
-            if (login == "informante")
-                return new UsuarioExtranet()
-                {
-                    Identificador = 1,
-                    Login = login
-                };
             return null;
         }
     }

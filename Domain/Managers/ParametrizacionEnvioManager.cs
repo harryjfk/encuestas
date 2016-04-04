@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Data;
 using Data.Repositorios;
 using Entity;
+using System.Diagnostics;
 
 namespace Domain.Managers
 {
@@ -94,16 +95,20 @@ namespace Domain.Managers
 
         public void EnviarNotificacionesEncuestaEstadistica()
         {
-            var parametro = Get(t => t.tipo_encuesta == "Estadistica").FirstOrDefault();
+            var parametro = Get(t => t.tipo_encuesta == "Estadistica").FirstOrDefault();           
+
             if (parametro != null && parametro.Activado)
             {
                 var now = DateTime.Now;
                 if (parametro.comienzo > now) return;
+                
                 if (parametro.Frecuencia().Count > 0)
-                {
-                    var day = now.DayOfWeek.ToString(CultureInfo.GetCultureInfo("es")).Substring(0, 3).ToUpper();
+                {                    
+                    var culture = new System.Globalization.CultureInfo("es");
+                    var day = culture.DateTimeFormat.GetDayName(now.DayOfWeek).Substring(0, 3).ToUpper();
+                                        
                     if (parametro.Frecuencia().Any(t => t.ToUpper().Equals(day)))
-                    {
+                    {   
                         var establecimientos = Manager.Establecimiento.Get(t => t.EnviarCorreo
                                                                             && (t.ultima_notificacion == null
                                                                             || (now.Year >= t.ultima_notificacion.GetValueOrDefault().Year
@@ -112,13 +117,21 @@ namespace Domain.Managers
                                                                             )
 
                                                         )).ToList();
+                        
                         var temp = now.AddMonths(-1);
+
+                        var establecimientosNoExisteEncuesta = Manager.Establecimiento.Get().Where(t =>
+                                    !t.Encuestas.OfType<EncuestaEstadistica>().Any(h => h.Fecha.Year == DateTime.Now.Year && h.Fecha.Month == DateTime.Now.Month)).ToList();
+                        
                         establecimientos =
                             establecimientos.Where(
                                 t =>
                                     t.Encuestas.OfType<EncuestaEstadistica>()
                                         .Any(h => h.EstadoEncuesta == EstadoEncuesta.NoEnviada && (h.Fecha.Year == temp.Year && h.Fecha.Month == temp.Month))).ToList();
-
+                        
+                        foreach (var es in establecimientosNoExisteEncuesta) {
+                            establecimientos.Add(es);
+                        }
 
                         foreach (var s in establecimientos)
                         {
@@ -148,11 +161,19 @@ namespace Domain.Managers
 
                                                         )).ToList();
                     var temp = now.AddMonths(-1);
+                    var establecimientosNoExisteEncuesta = Manager.Establecimiento.Get().Where(t =>
+                                    !t.Encuestas.OfType<EncuestaEstadistica>().Any(h => h.Fecha.Year == DateTime.Now.Year && h.Fecha.Month == DateTime.Now.Month)).ToList();
+
                     establecimientos =
                         establecimientos.Where(
                             t =>
                                 t.Encuestas.OfType<EncuestaEstadistica>()
                                     .Any(h => h.EstadoEncuesta == EstadoEncuesta.NoEnviada && (h.Fecha.Year == temp.Year && h.Fecha.Month == temp.Month))).ToList();
+
+                    foreach (var es in establecimientosNoExisteEncuesta)
+                    {
+                        establecimientos.Add(es);
+                    }
 
                     foreach (var s in establecimientos)
                     {
@@ -194,11 +215,19 @@ namespace Domain.Managers
 
                                                         )).ToList();
                         var temp = now.AddMonths(-1);
+                        var establecimientosNoExisteEncuesta = Manager.Establecimiento.Get().Where(t =>
+                                    !t.Encuestas.OfType<EncuestaEstadistica>().Any(h => h.Fecha.Year == DateTime.Now.Year && h.Fecha.Month == DateTime.Now.Month)).ToList();
+
                         establecimientos =
                             establecimientos.Where(
                                 t =>
-                                    t.Encuestas.OfType<EncuestaEmpresarial>()
+                                    t.Encuestas.OfType<EncuestaEstadistica>()
                                         .Any(h => h.EstadoEncuesta == EstadoEncuesta.NoEnviada && (h.Fecha.Year == temp.Year && h.Fecha.Month == temp.Month))).ToList();
+
+                        foreach (var es in establecimientosNoExisteEncuesta)
+                        {
+                            establecimientos.Add(es);
+                        }
 
 
                         foreach (var s in establecimientos)
@@ -229,12 +258,19 @@ namespace Domain.Managers
 
                                                         )).ToList();
                     var temp = now.AddMonths(-1);
+                    var establecimientosNoExisteEncuesta = Manager.Establecimiento.Get().Where(t =>
+                                    !t.Encuestas.OfType<EncuestaEstadistica>().Any(h => h.Fecha.Year == DateTime.Now.Year && h.Fecha.Month == DateTime.Now.Month)).ToList();
+
                     establecimientos =
                         establecimientos.Where(
                             t =>
-                                t.Encuestas.OfType<EncuestaEmpresarial>()
+                                t.Encuestas.OfType<EncuestaEstadistica>()
                                     .Any(h => h.EstadoEncuesta == EstadoEncuesta.NoEnviada && (h.Fecha.Year == temp.Year && h.Fecha.Month == temp.Month))).ToList();
 
+                    foreach (var es in establecimientosNoExisteEncuesta)
+                    {
+                        establecimientos.Add(es);
+                    }
 
                     foreach (var s in establecimientos)
                     {

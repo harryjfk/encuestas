@@ -2,7 +2,7 @@
 @model Domain.Query<Entity.EncuestaEstadistica>
 
 @{
-    ViewBag.Title = "Registro de formato de encuesta";
+    ViewBag.Title = "Estadística Industrial Mensual";
 }
 
 @Scripts.Render("~/bundles/jquery")
@@ -19,9 +19,9 @@
 
 }
 
-<a href="/UsuarioExtranet/EstablecimientosEncuestaEmpresarial" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+<a href="@Url.Action("EstablecimientosEncuestas", "UsuarioExtranet")" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 
-<h3 class="screen-title">Formato de Encuesta Estad&iacute;stica por establecimiento (@ViewBag.Establecimiento.Ruc-@ViewBag.Establecimiento.Nombre-@ViewBag.Establecimiento.IdentificadorInterno)</h3>
+<h3 class="screen-title">@ViewBag.Title (@ViewBag.Establecimiento.Ruc - @ViewBag.Establecimiento.Nombre.Trim())</h3>
 @using (Html.BeginForm("BuscarEncuestaInformante", "EncuestaEstadistica", FormMethod.Post))
 {
     <div class="panel panel-primary">
@@ -72,8 +72,16 @@
             <div class="col-md-5">
                 <div class="input-group">
                     <span class="input-group-addon">A&Ntilde;O</span>
+                    <select id="selct-ano" name="Criteria.Year" class="form-control">
+                        @for (int i = 2012; i <= DateTime.Now.Year; i++)
+                        {
+                            var selected = (Model.Criteria != null && Model.Criteria.Year == i || ((Model.Criteria == null || Model.Criteria.Year == null) && i == DateTime.Now.Year)) ? "selected" : "";
+                            <option @selected value="@i">@i.ToString()</option>
+                        }
+                    </select>
+
                     @*<input type="text" class="form-control">*@
-                    @Html.TextBoxFor(t => t.Criteria.Year, new { @class = "form-control" })
+                    @*@Html.TextBoxFor(t => t.Criteria.Year, new { @class = "form-control" })*@
                 </div>
             </div>
             <div class="row">
@@ -92,7 +100,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         
-        $("#Criteria_Year").inputmask("9999");
+        //$("#Criteria_Year").inputmask("9999");
+        var selectAno = $("#selct-ano");
+        $.search(selectAno);
     });
 </script>
 

@@ -5,9 +5,12 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Managers;
 using Entity;
+using Seguridad.PRODUCE;
 
 namespace WebApplication.Controllers
 {
+    /*[Authorize]
+    [Autorizacion]*/
     public class UnidadMedidaController : BaseController<UnidadMedida>
     {
         public ActionResult GetDorpDown(string id, string nombre = "IdUnidadMedida", string @default = null)
@@ -46,8 +49,11 @@ namespace WebApplication.Controllers
                 });
             return View("_DropDown", Tuple.Create<IEnumerable<SelectListItem>, string>(list, nombre));
         }
+
         public JsonResult Toggle(long id)
         {
+            Query = GetQuery();
+
             var manager = OwnManager;
             var element = manager.Find(id);
             if (element != null)

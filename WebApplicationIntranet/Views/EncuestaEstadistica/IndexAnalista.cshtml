@@ -2,7 +2,7 @@
 @model Domain.Query<Entity.EncuestaEstadistica>
 
 @{
-    ViewBag.Title = "Registro de Formato de Encuesta.";
+    ViewBag.Title = "Estadística Industrial Mensual";
 }
 
 @Scripts.Render("~/bundles/jquery")
@@ -19,9 +19,9 @@
 
 }
 
-<a href="/UsuarioIntranet/EstablecimientosEncuestaEmpresarial" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+<a href="/UsuarioIntranet/EstablecimientosEncuestas" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 
-<h3 class="screen-title">Registro de Formato de Encuesta por establecimiento (@ViewBag.Establecimiento.Ruc-@ViewBag.Establecimiento.Nombre-@ViewBag.Establecimiento.IdentificadorInterno)</h3>
+<h3 class="screen-title">@ViewBag.Title (@ViewBag.Establecimiento.Ruc - @ViewBag.Establecimiento.Nombre.Trim() - @ViewBag.Establecimiento.IdentificadorInterno)</h3>
 @using (Html.BeginForm("BuscarEncuestaAnalista", "EncuestaEstadistica", FormMethod.Post))
 {
     <div class="panel panel-primary">

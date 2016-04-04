@@ -1,6 +1,8 @@
 ﻿@using System.Globalization
 @using Entity
 @using WebApplication.Models
+@using Domain
+
 @model IEnumerable<MateriaTerceros>
 
 @{
@@ -11,7 +13,7 @@
     <div class="panel-body">
 
 
-        <a href="javascript:void(0);" class="btn btn-primary btn-xs" id="nuevoProdTerceros">Nueva L&iacute;nea de Producto</a>
+        <a href="javascript:void(0);" class="btn btn-primary btn-xs" id="nuevoProdTerceros">Nuevo Producto</a>
         <div class="panel panel-default" id="divmtgeneral" style="display:none">
             <div class="panel-heading">Producto con materia prima de terceros</div>
             <div class="panel-body" id="divmt">
@@ -21,16 +23,16 @@
         <table class="table table-striped table-hover table-bordered table-condensed tabla small">
             <thead>
                 <tr class="cabecera">
-                    <th>
-                        L&iacute;nea de Producto
+                    <th style="width:40%">
+                        Producto
                     </th>
-                    <th>
-                        um
+                    <th style="width:20%">
+                        UM
                     </th>
-                    <th>
+                    <th style="width:20%">
                         Producci&oacute;n
                     </th>
-                    <th>
+                    <th style="width:20%">
                         Acci&oacute;n
                     </th>
                 </tr>
@@ -42,13 +44,23 @@
                     //Html.RenderPartial("_ProductoMateriaPrimaPropia", item);
                     <tr>
                         <td>
-                           <span>@item.LineaProducto.Ciiu.Codigo-@item.LineaProducto.Nombre</span>
+                           <span>
+                               @item.LineaProducto.Codigo <br />
+                               @item.LineaProducto.Nombre
+                            </span>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.UnidadMedida.Abreviatura)
                         </td>
                         <td>
-                            @Html.LabelFor(modelItem => item.UnidadProduccion, String.Format("{0:0.000}", decimal.Parse(item.UnidadProduccion)))
+                            @Html.LabelFor(modelItem => item.UnidadProduccion, decimal.Parse(item.UnidadProduccion).ProduceFormat())
+                            @if (item.justificacion_produccion != null)
+                            {
+                                <div class="panel panel-default" style="margin-top: 5px;">
+                                    <span>Justificaci&oacute;n</span>                                    
+                                    <div>@Html.DisplayFor(modelItem => item.justificacion_produccion, new { style = " width: 100%;", @class = "form-control" })</div>                                    
+                                </div>
+                            }
                         </td>
                         <td>
                             <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-original-title="Editar" title="" id="editT-@item.Id" role="@item.Id" class="edit-btn-ter">
@@ -147,6 +159,6 @@
             });
 
         });
-        $.InitTooltip();
+        //$.InitTooltip();
     </script>
 

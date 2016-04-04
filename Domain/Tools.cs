@@ -15,11 +15,105 @@ using System.Threading.Tasks;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
-
 namespace Domain
 {
     public static class Tools
     {
+        public static List<Object> Convert(this IEnumerable<MateriaPropia> list)
+        {
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.VolumenProduccion.Encuesta.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.VolumenProduccion.Encuesta.Establecimiento.RazonSocial,
+                Mes = t.VolumenProduccion.Encuesta.Fecha.Month.GetMonthText(),
+                CIIU = t.LineaProducto.Ciiu.Codigo,
+                Cod_Producto = t.LineaProducto.Codigo,
+                Descripcion = t.LineaProducto.Nombre,
+                UM = t.UnidadMedida.Abreviatura,
+                Produccion = t.Produccion,
+                Valor_Unitario = t.ValorUnitario,
+                Otros_Ingresos = t.OtrosIngresos,
+                Otras_Salidas = t.OtrasSalidas,
+                Ventas_extranjero = t.VentasExtranjero,
+                Ventas_Pais = t.VentasPais,
+                Existencias = t.Existencia
+            }).Cast<object>().ToList();
+        }
+
+        public static List<Object> Convert(this IEnumerable<MateriaTerceros> list)
+        {
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.VolumenProduccion.Encuesta.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.VolumenProduccion.Encuesta.Establecimiento.RazonSocial,
+                Mes = t.VolumenProduccion.Encuesta.Fecha.Month.GetMonthText(),
+                CIIU = t.LineaProducto.Ciiu.Codigo,
+                Cod_Producto = t.LineaProducto.Codigo,
+                Descripcion = t.LineaProducto.Nombre,
+                UM = t.UnidadMedida.Abreviatura,
+                Unidad_Produccion = t.UnidadProduccion
+            }).Cast<object>().ToList();
+        }
+
+        public static List<Object> Convert(this IEnumerable<TrabajadoresDiasTrabajados> list)
+        {
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.Encuesta.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.Encuesta.Establecimiento.RazonSocial,
+                Mes = t.Encuesta.Fecha.Month.GetMonthText(),
+                Dias_Trabajados = t.DiasTrabajados,
+                Administrativos_Planta = t.AdministrativosPlanta,
+                Trabajadores_Produccion = t.TrabajadoresProduccion
+            }).Cast<object>().ToList();
+        }
+
+        public static List<Object> Convert(this IEnumerable<ValorProduccion> list, bool isPropia = true)
+        {
+            if (isPropia)
+            {
+                return list.Select(t => new
+                {
+                    Cod_Establecimiento = t.DAT_ENCUESTA_ESTADISTICA.Establecimiento.IdentificadorInterno,
+                    Razon_Social = t.DAT_ENCUESTA_ESTADISTICA.Establecimiento.RazonSocial,
+                    Mes = t.DAT_ENCUESTA_ESTADISTICA.Fecha.Month.GetMonthText(),
+                    CIIU = t.CAT_CIIU.Codigo,
+                    Materia_Propia = t.ProductosMateriaPropia
+                }).Cast<object>().ToList();
+            }
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.DAT_ENCUESTA_ESTADISTICA.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.DAT_ENCUESTA_ESTADISTICA.Establecimiento.RazonSocial,
+                Mes = t.DAT_ENCUESTA_ESTADISTICA.Fecha.Month.GetMonthText(),
+                CIIU = t.CAT_CIIU.Codigo,
+                Materia_Terceros = t.ProductosMateriaTerceros
+            }).Cast<object>().ToList();
+        }
+
+        public static List<Object> Convert(this IEnumerable<VentasPaisExtranjero> list, bool isVentaPais = true)
+        {
+            if (isVentaPais)
+            {
+                return list.Select(t => new
+                {
+                    Cod_Establecimiento = t.DAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.IdentificadorInterno,
+                    Razon_Social = t.DAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.RazonSocial,
+                    Mes = t.DAT_VENTAS_PROD_ESTAB.Encuesta.Fecha.Month.GetMonthText(),
+                    CIIU = t.CAT_CIIU.Codigo,
+                    Ventas_Pais = t.VentaPais
+                }).Cast<object>().ToList();
+            }
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.DAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.DAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.RazonSocial,
+                Mes = t.DAT_VENTAS_PROD_ESTAB.Encuesta.Fecha.Month.GetMonthText(),
+                CIIU = t.CAT_CIIU.Codigo,
+                Ventas_Extranjero = t.VentaExtranjero
+            }).Cast<object>().ToList();
+        }
+        
         public static void UpdateKey<T>(this T element, long value) where T : class
         {
             try
@@ -58,9 +152,12 @@ namespace Domain
 
         public static double Varianza(this List<double> data)
         {
+            if (data.Count < 2) {
+                return 0;
+            }
+
             var media = data.Average();
-            if (data.Count < 2) return 0;
-            return data.Sum(t => Math.Pow(t - media, 2)) / data.Count - 1;
+            return data.Sum(t => Math.Pow(t - media, 2)) / (data.Count - 1);
         }
 
         public static double DesviacionEstandar(this List<double> data)
@@ -79,6 +176,25 @@ namespace Domain
             var textInfo = cInfo.TextInfo;
             var month = date.ToString("MMMM", cInfo);
             return textInfo.ToTitleCase(month);
+        }
+
+        public static string ProduceFormat(this decimal value) {
+            return string.Format("{0:#,0.0000}", value).Replace(",", " ").Replace(".", ",");
+        }
+
+        public static string ProduceFormat(this double value)
+        {
+            return string.Format("{0:#,0.0000}", value).Replace(",", " ").Replace(".", ",");
+        }
+
+        public static string ProduceFormat(this decimal? value)
+        {
+            return string.Format("{0:#,0.0000}", value).Replace(",", " ").Replace(".", ",");
+        }
+
+        public static string ProduceFormat(this double? value)
+        {
+            return string.Format("{0:#,0.0000}", value).Replace(",", " ").Replace(".", ",");
         }
 
         public static string GetVariableNames(this string value)
@@ -102,6 +218,7 @@ namespace Domain
             }
             return "";
         }
+
         public static string GetAmbito(this string value)
         {
             switch (value.ToUpper())
@@ -114,15 +231,11 @@ namespace Domain
             
         }
        
-
         public static bool ExportToExcel<T>(this IList<T> source,string nombreHoja,string nombreReporte,string direccion)
         {
-            var dt = ExcelUtility.ConvertToDataTable(source);
-           return ExcelUtility.WriteDataTableToExcel(dt, nombreHoja, direccion, nombreReporte);
-          
-        }
-
-      
+           var dt = ExcelUtility.ConvertToDataTable(source);
+           return ExcelUtility.WriteDataTableToExcel(dt, nombreHoja, direccion, nombreReporte);          
+        }      
     }
 
     public static class ExcelUtility
