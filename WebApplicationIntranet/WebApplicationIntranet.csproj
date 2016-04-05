@@ -216,6 +216,7 @@
     <Compile Include="Attributes\MultiButtonAttribute.cs" />
     <Compile Include="Binders\ModelBinder.cs" />
     <Compile Include="Controllers\AuditoriaController.cs" />
+    <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\ParametrizacionEnvioController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AñoBaseController.cs" />
@@ -307,6 +308,7 @@
     <Content Include="Descargas\PRODUCE.Manual.Usuario.Analista.pdf" />
     <Content Include="bin\Select.Html.dep" />
     <Content Include="Descargas\formato_encuesta.xlsx" />
+    <EmbeddedResource Include="Static\Pdf\ManualAdministrativo.pdf" />
     <None Include="Properties\PublishProfiles\IIS.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -554,6 +556,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Download\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
