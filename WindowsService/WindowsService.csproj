@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleService.cs" />
     <Compile Include="produce.cs">
       <SubType>Component</SubType>
     </Compile>

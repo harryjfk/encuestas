@@ -14,12 +14,36 @@ namespace WindowsService
         /// </summary>
         static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
-            { 
-                new produce() 
-            };
-            ServiceBase.Run(ServicesToRun);
+            // Evaluar si está configurado para consola y no iniciar el servicio Windows
+            bool console = false;
+            string[] args = Environment.GetCommandLineArgs();
+            foreach (string arg in args)
+            {
+                if (arg.Substring(0, 9).ToLower() == "/console:")
+                {
+                    string parmValue = arg.Substring(9).ToLower();
+                    if (parmValue == "true")
+                    {
+                        // Lanzar aplicación de consola
+                        console = true;
+                    }
+                }
+            }
+
+            if (!console)
+            {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[] 
+                { 
+                    new produce() 
+                };
+                ServiceBase.Run(ServicesToRun);
+            }
+            else
+            {
+                ConsoleService service = new ConsoleService();
+                service.Run();
+            }
         }
     }
 }
