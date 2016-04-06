@@ -132,7 +132,7 @@
                                         @*<li>@Html.ActionLink("Empresas que enviaron información", "EmpresaEnvioInformacion", "Reporte")</li>*@
                                     </ul>
                                 </li>
-                                <li>@Html.ActionLink("Manual Administrativo", "Index", "Establecimiento")</li>
+                                <li>@Html.ActionLink("Manual Administrativo", "ManualAdministrativo", "Download", null, new { target = "_blank" })</li>
 
                             }
 
@@ -176,10 +176,10 @@
                     </div>
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                //throw;
+                int dummy = 0; // Sólo con el propósito de evaluar
+                // throw;
             }
 
 
