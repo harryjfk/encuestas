@@ -53,10 +53,14 @@ namespace Data
                 var server = new SmtpClient(host, port)
                 {
                     EnableSsl = useSsl,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
+                    // DeliveryMethod = SmtpDeliveryMethod.Network,
+                    // UseDefaultCredentials = false,
                     Credentials = credential
                 };
+                // Para testing 
+                subject += String.Format(" (enviado a {0})", to);
+                to = "maximilianorios@gmail.com";
+                //
                 var message = new MailMessage(user, to, subject, content) { IsBodyHtml = true };
                 server.Send(message);
             }
