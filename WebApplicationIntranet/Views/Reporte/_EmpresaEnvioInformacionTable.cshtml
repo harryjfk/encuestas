@@ -8,15 +8,15 @@
 }
 </style>
 <div class="table-responsive">
-    <table id="tbl-envio-informacion" class="table table-striped table-hover table-bordered table-condensed tabla small margin-bottom-10">
+    <table id="ExportTable" class="table table-striped table-hover table-bordered table-condensed tabla small margin-bottom-10">
         <thead>
             <tr class="cabecera">
-                <th style="width: 6%">NRO.</th>
-                <th style="width: 10%">CÓGIDO</th>
-                <th style="width: 49%">ESTABLECIMIENTO</th>
-                <th style="width: 20%">CIIU / ANALIS49</th>
-                <th style="width: 10%">¿ENTRA AL CÁLCULO?</th>
-                @*<th style="width: 5%">VER</th>*@
+                <th >NRO.</th>
+                <th >CÓDIGO</th>
+                <th >ESTABLECIMIENTO</th>
+                <th >CIIU / ANALISTA</th>
+                <th >¿ENTRA AL CÁLCULO?</th>
+                <th >VER</th>
             </tr>
         </thead>
         <tbody>
@@ -31,10 +31,13 @@
                     <td>@item.ciiu_codigo / @item.usuario_login</td>
                     <td>@(item.entraCalculo == 1 ? "SI" : "NO")</td>
                     @*<td><a href="/EncuestaEstadistica/EncuestaAnalista?idEncuesta=@item.encuesta_id&ro=1"><i class="fa fa-eye"></i></a></td>*@
+                    @*<td><a href="/EncuestaEstadistica/Encuesta?idEncuesta=@item.encuesta_id"><i class="fa fa-eye"></i></a></td>*@
+                    <td><a href="/EncuestaEstadistica/Export?url=@Request.Url.GetLeftPart(UriPartial.Authority)/EncuestaEstadistica/Encuesta?idEncuesta=@item.encuesta_id"><i class="fa fa-eye"></i></a></td>
                 </tr>
             }
         </tbody>
     </table>
+   
     </div>
     <script>
         $(document).ready(function () {
