@@ -415,6 +415,7 @@
     <Content Include="Views\Reporte\IndiceVariacion\_Graphic2.cshtml" />
     <Content Include="Views\Reporte\IndiceVariacion\_Graphic3.cshtml" />
     <Content Include="Views\UsuarioExtranet\EstablecimientosEncuestas.cshtml" />
+    <Content Include="Views\Shared\_Usuarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
