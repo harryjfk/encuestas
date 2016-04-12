@@ -30,17 +30,17 @@ namespace Entity
            }
        }
 
-        public CiiuRevision EnumRevision
-        {
-            get
-            {
-                return (CiiuRevision)Enum.Parse(typeof(CiiuRevision), Revision.ToString());
-            }
-            set
-            {
-                Revision = (decimal)value;
-            }
-        }
+        //public CiiuRevision EnumRevision
+        //{
+        //    get
+        //    {
+        //        return (CiiuRevision)Enum.Parse(typeof(CiiuRevision), Revision.ToString());
+        //    }
+        //    set
+        //    {
+        //        Revision = (decimal)value;
+        //    }
+        //}
 
        public EnumRubro EnumRubro
        {
