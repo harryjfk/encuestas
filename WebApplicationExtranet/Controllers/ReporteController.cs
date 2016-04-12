@@ -27,32 +27,32 @@ namespace WebApplication.Controllers
 
         public ActionResult GetCiiuReporteGeneralEncuestaEstadistica(string type)
         {
-            //var user = this.GetLogued();
-            //if (user == null) return HttpNotFound("Usuario no autenticado");
-            //var establecimientos = user.EstablecimientosInformante;
-            //var model = new List<SelectListItem>();
-            //switch (type.ToLower())
-            //{
-            //    case "establecimiento":
-            //        model =
-            //            establecimientos
-            //                .Select(t => new SelectListItem() { Text = string.Format("{0}-{1}", t.IdentificadorInterno, t.Nombre), Value = t.Id.ToString() })
-            //                .ToList();
-            //        break;
-            //    case "ciiu":
-            //        model =
-            //            establecimientos.SelectMany(t => t.Ciius).Distinct()
-            //                .Select(t => new SelectListItem() { Text = t.ToString(), Value = t.Id.ToString() })
-            //                .ToList();
-            //        break;
-            //    case "producto":
-            //        model =
-            //            establecimientos.SelectMany(t => t.Ciius.SelectMany(h => h.LineasProducto)).Distinct()
-            //                .Select(t => new SelectListItem() { Text = t.ToString(), Value = t.Id.ToString() })
-            //                .ToList();
-            //        break;
-            //}
-            return PartialView("GeneralEncuestasEstadisticas/_MultiSelectListView", null);
+            var user = this.GetLogued();
+            if (user == null) return HttpNotFound("Usuario no autenticado");
+            var establecimientos = user.EstablecimientosInformante;
+            var model = new List<SelectListItem>();
+            switch (type.ToLower())
+            {
+                case "establecimiento":
+                    model =
+                        establecimientos
+                            .Select(t => new SelectListItem() { Text = string.Format("{0}-{1}", t.IdentificadorInterno, t.Nombre), Value = t.Id.ToString() })
+                            .ToList();
+                    break;
+                case "ciiu":
+                    model =
+                        establecimientos.SelectMany(t => t.Ciius).Distinct()
+                            .Select(t => new SelectListItem() { Text = t.ToString(), Value = t.Id.ToString() })
+                            .ToList();
+                    break;
+                case "producto":
+                    model =
+                        establecimientos.SelectMany(t => t.LineasProductoEstablecimiento).Distinct()
+                            .Select(t => new SelectListItem() { Text = t.ToString(), Value = t.Id.ToString() })
+                            .ToList();
+                    break;
+            }
+            return PartialView("GeneralEncuestasEstadisticas/_MultiSelectListView", model);
         }
 
         public ActionResult IndiceVariacionIndex(UserInformation usuario)

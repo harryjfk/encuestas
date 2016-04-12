@@ -15,6 +15,7 @@ using ClosedXML.Excel;
 using System.Data;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using SelectPdf;
 
 namespace WebApplication.Controllers
 {
@@ -861,6 +862,46 @@ namespace WebApplication.Controllers
             return PartialView("_IVFPorEstabVarTableMes", reps);
         }
 
+        public ActionResult IVFPorEstablecimientoVariacionTableMes(int year, int month, int ciiu, int estb)
+        {
+            var ivfsYearX = GetIVFporAnio(year);
+            var ivfsYearY = GetIVFporAnio(year - 1);
+            if (ciiu > -1)
+            {
+                ivfsYearX = ivfsYearX.Where(x => x.IdCiiu == ciiu).ToList();
+                ivfsYearY = ivfsYearY.Where(x => x.IdCiiu == ciiu).ToList();
+            }
+            List<IVFMEstVarReport> reps = new List<IVFMEstVarReport>();
+
+            foreach (var ivfX in ivfsYearX)
+            {
+                setDefaultIVFMEstReport(ivfX);
+                foreach (var ivfY in ivfsYearY)
+                {
+                    setDefaultIVFMEstReport(ivfY);
+                    if (ivfX.IdCiiu == ivfY.IdCiiu && ivfX.IdEstablecimiento == ivfY.IdEstablecimiento)
+                    {
+                        IVFMEstVarReport rep = new IVFMEstVarReport();
+                        rep.IdCiiu = ivfX.IdCiiu;
+                        rep.IdEstablecimiento = ivfX.IdEstablecimiento;
+                        rep.CodigoCiiu = ivfX.CodigoCiiu;
+                        rep.CodigoEst = ivfX.CodigoEst;
+                        rep.NomEst = ivfX.NomEst;
+                        rep.Meses = new List<MesVariacion>();
+                        MesVariacion mv = new MesVariacion();
+                        mv.Nro = month;
+                        setMesVar(mv, ivfX, ivfY, month);
+                        rep.Meses.Add(mv);
+                        reps.Add(rep);
+                    }
+                }
+            }
+            ViewBag.MesX = year;
+            ViewBag.MesY = year - 1;
+
+            return PartialView("_IVFPorEstabVarTableMes", reps);
+        }
+
         private double getVariacionIVF(double x, double y)
         {
             if (x == 0)
@@ -1397,11 +1438,51 @@ namespace WebApplication.Controllers
             return PartialView("_SeguimientoEncuestaTable", model);
         }
 
+        public ActionResult ExportarSeguimientoEncuesta_Excel(string fechaInicio, string fechaFin) {
+            SegAuxModel model = getSeguimientoEncuesta(fechaInicio, fechaFin);
+            Response.ContentType = "application/vnd.ms-excel";
+            //var view = View("_SeguimientoEncuestaTable", model);
+            //view.ContentType = MediaTypeHeaderValue.Parse("application/vnd.ms-excel");
+            return View("_SeguimientoEncuestaTable", model); 
+        }
         public FileResult ExportarSeguimientoEncuesta_PDf(string fechaInicio, string fechaFin)
         {
-            //SegAuxModel model = getSeguimientoEncuesta(fechaInicio, fechaFin);
-            //var html = RenderRazorViewToString("_SeguimientoEncuestaTable", model);
-            return ExportContent("<h1>Hola Elmer</h1>");
+            SegAuxModel model = getSeguimientoEncuesta(fechaInicio, fechaFin);
+            var html = RenderRazorViewToString("_SeguimientoEncuestaTable", model);
+            var stream = new MemoryStream();
+
+            string pdf_page_size = "letter";
+            PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize),
+                pdf_page_size, true);
+
+            string pdf_orientation = "Portrait";
+            PdfPageOrientation pdfOrientation =
+                (PdfPageOrientation)Enum.Parse(typeof(PdfPageOrientation),
+                pdf_orientation, true);
+
+            int webPageWidth = 1024;
+            int webPageHeight = 0;
+            
+            // instantiate a html to pdf converter object
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // set converter options
+            converter.Options.PdfPageSize = pageSize;
+            converter.Options.PdfPageOrientation = pdfOrientation;
+            converter.Options.WebPageWidth = webPageWidth;
+            converter.Options.WebPageHeight = webPageHeight;
+
+            // create a new pdf document converting an url
+            SelectPdf.PdfDocument doc = converter.ConvertHtmlString(html);
+
+            // save pdf document
+             //(Response, false, "Sample.pdf");
+
+            // close pdf document
+            //doc.Close();
+
+            return File(doc.Save(), "application/pdf");
+            // return ExportContent("<h1>Hola Elmer</h1>");
         }
 
         public void ExportToPdf(DataTable dt)
@@ -2209,31 +2290,34 @@ namespace WebApplication.Controllers
             dt.Columns.Add("CIIU", typeof(string));
             dt.Columns.Add("Código", typeof(string));
             dt.Columns.Add("Establecimiento", typeof(string));
-            foreach (var mes in reps[0].Meses)
-            {
-                dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + year.ToString(), typeof(string));
-                dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + (year - 1).ToString(), typeof(string));
-                dt.Columns.Add(var, typeof(string));
-                var = var + " ";
-                columnas = columnas + 3;
-            }
-            //Fila
-            foreach (var item in reps)
-            {
-                string[] data = new string[columnas];
-                data[0] = item.CodigoCiiu;
-                data[1] = item.CodigoEst;
-                data[2] = item.NomEst;
-                int indice = 3;
-                foreach (var mes in item.Meses)
+            if (reps.Count>0) {
+                foreach (var mes in reps[0].Meses)
                 {
-                    data[indice] = mes.MesX;
-                    data[indice + 1] = mes.MesY;
-                    data[indice + 2] = mes.VariacionPorcentual;
-                    indice = indice + 3;
+                    dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + year.ToString(), typeof(string));
+                    dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + (year - 1).ToString(), typeof(string));
+                    dt.Columns.Add(var, typeof(string));
+                    var = var + " ";
+                    columnas = columnas + 3;
                 }
-                dt.Rows.Add(data);
+                //Fila
+                foreach (var item in reps)
+                {
+                    string[] data = new string[columnas];
+                    data[0] = item.CodigoCiiu;
+                    data[1] = item.CodigoEst;
+                    data[2] = item.NomEst;
+                    int indice = 3;
+                    foreach (var mes in item.Meses)
+                    {
+                        data[indice] = mes.MesX;
+                        data[indice + 1] = mes.MesY;
+                        data[indice + 2] = mes.VariacionPorcentual;
+                        indice = indice + 3;
+                    }
+                    dt.Rows.Add(data);
+                }
             }
+            
 
             dt.TableName = "Variación %";
             workbook.Worksheets.Add(dt);
@@ -2286,31 +2370,35 @@ namespace WebApplication.Controllers
             dt.Columns.Add("CIIU", typeof(string));
             dt.Columns.Add("Código", typeof(string));
             dt.Columns.Add("Establecimiento", typeof(string));
-            foreach (var mes in reps[0].Meses)
+            if (reps.Count>0)
             {
-                dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + year.ToString(), typeof(string));
-                dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + (year - 1).ToString(), typeof(string));
-                dt.Columns.Add(var, typeof(string));
-                var += " ";
-                columnas += 3;
-            }
-            //Fila
-            foreach (var item in reps)
-            {
-                string[] data = new string[columnas];
-                data[0] = item.CodigoCiiu;
-                data[1] = item.CodigoEst;
-                data[2] = item.NomEst;
-                int indice = 3;
-                foreach (var mes in item.Meses)
+                foreach (var mes in reps[0].Meses)
                 {
-                    data[indice] = mes.MesX;
-                    data[indice + 1] = mes.MesY;
-                    data[indice + 2] = mes.VariacionPorcentual;
-                    indice = indice + 3;
+                    dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + year.ToString(), typeof(string));
+                    dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + (year - 1).ToString(), typeof(string));
+                    dt.Columns.Add(var, typeof(string));
+                    var += " ";
+                    columnas += 3;
                 }
-                dt.Rows.Add(data);
+                //Fila
+                foreach (var item in reps)
+                {
+                    string[] data = new string[columnas];
+                    data[0] = item.CodigoCiiu;
+                    data[1] = item.CodigoEst;
+                    data[2] = item.NomEst;
+                    int indice = 3;
+                    foreach (var mes in item.Meses)
+                    {
+                        data[indice] = mes.MesX;
+                        data[indice + 1] = mes.MesY;
+                        data[indice + 2] = mes.VariacionPorcentual;
+                        indice = indice + 3;
+                    }
+                    dt.Rows.Add(data);
+                }
             }
+            
 
             dt.TableName = "Variación %";
             workbook.Worksheets.Add(dt);

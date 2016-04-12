@@ -53,19 +53,19 @@
             <div class="col-md-4 margin-top-5">
                 <input type="submit" value="Buscar" id="btn-buscar" class="btn btn-default" />
                 <a href="javascript:void(0);" id="btn-export-excel" class="btn btn-default btns-group">Excel</a>
-                @*<a id="btn-export-pdf" class="btn btn-default  btns-group">PDF</a>*@
+                <a href="#" id="btn-export-pdf" class="btn btn-default  btns-group">PDF</a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="filter-rpt">
+@*<div class="filter-rpt">
     <div class="filter-text">Filtros:</div>
     <div class="label label-primary" id="filter-anio"></div>
     <div class="label label-primary" id="filter-mes"></div>
     <div class="label label-primary" id="filter-ciiu"></div>
     <div class="label label-primary" id="filter-analista"></div>
-</div>
+</div>*@
 
 @*<div id="table-container" class="margin-bottom-10">
     <table id="tbl-envio-informacion" class="table table-striped table-hover table-bordered table-condensed tabla small margin-bottom-10">
@@ -81,11 +81,16 @@
     </table>
 </div>*@
 
-<div id="contenedor-table">
+<script type='text/javascript' src='~/Scripts/JsExport/jquery-git2.js'></script>
+<script type='text/javascript' src="~/Scripts/JsExport/jspdf.debug.js"></script>
+<div id="htmlExportTable">
 
 </div>
 
 <input type="hidden" id="filterJSON" />
+
+
+
 
 <script>
 
@@ -115,7 +120,37 @@
         $('#btn-export-pdf').click(function (e) {
             e.preventDefault();
 
-            window.open('@Url.Action("EmpresaEnvioInformacionPDF", "Reporte")?' + jQuery.param(GetFilter()) + '&Mes=' + $('#select-mes option:selected').text() + '&Ciiu=' + $('#IdCiiu option:selected').text() + '&Analista=' + $('#IdAnalista option:selected').text());
+            //window.open('@Url.Action("EmpresaEnvioInformacionPDF", "Reporte")?' + jQuery.param(GetFilter()) + '&Mes=' + $('#select-mes option:selected').text() + '&Ciiu=' + $('#IdCiiu option:selected').text() + '&Analista=' + $('#IdAnalista option:selected').text());
+            //window.open('@Url.Action("Encuesta", "EncuestaEstadistica")?idEncuesta=1');
+
+                var pdf = new jsPDF('l', 'pt', 'letter');
+                source = $('#htmlExportTable')[0]; //table Id
+                specialElementHandlers = {
+                    '#bypassme': function (element, renderer) {
+                        return true
+                    }
+                };
+                margins = { //table margins and width
+                    top: 80,
+                    bottom: 60,
+                    left: 40,
+                    width: 600
+                };
+                pdf.text("Empresas que enviaron información", 10, 30);
+
+                pdf.fromHTML(
+                source,
+                margins.left,
+                margins.top, {
+                    'width': margins.width,
+                    'elementHandlers': specialElementHandlers
+                },
+
+                function (dispose) {
+                    pdf.save('Reporte.pdf'); //Filename
+                }, margins);
+
+
         });
 
         $('#btn-buscar').click(function (e) {
@@ -134,7 +169,7 @@
                 data: GetFilter(),
                 success: function (data) {
                     var html = data.trim();
-                    $("#contenedor-table").html(html);
+                    $("#htmlExportTable").html(html);
                     $('#textProcess').css({ 'display': 'none' });
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
@@ -145,13 +180,13 @@
             //
             $.get('@Url.Action("BuscarEmpresaEnvioInformacion", "Reporte")', GetFilter(), function (data) {
 
-                $('#tbl-envio-informacion tbody').remove();
+                $('#ExportTable tbody').remove();
 
                 var $tbody = $('<tbody></tbody>');
 
                 if (data.length == 0) {
                     var $rowClean = $('<tr><td colspan="5">No hay registros.</td></tr>');
-                    $('#tbl-envio-informacion').append($rowClean);
+                    $('#ExportTable').append($rowClean);
                 } else {
                     for (var i = 0, l = data.length; i < l; ++i) {
                         var $tr = $('<tr></tr>');
@@ -171,7 +206,7 @@
                         $tbody.append($tr);
                     }
 
-                    $('#tbl-envio-informacion').append($tbody);
+                    $('#ExportTable').append($tbody);
                 }
             });
         });

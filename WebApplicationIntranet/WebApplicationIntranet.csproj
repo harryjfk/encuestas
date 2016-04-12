@@ -68,7 +68,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\Domain\Office\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\ReportViewer\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -344,6 +346,14 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jqueryMaxLength.js" />
+    <Content Include="Scripts\JsExport\base64.js" />
+    <Content Include="Scripts\JsExport\html2canvas.js" />
+    <Content Include="Scripts\JsExport\jquery-git.js" />
+    <Content Include="Scripts\JsExport\jquery.base64.js" />
+    <Content Include="Scripts\JsExport\jspdf.debug.js" />
+    <Content Include="Scripts\JsExport\jspdf.js" />
+    <Content Include="Scripts\JsExport\sprintf.js" />
+    <Content Include="Scripts\JsExport\tableExport.js" />
     <Content Include="Scripts\jspdf.js" />
     <Content Include="Scripts\jspdf.plugin.cell_sav.js" />
     <Content Include="Scripts\jspdf.plugin.table.js" />

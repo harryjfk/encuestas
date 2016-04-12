@@ -17,6 +17,7 @@ using System.IO;
 using OfficeOpenXml;
 using System.Diagnostics;
 using Seguridad.PRODUCE;
+using SelectPdf;
 
 namespace WebApplication.Controllers
 {
@@ -570,7 +571,7 @@ namespace WebApplication.Controllers
             else
             {
                 ViewBag.CorreoInformante = "No hay contacto";
-            }                
+            }
 
             //brb
             //var idUsuario = user.Id;
@@ -1935,6 +1936,8 @@ namespace WebApplication.Controllers
             var historico = Manager.VentaServicioManufacturaManager.GetHistoryVentasExtranjero(id);
             return PartialView("_TableNumbers", historico);
         }
+
+        
     }
 }
 

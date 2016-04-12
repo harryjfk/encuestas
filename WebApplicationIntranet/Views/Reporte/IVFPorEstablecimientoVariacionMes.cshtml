@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Variación % del Índice Mensual del Volumen Físico por Establecimiento";
+    ViewBag.Title = " Variación % CIIU - Establecimiento";
     var meses = new[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
 }
 
@@ -11,7 +11,7 @@
     <div class="panel-heading">B&Uacute;SQUEDA</div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="input-group" style="z-index:3;">
                     <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Año</span>
                     <select id="select-ano" name="Year" class="form-control">
@@ -22,7 +22,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="input-group" style="z-index:3;">
                     <span class="input-group-addon">Mes</span>
                     <select id="select-mes-desde" name="MonthFrom" class="form-control">
@@ -33,10 +33,16 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="input-group" style="z-index:3;">
                     <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CIIU</span>
                     @{Html.RenderAction("GetDorpDown", "Ciiu", new { nombre = "IdCiiu" });}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;Establecimiento</span>
+                    @{Html.RenderAction("GetDorpDownEstablecimiento", "Ciiu", new { nombre = "IdCiiu" });}
                 </div>
             </div>
         </div>        
