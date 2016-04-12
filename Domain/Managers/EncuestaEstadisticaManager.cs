@@ -1315,10 +1315,19 @@ namespace Domain.Managers
                 new IniceElement() {Id = idCiiuInformante,Name = "CIIU del Informante",Level = 1},
             });
 
+            DateTime to ;
             for (var i = 1; i <= 12; i++)
             {
                 var from = new DateTime(year, i, 1);
-                var to = new DateTime(year, i, DateTime.DaysInMonth(year, i));
+                if (DateTime.IsLeapYear(year))
+                {
+                     to = new DateTime(year, i, DateTime.DaysInMonth(year, i)-1);
+                }
+
+                else
+                {
+                     to = new DateTime(year, i, DateTime.DaysInMonth(year, i));
+                }
                 var total = 0d;
                 var primaria = 0d;
                 var noPrimaria = 0d;
@@ -1332,6 +1341,7 @@ namespace Domain.Managers
                 {
                     var fromA = new DateTime(from.Year - 1, from.Month, from.Day);
                     var toA = new DateTime(to.Year - 1, to.Month, to.Day);
+
                     var res = CalculateIVF(ciiu.Id, from, to);
                     var resA = CalculateIVF(ciiu.Id, fromA, toA);
                     if (res.Count == 0 || resA.Count == 0) continue;

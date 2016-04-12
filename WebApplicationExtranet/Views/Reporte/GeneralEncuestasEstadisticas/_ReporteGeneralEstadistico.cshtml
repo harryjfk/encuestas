@@ -1,52 +1,53 @@
-﻿@using Domain
-@using NPOI.SS.Formula.Functions
-@model WebApplication.Models.ExportGeneralEncuestaEstadistica
-@{
-   
-}
+﻿@*
+    @using Domain
+    @using NPOI.SS.Formula.Functions
+    @model WebApplication.Models.ExportGeneralEncuestaEstadistica
+    @{
 
-<div class="panel panel-primary">
-    <div class="panel-heading">Información</div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-4">
-                <div>
-                    <span>Año: <span>@Model.Year</span></span>
+    }
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Información</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div>
+                        <span>Año: <span>@Model.Year</span></span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div>
-                    <span>Meses: 
-                       @if (Model.Month!=null)
-                       {
-                        foreach (var item in Model.Month)
-                        {
-                            <span class="label label-primary">@item.GetMonthText()</span>
-                        }
-                       }
-                    </span>
+                <div class="col-md-4">
+                    <div>
+                        <span>Meses:
+                           @if (Model.Month!=null)
+                           {
+                            foreach (var item in Model.Month)
+                            {
+                                <span class="label label-primary">@item.GetMonthText()</span>
+                            }
+                           }
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div>
-                    <span>Variables: <span>@Model.Output.GetVariableNames()</span></span>
+                <div class="col-md-4">
+                    <div>
+                        <span>Variables: <span>@Model.Output.GetVariableNames()</span></span>
+                    </div>
                 </div>
-            </div>
-             <div class="col-md-4">
-                 <div>
-                     <span>Ámbito de Análisis: <span>@Model.InputTypes.GetAmbito()</span></span>
-                 </div>
-                 <div>
-                     @if (Model.ScopeElements != null)
-                     {
-                        foreach (var item in Model.ScopeElements)
-                        {
-                            <div class="label label-primary">@item</div>
-                        }
-                     }
-                 </div>
+                 <div class="col-md-4">
+                     <div>
+                         <span>Ámbito de Análisis: <span>@Model.InputTypes.GetAmbito()</span></span>
+                     </div>
+                     <div>
+                         @if (Model.ScopeElements != null)
+                         {
+                            foreach (var item in Model.ScopeElements)
+                            {
+                                <div class="label label-primary">@item</div>
+                            }
+                         }
+                     </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </div>*@
 
