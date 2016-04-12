@@ -38,6 +38,7 @@ namespace Entity
         public Nullable<long> id_metodo_calculo { get; set; }
         public long sub_sector { get; set; }
         public long rubro { get; set; }
+        public Nullable<decimal> Peso { get; set; }
     
         public virtual ICollection<LineaProducto> LineasProducto { get; set; }
         public virtual ICollection<CiiuEstablecimiento> Establecimientos { get; set; }
