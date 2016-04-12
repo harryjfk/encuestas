@@ -45,13 +45,19 @@
         <div class="form-group">
             <label for="Revision" class="col-md-4 control-label">Revisi&oacute;n</label>
             <div class="col-md-7">
+                @Html.TextBoxFor(t => t.Revision, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Revision)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        @*<div class="form-group">
+            <label for="Revision" class="col-md-4 control-label">Revisi&oacute;n</label>
+            <div class="col-md-7">
                 @Html.EnumDropDownListFor(t => t.EnumRevision, "Seleccione una revisión", htmlAttributes: new { @class = "form-control" })
-                @*@Html.TextBoxFor(t => t.Revision, new { @class = "form-control" })*@
-                @*<input class="text-box single-line form-control" id="Nombre" name="Nombre" type="text" value="">*@
                 @Html.ValidationMessageFor(model => model.Revision)
             </div>
 
-        </div>
+        </div>*@
         <div class="form-group">
             <label for="tipoCalculo" class="col-md-4 control-label">Tipo de C&aacute;lculo</label>
             <div class="col-md-7">
