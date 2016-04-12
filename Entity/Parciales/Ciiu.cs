@@ -64,7 +64,7 @@ namespace Entity
            return String.Format("{0}-{1}",Codigo,subName);
        }
 
-        public double Peso { get; set; }
+        // public double Peso { get; set; }
         public double ValorAgregado { get; set; }
     }
 }

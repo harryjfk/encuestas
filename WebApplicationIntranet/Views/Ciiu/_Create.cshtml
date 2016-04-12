@@ -94,25 +94,24 @@
             </div>
             <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
-        @*<div class="col-md-12">
-            <div class="form-group">
-                <label for="Peso" class="col-md-2 control-label">Peso</label>
-                <div class="col-md-9">
-                    @Html.TextBoxFor(t => t.Peso, new { @class = "form-control", style = "width: 106%; max-width: inherit;" })
-                    @Html.ValidationMessageFor(model => model.Peso)
-                </div>
+        <div class="form-group">
+            <label for="Peso" class="col-md-4 control-label">Peso</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.Peso, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Peso)
             </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
         </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="ValorAgregado" class="col-md-2 control-label">Valor Agregado</label>
-                <div class="col-md-9">
-                    @Html.TextBoxFor(t => t.ValorAgregado, new { @class = "form-control", style = "width: 106%; max-width: inherit;" })
-                    @Html.ValidationMessageFor(model => model.ValorAgregado)
-                </div>
-
+        @*<div class="col-md-12">
+        <div class="form-group">
+            <label for="ValorAgregado" class="col-md-2 control-label">Valor Agregado</label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(t => t.ValorAgregado, new { @class = "form-control", style = "width: 106%; max-width: inherit;" })
+                @Html.ValidationMessageFor(model => model.ValorAgregado)
             </div>
-        </div>*@
+
+        </div>
+    </div>*@
         <div class="form-group">
             <label for="Activado" class="col-md-4 control-label">Activado</label>
             <div class="col-md-1">

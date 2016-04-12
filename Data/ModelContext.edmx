@@ -61,6 +61,7 @@
           <Property Name="id_metodo_calculo" Type="number" Precision="11" Scale="0" />
           <Property Name="sub_sector" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="rubro" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="peso" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CAT_CONSUMO_HARINA_FIDEO">
           <Key>
@@ -1669,6 +1670,7 @@ FROM "CAT_PORCENTAJE_ENC_EST" "CAT_PORCENTAJE_ENC_EST"</DefiningQuery>
           <NavigationProperty Name="CAT_ANIO_BASE" Relationship="Model.SYS_C008223" FromRole="Ciiu" ToRole="CAT_ANIO_BASE" />
           <NavigationProperty Name="CAT_ESTAB_ANALISTA" Relationship="Model.SYS_C008349" FromRole="Ciiu" ToRole="EstablecimientoAnalista" />
           <NavigationProperty Name="DAT_ENCUESTA_ANALISTA" Relationship="Model.SYS_C008374" FromRole="Ciiu" ToRole="DAT_ENCUESTA_ANALISTA" />
+          <Property Name="Peso" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="LineaProducto">
           <Key>
@@ -3042,6 +3044,7 @@ FROM "CAT_PORCENTAJE_ENC_EST" "CAT_PORCENTAJE_ENC_EST"</DefiningQuery>
                 <ScalarProperty Name="Estado" ColumnName="estado" />
                 <ScalarProperty Name="Revision" ColumnName="revision" />
                 <ScalarProperty Name="Id" ColumnName="id_ciiu" />
+                <ScalarProperty Name="Peso" ColumnName="peso" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
