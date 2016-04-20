@@ -16,13 +16,15 @@ using System.Data;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using SelectPdf;
+using Spire.Xls;
+
 
 namespace WebApplication.Controllers
 {
     public class ReporteController : BaseController<PorcentajeEncuestaEstadistica>
     {
         public ActionResult IVFMensual()
-        {            
+        {
             return View();
         }
 
@@ -114,7 +116,7 @@ namespace WebApplication.Controllers
             }
 
             List<IVFDB> ivfsBD = Manager.ReporteManager.GetVD_VP_IVF(year);
-            
+
             for (int i = inicio; i <= fin; i++)
             {
                 ivfsBD.AddRange(Manager.ReporteManager.GetCA_IVF(new DateTime(year, i, 1)));
@@ -126,7 +128,7 @@ namespace WebApplication.Controllers
 
             List<Ciiu> ciius = Manager.Ciiu.GetByFilter().OrderBy(t => t.Codigo).ToList();
             int Id = 4;
-            for(var i = 0;  i < ciius.Count; ++i)
+            for (var i = 0; i < ciius.Count; ++i)
             {
                 var ciiu = ciius[i];
                 Id = Id + i;
@@ -146,7 +148,7 @@ namespace WebApplication.Controllers
             for (var i = 0; i < ciius.Count; ++i)
             {
                 var ciiu = ciius[i];
-                
+
                 Id = Id + i;
                 if (ciiu.sub_sector == 1)
                 {
@@ -159,9 +161,9 @@ namespace WebApplication.Controllers
             }
 
             FillPrimarioNoPrimarioAndTotal(ivfs);
-            
+
             var ivfsCodCiiuNotNull = ivfs.Where(t => t.CodigoCiiu != null);
-                        
+
             FillCodPorDigitos(ivfs, ivfsCodCiiuNotNull, 2, showDosDigitos);
             FillCodPorDigitos(ivfs, ivfsCodCiiuNotNull, 3, showTresDigitos);
 
@@ -205,7 +207,7 @@ namespace WebApplication.Controllers
             }
 
             ViewBag.listMonths = listMonths;
-            
+
 
             return PartialView("_IVFTable", ivfsReport);
         }
@@ -225,7 +227,7 @@ namespace WebApplication.Controllers
             bool showDosDigitos = true;
             bool showTresDigitos = true;
             bool showCuatroDigitos = false;
-            
+
             List<IVFDB> ivfsBD = Manager.ReporteManager.GetVD_VP_IVF(year);
 
             for (int i = inicio; i <= fin; i++)
@@ -282,8 +284,8 @@ namespace WebApplication.Controllers
 
         private void FillCodPorDigitos(List<IVFM> ivfs, IEnumerable<IVFM> ivfsCodCiiuNotNull, int digitos, bool visible)
         {
-            var cods = ivfsCodCiiuNotNull.GroupBy(t => new { y = t.CodigoCiiu.Substring(0, digitos),  t.ParentId })
-                .Select(grp => new {                   
+            var cods = ivfsCodCiiuNotNull.GroupBy(t => new { y = t.CodigoCiiu.Substring(0, digitos), t.ParentId })
+                .Select(grp => new {
                     ciiu = grp.First().CodigoCiiu.Substring(0, digitos),
                     parentId = grp.First().ParentId
                 }).ToList();
@@ -397,7 +399,7 @@ namespace WebApplication.Controllers
                 ivfm.Peso = ivfbd.peso;
             }
         }
-        
+
         public ActionResult IVFPorEstablecimiento()
         {
             return View();
@@ -415,7 +417,7 @@ namespace WebApplication.Controllers
             List<Ciiu> ciius = Manager.Ciiu.GetByFilter().OrderBy(t => t.Codigo).ToList();
             List<Establecimiento> establecimientos = Manager.Establecimiento.GetByFilter().OrderBy(t => t.Id).ToList();
 
-            List<IVFMEstReport> ivfsReport = new List<IVFMEstReport>();            
+            List<IVFMEstReport> ivfsReport = new List<IVFMEstReport>();
 
             foreach (var ivf in ivfsBD)
             {
@@ -428,14 +430,14 @@ namespace WebApplication.Controllers
                     ivfr.IdEstablecimiento = ivf.IdEstablecimiento;
 
                     var estab = establecimientos.Where(t => t.Id == ivf.IdEstablecimiento).FirstOrDefault();
-                    ivfr.CodigoCiiu = ciius.Where(t => t.Id == ivf.IdCiiu).FirstOrDefault().Codigo;                                        
+                    ivfr.CodigoCiiu = ciius.Where(t => t.Id == ivf.IdCiiu).FirstOrDefault().Codigo;
                     ivfr.CodigoEst = estab.IdentificadorInterno;
                     ivfr.NomEst = estab.Nombre;
 
                     FillIVFMPorEstabWithIVFDB(ivfsBD, ivfr, year);
 
                     ivfsReport.Add(ivfr);
-                }                
+                }
             }
 
             List<int> listMonths = new List<int>();
@@ -670,7 +672,7 @@ namespace WebApplication.Controllers
             for (int i = inicio; i <= fin; i++)
             {
                 ivfsBD.AddRange(Manager.ReporteManager.GetCA_IVF(new DateTime(year, i, 1)));
-                ivfsBD2.AddRange(Manager.ReporteManager.GetCA_IVF(new DateTime(year -  1, i, 1)));
+                ivfsBD2.AddRange(Manager.ReporteManager.GetCA_IVF(new DateTime(year - 1, i, 1)));
             }
 
             List<IVFM> ivfs = new List<IVFM>();
@@ -801,7 +803,7 @@ namespace WebApplication.Controllers
                     ivfr.Octubre = string.Format("{0:0." + formatDecimal + "}", getVariacionIVF(ivfs[i].Octubre, ivfs2[i].Octubre));
                     ivfr.Noviembre = string.Format("{0:0." + formatDecimal + "}", getVariacionIVF(ivfs[i].Noviembre, ivfs2[i].Noviembre));
                     ivfr.Diciembre = string.Format("{0:0." + formatDecimal + "}", getVariacionIVF(ivfs[i].Enero, ivfs2[i].Diciembre));
-                    
+
                     ivfsReport.Add(ivfr);
                 }
             }
@@ -822,45 +824,45 @@ namespace WebApplication.Controllers
             return View();
         }
 
-        public ActionResult IVFPorEstablecimientoVariacionTableMes(int year, int month, int ciiu)
-        {
-            var ivfsYearX = GetIVFporAnio(year);
-            var ivfsYearY = GetIVFporAnio(year - 1);
-            if (ciiu > -1)
-            {
-                ivfsYearX = ivfsYearX.Where(x => x.IdCiiu == ciiu).ToList();
-                ivfsYearY = ivfsYearY.Where(x => x.IdCiiu == ciiu).ToList();
-            }
-            List<IVFMEstVarReport> reps = new List<IVFMEstVarReport>();
+        //public ActionResult IVFPorEstablecimientoVariacionTableMes(int year, int month, int ciiu)
+        //{
+        //    var ivfsYearX = GetIVFporAnio(year);
+        //    var ivfsYearY = GetIVFporAnio(year - 1);
+        //    if (ciiu > -1)
+        //    {
+        //        ivfsYearX = ivfsYearX.Where(x => x.IdCiiu == ciiu).ToList();
+        //        ivfsYearY = ivfsYearY.Where(x => x.IdCiiu == ciiu).ToList();
+        //    }
+        //    List<IVFMEstVarReport> reps = new List<IVFMEstVarReport>();
 
-            foreach (var ivfX in ivfsYearX)
-            {
-                setDefaultIVFMEstReport(ivfX);
-                foreach (var ivfY in ivfsYearY)
-                {
-                    setDefaultIVFMEstReport(ivfY);
-                    if (ivfX.IdCiiu == ivfY.IdCiiu && ivfX.IdEstablecimiento == ivfY.IdEstablecimiento)
-                    {
-                        IVFMEstVarReport rep = new IVFMEstVarReport();
-                        rep.IdCiiu = ivfX.IdCiiu;
-                        rep.IdEstablecimiento = ivfX.IdEstablecimiento;
-                        rep.CodigoCiiu = ivfX.CodigoCiiu;
-                        rep.CodigoEst = ivfX.CodigoEst;
-                        rep.NomEst = ivfX.NomEst;
-                        rep.Meses = new List<MesVariacion>();
-                        MesVariacion mv = new MesVariacion();
-                        mv.Nro = month;
-                        setMesVar(mv, ivfX, ivfY, month);
-                        rep.Meses.Add(mv);
-                        reps.Add(rep);
-                    }
-                }
-            }
-            ViewBag.MesX = year;
-            ViewBag.MesY = year - 1;
+        //    foreach (var ivfX in ivfsYearX)
+        //    {
+        //        setDefaultIVFMEstReport(ivfX);
+        //        foreach (var ivfY in ivfsYearY)
+        //        {
+        //            setDefaultIVFMEstReport(ivfY);
+        //            if (ivfX.IdCiiu == ivfY.IdCiiu && ivfX.IdEstablecimiento == ivfY.IdEstablecimiento)
+        //            {
+        //                IVFMEstVarReport rep = new IVFMEstVarReport();
+        //                rep.IdCiiu = ivfX.IdCiiu;
+        //                rep.IdEstablecimiento = ivfX.IdEstablecimiento;
+        //                rep.CodigoCiiu = ivfX.CodigoCiiu;
+        //                rep.CodigoEst = ivfX.CodigoEst;
+        //                rep.NomEst = ivfX.NomEst;
+        //                rep.Meses = new List<MesVariacion>();
+        //                MesVariacion mv = new MesVariacion();
+        //                mv.Nro = month;
+        //                setMesVar(mv, ivfX, ivfY, month);
+        //                rep.Meses.Add(mv);
+        //                reps.Add(rep);
+        //            }
+        //        }
+        //    }
+        //    ViewBag.MesX = year;
+        //    ViewBag.MesY = year - 1;
 
-            return PartialView("_IVFPorEstabVarTableMes", reps);
-        }
+        //    return PartialView("_IVFPorEstabVarTableMes", reps);
+        //}
 
         public ActionResult IVFPorEstablecimientoVariacionTableMes(int year, int month, int ciiu, int estb)
         {
@@ -871,6 +873,13 @@ namespace WebApplication.Controllers
                 ivfsYearX = ivfsYearX.Where(x => x.IdCiiu == ciiu).ToList();
                 ivfsYearY = ivfsYearY.Where(x => x.IdCiiu == ciiu).ToList();
             }
+            //estb
+            if (estb > -1)
+            {
+                ivfsYearX = ivfsYearX.Where(x => x.IdEstablecimiento == estb).ToList();
+                ivfsYearY = ivfsYearY.Where(x => x.IdEstablecimiento == estb).ToList();
+            }
+
             List<IVFMEstVarReport> reps = new List<IVFMEstVarReport>();
 
             foreach (var ivfX in ivfsYearX)
@@ -919,7 +928,7 @@ namespace WebApplication.Controllers
                 double valorY;
                 if (double.TryParse(y, out valorY))
                 {
-                    return ( ((valorX - valorY) * 100) / valorX ).ToString();
+                    return (((valorX - valorY) * 100) / valorX).ToString();
                 }
                 return x;
             }
@@ -973,7 +982,7 @@ namespace WebApplication.Controllers
             int anioAnterior2 = DateTime.Now.Year - 1;
             int mesActual = DateTime.Now.Month;
             int mesAnterior = DateTime.Now.Month - 1;
-            bool mesActualEsEnero = false; 
+            bool mesActualEsEnero = false;
             if (mesActual == 1)
             {
                 mesAnterior = 12;
@@ -992,7 +1001,7 @@ namespace WebApplication.Controllers
                 {
                     IVFResumenReport r = new IVFResumenReport();
                     r.Texto = reportAnioActual[i].Texto;
-                    
+
                     r.MesX_anioX = getIVFMReportValorByMes(reportAnioActual[i], mesActual);
                     r.MesX_anioY = getIVFMReportValorByMes(reportAnioAnterior[i], mesActual);
                     r.MesX_variacion = getVariacionStr(r.MesX_anioX, r.MesX_anioY);
@@ -1177,7 +1186,7 @@ namespace WebApplication.Controllers
             }
             ViewBag.Mes = month;
             return PartialView("_CoberturadeIVFTable", report);
-            
+
             //var ciuuManager = Manager.GetManager<Ciiu>();
             //var ciuuList = ciuuManager.Get().OrderBy(x => x.Codigo).ToList();
             //if (id_ciiu != null)
@@ -1438,12 +1447,13 @@ namespace WebApplication.Controllers
             return PartialView("_SeguimientoEncuestaTable", model);
         }
 
-        public ActionResult ExportarSeguimientoEncuesta_Excel(string fechaInicio, string fechaFin) {
+        public ActionResult ExportarSeguimientoEncuesta_Excel(string fechaInicio, string fechaFin)
+        {
             SegAuxModel model = getSeguimientoEncuesta(fechaInicio, fechaFin);
             Response.ContentType = "application/vnd.ms-excel";
             //var view = View("_SeguimientoEncuestaTable", model);
             //view.ContentType = MediaTypeHeaderValue.Parse("application/vnd.ms-excel");
-            return View("_SeguimientoEncuestaTable", model); 
+            return View("_SeguimientoEncuestaTable", model);
         }
         public FileResult ExportarSeguimientoEncuesta_PDf(string fechaInicio, string fechaFin)
         {
@@ -1462,7 +1472,7 @@ namespace WebApplication.Controllers
 
             int webPageWidth = 1024;
             int webPageHeight = 0;
-            
+
             // instantiate a html to pdf converter object
             HtmlToPdf converter = new HtmlToPdf();
 
@@ -1476,7 +1486,7 @@ namespace WebApplication.Controllers
             SelectPdf.PdfDocument doc = converter.ConvertHtmlString(html);
 
             // save pdf document
-             //(Response, false, "Sample.pdf");
+            //(Response, false, "Sample.pdf");
 
             // close pdf document
             //doc.Close();
@@ -1486,7 +1496,7 @@ namespace WebApplication.Controllers
         }
 
         public void ExportToPdf(DataTable dt)
-        {            
+        {
             Document document = new Document();
             //PdfWriter writer = PdfWriter.GetInstance(document, new FileStream("c://sample.pdf", FileMode.Create));
             PdfWriter writer = PdfWriter.GetInstance(document, Response.OutputStream);
@@ -1521,7 +1531,8 @@ namespace WebApplication.Controllers
                     table.AddCell(new Phrase(r[2].ToString(), font5));
                     table.AddCell(new Phrase(r[3].ToString(), font5));
                 }
-            } document.Add(table);
+            }
+            document.Add(table);
             document.Close();
 
             Response.Write(document);
@@ -1540,7 +1551,7 @@ namespace WebApplication.Controllers
             }
             catch (Exception)
             {
-                
+
             }
             List<DateTime> fechas = new List<DateTime>();
 
@@ -1742,7 +1753,7 @@ namespace WebApplication.Controllers
                 rep = rep.Where(x => x.usuario_id == IdAnalista).ToList();
             }
 
-            DataTable dt = new DataTable(); 
+            DataTable dt = new DataTable();
             dt.Clear();
             dt.Columns.Add("Nro.");
             dt.Columns.Add("Codigo");
@@ -1751,15 +1762,15 @@ namespace WebApplication.Controllers
             dt.Columns.Add("EntraCalculo");
 
             for (int i = 0; i < rep.Count; i++)
-			{   
-			    DataRow row = dt.NewRow();
+            {
+                DataRow row = dt.NewRow();
                 row["Nro."] = (i + 1).ToString();
                 row["Codigo"] = rep[i].establecimiento_ruc;
                 row["Establecimiento"] = rep[i].establecimiento_nombre;
                 row["CIIU/Analista"] = rep[i].establecimiento_ruc;
                 row["EntraCalculo"] = rep[i].establecimiento_ruc;
                 dt.Rows.Add(row);
-			}
+            }
             dt.TableName = "EmpresaEnvioInformacion";
             workbook.Worksheets.Add(dt);
             return new ExcelResult(workbook, "EmpresaEnvioInformacion");
@@ -2022,7 +2033,7 @@ namespace WebApplication.Controllers
             foreach (var ivfbd in ivfsBD.Where(t => t.IdCiiu == ivfr.IdCiiu && t.IdEstablecimiento == ivfr.IdEstablecimiento))
             {
                 if (new DateTime(year, 1, 1) == ivfbd.Fecha)
-                    ivfr.Enero = string.Format("{0:0." + formatoDecimal + "}",ivfbd.IVF);
+                    ivfr.Enero = string.Format("{0:0." + formatoDecimal + "}", ivfbd.IVF);
                 if (new DateTime(year, 2, 1) == ivfbd.Fecha)
                     ivfr.Febrero = string.Format("{0:0." + formatoDecimal + "}", ivfbd.IVF);
                 if (new DateTime(year, 3, 1) == ivfbd.Fecha)
@@ -2070,7 +2081,7 @@ namespace WebApplication.Controllers
                                     = (((Convert.ToDouble(ivfr.Meses[i].MesX) - Convert.ToDouble(ivfr.Meses[i].MesY)) * 100) / Convert.ToDouble(ivfr.Meses[i].MesX)).ToString();
                             }
                         }
-                    }   
+                    }
                 }
             }
         }
@@ -2105,10 +2116,10 @@ namespace WebApplication.Controllers
                 {
                     mes = mes + " " + Tools.GetMonthText(x);
                 }
-                
+
             }
 
-            ws.Cells[1, 2].Value = "Mes: " + mes;            
+            ws.Cells[1, 2].Value = "Mes: " + mes;
             string ciiu = (idCiiu == 0) ? "TODOS" : Manager.Ciiu.Get(t => t.Id == idCiiu).FirstOrDefault().Codigo;
             ws.Cells[2, 1, 2, 2].Merge = true;
             ws.Cells[2, 1, 2, 2].Value = "CIIU: " + ciiu;
@@ -2131,7 +2142,7 @@ namespace WebApplication.Controllers
             int i = 0;
 
             fila += 1;
-            
+
             foreach (var descarga in descargas)
             {
                 ws.Cells[i + fila, 1].Value = descarga.CodigoEstab;
@@ -2168,7 +2179,7 @@ namespace WebApplication.Controllers
 
             return File(exportBytes, mimeType);
         }
-    
+
         //[HttpGet]
         //public JsonResult BuscarEmpresaEnvioInformacion(EmpresaEnvioInformacionFilter filter)
         //{
@@ -2233,7 +2244,7 @@ namespace WebApplication.Controllers
                 case 9: return "SETIEMBRE";
                 case 10: return "OCTUBRE";
                 case 11: return "NOVIEMBRE";
-                case 12: return "DICIEMBRE"; 
+                case 12: return "DICIEMBRE";
                 default:
                     break;
             }
@@ -2290,7 +2301,8 @@ namespace WebApplication.Controllers
             dt.Columns.Add("CIIU", typeof(string));
             dt.Columns.Add("Código", typeof(string));
             dt.Columns.Add("Establecimiento", typeof(string));
-            if (reps.Count>0) {
+            if (reps.Count > 0)
+            {
                 foreach (var mes in reps[0].Meses)
                 {
                     dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + year.ToString(), typeof(string));
@@ -2317,7 +2329,7 @@ namespace WebApplication.Controllers
                     dt.Rows.Add(data);
                 }
             }
-            
+
 
             dt.TableName = "Variación %";
             workbook.Worksheets.Add(dt);
@@ -2325,10 +2337,89 @@ namespace WebApplication.Controllers
             return new ExcelResult(workbook, "Variación por Establecimiento");
         }
 
-        public ActionResult ExportarExcelEstablecimientoMes(int year, int month, int ciiu)
-        {
+        //public ActionResult ExportarExcelEstablecimientoMes(int year, int month, int ciiu)
+        //{
 
-            var workbook = new XLWorkbook();
+        //    var workbook = new XLWorkbook();
+
+        //    //List
+        //    var ivfsYearX = GetIVFporAnio(year);
+        //    var ivfsYearY = GetIVFporAnio(year - 1);
+        //    if (ciiu > -1)
+        //    {
+        //        ivfsYearX = ivfsYearX.Where(x => x.IdCiiu == ciiu).ToList();
+        //        ivfsYearY = ivfsYearY.Where(x => x.IdCiiu == ciiu).ToList();
+        //    }
+        //    List<IVFMEstVarReport> reps = new List<IVFMEstVarReport>();
+
+        //    foreach (var ivfX in ivfsYearX)
+        //    {
+        //        foreach (var ivfY in ivfsYearY)
+        //        {
+        //            if (ivfX.IdCiiu == ivfY.IdCiiu && ivfX.IdEstablecimiento == ivfY.IdEstablecimiento)
+        //            {
+        //                IVFMEstVarReport rep = new IVFMEstVarReport();
+        //                rep.IdCiiu = ivfX.IdCiiu;
+        //                rep.IdEstablecimiento = ivfX.IdEstablecimiento;
+        //                rep.CodigoCiiu = ivfX.CodigoCiiu;
+        //                rep.CodigoEst = ivfX.CodigoEst;
+        //                rep.NomEst = ivfX.NomEst;
+        //                rep.Meses = new List<MesVariacion>();
+        //                MesVariacion mv = new MesVariacion();
+        //                mv.Nro = month;
+        //                setMesVar(mv, ivfX, ivfY, month);
+        //                rep.Meses.Add(mv);
+        //                reps.Add(rep);
+        //            }
+        //        }
+        //    }
+
+        //    //Datatable
+        //    DataTable dt = new DataTable();
+        //    string var = "Var%";
+        //    int columnas = 3;
+        //    //Columnas
+        //    dt.Columns.Add("CIIU", typeof(string));
+        //    dt.Columns.Add("Código", typeof(string));
+        //    dt.Columns.Add("Establecimiento", typeof(string));
+        //    if (reps.Count>0)
+        //    {
+        //        foreach (var mes in reps[0].Meses)
+        //        {
+        //            dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + year.ToString(), typeof(string));
+        //            dt.Columns.Add(GetMesAbreviaturaByIndex(mes.Nro) + "-" + (year - 1).ToString(), typeof(string));
+        //            dt.Columns.Add(var, typeof(string));
+        //            var += " ";
+        //            columnas += 3;
+        //        }
+        //        //Fila
+        //        foreach (var item in reps)
+        //        {
+        //            string[] data = new string[columnas];
+        //            data[0] = item.CodigoCiiu;
+        //            data[1] = item.CodigoEst;
+        //            data[2] = item.NomEst;
+        //            int indice = 3;
+        //            foreach (var mes in item.Meses)
+        //            {
+        //                data[indice] = mes.MesX;
+        //                data[indice + 1] = mes.MesY;
+        //                data[indice + 2] = mes.VariacionPorcentual;
+        //                indice = indice + 3;
+        //            }
+        //            dt.Rows.Add(data);
+        //        }
+        //    }
+
+
+        //    dt.TableName = "Variación %";
+        //    workbook.Worksheets.Add(dt);
+
+        //    return new ExcelResult(workbook, "Variación por Establecimiento y Mes");
+        //}
+
+        public ActionResult ExportarExcelEstablecimientoMes(int year, int month, int ciiu, int estb)
+        {
 
             //List
             var ivfsYearX = GetIVFporAnio(year);
@@ -2338,6 +2429,13 @@ namespace WebApplication.Controllers
                 ivfsYearX = ivfsYearX.Where(x => x.IdCiiu == ciiu).ToList();
                 ivfsYearY = ivfsYearY.Where(x => x.IdCiiu == ciiu).ToList();
             }
+
+            if (estb > -1)
+            {
+                ivfsYearX = ivfsYearX.Where(x => x.IdEstablecimiento == estb).ToList();
+                ivfsYearY = ivfsYearY.Where(x => x.IdEstablecimiento == estb).ToList();
+            }
+
             List<IVFMEstVarReport> reps = new List<IVFMEstVarReport>();
 
             foreach (var ivfX in ivfsYearX)
@@ -2370,7 +2468,7 @@ namespace WebApplication.Controllers
             dt.Columns.Add("CIIU", typeof(string));
             dt.Columns.Add("Código", typeof(string));
             dt.Columns.Add("Establecimiento", typeof(string));
-            if (reps.Count>0)
+            if (reps.Count > 0)
             {
                 foreach (var mes in reps[0].Meses)
                 {
@@ -2398,14 +2496,62 @@ namespace WebApplication.Controllers
                     dt.Rows.Add(data);
                 }
             }
-            
 
             dt.TableName = "Variación %";
-            workbook.Worksheets.Add(dt);
 
-            return new ExcelResult(workbook, "Variación por Establecimiento y Mes");
+            // ******
+
+            Workbook wk = new Workbook();
+            Worksheet ws = wk.Worksheets[0];
+            Worksheet ws2 = wk.Worksheets[1];
+            ws.InsertDataTable(dt, true, 1, 1);
+            ws.Name = "Variación %";
+            
+            //Sets header style
+            CellStyle styleHeader = ws.Rows[0].Style;
+            styleHeader.Borders[BordersLineType.EdgeLeft].LineStyle = LineStyleType.Thin;
+            styleHeader.Borders[BordersLineType.EdgeRight].LineStyle = LineStyleType.Thin;
+            styleHeader.Borders[BordersLineType.EdgeTop].LineStyle = LineStyleType.Thin;
+            styleHeader.Borders[BordersLineType.EdgeBottom].LineStyle = LineStyleType.Thin;
+            styleHeader.VerticalAlignment = VerticalAlignType.Center;
+            styleHeader.KnownColor = ExcelColors.Green;
+            styleHeader.Font.KnownColor = ExcelColors.White;
+            styleHeader.Font.IsBold = true;
+
+            //set chart
+            var rangoValores = "D2:D"+(reps.Count+1).ToString();
+            var rangoSeries = "C2:C" + (reps.Count + 1).ToString();
+            ws2.Name = "Gráfico";
+            ws2.GridLinesVisible = false;
+
+            Chart chart = ws2.Charts.Add();
+
+
+            chart.DataRange = ws.Range[rangoValores];
+            chart.SeriesDataFromRange = false;
+
+            Spire.Xls.Charts.ChartSerie cs = chart.Series[0];
+            cs.CategoryLabels = ws.Range[rangoSeries];
+            cs.Values = ws.Range[rangoValores];
+            cs.DataPoints.DefaultDataPoint.DataLabels.HasValue = true;
+
+            chart.LeftColumn = 1;
+            chart.TopRow = 8;
+            chart.RightColumn = 11;
+            chart.BottomRow = 29;
+            chart.ChartType = ExcelChartType.ColumnStacked;
+
+            chart.ChartTitle = "Reporte de variación % CIIU - Establecimiento";
+            chart.ChartTitleArea.IsBold = true;
+            chart.ChartTitleArea.Size = 12;
+
+            chart.Legend.Position = LegendPositionType.Top;
+            //ws.Range[rangoValores].Style.NumberFormat = "######,##";
+
+            return new ExcelResult2(wk, "Variación por Establecimiento y Mes");
         }
 
+        
         public ActionResult ExportarExcelCoberturaIVF(int year, int month, int ciiu)
         {
 
@@ -3042,7 +3188,7 @@ namespace WebApplication.Controllers
             dt.Columns.Add("Var%");
 
             foreach (var rep in report)
-	        {
+            {
                 DataRow row = dt.NewRow();
                 row["SECTOR-DIVISION-GRUPO"] = rep.Texto.Replace("&nbsp;", " ");
                 row["V.Agre"] = rep.ValorAgregado;
@@ -3051,7 +3197,7 @@ namespace WebApplication.Controllers
                 row["Mes-" + year] = rep.MesX_anioY;
                 row["Var%"] = rep.MesX_variacion;
                 dt.Rows.Add(row);
-	        }
+            }
 
             dt.TableName = "IncidenciaActividad";
             workbook.Worksheets.Add(dt);
@@ -3069,11 +3215,11 @@ namespace WebApplication.Controllers
             for (int i = inicio; i <= fin; i++)
             {
                 dt.Columns.Add(GetMesAbreviaturaByIndex(i) + "-" + year);
-                dt.Columns.Add(GetMesAbreviaturaByIndex(i) + "-" + (year-1));
+                dt.Columns.Add(GetMesAbreviaturaByIndex(i) + "-" + (year - 1));
                 dt.Columns.Add("Var%" + i);
                 aux++;
             }
-            
+
             var ivfsYearX = GetIVFporAnio(year);
             var ivfsYearY = GetIVFporAnio(year - 1);
             if (ciiu > -1)
@@ -3122,7 +3268,7 @@ namespace WebApplication.Controllers
                 for (int f = inicio; f <= fin; f++)
                 {
                     row[GetMesAbreviaturaByIndex(f) + "-" + year] = reps[i].Meses[aux2].MesX;
-                    row[GetMesAbreviaturaByIndex(f) + "-" + (year-1)] = reps[i].Meses[aux2].MesY;
+                    row[GetMesAbreviaturaByIndex(f) + "-" + (year - 1)] = reps[i].Meses[aux2].MesY;
                     row["Var%" + f] = reps[i].Meses[aux2].VariacionPorcentual;
                     aux2++;
                 }
@@ -3279,7 +3425,7 @@ namespace WebApplication.Controllers
             {
                 DataRow row = dt.NewRow();
                 row["SECTOR-DIVISION-GRUPO"] = report[i].Texto.Replace("&nbsp;", " ");
-                row[GetMesByIndex(mesAnterior) + "-" + anioAnterior]=report[i].MesX_anioX;
+                row[GetMesByIndex(mesAnterior) + "-" + anioAnterior] = report[i].MesX_anioX;
                 row[GetMesByIndex(mesAnterior) + "-" + anioActual] = report[i].MesX_anioY;
                 row["Var1"] = report[i].MesX_variacion;
                 row[GetMesByIndex(mesActual) + "-" + anioAnterior] = report[i].MesY_anioX;

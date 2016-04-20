@@ -11,7 +11,7 @@
     <div class="panel-heading">B&Uacute;SQUEDA</div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="input-group" style="z-index:3;">
                     <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Año</span>
                     <select id="select-ano" name="Year" class="form-control">
@@ -22,7 +22,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="input-group" style="z-index:3;">
                     <span class="input-group-addon">Mes</span>
                     <select id="select-mes-desde" name="MonthFrom" class="form-control">
@@ -33,16 +33,16 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="input-group" style="z-index:3;">
                     <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CIIU</span>
                     @{Html.RenderAction("GetDorpDown", "Ciiu", new { nombre = "IdCiiu" });}
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="input-group" style="z-index:3;">
                     <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;Establecimiento</span>
-                    @{Html.RenderAction("GetDorpDownEstablecimiento", "Ciiu", new { nombre = "IdCiiu" });}
+                    @{Html.RenderAction("GetDorpDown", "Establecimiento", new { nombre = "IdEstablecimiento" });}
                 </div>
             </div>
         </div>        
@@ -72,6 +72,8 @@
         $(document).ready(function () {
             $('#IdCiiu').prepend('<option value="-1" selected="selected">TODOS</option>');
             $('#IdCiiu').chosen();
+            $('#IdEstablecimiento').prepend('<option value="-1" selected="selected">TODOS</option>');
+            $('#IdEstablecimiento').chosen();
         });
 
         $('#btn-buscar').click(function (e) {
@@ -101,7 +103,8 @@
                 data: {                   
                     year: $('#select-ano').val(),                   
                     month: $('#select-mes-desde').val(),
-                    ciiu: $('#IdCiiu').val()
+                    ciiu: $('#IdCiiu').val(),
+                    estb: $('#IdEstablecimiento').val()
                 },
                 success: function (data) {
                     var html = data.trim();
@@ -125,12 +128,13 @@
                 data: {
                     year: $('#select-ano').val(),
                     month: $('#select-mes-desde').val(),
-                    ciiu: $('#IdCiiu').val()
+                    ciiu: $('#IdCiiu').val(),
+                    estb: $('#IdEstablecimiento').val()
                 },
                 success: function (data) {
                     console.log(data);
                     //if (data.Cantidad > 0) {
-                        window.location = "/Reporte/ExportarExcelEstablecimientoMes?year=" + $('#select-ano').val() + "&month=" + $('#select-mes-desde').val() + "&ciiu=" + $('#IdCiiu').val();
+                    window.location = "/Reporte/ExportarExcelEstablecimientoMes?year=" + $('#select-ano').val() + "&month=" + $('#select-mes-desde').val() + "&ciiu=" + $('#IdCiiu').val() + "&estb=" + $('#IdEstablecimiento').val();
                     //} else {
                         $('#textProcess').css({ 'display': 'none' });
                         $('#alertaDatos').css({ 'display': '' });
