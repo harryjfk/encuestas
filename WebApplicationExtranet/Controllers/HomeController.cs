@@ -124,7 +124,7 @@ namespace WebApplication.Controllers
                     //ViewData.Add("user", "Bryan");
                     /*if (user.Roles.Any(t => t.Nombre.Equals("Informante")))
                         return RedirectToAction("EstablecimientosEncuestaEmpresarial", "UsuarioExtranet");*/
-                    return RedirectToAction("Index");
+                    return RedirectToAction("IndiceVariacionIndex", "Reporte");
                 }
                 ModelState.AddModelError("Error", "Usuario o contraseña incorrecto.");
                 return View("Index");
