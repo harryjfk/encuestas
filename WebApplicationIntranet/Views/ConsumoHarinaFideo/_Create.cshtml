@@ -1,0 +1,127 @@
+﻿@model Entity.ConsumoHarinaFideo
+@using System.Globalization
+@using System.Threading
+@Scripts.Render("~/bundles/tools")
+@{
+    Layout = "";
+    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+    TextInfo textInfo = cultureInfo.TextInfo;
+    var mes=Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"));
+    var title = "Consumo de Harina de Fideos del mes  " + textInfo.ToTitleCase(mes);
+}
+@using (Html.BeginForm("Create", "ConsumoHarinaFideo", FormMethod.Post, new { name = "Co-635736154576131709" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+        }
+
+        <div class="form-group">
+            <label for="fecha" class="col-md-4 control-label"> CIIU</label>
+            <div class="col-md-7"> 
+                <label data-toggle="tooltip" data-placement="top" title="" data-original-title="1071-ELABORACIÓN DE PRODUCTOS DE PANADERÍA" class="form-control" style="max-width: 280px;">1071-ELABORACIÓN DE PRODUCTOS...</label>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label for="fecha" class="col-md-4 control-label"> Año</label>
+            <div class="col-md-7">
+                @Html.Label(Model.fecha.Year.ToString(), new { @class = "form-control", style = "max-width:280px;" })
+
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label for="tonelada_tmb" class="col-md-4 control-label"> Tonelada TMB</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.tonelada_tmb, new { @class = "form-control mask4", Value = Model.tonelada_tmb.ToString("0.0000", CultureInfo.InvariantCulture) })
+                @Html.ValidationMessageFor(model => model.tonelada_tmb)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Activado" class="col-md-4 control-label">Activado</label>
+            <div class="col-md-1">
+                @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                @Html.ValidationMessageFor(model => model.Activado)
+            </div>
+        </div>
+
+
+
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form[name='Co-635736154576131709']").submit(function (e) { e.preventDefault(); });
+        $("button[name='aceptarbtn']").click(function () {
+            var tonelada = $("#tonelada_tmb");
+            if (tonelada && tonelada.val() != "") {
+                var $elem = $(this);
+                $elem.addClass("disabled");
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/ConsumoHarinaFideo/CreatePost/",
+                    data: $("form[name='Co-635736154576131709']").serialize(),
+                    success: function (data) {
+                        $elem.removeClass("disabled");
+                        if (data.Success) {
+                            $("#table-container").html(data.Data);
+                            $("#editItem").modal("hide");
+                            $.smallBox({
+                                title: "Confirmación",
+                                content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                                color: "#659265",
+                                iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                timeout: 4000
+                            });
+                        } else {
+                            var errors = "";
+                            for (var i = 0; i < data.Errors.length; i++) {
+                                errors += "<li>" + data.Errors[i] + "</li>";
+                            }
+                            $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                        }
+                        //$("#editItem .modal-body").html(data);
+                        //$("#editItem").modal("show");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $elem.removeClass("disabled");
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            } else {
+                $.errorIsRequired();
+            }
+            
+
+        });
+        $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
+        $.changeModalName('@title');
+        
+    })
+</script>

@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Cuadro Resumen - Índice Mensual del Volumen Físico de la Producción";
+}
+@model List<Entity.Reportes.IVFResumenReport>
+@Scripts.Render("~/bundles/jquery")
+
+<style>
+    .table {
+        white-space: nowrap;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>
+
+<h3 class="screen-title">@ViewBag.Title</h3>
+<div class="row">
+    <div class="col-md-4 margin-top-5">
+        <a id="btn-export-excel" class="btn btn-default  btns-group">Excel</a>
+    </div>
+</div>
+<br />
+<div id="contenedor-table">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="tbl-ivf" class="table table-striped table-hover table-bordered table-condensed tabla small">
+                    <thead>
+                        <tr class="cabecera">
+                            <th>DESCRIPCION</th>
+                            <th colspan="3">@ViewBag.MesY</th>
+                            <th colspan="3">@ViewBag.MesX</th>
+                            <th colspan="3">ENERO - @ViewBag.MesX</th>
+                            <th colspan="3">ANUAL (Promedio últimos 12 meses)</th>
+                        </tr>
+                        <tr class="cabecera">
+                            <th>SECTOR-DIVISION-GRUPO</th>
+                            <th>@ViewBag.AnioY</th>
+                            <th>@ViewBag.AnioX</th>
+                            <th>Var%</th>
+                            <th>@ViewBag.AnioY</th>
+                            <th>@ViewBag.AnioX</th>
+                            <th>Var%</th>
+                            <th>@ViewBag.AnioY</th>
+                            <th>@ViewBag.AnioX</th>
+                            <th>Var%</th>
+                            <th>@ViewBag.AnioY</th>
+                            <th>@ViewBag.AnioX</th>
+                            <th>Var%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var rep in Model)
+                        {
+                            <tr>
+                                <td>@Html.Raw(rep.Texto)</td>
+                                <td>@Html.DisplayFor(t => rep.MesX_anioX)</td>
+                                <td>@Html.DisplayFor(t => rep.MesX_anioY)</td>
+                                <td>@Html.DisplayFor(t => rep.MesX_variacion)</td>
+
+                                <td>@Html.DisplayFor(t => rep.MesY_anioX)</td>
+                                <td>@Html.DisplayFor(t => rep.MesY_anioY)</td>
+                                <td>@Html.DisplayFor(t => rep.MesY_variacion)</td>
+
+                                <td>@Html.DisplayFor(t => rep.Enero_Mes_anioX)</td>
+                                <td>@Html.DisplayFor(t => rep.Enero_Mes_anioY)</td>
+                                <td>@Html.DisplayFor(t => rep.Enero_Mes_variacion)</td>
+
+                                <td>@Html.DisplayFor(t => rep.Anual_anioX)</td>
+                                <td>@Html.DisplayFor(t => rep.Anual_anioY)</td>
+                                <td>@Html.DisplayFor(t => rep.Anual_variacion)</td>
+                            </tr>                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('#btn-export-excel').click(function (e) {
+            window.location = "/Reporte/ExportIVFCuadroResumen";
+        });
+    </script>
+}

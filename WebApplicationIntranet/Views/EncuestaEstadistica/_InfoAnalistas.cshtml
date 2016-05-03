@@ -1,0 +1,42 @@
+﻿@using Entity
+@model IEnumerable<Entity.EncuestaAnalista>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Analistas</div>
+    <div class="panel-body">
+        @foreach (var item in Model)
+        {
+            var estado = item.EstadoEncuesta.ToString();
+            if (item.EstadoEncuesta == EstadoEncuesta.NoEnviada)
+            {
+                estado = "No Enviada";
+            }
+            if (item.EstadoEncuesta == EstadoEncuesta.NoEnviada && item.IsCurrent)
+            {
+                estado = "En Revisión";
+            }
+            <div class="info-child-screen-details">
+                <div>
+                    <span class="bold">CIIU: </span> <span>@item.CAT_CIIU.ToString()</span>
+                </div>
+                <div>
+                    <span class="bold">Analista: </span> <span>@item.SEG_USUARIO.Login</span>
+                </div>
+                <div>
+                    <span class="bold">Estado: </span> <span>@estado</span>
+                </div>
+            </div>
+            <br />
+        }
+        @if (!Model.Any())
+        {
+            <div class="no-elements-notification">
+                No hay elementos para mostrar
+            </div>
+        }
+    </div>
+</div>
+
+
+

@@ -1,0 +1,43 @@
+﻿@model Entity.Ciiu
+
+@{
+    ViewBag.Title = "Detalles del CIIU";
+}
+
+<div class="title-container-details">
+    <h3 class="screen-title">Detalle del CIIU</h3>
+
+    <a href="/Ciiu/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold">C&oacute;digo: </span> <span>@Model.Codigo</span>
+        </div>    
+        <div>
+            <span class="bold">Descripci&oacute;n: </span> <span>@Model.Nombre</span>
+        </div>  
+        <div>
+            <span class="bold">Revisi&oacute;n: </span> <span>@Model.Revision</span>
+        </div>  
+       
+        <div>
+            <span class="bold">Tipo de C&aacute;lculo: </span> 
+            <span>@if (@Model.CAT_METODO_CALCULO != null){@Model.CAT_METODO_CALCULO.nombre}</span>
+        </div>
+            <div>
+                <span class="bold">Sub Sector: </span> 
+                <span>@if (@Model.sub_sector != 0){@Model.EnumSubSector.ToString().Replace('_', ' ')}</span>
+            </div>
+       
+   
+            <div>
+                <span class="bold">Rubro: </span> 
+                <span>@if (@Model.rubro != 0 && @Model.sub_sector == 2){@Model.EnumRubro.ToString().Replace('_', ' ')}</span>
+            </div>
+     
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>   
+          
+    </div>
+</div>

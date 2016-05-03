@@ -1,0 +1,422 @@
+﻿@using Entity
+@model Entity.PosibleRespuesta
+@{
+    Layout = "";
+}
+@using (Html.BeginForm("CreatePosibleRespuesta", "Pregunta", FormMethod.Post, new { name = "addform58" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+        @{
+    var selectdAlternativa = "selected";
+    var selectdExcluyente = "";
+        }
+        @if (Model != null)
+        {
+            <input type="hidden" name="PreguntaId" value="@Model.IdPregunta" />
+            <input type="hidden" name="Id" value="@Model.Id" />
+            if (Model.Tipo != null)
+            {
+                selectdAlternativa = Model.Tipo == TipoPosibleRespuesta.Alternativa ? "selected" : "";
+                selectdExcluyente = Model.Tipo == TipoPosibleRespuesta.Excluyente ? "selected" : "";
+            }
+        }
+
+
+
+
+
+        <div class="form-group">
+            <label for="TipoPosibleRespuesta" class="col-md-4 control-label">Tipo de Respuesta</label>
+            <div class="col-md-8">
+                <select name="TipoPosibleRespuesta" class="form-control">
+                    <option value="0" @selectdAlternativa>
+                        Alternativa
+                    </option>
+                    <option value="1" @selectdExcluyente>
+                        Excluyente
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">VALORES</div>
+                    <div class="panel-body">
+                        <a href="javascript:void(0);" class="btn btn-primary btn-xs" id="nuevoValor">Nuevo Valor</a>
+
+                        <div class="well well-light create-value-container animated fadeInDown fast hidden">
+                            <button type="button" id="collapse-create" class="close" aria-hidden="true">×</button>
+                            <div class="form-group">
+                                <label for="Texto" class="col-md-4 control-label">Texto</label>
+                                <input type="text" name="valortexto" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Orden" class="col-md-4 control-label">&Oacute;rden</label>
+                                <input type="text" name="valororden" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Pregunta" class="col-md-4 control-label">Pregunta Asociada</label>
+                                @{Html.RenderAction("GetDorpDownAsociada", "Pregunta", new { id = 0, noIncluir = new List<long>() { Model.IdPregunta }, nombre = "PreguntaId", @default = "Ninguna" });}
+                            </div>
+                            <div class="form-group">
+                                <label for="Personalizado" class="col-md-4 control-label">Valor Personalizado</label>
+                                <div class="col-md-1">
+                                    <input type="checkbox" name="personalizado" class="form-control check-small" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <a href="javascript:void(0);" class="btn btn-primary pull-right btn-sm" id="btn-guardar-valor" style="margin-right: 63px;">Guardar</a>
+                            </div>
+
+                        </div>
+
+                        <table id="table-valores" class="table table-striped table-hover table-bordered table-condensed tabla small">
+                            <thead>
+                                <tr class="cabecera">
+                                    <th>
+                                        Texto
+                                    </th>
+                                    <th style="width: 25px;">
+                                        &Oacute;rden
+                                    </th>
+                                    <th>
+                                        Pregunta
+                                    </th>
+                                    <th>
+                                        Valor Personalizado
+                                    </th>
+                                    <th>
+                                        Acci&oacute;n
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Valores)
+                                {
+
+                                    <tr>
+                                        <td>
+
+                                            @{
+                                                var item1 = item;
+                                            }
+                                            @Html.DisplayFor(modelItem => item1.Texto)
+                                        </td>
+                                        <td> @item1.orden.GetValueOrDefault().ToString("0.")</td>
+                                        <td>
+                                            @if (item1.Pregunta != null)
+                                            {
+                                                @Html.DisplayFor(modelItem => item1.Pregunta.Texto)
+                                            }
+                                            else
+                                            {
+                                                <span>Ninguna</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.Personalizado)
+                                            {
+                                                <span>SI</span>
+                                            }
+                                            else
+                                            {
+                                                <span>NO</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-original-title="Editar" title="" id="edit-@item1.Id" role="@item1.Texto" class="edit-btn-val">
+                                                <i class="color-yellow glyphicon glyphicon-pencil"></i>
+                                            </a>
+                                            |
+                                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" title="" id="delete-@item1.Id" role="@item1.Texto" class="delete-btn-val">
+                                                <i class="color-red glyphicon glyphicon-remove"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+                        <div id="editNewValor" class="animated fadeInDown fast hidden">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+
+
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var valores = [];
+        var tempEdit = undefined;
+
+        @foreach (var v in Model.Valores)
+        {
+            @Html.Raw("valores.push({   IdPosResp:'" + v.IdPosibleRespuesta + "',Texto:'" + v.Texto + "',orden:'" + v.orden + "', IdPregunta: '" + v.IdPregunta + "', PreguntaText: '" + (v.Pregunta != null ? v.Pregunta.Texto : "Ninguna") + "',Personalizado:" + v.Personalizado.ToString().ToLower() + "});")
+        }
+
+
+        console.log(valores);
+
+        setTimeout(function () {
+            $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+            $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+            $('#PreguntaId_chosen').css('width', '280px');
+            var a = $("a[class*='chosen-single']");
+            if (a != null) {
+                a.css("border", "0");
+                a.css("background", "white");
+                a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+            }
+        }, 500);
+
+        $("#nuevoValor").click(function () {
+            $("input[name='valortexto']").val("");
+            $("input[name='valororden']").val("");
+            $("select[name='PreguntaId']").val(0);
+            $("select[name='personalizado']").checked = false;
+            var cont = $(".create-value-container");
+            if (cont.hasClass("hidden")) {
+                cont.removeClass("hidden");
+            }
+            setTimeout(function () {
+                $("#PreguntaId").chosen('destroy');
+                $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+                $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+                $('#PreguntaId_chosen').css('width', '280px');
+                var a = $("a[class*='chosen-single']");
+                if (a != null) {
+                    a.css("border", "0");
+                    a.css("background", "white");
+                    a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                }
+                $("input[name='valororden']").inputmask("9{1,3}");
+            }, 1);
+
+        });
+
+        $("#btn-guardar-valor").click(function () {
+            var idP = $("select[name='PreguntaId']").val();
+            var texto = $("input[name='valortexto']").val();
+            var orden = $("input[name='valororden']").val();
+            if (!texto || texto.trim() == '') {
+                var errors = "";
+                errors += "<li>" + 'El campo texto es obligatorio' + "</li>";
+
+                $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                return;
+            };
+            $("#errors-container").addClass("hidden");
+            var idPosResp = $("input[name='Id']").val();
+            var personalizado = $("input[name='personalizado']")[0].checked;
+            var preTexto = $($("select[name='PreguntaId']")[0]).find("option[value=" + idP + "]")[0].innerHTML;
+            if (tempEdit == undefined) {
+                valores.push({
+                    Texto: texto,
+                    orden:orden,
+                    IdPregunta: idP,
+                    PreguntaText: preTexto,
+                    IdPosResp: idPosResp,
+                    Personalizado: personalizado
+                });
+            } else {
+                for (var i in valores) {
+                    if (tempEdit.Texto == valores[i].Texto) {
+                        valores[i].Texto = texto;
+                        valores[i].orden = orden;
+                        valores[i].IdPregunta = idP;
+                        valores[i].PreguntaText = preTexto;
+                        valores[i].IdPosResp = idPosResp;
+                        valores[i].Personalizado = personalizado;
+                    }
+                }
+            }
+            tempEdit = undefined;
+            $(".create-value-container").addClass("hidden");
+            refresh();
+        });
+
+        $("#collapse-create").click(function () {
+            var cont = $(".create-value-container");
+            cont.addClass("hidden");
+        });
+
+        $(".delete-btn-val").click(function () {
+            var texto = $(this).attr("role");
+            for (var i in valores) {
+                if (texto == valores[i].Texto) {
+                    valores.splice(i, 1);
+                }
+            }
+            refresh();
+        });
+        $(".edit-btn-val").click(function () {
+            var texto = $(this).attr("role");
+            var temp = {};
+            for (var i in valores) {
+                if (texto == valores[i].Texto) {
+                    temp = valores[i];
+                }
+            }
+            $("input[name='valortexto']").val(temp.Texto);
+            $("input[name='valororden']").val(temp.orden);
+            $("input[name='personalizado']")[0].checked = temp.Personalizado;
+            $("select[name='PreguntaId']").val(temp.IdPregunta != "" ? temp.IdPregunta : 0);
+            $("input[name='valororden']").inputmask("9{1,3}");
+            //$("select[name='PreguntaId']").val(temp.IdPregunta);
+            console.log(temp.IdPregunta);
+            tempEdit = temp;
+            $(".create-value-container").removeClass("hidden");
+            setTimeout(function () {
+                $("#PreguntaId").chosen('destroy');
+                $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+                $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+                $('#PreguntaId_chosen').css('width', '280px');
+                var a = $("a[class*='chosen-single']");
+                if (a != null) {
+                    a.css("border", "0");
+                    a.css("background", "white");
+                    a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                }
+            }, 1);
+        });
+
+        function refresh() {
+            var tbody = $("#table-valores tbody").html("");
+            $("input[name='valororden']").inputmask("9{1,3}");
+            for (var i in valores) {
+                var temp = valores[i];
+                tbody.append("<tr>" +
+                    "<td>" + temp.Texto + "</td>" +
+                    "<td>" + temp.orden + "</td>" +
+                    "<td>" + temp.PreguntaText + "</td>" +
+                     "<td>" + (temp.Personalizado ? "SI" : "NO") + "</td>" +
+                    "<td><a href='javascript:void(0);' data-toggle='tooltip' data-placement='top' data-original-title='Editar' title='' id='edit' role='" + temp.Texto + "' class='edit-btn-val'>" +
+                                                "<i class='color-yellow glyphicon glyphicon-pencil'></i>" +
+                                            "</a>|" +
+                                            "<a href='javascript:void(0);' data-toggle='tooltip' data-placement='top' data-original-title='Eliminar' title='' id='delete-" + i + "' role='" + temp.Texto + "' class='delete-btn-val'>" +
+                                                "<i class='color-red glyphicon glyphicon-remove'></i>" +
+                                            "</a></td>" +
+                    "</tr>");
+            }
+            $(".delete-btn-val").click(function () {
+                var texto = $(this).attr("role");
+                for (var i in valores) {
+                    if (texto == valores[i].Texto) {
+                        valores.splice(i, 1);
+                    }
+                }
+                refresh();
+            });
+            $(".edit-btn-val").click(function () {
+                var texto = $(this).attr("role");
+                var temp = {};
+                for (var i in valores) {
+                    if (texto == valores[i].Texto) {
+                        temp = valores[i];
+                    }
+                }
+                $("input[name='valortexto']").val(temp.Texto);
+                $("input[name='valororden']").val(temp.orden);
+                $("input[name='personalizado']")[0].checked = temp.Personalizado;
+                $("select[name='PreguntaId']").val(temp.IdPregunta != "" ? temp.IdPregunta : 0);
+                tempEdit = temp;
+                $(".create-value-container").removeClass("hidden");
+                setTimeout(function () {
+                    $("#PreguntaId").chosen('destroy');
+                    $("#PreguntaId").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con " });
+                    $("div[class*='chosen-container chosen-container-single']").addClass("form-control");
+                    $('#PreguntaId_chosen').css('width', '280px');
+                    var a = $("a[class*='chosen-single']");
+                    if (a != null) {
+                        a.css("border", "0");
+                        a.css("background", "white");
+                        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                    }
+                }, 1);
+            });
+            $.InitTooltip();
+        }
+
+
+        //$("form[name='addform']").serialize()
+
+        $("button[name='aceptarbtn']").click(function () {
+            var sendData = {
+                TipoPosibleRespuesta: $("select[name='TipoPosibleRespuesta']").val(),
+                IdPregunta: $("input[name='PreguntaId']").val(),
+                Valores: valores
+            };
+
+            var idPosRes = $("input[name='Id']").val();
+            if (idPosRes != 0) {
+                sendData.Id = idPosRes;
+            }
+
+
+            $.ajax({
+                cache: false,
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                url: window.location.origin + "/Pregunta/CreatePosibleRespuestaPost/",
+                data: JSON.stringify(sendData),
+                success: function (data) {
+                    if (data.Success) {
+                        $("#editItem").modal("hide");
+                        $(document.body).removeClass('modal-open');
+                        $("#table-container").html(data.Data);
+
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        });
+
+        $.InitTooltip();
+    });
+</script>

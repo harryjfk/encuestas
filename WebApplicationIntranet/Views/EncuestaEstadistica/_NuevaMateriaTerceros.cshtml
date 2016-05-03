@@ -1,0 +1,199 @@
+﻿@using System.Diagnostics
+@model Entity.MateriaTerceros
+
+@using (Html.BeginForm("NuevaMateriaTerceros", "EncuestaEstadistica", FormMethod.Post, new { name = "addformMT" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default">
+        <div id="divNuevoContactoBody" class="form-horizontal panel-body" >
+
+
+            <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+                <strong>Alertas</strong>
+                <div>
+                    <ul></ul>
+                </div>
+            </div>
+
+
+
+            @if (Model != null)
+            {
+                @Html.HiddenFor(t=>t.Id);
+            }
+          
+                <div class="form-group">
+                    <label for="Nombre" class="col-md-4 control-label">CIIU</label>
+                    @if (Model == null || Model.Id == 0)
+                    {
+                        <div class="col-md-7" id="mtciiu">
+                            @{ Html.RenderAction("GetDorpDownCiiu", "EncuestaEstadistica", new {nombre = "IdCiiu", id = (Model != null && Model.LineaProducto != null) ? Model.LineaProducto.IdCiiu.ToString() : "0"}); }
+                        </div>
+                        <div class="col-md-1 txt-color-red"><span style="margin-left: 30px;">(*)</span></div>
+                    }
+                    else
+                    {
+                        <div class="col-md-7" id="mtciiu">
+                            @Html.Label("", Model.LineaProducto.Ciiu.Nombre, new { @class = "form-control" })
+                        </div>
+                    }
+                </div>
+            <div class="form-group">
+                <label for="Linea Produco" class="col-md-4 control-label">L&iacute;nea de Producto</label>
+               @if (Model == null || Model.Id == 0)
+               {
+                   <div class="col-md-7" id="mtlineaproducto">
+                       
+                   </div>
+               }
+               else
+               {
+                   <div class="col-md-7" id="mtciiu">
+                       @Html.Label("", Model.LineaProducto.Nombre, new { @class = "form-control" })
+                   </div>
+@Html.HiddenFor(t=>t.IdLineaProducto)
+               }
+                <div class="col-md-1 txt-color-red"><span style="margin-left: 30px;">(*)</span></div>
+            </div>
+            <div class="form-group">
+                <label for="UnidadMedida" class="col-md-4 control-label">Unidad de Medida</label>
+                @if (Model == null || Model.Id == 0)
+                {
+                    <div class="col-md-7" id="mtunidadmedida">
+
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-7" id="mtciiu">
+                        @Html.Label("", Model.UnidadMedida.Abreviatura, new { @class = "form-control" })
+                    </div>
+                    @Html.HiddenFor(t=>t.IdUnidadMedida)
+                }
+                <div class="col-md-1 txt-color-red"><span style="margin-left: 30px;">(*)</span></div>
+            </div>
+                <div class="form-group">
+                    <label for="UnidadProduccion" class="col-md-4 control-label">Producci&oacute;n</label>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(t=>t.UnidadProduccion,new {@class="form-control reset-max-width"})
+                    </div>
+                    <div class="col-md-1 txt-color-red"><span style="margin-left: 30px;">(*)</span></div>
+                </div>
+
+            <div style="color: white">_</div>
+            <div style="color: white">_</div>
+
+            <div class="modal-footer">
+                <button type="button" name="aceptarbtnMT" class="btn btn-primary" value="Aceptar">Adicionar</button>
+            </div>
+
+        </div>
+    </div>
+}
+@{
+    var idLineaProd = (Model != null ? Model.IdLineaProducto : 0);
+    var idCiuu=(Model!=null&&Model.LineaProducto!=null?Model.LineaProducto.IdCiiu:0);
+    var idUnidadMedida = (Model != null ? Model.IdUnidadMedida:0);
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button[name='aceptarbtnMT']").click(function () {
+            var $elem = $(this);
+            $elem.addClass("disabled");
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/EncuestaEstadistica/NuevaMateriaTerceros/",
+                data: $("form[name='addformMT']").serialize(),
+                success: function (data) {
+                    $elem.removeClass("disabled");
+                    if (data.Success) {
+                        $("#productosMateriaPrimaTerceros").html(data.Data);
+                        $("#cap3").html(data.ValorProduccion);
+                        $("#cap4").html(data.Ventas);
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        setTimeout(function() {
+            loadLineaProducto();
+        }, 100);
+        $("#IdCiiu").on('change', function() {
+            loadLineaProducto();
+        });
+        $("#UnidadProduccion").inputmask("9{1,8}.9{0,4}");
+        setTimeout(function() {
+            $("#IdCiiu").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione CIIU" });
+        },500);
+        
+        function loadLineaProducto() {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/EncuestaEstadistica/GetDorpDownLineaProducto/",
+                data: {
+                    idCiiu: $('#IdCiiu').val(),
+                    id:'@idLineaProd'
+                },
+                success: function (data) {
+                    $("#mtlineaproducto").html(data);
+                    $('#IdLineaProducto').on('change', function() {
+                        loadUnidadMedida();
+                    });
+                    $("#IdLineaProducto").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione Línea de Producto" });
+                    loadUnidadMedida();
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //$elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
+        function loadUnidadMedida() {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/EncuestaEstadistica/GetDorpDownUnidadMedida/",
+                data: {
+                    idLineaProducto: $('#IdLineaProducto').val()?$('#IdLineaProducto').val():'0',
+                    name: "IdUnidadMedida",
+                    id:'@idUnidadMedida'
+                },
+                success: function (data) {
+                    $("#mtunidadmedida").html(data);
+                    $("#IdUnidadMedida").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione Unidad de Medida" });
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //$elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
+    })
+</script>

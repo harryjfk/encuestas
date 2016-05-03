@@ -1,0 +1,360 @@
+﻿@model Entity.Establecimiento
+@{
+    Layout = "";
+}
+@using (Html.BeginForm("Create", "Establecimiento", FormMethod.Post, new { name = "addform" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+        }
+        <div class="col-md-6">
+            @*@if (Model != null && Model.Id != 0)
+            {*@
+                <div class="form-group">
+                    <label for="IdentificadorInterno" class="col-md-4 control-label">Nro Identificador</label>
+                    <div class="col-md-7">
+                        <span class="form-control">@Model.IdentificadorInterno</span>
+                    </div>
+                </div>
+                @Html.HiddenFor(t=>t.IdentificadorInterno)
+            @*}*@
+            <div class="form-group">
+                <label for="Ruc" class="col-md-4 control-label">Ruc</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.Ruc, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Ruc)
+                </div>
+                <div class="col-md-1 txt-color-red" style="margin-left: -25px!important"><span>(*)</span></div>
+            </div>
+            @if (Model != null && Model.Id != 0)
+            {
+                <div class="form-group">
+                    <label for="RazonSocial" class="col-md-4 control-label">Raz&oacute;n Social</label>
+                    <div class="col-md-7">
+                        <span class="form-control">@Model.RazonSocial</span>
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <label for="Nombre" class="col-md-4 control-label">Nombre Establecimiento</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.Nombre, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Nombre)
+                </div>
+                <div class="col-md-1 txt-color-red" style="margin-left: -25px!important"><span>(*)</span></div>
+            </div>
+            <div class="form-group">
+                <label for="Direccion" class="col-md-4 control-label">Direcci&oacute;n</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.Direccion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Direccion)
+                </div>
+                <div class="col-md-1 txt-color-red" style="margin-left: -25px!important"><span>(*)</span></div>
+            </div>
+            
+           
+            @*<div class="form-group">
+                <label for="SituacionJuridica" class="col-md-4 control-label">Sit. Jur&iacute;dica</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.SituacionJuridica, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SituacionJuridica)
+                </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+            </div>*@
+        </div>
+        <div class="col-md-6">
+            
+            <div class="form-group">
+                <label for="Departamento" class="col-md-4 control-label">Departamento</label>
+                <div class="col-md-7" id="divDepartamento">
+                    @* @{Html.RenderAction("GetDropDown", "Departamento", new { id = (Model != null && Model.IdDepartamento != null) ? Model.IdDepartamento : "", nombre = "IdDepartamento" });}*@
+                </div>
+                <div class="col-md-1 txt-color-red" style="margin-left: -25px!important"><span>(*)</span></div>
+            </div>
+            <div class="form-group">
+                <label for="Provincia" class="col-md-4 control-label">Provincia</label>
+                <div class="col-md-7" id="divProvincia">
+                    @* @{Html.RenderAction("GetDropDown", "Provincia", new { id = (Model != null && Model.IdProvincia != null) ? Model.IdProvincia : "", nombre = "IdProvincia" });}*@
+
+                </div>
+                <div class="col-md-1 txt-color-red " style="margin-left: -25px!important"><span>(*)</span></div>
+            </div>
+            <div class="form-group">
+                <label for="Distrito" class="col-md-4 control-label">Distrito</label>
+                <div class="col-md-7" id="divDistrito">
+
+                    @* @{Html.RenderAction("GetDropDown", "Distrito", new { id = (Model != null && Model.IdDistrito != null) ? Model.IdDistrito : "", nombre = "IdDistrito" });}*@
+                </div>
+                <div class="col-md-1 txt-color-red " style="margin-left: -25px!important"><span>(*)</span></div>
+            </div>
+
+            <div class="form-group">
+                <label for="Telefono" class="col-md-4 control-label">Tel&eacute;fono</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.Telefono, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Telefono)
+                </div>
+                <div class="col-md-1 txt-color-red" style="margin-left: -25px!important"><span>(*)</span></div>
+            </div>
+            <div class="form-group">
+                <label for="Fax" class="col-md-4 control-label">Fax</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.Fax, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Fax)
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                <label for="Administrativos" class="col-md-4 control-label">Trab. Administrativos</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.Administrativos, new { @class = "form-control" })
+                </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+            </div>*@
+
+            @*<div class="form-group">
+                <label for="DesviacionDiasTrabajados" class="col-md-4 control-label">Desviaci&oacute;n D&iacute;as Trabajados</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.DesviacionDiasTrabajados, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DesviacionDiasTrabajados)
+                </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+            </div>*@
+            @*<div class="form-group">
+                <label for="TrabajadoresProduccion" class="col-md-4 control-label">Trab. Producci&oacute;n</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(t => t.TrabajadoresProduccion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TrabajadoresProduccion)
+                </div>
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+            </div>*@
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="Observaciones" class="col-md-2 control-label">Observaciones</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(t => t.Observaciones, new { @class = "form-control", style = "width: 106%; max-width: inherit;" })
+                    @Html.ValidationMessageFor(model => model.Observaciones)
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="form-group">
+                <label for="Activado" class="col-md-2 control-label">Activado</label>
+                <div class="col-md-1">
+                    @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                    @Html.ValidationMessageFor(model => model.Activado)
+                </div>
+            </div>
+        </div>
+        <div style="color: white">_</div>
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+
+
+    </div>
+}
+@{
+    var idDepartamento = (Model != null && Model.IdDepartamento != null) ? Model.IdDepartamento : "";
+    var idProvincia = (Model != null && Model.IdProvincia != null) ? Model.IdProvincia : "";
+    var idDistrito = (Model != null && Model.IdDistrito != null) ? Model.IdDistrito : "";
+    var defaultD = idDepartamento == "" ? null : "Seleccione Departamento";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button[name='aceptarbtn']").click(function () {
+            var $elem = $(this);
+            $elem.addClass("disabled");
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/Establecimiento/CreatePost/",
+                data: $("form[name='addform']").serialize(),
+                success: function (data) {
+                    $elem.removeClass("disabled");
+                    if (data.Success) {
+                        $("#table-container").html(data.Data);
+                        $("#editItem").modal("hide");
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        LoadDepartamento();
+        $('#Ruc').maxlength({ events: ['blur'],slider:true,maxCharacters:11,statusText:'caracteres restantes' });
+        $('#Nombre').maxlength({ events: ['blur'],slider:true,maxCharacters:150,statusText:'caracteres restantes' });
+        $('#RazonSocial').maxlength({ events: ['blur'],slider:true,maxCharacters:1000,statusText:'caracteres restantes' });
+        $('#Direccion').maxlength({ events: ['blur'],slider:true,maxCharacters:255,statusText:'caracteres restantes' });
+        $('#Telefono').maxlength({ events: ['blur'],slider:true,maxCharacters:10,statusText:'caracteres restantes' });
+        $('#Fax').maxlength({ events: ['blur'],slider:true,maxCharacters:100,statusText:'caracteres restantes' });
+        $('#Observaciones').maxlength({ events: ['blur'],slider:true,maxCharacters:1000,statusText:'caracteres restantes' });
+    });
+    function LoadDepartamento() {
+        var dep = $('#IdDepartamento');
+        var pro = $('#IdProvincia');
+        var dis = $('#IdDistrito');
+        if (dep)
+            dep.addClass("disabled");
+        if (pro)
+            pro.addClass("disabled");
+        if (dis)
+            dis.addClass("disabled");
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $.origin() + "/Departamento/GetDropDown/",
+            data: {
+                'default': '@defaultD',
+                id: '@idDepartamento',
+                nombre: "IdDepartamento",
+            },
+            success: function (data) {
+                $('#divDepartamento').html(data);
+                LoadProvincia();
+                $('#IdDepartamento').removeClass("disabled");
+                $('#IdDepartamento').on("change", function () {
+                    LoadProvincia();
+                });
+                setTimeout(function () {
+                    $("#IdDepartamento").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione departamento" });
+                    $("div[class*='chosen-container chosen-container-single chosen-container-single-nosearch']").addClass("form-control");
+                    var a = $("a[class*='chosen-single chosen-default']");
+                    if (a != null) {
+                        a.css("border", "0");
+                        a.css("background", "white");
+                        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                    }
+                }, 500);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+    }
+
+
+    function LoadProvincia() {
+        var pro = $('#IdProvincia');
+        var dis = $('#IdDistrito');
+        if (pro)
+            pro.addClass("disabled");
+        if (dis)
+            dis.addClass("disabled");
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $.origin() + "/Provincia/GetDropDown/",
+            data: {
+                id: '@idProvincia',
+                nombre: "IdProvincia",
+                idDepartamento: $('#IdDepartamento').val()
+            },
+            success: function (data) {
+                $('#divProvincia').html(data);
+                LoadDistrito();
+                $('#IdProvincia').removeClass("disabled");
+                $('#IdProvincia').on("change", function () {
+                    LoadDistrito();
+                });
+                setTimeout(function () {
+                    $("#IdProvincia").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione provincia" });
+                    $("div[class*='chosen-container chosen-container-single chosen-container-single-nosearch']").addClass("form-control");
+                    var a = $("a[class*='chosen-single chosen-default']");
+                    var a1 = $("a[class*='chosen-single']");
+                    if (a != null) {
+                        a.css("border", "0");
+                        a.css("background", "white");
+                        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                    }
+                    if (a1 != null) {
+                        a1.css("border", "0");
+                        a1.css("background", "white");
+                        a1.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                    }
+                },500);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+    }
+
+    function LoadDistrito() {
+        var dis = $('#IdDistrito');
+        if (dis)
+            dis.addClass("disabled");
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $.origin() + "/Distrito/GetDropDown/",
+            data: {
+                id: '@idDistrito',
+                nombre: "IdDistrito",
+                idProvincia: $('#IdProvincia').val()
+            },
+            success: function (data) {
+                $('#divDistrito').html(data);
+                $('#IdDistrito').removeClass("disabled");
+                setTimeout(function() {
+                    $("#IdDistrito").chosen({ disable_search_threshold: 10, no_results_text: "No se encontraron coincidencias con ", placeholder_text_single: "Seleccione distrito" });
+                    $("div[class*='chosen-container chosen-container-single chosen-container-single-nosearch']").addClass("form-control");
+                    var a = $("a[class*='chosen-single chosen-default']");
+                    var a1 = $("a[class*='chosen-single']");
+                    if (a != null) {
+                        a.css("border", "0");
+                        a.css("background", "white");
+                        a.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                    }
+                    if (a1 != null) {
+                        a1.css("border", "0");
+                        a1.css("background", "white");
+                        a1.css("box-shadow", "0 0 0 white inset,0 0 0 rgba(0,0,0,.1)");
+                    }
+                },500);
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+    }
+</script>
+

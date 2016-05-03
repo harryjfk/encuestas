@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://srv-desnet-services.produccion.gob.pe:7023/WCFSistemasService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WCFSistemasService" />
+  <xs:element name="BuscarSunatProduccionParametro">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ID_RUC" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuscarSunatProduccionParametroResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WCFSistemasService" minOccurs="0" name="BuscarSunatProduccionParametroResult" nillable="true" type="q1:BuscarEmpresaResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Validacion_SUNAT">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ID_RUC" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Validacion_SUNATResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WCFSistemasService" minOccurs="0" name="Validacion_SUNATResult" nillable="true" type="q2:BuscarEmpresaResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

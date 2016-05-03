@@ -1,0 +1,291 @@
+﻿body {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    font-family:arial !important;
+}
+
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.max-z-index {
+    z-index: 99999999 !important;
+}
+.bg-color-ligth-yellow {
+    background-color: rgb(255, 255, 184) !important;
+}
+.error-input {
+    border: 1px solid red;
+}
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+.form-control {
+      font-size: 12px !important;
+}
+div[class='col-md-1 txt-color-red'] {
+      margin-left: -55px;
+  margin-top: 5px;
+}
+
+.tools-container i {
+    font-size: 30px;
+}
+
+
+/*OWN CSS RULES*/
+.margin-top-5 {
+    margin-top: 5px !important;
+}
+
+.margin-top-30 {
+    margin-top: 30px !important;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px !important;
+}
+
+.color-red {
+    color: rgb(210, 0, 0) !important;
+}
+
+.color-yellow {
+    color: #D3D304 !important;
+}
+
+.color-black {
+    color: #5A5A5A !important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.pagination {
+    margin: 0 !important;
+}
+
+.table {
+    margin-bottom: 8px !important;
+}
+
+.margin-right-10 {
+    margin-right: 10px !important;
+}
+.pagination-container {
+  margin-bottom:25px;
+    float: left !important;
+}
+
+
+
+
+
+
+h3, .h3 {
+    font-size: 26px !important;
+}
+
+footer {
+    background: rgb(228, 228, 228);
+    padding-top: 20px;
+    margin-top: 12px;
+}
+
+.screen-title {
+    margin: 40px 0 30px 0;
+}
+
+.info-child-screen {
+    font-size: 22px;
+    margin-top: -18px;
+}
+
+.title-container {
+    padding-bottom: 30px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.20);
+}
+
+
+
+.cabecera {
+    background: #eb6864 !important;
+    color: #f9f9f9;
+}
+
+.btn-custom-add {
+    margin: 10px 0;
+}
+
+.header-container {
+    padding: 5px 0;
+    border: 1px solid #C2C2C2;
+    margin-top: 10px;
+    background: #eee;
+}
+
+.odd {
+    background: #f9f9f9;
+}
+
+.list-row-container {
+    padding: 3px 0;
+}
+
+.no-elements-notification {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: -9px;
+    font-size: 16px;
+    text-align: center;
+    color: rgb(153, 42, 42);
+}
+
+.reset-max-width {
+    max-width: inherit;
+}
+
+.input-group-addon-datetimepicker {
+    height: 39px;
+    position: absolute;
+    right: 48px;
+    top: 0;
+    width: 39px;
+}
+
+.navbar {
+    margin-bottom: 5px;
+}
+
+.copyright {
+    color: #94a3a8;
+    margin: 60px 0 0 0;
+    text-align: center;
+}
+
+.nav-home-view {
+    background: #fff !important;
+    border: none !important;
+    top: -200px;
+}
+
+.body-home-view {
+    margin-top: -40px !important;
+}
+
+.btn-login {
+    position: absolute;
+    top: 100px;
+    right: 106px;
+    border: 0;
+    padding: 8px;
+    background: rgba(0,0,0,.65)!important;
+    border-radius: 4px;
+}
+
+.drop-login {
+    position: absolute;
+    top: 143px;
+right: 105px;
+}
+
+.bs-callout-danger {
+    background-color: #fcf2f2;
+    border-color: #dFb5b4;
+}
+
+.bs-callout {
+    margin: 20px 0;
+    padding: 15px 30px 15px 15px;
+    border-left: 5px solid #dFb5b4;
+}
+
+
+.btn-close-tag {
+    position: absolute;
+    padding-left: 8px!important;
+    margin-top: 2px;
+    font-size: 20px;
+    margin-left: -18px;
+}
+.btn-close-tag:hover {
+    color: red;
+}
+.btn-close-tag i {
+    color: #fff !important;
+}
+
+.no-navbar-link {
+    cursor: default !important;
+}
+.no-navbar-link:hover {
+    background: #eb6864 !important;
+}
+
+.pregunta-container {
+    padding: 10px 10px 20px 10px;
+    border-bottom: 1px solid #c5c5c5;
+}
+.pregunta-container:last-of-type {
+    border-bottom: none;
+}
+
+.valores-respuestas-container {
+    margin-left: 15px;
+    font-size: 16px;
+}
+
+.pregunta-text {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.modal-footer-own {
+    padding: 30px 20px 20px 20px;
+    text-align: right;
+}
+
+.check-small {
+    width: 20px;
+    max-width: 20px;
+}
+
+.welcome-small-screen {
+    position: absolute;
+    top: -51px;
+    right: 49px;
+    font-size: 25px;
+}
+
+.welcome-small-screen a {
+    color: #A3A3A3 !important;
+}
+.welcome-small-screen a:hover {
+    background: none !important;
+    text-decoration: none;
+}
+
+#form-login form {
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border: 1px solid #c5c5c5;
+}
+
+.valor-container {
+    padding-top: 15px;
+}
+
+.preg-asociada-container {
+    padding-left: 30px;
+}
+
+.estado-encuesta {
+    padding-left: 10px;
+}

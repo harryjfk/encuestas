@@ -1,0 +1,189 @@
+﻿@using System.Globalization
+@using Entity
+@model EncuestaEmpresarial
+
+@{
+var hidden = Request.IsAuthenticated ? "" : "hidden";
+}
+
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger animated bounceIn">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+@if (Model.EstadoEncuesta == EstadoEncuesta.Enviada)
+{
+    <h5>Enviada el @Model.fecha_ultimo_envio.GetValueOrDefault().ToString("D", CultureInfo.GetCultureInfo("es"))</h5>
+}
+<a href="/EncuestaEmpresarial/Export" target="_blank" class="@hidden btn btn-primary pull-right" style="margin-left: 10px;">
+    <i class="glyphicon glyphicon-file">
+    </i> Imprimir
+</a>
+
+<a href="/EncuestaEmpresarial/EncuestasAnalista/@Model.IdEstablecimiento" class="@hidden btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+@if (Model != null)
+{
+    using (Html.BeginForm("Enviar", "EncuestaEmpresarial", FormMethod.Post, new { name = "cap1form" }))
+    {
+        @Html.HiddenFor(t => t.Id)
+        <h3 class="screen-title">
+            Encuesta de Manufactura Opci&oacute;n Empresarial
+            <span class="label label-primary">
+                @Model.Fecha.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()
+            </span>
+            <span class="estado-encuesta"><i>@Model.EstadoEncuesta</i></span>
+        </h3>
+        if (Model.EstadoEncuesta == EstadoEncuesta.Observada)
+        {
+            <div class="bs-callout bs-callout-danger">
+                <h4>Observaciones</h4>
+                <p>@Model.Justificacion</p>
+            </div>
+
+        }
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Preguntas</div>
+            <div class="panel-body">
+                @foreach (var item in Model.Preguntas.Where(t => !t.Valores.Any()).OrderBy(t => t.orden))
+                {
+                    if (item.PosiblesRespuestas.Any())
+                    {
+                        <div class="pregunta-container" data-id="@item.Id">
+                            <div>
+                                <p class="pregunta-text">@item.orden- @item.Texto</p>
+                            </div>
+                            <div>
+                                @{
+                        var pr = item.PosiblesRespuestas.FirstOrDefault();
+                                }
+
+                                @foreach (var v in pr.Valores)
+                                {
+                                    var hasPrAso = v.IdPregunta != null;
+
+                                    <div class="valores-respuestas-container">
+                                        <div class="valor-container">
+                                            @if (v.Seleccionado)
+                                            {
+                                                @(pr.Tipo == TipoPosibleRespuesta.Alternativa ?
+                                              Html.CheckBox(v.Texto, new { disabled = "true", @checked = "true" })
+                                                  : Html.RadioButton("valor" + pr.Id, v.Texto, new { disabled = "true", @checked = "true" }))
+                                            }
+                                            else
+                                            {
+                                                @(pr.Tipo == TipoPosibleRespuesta.Alternativa ?
+                                              Html.CheckBox(v.Texto, new { disabled = "true" })
+                                                  : Html.RadioButton("valor" + pr.Id, v.Texto, new { disabled = "true" }))
+                                            }
+
+                                            <span class="valores-text">@v.Texto</span>
+
+                                            @if (hasPrAso && v.Seleccionado)
+                                            {
+                                                <span class="preg-asociada-container preg-@pr.Id preg-asoc-@v.Id animated fadeInLeft fast">
+                                                    <span class="margin-right-10 bold">@v.Pregunta.Texto</span>
+                                                    @{var posResp = v.Pregunta.PosiblesRespuestas.FirstOrDefault();}
+                                                    @if (posResp != null)
+                                                    {
+                                                        foreach (var tv in posResp.Valores)
+                                                        {
+                                                            if (tv.Seleccionado)
+                                                            {
+                                                                @(tv.PosibleRespuesta.Tipo == TipoPosibleRespuesta.Excluyente ?
+                                                            Html.RadioButton("aa" + v.Id, tv.Texto, new { disabled = "true", @checked = "true" })
+                                                                : Html.CheckBox(tv.Texto, new { disabled = "true", @checked = "true" }))
+                                                            }
+                                                            else
+                                                            {
+                                                                @(tv.PosibleRespuesta.Tipo == TipoPosibleRespuesta.Excluyente ?
+                                                            Html.RadioButton("aa" + v.Id, tv.Texto, new { disabled = "true" })
+                                                            : Html.CheckBox(tv.Texto, new { disabled = "true" }))
+                                                            }
+                                                            <span class="margin-right-10">@tv.Texto</span>
+                                                            if (tv.Personalizado)
+                                                            {
+                                                                if (tv.Seleccionado)
+                                                                {
+                                                                    <br />
+                                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="">@tv.texto_personalizado</span>
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                </span>
+                                            }
+                                            @if (v.Personalizado)
+                                            {
+                                                if (v.Seleccionado)
+                                                {
+                                                    <br />
+                                                    <span style="width: 120px !important; display: inline; margin-left: 10px;" class="">@v.texto_personalizado</span>
+                                                }
+
+                                            }
+
+                                        </div>
+
+
+
+                                    </div>
+                                }
+
+
+
+
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    }
+}
+
+<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Observar Encuesta</h4>
+            </div>
+            @using (Html.BeginForm("Observar", "EncuestaEmpresarial",FormMethod.Post))
+            {
+                @Html.HiddenFor(t=>t.Id)
+                <div class="modal-body">
+                    <div>
+                        <textarea name="observacion" style="width: 100%; max-width: inherit !important;" rows="15"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Enviar" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btn-observar").click(function () {
+            //$("#" + idModalElement + " .modal-body").html(data);
+            $("#editItem").modal("show");
+        });
+    });
+</script>

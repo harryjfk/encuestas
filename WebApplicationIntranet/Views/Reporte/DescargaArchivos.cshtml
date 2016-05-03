@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Descarga de archivos para consulta";
+    var meses = new[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+}
+
+@Scripts.Render("~/bundles/jquery")
+<h3 class="screen-title">@ViewBag.Title</h3>
+
+@using (Html.BeginForm("DescargaArchivosTable", "Reporte", FormMethod.Post, new { name = "frmDescarga" }))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group" style="z-index:3;">
+                        <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Año</span>
+                        <select id="select-ano" name="year" class="form-control">
+                            @for (int i = DateTime.Now.Year; i >= 2012; i--)
+                            {
+                                <option value="@i">@i.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group" style="z-index:3;">
+                        <span class="input-group-addon">Mes Incio</span>
+                        <select id="select-mes-desde" name="inicio" class="form-control">
+                            @for (int i = 0; i < meses.Length; i++)
+                            {
+                                <option value="@(i + 1)">@meses[i]</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group" style="z-index:3;">
+                        <span class="input-group-addon">Mes Fin</span>
+                        <select id="select-mes-fin" name="fin" class="form-control">
+                            @for (int i = 0; i < meses.Length; i++)
+                            {
+                                <option value="@(i + 1)" @(i == 11 ? "selected='selected'" : "")>@meses[i]</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="input-group margin-top-5">
+                        <span class="input-group-addon">Ciiu</span>
+                        @{ Html.RenderAction("GetDorpDown", "Ciiu", new { @default = "TODOS", nombre  = "idCiiu" }); }
+                    </div>
+                    <div class="col-md-4 margin-top-5">
+                        <a id="btn-export-excel" class="btn btn-default  btns-group">Excel</a>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="row">
+                
+            </div>-->
+        </div>
+    </div>    
+}
+@section scripts{
+    <script>
+    $('#btn-export-excel').click(function (e) {
+        e.preventDefault();
+
+        $('#tbl-ivf').css({ 'display': 'none' });
+        $('#textProcess').css({ 'display': '' });
+
+        if (parseInt($('#select-mes-desde').val()) > parseInt($('#select-mes-fin').val())) {
+            var errors = "";
+            errors += "<li>Mes inicio no puede ser mayor a mes fin.</li>";
+            $("#errors-container-general").removeClass("hidden").find("ul").html(errors);
+            return;
+        } else {
+            $("#errors-container-general").addClass("hidden");
+        }
+
+        $('[name="frmDescarga"]').submit();
+    });
+    </script>
+}

@@ -1,0 +1,22 @@
+﻿@model Entity.LineaProductoEstablecimiento
+
+@{
+    ViewBag.Title = "Detalles del Linea de Producto por Establecimiento";
+}
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles de L&iacute;nea de Producto por Establecimiento</h3>
+
+    <a href="/LineaProductoEstablecimiento/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold">Establecimiento: </span> <span>@Model.Establecimiento.Nombre</span>
+        </div>
+        <div>
+            <span class="bold">Línea de Producto: </span> <span>@Model.LineaProducto.ToString()</span>
+        </div>
+        <div>
+            <span class="bold">CIIU: </span> <span>@Model.LineaProducto.Ciiu.ToString()</span>
+        </div>
+    </div>
+</div>

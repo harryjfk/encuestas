@@ -1,0 +1,332 @@
+﻿@model Entity.AñoBase
+@Scripts.Render("~/bundles/tools")
+@using System.Globalization;
+@{
+    Layout = "";
+}
+@using (Html.BeginForm("Create", "AñoBase", FormMethod.Post, new { name = "Añ-635737259557672154" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+        @if (Model != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input type="hidden" id="id_linea_producto_hid" value="@Model.id_linea_producto" />
+            <input type="hidden" id="id_unidad_medida_hid" value="@Model.id_unidad_medida" />
+            <input type="hidden" id="id_establecimiento_hid" value="@Model.id_establecimiento" />
+            <input type="hidden" id="id_ciiu_hid" value="@Model.id_ciiu" />
+        }
+
+        <div class="form-group ">
+            <label for="id_establecimiento" class="col-md-4 control-label">Establecimiento</label>
+            <div class="col-md-7">
+                <div id="drop-down-establecimiento">
+                    @{Html.RenderAction("GetDorpDown", "Establecimiento", new { id = (Model != null) ? Model.id_establecimiento : 0, nombre = "id_establecimiento", @default = "Seleccione elemento" });}
+                </div>
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+
+        <div class="form-group  ciiu-group">
+            <label for="id_ciiu" class="col-md-4 control-label"> CIIU</label>
+            <div class="col-md-7">
+                <div id="drop-down-ciiu">
+                    @{Html.RenderAction("GetDorpDownEstablecimiento", "CIIU", new { id = (Model != null) ? Model.id_ciiu : 0, idEstablecimiento = (Model != null) ? Model.id_establecimiento : 0, nombre = "id_ciiu", @default = "Seleccione elemento", showAllCollection = false });}
+                </div>
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+
+        <div class="form-group  linea-producto-group">
+            <label for="id_linea_producto" class="col-md-4 control-label"> Producto</label>
+            <div class="col-md-7">
+                <div id="drop-down-linea-producto">
+                    @{Html.RenderAction("GetDorpDownCiiu", "LineaProducto", new
+                        {
+                            id = (Model != null && Model.id_linea_producto != null) ? Model.id_linea_producto : 0,
+                            idCiuu = (Model != null) ? Model.id_ciiu : 0,
+                            idEstablecimiento = (Model != null) ? Model.id_establecimiento : 0,
+                            nombre = "id_linea_producto",
+                            @default = "Seleccione elemento"
+                        });}
+                </div>
+            </div>
+            <div class="col-md-1 txt-color-red" id="req-prod"><span>(*)</span></div>
+        </div>
+
+        <div class="form-group unidad-medida-group">
+            <label for="id_unidad_medida" class="col-md-4 control-label"> Unidad Medida</label>
+            <div class="col-md-7">
+                <div id="drop-down-unidad-medida">
+                    @{Html.RenderAction("GetDorpDownLineaProducto", "UnidadMedida", new {
+                            id = (Model != null && Model.id_unidad_medida != null) ? Model.id_unidad_medida : 0,
+                            idLineaProducto = (Model != null && Model.id_linea_producto != null) ? Model.id_linea_producto : 0,
+                            nombre = "id_unidad_medida",
+                            @default = "Seleccione elemento"
+                        });}
+                </div>
+            </div>
+            <div class="col-md-1 txt-color-red" id="req-um"><span>(*)</span></div>
+        </div>
+
+        <div class="form-group">
+            <label for="produccion_anual" class="col-md-4 control-label"> Produccion Anual</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.produccion_anual, new { @class = "form-control mask0" })
+                @Html.ValidationMessageFor(model => model.produccion_anual)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        <div class="form-group">
+            <label for="valor_produccion" class="col-md-4 control-label"> Valor Producci&oacute;n</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.valor_produccion, new { @class = "form-control mask0" })
+                @Html.ValidationMessageFor(model => model.valor_produccion)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        <div class="form-group">
+            <label for="precio" class="col-md-4 control-label"> Precio</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.precio, new { @class = "form-control mask4", Value = Model.precio.ToString("0.0000", CultureInfo.InvariantCulture) })
+                @Html.ValidationMessageFor(model => model.precio)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        <div class="form-group">
+            <label for="Activado" class="col-md-4 control-label">Activado</label>
+            <div class="col-md-1">
+                @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                @Html.ValidationMessageFor(model => model.Activado)
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+        <input type="hidden" id="metodo_calculo" value="0" />
+    </div>
+
+                        }
+@{ var idCiiu = (Model != null) ? Model.id_ciiu : 0;}
+<script>    
+    $(document).ready(function () {
+
+        var hEstablecimiento = $('#id_establecimiento_hid');
+
+        var idEstablecimiento = 0;
+        if (hEstablecimiento)
+            idEstablecimiento = hEstablecimiento.val();
+
+        var hLineaProducto = $('#id_linea_producto_hid');
+        var idLineaProducto = 0;
+        if (hLineaProducto)
+            idLineaProducto = hLineaProducto.val();
+
+        var hCiiu = $('#id_ciiu_hid');
+        var idCiiu = 0;
+        if (hCiiu)
+            idCiiu = hCiiu.val();
+        var hUnidadMedida = $('#id_unidad_medida_hid');
+        var idUnidadMedida = 0;
+        if (hUnidadMedida)
+            idUnidadMedida = hUnidadMedida.val();
+
+        $("button[name='aceptarbtn']").click(function () {
+
+            var selectE = $("#id_establecimiento");
+            var selectC = $("#id_ciiu");
+            var selectL = $("#id_linea_producto");
+            var selectU = $("#id_unidad_medida");
+            var prodA = $("#produccion_anual");
+            var valorP = $("#valor_produccion");
+            var precio = $("#precio");
+            var mc = $('#metodo_calculo').val();
+            var valid = false;
+
+            if (mc == '2' || mc == '3') {
+                valid = selectE.val() > 0 && selectC.val() > 0 && prodA.val() != "" && valorP.val() != "" && precio.val() != "";
+            } else {
+                valid = selectE.val() > 0 && selectC.val() > 0 && selectL.val() > 0 && selectU.val() > 0 && prodA.val() != "" && valorP.val() != "" && precio.val() != "";
+            }
+
+            if (valid) {
+                var $elem = $(this);
+                $elem.addClass("disabled");
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/AñoBase/CreatePost/",
+                    data: $("form[name='Añ-635737259557672154']").serialize(),
+                    success: function (data) {
+                        $elem.removeClass("disabled");
+                        if (data.Success) {
+                            $("#table-container").html(data.Data);
+                            $("#editItem").modal("hide");
+                            $.smallBox({
+                                title: "Confirmación",
+                                content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                                color: "#659265",
+                                iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                timeout: 4000
+                            });
+                        } else {
+                            var errors = "";
+                            for (var i = 0; i < data.Errors.length; i++) {
+                                errors += "<li>" + data.Errors[i] + "</li>";
+                            }
+                            $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                        }
+                        //$("#editItem .modal-body").html(data);
+                        //$("#editItem").modal("show");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $elem.removeClass("disabled");
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            } else { $.errorIsRequired() }
+        });
+
+        var countShowModal = 0;
+        $('#Nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 50, statusText: 'caracteres restantes' });
+        $("#editItem").on("shown.bs.modal", function () {
+            if (countShowModal == 0) {
+                dropDownE();
+                countShowModal++;
+            }
+        });
+
+        var dropDownE = function () {
+            
+            var selectE = $("#id_establecimiento");
+            var selectC = $("#id_ciiu");
+            var selectL = $("#id_linea_producto");
+            var selectU = $("#id_unidad_medida");
+            if (selectE)
+                selectE.addClass("disabled");
+            if (selectC)
+                selectC.addClass("disabled");
+            if (selectL)
+                selectL.addClass("disabled");
+            if (selectU)
+                selectU.addClass("disabled");
+            var idEst = selectE.val() != null ? selectE.val() : 0;
+            if (selectE) {
+                if ($("#editItem").attr("acction") == "new") {
+                    selectC.val(0);
+                    selectL.val(0);
+                    selectU.val(0);
+                }
+
+                $.getDropDrown("/Establecimiento/GetDorpDown/", { "id": idEst, "nombre": "id_establecimiento", "default": "Seleccione elemento" }, "#drop-down-establecimiento", dropDownC, dropDownE);
+            }
+        };
+
+        var dropDownC = function () {
+            
+            var selectE = $("#id_establecimiento");
+            var selectC = $("#id_ciiu");
+            var selectL = $("#id_linea_producto");
+            var selectU = $("#id_unidad_medida");
+
+            if (selectE) {
+                selectE.removeClass("disabled");
+            }
+
+            if (selectL)
+                selectL.addClass("disabled");
+            if (selectU)
+                selectU.addClass("disabled");
+
+
+            if (selectC) {
+                if ($("#editItem").attr("acction") == "new") {
+                    selectL.val(0);
+                    selectU.val(0);
+                }
+
+                selectC.addClass("disabled");
+                var idCiiu = selectC.val() != null ? selectC.val() : 0;
+                var idEst = selectE.val() != null ? selectE.val() : 0;
+                $.getDropDrown("/CIIU/GetDorpDownEstablecimiento/", { "id": idCiiu, "nombre": "id_ciiu", "idEstablecimiento": idEst, "default": "Seleccione elemento", "showAllCollection": false }, "#drop-down-ciiu", dropDownL, dropDownC);
+            }
+
+        };
+
+        var dropDownL = function () {
+            var selectE = $("#id_establecimiento");
+            var selectC = $("#id_ciiu");
+            var selectL = $("#id_linea_producto");
+            var selectU = $("#id_unidad_medida");
+
+            if (selectC.val() != '0') {
+                $.getJSON('/Ciiu/GetMetodoCalculo?idCiiu=' + selectC.val(), function (data) {
+                    $('#metodo_calculo').val(data);
+                    if (data == 2 || data == 3) {
+                        $('#id_linea_producto').prop('disabled', true).trigger("chosen:updated");
+                        $('#id_unidad_medida').prop('disabled', true).trigger("chosen:updated");
+                        $('#req-prod').css({ 'display': 'none' });
+                        $('#req-um').css({ 'display': 'none' });
+                    } else {
+                        $('#id_linea_producto').prop('disabled', false).trigger("chosen:updated");
+                        $('#id_unidad_medida').prop('disabled', false).trigger("chosen:updated");
+
+                        $('#req-prod').css({ 'display': '' });
+                        $('#req-um').css({ 'display': '' });
+                        
+                        if (selectU)
+                            selectU.addClass("disabled");
+                        if (selectL) {
+                            if ($("#editItem").attr("acction") == "new") {
+                                selectU.val(0);
+                            }
+
+                            selectL.addClass("disabled");
+                            var idCiiu = selectC.val() != null ? selectC.val() : 0;
+                            var idLine = selectL.val() != null ? selectL.val() : 0;
+                            var idEstab = selectE.val() != null ? selectE.val() : 0;
+
+                            $.getDropDrown("/LineaProducto/GetDorpDownCiiu/", { "id": idLine, "nombre": "id_linea_producto", "idCiuu": idCiiu, "default": "Seleccione elemento", "idEstablecimiento": idEstab }, "#drop-down-linea-producto", dropDownU, dropDownL);
+                        }
+                    }
+                });
+            }            
+        };
+
+        var  dropDownU = function () {
+
+            var selectL = $("#id_linea_producto");
+            if (selectL) {
+                selectL.removeClass("disabled");
+
+            }
+            var selectU = $("#id_unidad_medida");
+            if (selectU) {
+
+                selectU.addClass("disabled");
+                var idUnid = selectU.val() != null ? selectU.val() : 0;
+                var idLine = selectL.val() != null ? selectL.val() : 0;
+
+                $.getDropDrown("/UnidadMedida/GetDorpDownLineaProducto/", { "id": idUnid, "nombre": "id_unidad_medida", "idLineaProducto": idLine, "default": "Seleccione elemento" }, "#drop-down-unidad-medida", enableDropDUM, dropDownU);
+            }
+        };
+        var enableDropDUM = function () {
+            var selectU = $("#id_unidad_medida");
+            if (selectU) {
+                selectU.removeClass("disabled");
+            }
+        }
+    })
+</script>

@@ -1,0 +1,2294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Edmx Version="3.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <Runtime>
+    <ConceptualModels>
+      <Schema Namespace="Data" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrador" customannotation:ClrType="Entity.Administrador, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" BaseType="Self.Rol" />
+        <EntityType Name="Usuario" customannotation:ClrType="Entity.Usuario, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nick" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Clave" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Rol" Relationship="Self.Usuario_Rol" FromRole="Usuario_Rol_Source" ToRole="Usuario_Rol_Target" />
+        </EntityType>
+        <EntityType Name="Rol" customannotation:ClrType="Entity.Rol, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Abstract="true">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.Usuario_Rol" FromRole="Usuario_Rol_Target" ToRole="Usuario_Rol_Source" />
+        </EntityType>
+        <EntityType Name="Analista" customannotation:ClrType="Entity.Analista, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" BaseType="Self.Rol">
+          <Property Name="CargoId" Type="Int64" />
+          <Property Name="AreaId" Type="Int64" />
+          <NavigationProperty Name="Area" Relationship="Self.Analista_Area" FromRole="Analista_Area_Source" ToRole="Analista_Area_Target" />
+          <NavigationProperty Name="Cargo" Relationship="Self.Analista_Cargo" FromRole="Analista_Cargo_Source" ToRole="Analista_Cargo_Target" />
+          <NavigationProperty Name="Establecimientos" Relationship="Self.Analista_Establecimientos" FromRole="Analista_Establecimientos_Source" ToRole="Analista_Establecimientos_Target" />
+        </EntityType>
+        <EntityType Name="Area" customannotation:ClrType="Entity.Area, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Analistas" Relationship="Self.Analista_Area" FromRole="Analista_Area_Target" ToRole="Analista_Area_Source" />
+        </EntityType>
+        <EntityType Name="Cargo" customannotation:ClrType="Entity.Cargo, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Analistas" Relationship="Self.Analista_Cargo" FromRole="Analista_Cargo_Target" ToRole="Analista_Cargo_Source" />
+          <NavigationProperty Name="Informantes" Relationship="Self.Informante_Cargo" FromRole="Informante_Cargo_Target" ToRole="Informante_Cargo_Source" />
+        </EntityType>
+        <EntityType Name="Informante" customannotation:ClrType="Entity.Informante, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" BaseType="Self.Rol">
+          <Property Name="CargoId" Type="Int64" />
+          <NavigationProperty Name="Cargo" Relationship="Self.Informante_Cargo" FromRole="Informante_Cargo_Source" ToRole="Informante_Cargo_Target" />
+          <NavigationProperty Name="Establecimiento" Relationship="Self.Establecimiento_Informante" FromRole="Establecimiento_Informante_Target" ToRole="Establecimiento_Informante_Source" />
+        </EntityType>
+        <EntityType Name="Establecimiento" customannotation:ClrType="Entity.Establecimiento, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RazonSocial" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Ruc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Codigo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SituacionJuridica" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Direccion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DistritoId" Type="Int64" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CiiuId" Type="Int64" Nullable="false" />
+          <Property Name="DiasLaborables" Type="Int32" Nullable="false" />
+          <Property Name="CantidadTrabajadores" Type="Int32" Nullable="false" />
+          <Property Name="AnalistaId" Type="Int64" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Analista" Relationship="Self.Analista_Establecimientos" FromRole="Analista_Establecimientos_Target" ToRole="Analista_Establecimientos_Source" />
+          <NavigationProperty Name="Ciiu" Relationship="Self.Establecimiento_Ciiu" FromRole="Establecimiento_Ciiu_Source" ToRole="Establecimiento_Ciiu_Target" />
+          <NavigationProperty Name="Distrito" Relationship="Self.Establecimiento_Distrito" FromRole="Establecimiento_Distrito_Source" ToRole="Establecimiento_Distrito_Target" />
+          <NavigationProperty Name="Encuestas" Relationship="Self.Encuesta_Establecimiento" FromRole="Encuesta_Establecimiento_Target" ToRole="Encuesta_Establecimiento_Source" />
+          <NavigationProperty Name="Informante" Relationship="Self.Establecimiento_Informante" FromRole="Establecimiento_Informante_Source" ToRole="Establecimiento_Informante_Target" />
+        </EntityType>
+        <EntityType Name="Ciiu" customannotation:ClrType="Entity.Ciiu, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Codigo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Establecimientos" Relationship="Self.Establecimiento_Ciiu" FromRole="Establecimiento_Ciiu_Target" ToRole="Establecimiento_Ciiu_Source" />
+        </EntityType>
+        <EntityType Name="Distrito" customannotation:ClrType="Entity.Distrito, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProvinciaId" Type="Int64" Nullable="false" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Establecimientos" Relationship="Self.Establecimiento_Distrito" FromRole="Establecimiento_Distrito_Target" ToRole="Establecimiento_Distrito_Source" />
+          <NavigationProperty Name="Provincia" Relationship="Self.Distrito_Provincia" FromRole="Distrito_Provincia_Source" ToRole="Distrito_Provincia_Target" />
+        </EntityType>
+        <EntityType Name="Provincia" customannotation:ClrType="Entity.Provincia, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DepartamentoId" Type="Int64" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Departamento" Relationship="Self.Provincia_Departamento" FromRole="Provincia_Departamento_Source" ToRole="Provincia_Departamento_Target" />
+          <NavigationProperty Name="Distritos" Relationship="Self.Distrito_Provincia" FromRole="Distrito_Provincia_Target" ToRole="Distrito_Provincia_Source" />
+        </EntityType>
+        <EntityType Name="Departamento" customannotation:ClrType="Entity.Departamento, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Provincias" Relationship="Self.Provincia_Departamento" FromRole="Provincia_Departamento_Target" ToRole="Provincia_Departamento_Source" />
+        </EntityType>
+        <EntityType Name="Encuesta" customannotation:ClrType="Entity.Encuesta, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Abstract="true">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EstablecimientoId" Type="Int64" Nullable="false" />
+          <Property Name="EstadoEncuesta" Type="Self.EstadoEncuesta" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" />
+          <Property Name="Justificacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AnalistaId" Type="Int64" />
+          <Property Name="InformanteId" Type="Int64" />
+          <NavigationProperty Name="Analista" Relationship="Self.Encuesta_Analista" FromRole="Encuesta_Analista_Source" ToRole="Encuesta_Analista_Target" />
+          <NavigationProperty Name="Establecimiento" Relationship="Self.Encuesta_Establecimiento" FromRole="Encuesta_Establecimiento_Source" ToRole="Encuesta_Establecimiento_Target" />
+          <NavigationProperty Name="Informante" Relationship="Self.Encuesta_Informante" FromRole="Encuesta_Informante_Source" ToRole="Encuesta_Informante_Target" />
+        </EntityType>
+        <EntityType Name="ManufacturaEstadistica" customannotation:ClrType="Entity.ManufacturaEstadistica, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" BaseType="Self.Encuesta">
+          <NavigationProperty Name="FactoresProduccion" Relationship="Self.ManufacturaEstadistica_FactoresProduccion" FromRole="ManufacturaEstadistica_FactoresProduccion_Source" ToRole="ManufacturaEstadistica_FactoresProduccion_Target" />
+          <NavigationProperty Name="TrabajadoresDiasTrabajados" Relationship="Self.ManufacturaEstadistica_TrabajadoresDiasTrabajados" FromRole="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Source" ToRole="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Target" />
+          <NavigationProperty Name="ValorProduccionMensual" Relationship="Self.ManufacturaEstadistica_ValorProduccionMensual" FromRole="ManufacturaEstadistica_ValorProduccionMensual_Source" ToRole="ManufacturaEstadistica_ValorProduccionMensual_Target" />
+          <NavigationProperty Name="VentasProductosElaboradosEstablecimiento" Relationship="Self.ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento" FromRole="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Source" ToRole="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Target" />
+          <NavigationProperty Name="VolumenProduccionMensual" Relationship="Self.ManufacturaEstadistica_VolumenProduccionMensual" FromRole="ManufacturaEstadistica_VolumenProduccionMensual_Source" ToRole="ManufacturaEstadistica_VolumenProduccionMensual_Target" />
+        </EntityType>
+        <EntityType Name="FactorProduccion" customannotation:ClrType="Entity.FactorProduccion, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProduccionNormal" Type="Boolean" Nullable="false" />
+          <Property Name="Incremento" Type="Boolean" Nullable="false" />
+          <Property Name="Decremento" Type="Boolean" Nullable="false" />
+          <Property Name="FactorId" Type="Int64" />
+          <NavigationProperty Name="Factor" Relationship="Self.Factor_FactoresProduccion" FromRole="Factor_FactoresProduccion_Target" ToRole="Factor_FactoresProduccion_Source" />
+          <NavigationProperty Name="ManufacturaEstadistica" Relationship="Self.ManufacturaEstadistica_FactoresProduccion" FromRole="ManufacturaEstadistica_FactoresProduccion_Target" ToRole="ManufacturaEstadistica_FactoresProduccion_Source" />
+        </EntityType>
+        <EntityType Name="Factor" customannotation:ClrType="Entity.Factor, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoFactor" Type="Self.TipoFactor" Nullable="false" />
+          <Property Name="Valor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FactoresProduccion" Relationship="Self.Factor_FactoresProduccion" FromRole="Factor_FactoresProduccion_Source" ToRole="Factor_FactoresProduccion_Target" />
+          <NavigationProperty Name="LineasProducto" Relationship="Self.LineaProducto_Factor" FromRole="LineaProducto_Factor_Target" ToRole="LineaProducto_Factor_Source" />
+        </EntityType>
+        <EntityType Name="LineaProducto" customannotation:ClrType="Entity.LineaProducto, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FactorId" Type="Int64" />
+          <Property Name="DesviacionMax" Type="Double" Nullable="false" />
+          <Property Name="DesviacionMin" Type="Double" Nullable="false" />
+          <Property Name="UnidadMedida" Type="Self.UnidadMedida" Nullable="false" />
+          <Property Name="Activado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Factor" Relationship="Self.LineaProducto_Factor" FromRole="LineaProducto_Factor_Source" ToRole="LineaProducto_Factor_Target" />
+          <NavigationProperty Name="ProductosMateriaPrimaPropia" Relationship="Self.ProductoMateriaPrimaPropia_LineaProducto" FromRole="ProductoMateriaPrimaPropia_LineaProducto_Target" ToRole="ProductoMateriaPrimaPropia_LineaProducto_Source" />
+          <NavigationProperty Name="ProductosMateriaPrimaTerceros" Relationship="Self.ProductosMateriaPrimaTerceros_LineaProducto" FromRole="ProductosMateriaPrimaTerceros_LineaProducto_Target" ToRole="ProductosMateriaPrimaTerceros_LineaProducto_Source" />
+        </EntityType>
+        <EntityType Name="ProductoMateriaPrimaPropia" customannotation:ClrType="Entity.ProductoMateriaPrimaPropia, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LineaProductoId" Type="Int64" />
+          <Property Name="UnidadMedida" Type="Self.UnidadMedida" Nullable="false" />
+          <Property Name="JustificacionValorUnitario" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JustificacionProduccion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ValorUnitario" Type="Double" Nullable="false" />
+          <Property Name="Existencias" Type="Double" Nullable="false" />
+          <Property Name="Produccion" Type="Double" Nullable="false" />
+          <Property Name="OtrosIngresos" Type="Double" Nullable="false" />
+          <Property Name="VentasPais" Type="Double" Nullable="false" />
+          <Property Name="VentasExtranjero" Type="Double" Nullable="false" />
+          <Property Name="OtrasSalidas" Type="Double" Nullable="false" />
+          <Property Name="IdVolumenProduccionMensual" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="LineaProducto" Relationship="Self.ProductoMateriaPrimaPropia_LineaProducto" FromRole="ProductoMateriaPrimaPropia_LineaProducto_Source" ToRole="ProductoMateriaPrimaPropia_LineaProducto_Target" />
+          <NavigationProperty Name="VolumenProduccionMensual" Relationship="Self.VolumenProduccionMensual_ProductosMateriaPrimaPropia" FromRole="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Target" ToRole="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Source" />
+        </EntityType>
+        <EntityType Name="VolumenProduccionMensual" customannotation:ClrType="Entity.VolumenProduccionMensual, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ManufacturaEstadistica" Relationship="Self.ManufacturaEstadistica_VolumenProduccionMensual" FromRole="ManufacturaEstadistica_VolumenProduccionMensual_Target" ToRole="ManufacturaEstadistica_VolumenProduccionMensual_Source" />
+          <NavigationProperty Name="ProductosMateriaPrimaPropia" Relationship="Self.VolumenProduccionMensual_ProductosMateriaPrimaPropia" FromRole="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Source" ToRole="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Target" />
+          <NavigationProperty Name="ProductosMateriaPrimaTerceros" Relationship="Self.VolumenProduccionMensual_ProductosMateriaPrimaTerceros" FromRole="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Source" ToRole="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Target" />
+        </EntityType>
+        <EntityType Name="ProductosMateriaPrimaTerceros" customannotation:ClrType="Entity.ProductosMateriaPrimaTerceros, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LineaProductoId" Type="Int64" />
+          <Property Name="UnidadMedida" Type="Self.UnidadMedida" Nullable="false" />
+          <Property Name="UnidadProduccion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VolumenProduccionMensualId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="LineaProducto" Relationship="Self.ProductosMateriaPrimaTerceros_LineaProducto" FromRole="ProductosMateriaPrimaTerceros_LineaProducto_Source" ToRole="ProductosMateriaPrimaTerceros_LineaProducto_Target" />
+          <NavigationProperty Name="VolumenProduccionMensual" Relationship="Self.VolumenProduccionMensual_ProductosMateriaPrimaTerceros" FromRole="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Target" ToRole="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Source" />
+        </EntityType>
+        <EntityType Name="TrabajadoresDiasTrabajados" customannotation:ClrType="Entity.TrabajadoresDiasTrabajados, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DiasTrabajados" Type="Int32" Nullable="false" />
+          <Property Name="TrabajadoresProduccion" Type="Int32" Nullable="false" />
+          <Property Name="AdministrativosPlanta" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ManufacturaEstadistica" Relationship="Self.ManufacturaEstadistica_TrabajadoresDiasTrabajados" FromRole="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Target" ToRole="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Source" />
+        </EntityType>
+        <EntityType Name="ValorProduccionMensual" customannotation:ClrType="Entity.ValorProduccionMensual, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProdMatPropia" Type="Double" Nullable="false" />
+          <Property Name="ProdMatTerceros" Type="Double" Nullable="false" />
+          <NavigationProperty Name="ManufacturaEstadistica" Relationship="Self.ManufacturaEstadistica_ValorProduccionMensual" FromRole="ManufacturaEstadistica_ValorProduccionMensual_Target" ToRole="ManufacturaEstadistica_ValorProduccionMensual_Source" />
+        </EntityType>
+        <EntityType Name="VentasProductosElaboradosEstablecimiento" customannotation:ClrType="Entity.VentasProductosElaboradosEstablecimiento, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ManufacturaEstadistica" Relationship="Self.ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento" FromRole="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Target" ToRole="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Source" />
+          <NavigationProperty Name="VentaPaisExtranjero" Relationship="Self.VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero" FromRole="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Source" ToRole="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Target" />
+          <NavigationProperty Name="VentaServiciosManufactura" Relationship="Self.VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura" FromRole="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Source" ToRole="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Target" />
+        </EntityType>
+        <EntityType Name="VentaPaisExtranjero" customannotation:ClrType="Entity.VentaPaisExtranjero, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VentaPais" Type="Double" Nullable="false" />
+          <Property Name="VentaExtranjero" Type="Double" Nullable="false" />
+          <NavigationProperty Name="VentasProductosElaboradosEstablecimiento" Relationship="Self.VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero" FromRole="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Target" ToRole="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Source" />
+        </EntityType>
+        <EntityType Name="VentaServiciosManufactura" customannotation:ClrType="Entity.VentaServiciosManufactura, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Pais" Type="Double" Nullable="false" />
+          <Property Name="Exterior" Type="Double" Nullable="false" />
+          <Property Name="VentaProductosElaboradosEstablecimientoId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="VentasProductosElaboradosEstablecimiento" Relationship="Self.VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura" FromRole="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Target" ToRole="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Source" />
+        </EntityType>
+        <EntityType Name="ManufacturaOpinionEmpresarial" customannotation:ClrType="Entity.ManufacturaOpinionEmpresarial, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" BaseType="Self.Encuesta">
+          <NavigationProperty Name="Preguntas" Relationship="Self.ManufacturaOpinionEmpresarial_Preguntas" FromRole="ManufacturaOpinionEmpresarial_Preguntas_Source" ToRole="ManufacturaOpinionEmpresarial_Preguntas_Target" />
+        </EntityType>
+        <EntityType Name="Pregunta" customannotation:ClrType="Entity.Pregunta, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Texto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Comienza" Type="DateTime" />
+          <Property Name="Intervalo" Type="Time" />
+          <Property Name="PosibleRespuestaId" Type="Int64" />
+          <Property Name="IdManufacturaOpinionEmpresarial" Type="Int64" />
+          <Property Name="EstadoPregunta" Type="Self.EstadoPregunta" Nullable="false" />
+          <NavigationProperty Name="ManufacturaOpinionEmpresarial" Relationship="Self.ManufacturaOpinionEmpresarial_Preguntas" FromRole="ManufacturaOpinionEmpresarial_Preguntas_Target" ToRole="ManufacturaOpinionEmpresarial_Preguntas_Source" />
+          <NavigationProperty Name="OpinionesEmpresariales" Relationship="Self.OpinionEmpresarial_Preguntas" FromRole="OpinionEmpresarial_Preguntas_Target" ToRole="OpinionEmpresarial_Preguntas_Source" />
+          <NavigationProperty Name="PosibleRespuesta" Relationship="Self.Pregunta_PosibleRespuesta" FromRole="Pregunta_PosibleRespuesta_Source" ToRole="Pregunta_PosibleRespuesta_Target" />
+          <NavigationProperty Name="Valores" Relationship="Self.Valor_Pregunta" FromRole="Valor_Pregunta_Target" ToRole="Valor_Pregunta_Source" />
+        </EntityType>
+        <EntityType Name="OpinionEmpresarial" customannotation:ClrType="Entity.OpinionEmpresarial, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" BaseType="Self.Configuracion">
+          <NavigationProperty Name="Preguntas" Relationship="Self.OpinionEmpresarial_Preguntas" FromRole="OpinionEmpresarial_Preguntas_Source" ToRole="OpinionEmpresarial_Preguntas_Target" />
+        </EntityType>
+        <EntityType Name="PosibleRespuesta" customannotation:ClrType="Entity.PosibleRespuesta, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoRespuesta" Type="Self.TipoRespuesta" Nullable="false" />
+          <NavigationProperty Name="Pregunta" Relationship="Self.Pregunta_PosibleRespuesta" FromRole="Pregunta_PosibleRespuesta_Target" ToRole="Pregunta_PosibleRespuesta_Source" />
+          <NavigationProperty Name="Valores" Relationship="Self.PosibleRespuesta_Valores" FromRole="PosibleRespuesta_Valores_Source" ToRole="PosibleRespuesta_Valores_Target" />
+        </EntityType>
+        <EntityType Name="Valor" customannotation:ClrType="Entity.Valor, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Texto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Numero" Type="Int32" Nullable="false" />
+          <Property Name="Seleccionado" Type="Boolean" Nullable="false" />
+          <Property Name="PosibleRespuestaId" Type="Int64" Nullable="false" />
+          <Property Name="PregunatId" Type="Int64" />
+          <NavigationProperty Name="PosibleRespuesta" Relationship="Self.PosibleRespuesta_Valores" FromRole="PosibleRespuesta_Valores_Target" ToRole="PosibleRespuesta_Valores_Source" />
+          <NavigationProperty Name="Pregunta" Relationship="Self.Valor_Pregunta" FromRole="Valor_Pregunta_Source" ToRole="Valor_Pregunta_Target" />
+        </EntityType>
+        <EntityType Name="Configuracion" customannotation:ClrType="Entity.Configuracion, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Abstract="true">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Traza" customannotation:ClrType="Entity.Traza, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Texto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo" Type="Self.TipoTraza" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EnumType Name="EstadoEncuesta" IsFlags="false" customannotation:ClrType="Entity.EstadoEncuesta, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="NoEnviada" Value="0" />
+          <Member Name="Enviada" Value="1" />
+          <Member Name="Validada" Value="2" />
+          <Member Name="Observada" Value="3" />
+          <Member Name="Aprobada" Value="4" />
+          <Member Name="NoAprobada" Value="5" />
+        </EnumType>
+        <EnumType Name="TipoFactor" IsFlags="false" customannotation:ClrType="Entity.TipoFactor, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="Incremento" Value="0" />
+          <Member Name="Disminucion" Value="1" />
+        </EnumType>
+        <EnumType Name="UnidadMedida" IsFlags="false" customannotation:ClrType="Entity.UnidadMedida, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="Kilogramos" Value="0" />
+          <Member Name="Gramos" Value="1" />
+          <Member Name="Miligramos" Value="2" />
+          <Member Name="Toneladas" Value="3" />
+        </EnumType>
+        <EnumType Name="EstadoPregunta" IsFlags="false" customannotation:ClrType="Entity.EstadoPregunta, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="Configuracion" Value="0" />
+          <Member Name="Asociada" Value="1" />
+        </EnumType>
+        <EnumType Name="TipoRespuesta" IsFlags="false" customannotation:ClrType="Entity.TipoRespuesta, Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="Todos" Value="0" />
+          <Member Name="Alternativa" Value="1" />
+          <Member Name="Excluyente" Value="2" />
+        </EnumType>
+        <EnumType Name="TipoTraza" IsFlags="false" customannotation:ClrType="Seguridad.TipoTraza, Seguridad, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="Informacion" Value="0" />
+          <Member Name="Advertencia" Value="1" />
+          <Member Name="Error" Value="2" />
+        </EnumType>
+        <Association Name="Analista_Area">
+          <End Role="Analista_Area_Source" Type="Self.Analista" Multiplicity="*" />
+          <End Role="Analista_Area_Target" Type="Self.Area" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Analista_Area_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Analista_Area_Source">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Informante_Cargo">
+          <End Role="Informante_Cargo_Source" Type="Self.Informante" Multiplicity="*" />
+          <End Role="Informante_Cargo_Target" Type="Self.Cargo" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Informante_Cargo_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Informante_Cargo_Source">
+              <PropertyRef Name="CargoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Establecimiento_Ciiu">
+          <End Role="Establecimiento_Ciiu_Source" Type="Self.Establecimiento" Multiplicity="*" />
+          <End Role="Establecimiento_Ciiu_Target" Type="Self.Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="Establecimiento_Ciiu_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Establecimiento_Ciiu_Source">
+              <PropertyRef Name="CiiuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Provincia_Departamento">
+          <End Role="Provincia_Departamento_Source" Type="Self.Provincia" Multiplicity="*" />
+          <End Role="Provincia_Departamento_Target" Type="Self.Departamento" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia_Departamento_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Provincia_Departamento_Source">
+              <PropertyRef Name="DepartamentoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Distrito_Provincia">
+          <End Role="Distrito_Provincia_Source" Type="Self.Distrito" Multiplicity="*" />
+          <End Role="Distrito_Provincia_Target" Type="Self.Provincia" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="Distrito_Provincia_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Distrito_Provincia_Source">
+              <PropertyRef Name="ProvinciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Establecimiento_Distrito">
+          <End Role="Establecimiento_Distrito_Source" Type="Self.Establecimiento" Multiplicity="*" />
+          <End Role="Establecimiento_Distrito_Target" Type="Self.Distrito" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="Establecimiento_Distrito_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Establecimiento_Distrito_Source">
+              <PropertyRef Name="DistritoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Encuesta_Analista">
+          <End Role="Encuesta_Analista_Source" Type="Self.Encuesta" Multiplicity="*" />
+          <End Role="Encuesta_Analista_Target" Type="Self.Analista" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Encuesta_Analista_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Encuesta_Analista_Source">
+              <PropertyRef Name="AnalistaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Encuesta_Establecimiento">
+          <End Role="Encuesta_Establecimiento_Source" Type="Self.Encuesta" Multiplicity="*" />
+          <End Role="Encuesta_Establecimiento_Target" Type="Self.Establecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="Encuesta_Establecimiento_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Encuesta_Establecimiento_Source">
+              <PropertyRef Name="EstablecimientoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Encuesta_Informante">
+          <End Role="Encuesta_Informante_Source" Type="Self.Encuesta" Multiplicity="*" />
+          <End Role="Encuesta_Informante_Target" Type="Self.Informante" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Encuesta_Informante_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Encuesta_Informante_Source">
+              <PropertyRef Name="InformanteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Factor_FactoresProduccion">
+          <End Role="Factor_FactoresProduccion_Source" Type="Self.Factor" Multiplicity="0..1" />
+          <End Role="Factor_FactoresProduccion_Target" Type="Self.FactorProduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Factor_FactoresProduccion_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Factor_FactoresProduccion_Target">
+              <PropertyRef Name="FactorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LineaProducto_Factor">
+          <End Role="LineaProducto_Factor_Source" Type="Self.LineaProducto" Multiplicity="*" />
+          <End Role="LineaProducto_Factor_Target" Type="Self.Factor" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="LineaProducto_Factor_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LineaProducto_Factor_Source">
+              <PropertyRef Name="FactorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductoMateriaPrimaPropia_LineaProducto">
+          <End Role="ProductoMateriaPrimaPropia_LineaProducto_Source" Type="Self.ProductoMateriaPrimaPropia" Multiplicity="*" />
+          <End Role="ProductoMateriaPrimaPropia_LineaProducto_Target" Type="Self.LineaProducto" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ProductoMateriaPrimaPropia_LineaProducto_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductoMateriaPrimaPropia_LineaProducto_Source">
+              <PropertyRef Name="LineaProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VolumenProduccionMensual_ProductosMateriaPrimaPropia">
+          <End Role="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Source" Type="Self.VolumenProduccionMensual" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Target" Type="Self.ProductoMateriaPrimaPropia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Target">
+              <PropertyRef Name="IdVolumenProduccionMensual" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductosMateriaPrimaTerceros_LineaProducto">
+          <End Role="ProductosMateriaPrimaTerceros_LineaProducto_Source" Type="Self.ProductosMateriaPrimaTerceros" Multiplicity="*" />
+          <End Role="ProductosMateriaPrimaTerceros_LineaProducto_Target" Type="Self.LineaProducto" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ProductosMateriaPrimaTerceros_LineaProducto_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductosMateriaPrimaTerceros_LineaProducto_Source">
+              <PropertyRef Name="LineaProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VolumenProduccionMensual_ProductosMateriaPrimaTerceros">
+          <End Role="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Source" Type="Self.VolumenProduccionMensual" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Target" Type="Self.ProductosMateriaPrimaTerceros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Target">
+              <PropertyRef Name="VolumenProduccionMensualId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaEstadistica_FactoresProduccion">
+          <End Role="ManufacturaEstadistica_FactoresProduccion_Source" Type="Self.ManufacturaEstadistica" Multiplicity="1" />
+          <End Role="ManufacturaEstadistica_FactoresProduccion_Target" Type="Self.FactorProduccion" Multiplicity="0..1" />
+        </Association>
+        <Association Name="ManufacturaEstadistica_TrabajadoresDiasTrabajados">
+          <End Role="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Source" Type="Self.ManufacturaEstadistica" Multiplicity="1" />
+          <End Role="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Target" Type="Self.TrabajadoresDiasTrabajados" Multiplicity="0..1" />
+        </Association>
+        <Association Name="ManufacturaEstadistica_ValorProduccionMensual">
+          <End Role="ManufacturaEstadistica_ValorProduccionMensual_Source" Type="Self.ManufacturaEstadistica" Multiplicity="1" />
+          <End Role="ManufacturaEstadistica_ValorProduccionMensual_Target" Type="Self.ValorProduccionMensual" Multiplicity="0..1" />
+        </Association>
+        <Association Name="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero">
+          <End Role="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Source" Type="Self.VentasProductosElaboradosEstablecimiento" Multiplicity="1" />
+          <End Role="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Target" Type="Self.VentaPaisExtranjero" Multiplicity="0..1" />
+        </Association>
+        <Association Name="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura">
+          <End Role="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Source" Type="Self.VentasProductosElaboradosEstablecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Target" Type="Self.VentaServiciosManufactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Target">
+              <PropertyRef Name="VentaProductosElaboradosEstablecimientoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento">
+          <End Role="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Source" Type="Self.ManufacturaEstadistica" Multiplicity="1" />
+          <End Role="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Target" Type="Self.VentasProductosElaboradosEstablecimiento" Multiplicity="0..1" />
+        </Association>
+        <Association Name="ManufacturaEstadistica_VolumenProduccionMensual">
+          <End Role="ManufacturaEstadistica_VolumenProduccionMensual_Source" Type="Self.ManufacturaEstadistica" Multiplicity="1" />
+          <End Role="ManufacturaEstadistica_VolumenProduccionMensual_Target" Type="Self.VolumenProduccionMensual" Multiplicity="0..1" />
+        </Association>
+        <Association Name="OpinionEmpresarial_Preguntas">
+          <End Role="OpinionEmpresarial_Preguntas_Source" Type="Self.OpinionEmpresarial" Multiplicity="*" />
+          <End Role="OpinionEmpresarial_Preguntas_Target" Type="Self.Pregunta" Multiplicity="*" />
+        </Association>
+        <Association Name="Valor_Pregunta">
+          <End Role="Valor_Pregunta_Source" Type="Self.Valor" Multiplicity="*" />
+          <End Role="Valor_Pregunta_Target" Type="Self.Pregunta" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Valor_Pregunta_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Valor_Pregunta_Source">
+              <PropertyRef Name="PregunatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PosibleRespuesta_Valores">
+          <End Role="PosibleRespuesta_Valores_Source" Type="Self.PosibleRespuesta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PosibleRespuesta_Valores_Target" Type="Self.Valor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PosibleRespuesta_Valores_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PosibleRespuesta_Valores_Target">
+              <PropertyRef Name="PosibleRespuestaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Pregunta_PosibleRespuesta">
+          <End Role="Pregunta_PosibleRespuesta_Source" Type="Self.Pregunta" Multiplicity="1" />
+          <End Role="Pregunta_PosibleRespuesta_Target" Type="Self.PosibleRespuesta" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta_PosibleRespuesta_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pregunta_PosibleRespuesta_Target">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaOpinionEmpresarial_Preguntas">
+          <End Role="ManufacturaOpinionEmpresarial_Preguntas_Source" Type="Self.ManufacturaOpinionEmpresarial" Multiplicity="0..1" />
+          <End Role="ManufacturaOpinionEmpresarial_Preguntas_Target" Type="Self.Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ManufacturaOpinionEmpresarial_Preguntas_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ManufacturaOpinionEmpresarial_Preguntas_Target">
+              <PropertyRef Name="IdManufacturaOpinionEmpresarial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Establecimiento_Informante">
+          <End Role="Establecimiento_Informante_Target" Type="Self.Informante" Multiplicity="0..1" />
+          <End Role="Establecimiento_Informante_Source" Type="Self.Establecimiento" Multiplicity="0..1" />
+        </Association>
+        <Association Name="Analista_Cargo">
+          <End Role="Analista_Cargo_Source" Type="Self.Analista" Multiplicity="*" />
+          <End Role="Analista_Cargo_Target" Type="Self.Cargo" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Analista_Cargo_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Analista_Cargo_Source">
+              <PropertyRef Name="CargoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Analista_Establecimientos">
+          <End Role="Analista_Establecimientos_Source" Type="Self.Analista" Multiplicity="0..1" />
+          <End Role="Analista_Establecimientos_Target" Type="Self.Establecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Analista_Establecimientos_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Analista_Establecimientos_Target">
+              <PropertyRef Name="AnalistaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Usuario_Rol">
+          <End Role="Usuario_Rol_Target" Type="Self.Rol" Multiplicity="0..1" />
+          <End Role="Usuario_Rol_Source" Type="Self.Usuario" Multiplicity="0..1" />
+        </Association>
+        <EntityContainer Name="Context" customannotation:UseClrTypes="true">
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <EntitySet Name="RolesUsuarios" EntityType="Self.Rol" />
+          <EntitySet Name="Areas" EntityType="Self.Area" />
+          <EntitySet Name="Cargos" EntityType="Self.Cargo" />
+          <EntitySet Name="Establecimientos" EntityType="Self.Establecimiento" />
+          <EntitySet Name="Ciiu" EntityType="Self.Ciiu" />
+          <EntitySet Name="Distritos" EntityType="Self.Distrito" />
+          <EntitySet Name="Provincias" EntityType="Self.Provincia" />
+          <EntitySet Name="Departamentos" EntityType="Self.Departamento" />
+          <EntitySet Name="Encuestas" EntityType="Self.Encuesta" />
+          <EntitySet Name="FactoresProduccion" EntityType="Self.FactorProduccion" />
+          <EntitySet Name="Factores" EntityType="Self.Factor" />
+          <EntitySet Name="LineaProductos" EntityType="Self.LineaProducto" />
+          <EntitySet Name="ProductoMateriaPrimaPropias" EntityType="Self.ProductoMateriaPrimaPropia" />
+          <EntitySet Name="VolumenesProducionMensual" EntityType="Self.VolumenProduccionMensual" />
+          <EntitySet Name="ProductosMateriaPrimaTerceros" EntityType="Self.ProductosMateriaPrimaTerceros" />
+          <EntitySet Name="TrabajadoresDiasTrabajados" EntityType="Self.TrabajadoresDiasTrabajados" />
+          <EntitySet Name="ValoresProduccionMensual" EntityType="Self.ValorProduccionMensual" />
+          <EntitySet Name="VentasProductosElaboradosEstablecimiento" EntityType="Self.VentasProductosElaboradosEstablecimiento" />
+          <EntitySet Name="VentasPaisExtranjero" EntityType="Self.VentaPaisExtranjero" />
+          <EntitySet Name="VentasServicioManufactura" EntityType="Self.VentaServiciosManufactura" />
+          <EntitySet Name="Preguntas" EntityType="Self.Pregunta" />
+          <EntitySet Name="PosiblesRespuestas" EntityType="Self.PosibleRespuesta" />
+          <EntitySet Name="Valores" EntityType="Self.Valor" />
+          <EntitySet Name="Configuraciones" EntityType="Self.Configuracion" />
+          <EntitySet Name="Trazas" EntityType="Self.Traza" />
+          <AssociationSet Name="Analista_Area" Association="Self.Analista_Area">
+            <End Role="Analista_Area_Source" EntitySet="RolesUsuarios" />
+            <End Role="Analista_Area_Target" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="Informante_Cargo" Association="Self.Informante_Cargo">
+            <End Role="Informante_Cargo_Source" EntitySet="RolesUsuarios" />
+            <End Role="Informante_Cargo_Target" EntitySet="Cargos" />
+          </AssociationSet>
+          <AssociationSet Name="Establecimiento_Ciiu" Association="Self.Establecimiento_Ciiu">
+            <End Role="Establecimiento_Ciiu_Source" EntitySet="Establecimientos" />
+            <End Role="Establecimiento_Ciiu_Target" EntitySet="Ciiu" />
+          </AssociationSet>
+          <AssociationSet Name="Provincia_Departamento" Association="Self.Provincia_Departamento">
+            <End Role="Provincia_Departamento_Source" EntitySet="Provincias" />
+            <End Role="Provincia_Departamento_Target" EntitySet="Departamentos" />
+          </AssociationSet>
+          <AssociationSet Name="Distrito_Provincia" Association="Self.Distrito_Provincia">
+            <End Role="Distrito_Provincia_Source" EntitySet="Distritos" />
+            <End Role="Distrito_Provincia_Target" EntitySet="Provincias" />
+          </AssociationSet>
+          <AssociationSet Name="Establecimiento_Distrito" Association="Self.Establecimiento_Distrito">
+            <End Role="Establecimiento_Distrito_Source" EntitySet="Establecimientos" />
+            <End Role="Establecimiento_Distrito_Target" EntitySet="Distritos" />
+          </AssociationSet>
+          <AssociationSet Name="Encuesta_Analista" Association="Self.Encuesta_Analista">
+            <End Role="Encuesta_Analista_Source" EntitySet="Encuestas" />
+            <End Role="Encuesta_Analista_Target" EntitySet="RolesUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="Encuesta_Establecimiento" Association="Self.Encuesta_Establecimiento">
+            <End Role="Encuesta_Establecimiento_Source" EntitySet="Encuestas" />
+            <End Role="Encuesta_Establecimiento_Target" EntitySet="Establecimientos" />
+          </AssociationSet>
+          <AssociationSet Name="Encuesta_Informante" Association="Self.Encuesta_Informante">
+            <End Role="Encuesta_Informante_Source" EntitySet="Encuestas" />
+            <End Role="Encuesta_Informante_Target" EntitySet="RolesUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="Factor_FactoresProduccion" Association="Self.Factor_FactoresProduccion">
+            <End Role="Factor_FactoresProduccion_Source" EntitySet="Factores" />
+            <End Role="Factor_FactoresProduccion_Target" EntitySet="FactoresProduccion" />
+          </AssociationSet>
+          <AssociationSet Name="LineaProducto_Factor" Association="Self.LineaProducto_Factor">
+            <End Role="LineaProducto_Factor_Source" EntitySet="LineaProductos" />
+            <End Role="LineaProducto_Factor_Target" EntitySet="Factores" />
+          </AssociationSet>
+          <AssociationSet Name="ProductoMateriaPrimaPropia_LineaProducto" Association="Self.ProductoMateriaPrimaPropia_LineaProducto">
+            <End Role="ProductoMateriaPrimaPropia_LineaProducto_Source" EntitySet="ProductoMateriaPrimaPropias" />
+            <End Role="ProductoMateriaPrimaPropia_LineaProducto_Target" EntitySet="LineaProductos" />
+          </AssociationSet>
+          <AssociationSet Name="VolumenProduccionMensual_ProductosMateriaPrimaPropia" Association="Self.VolumenProduccionMensual_ProductosMateriaPrimaPropia">
+            <End Role="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Source" EntitySet="VolumenesProducionMensual" />
+            <End Role="VolumenProduccionMensual_ProductosMateriaPrimaPropia_Target" EntitySet="ProductoMateriaPrimaPropias" />
+          </AssociationSet>
+          <AssociationSet Name="ProductosMateriaPrimaTerceros_LineaProducto" Association="Self.ProductosMateriaPrimaTerceros_LineaProducto">
+            <End Role="ProductosMateriaPrimaTerceros_LineaProducto_Source" EntitySet="ProductosMateriaPrimaTerceros" />
+            <End Role="ProductosMateriaPrimaTerceros_LineaProducto_Target" EntitySet="LineaProductos" />
+          </AssociationSet>
+          <AssociationSet Name="VolumenProduccionMensual_ProductosMateriaPrimaTerceros" Association="Self.VolumenProduccionMensual_ProductosMateriaPrimaTerceros">
+            <End Role="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Source" EntitySet="VolumenesProducionMensual" />
+            <End Role="VolumenProduccionMensual_ProductosMateriaPrimaTerceros_Target" EntitySet="ProductosMateriaPrimaTerceros" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_FactoresProduccion" Association="Self.ManufacturaEstadistica_FactoresProduccion">
+            <End Role="ManufacturaEstadistica_FactoresProduccion_Source" EntitySet="Encuestas" />
+            <End Role="ManufacturaEstadistica_FactoresProduccion_Target" EntitySet="FactoresProduccion" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_TrabajadoresDiasTrabajados" Association="Self.ManufacturaEstadistica_TrabajadoresDiasTrabajados">
+            <End Role="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Source" EntitySet="Encuestas" />
+            <End Role="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Target" EntitySet="TrabajadoresDiasTrabajados" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_ValorProduccionMensual" Association="Self.ManufacturaEstadistica_ValorProduccionMensual">
+            <End Role="ManufacturaEstadistica_ValorProduccionMensual_Source" EntitySet="Encuestas" />
+            <End Role="ManufacturaEstadistica_ValorProduccionMensual_Target" EntitySet="ValoresProduccionMensual" />
+          </AssociationSet>
+          <AssociationSet Name="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero" Association="Self.VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero">
+            <End Role="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Source" EntitySet="VentasProductosElaboradosEstablecimiento" />
+            <End Role="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Target" EntitySet="VentasPaisExtranjero" />
+          </AssociationSet>
+          <AssociationSet Name="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura" Association="Self.VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura">
+            <End Role="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Source" EntitySet="VentasProductosElaboradosEstablecimiento" />
+            <End Role="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura_Target" EntitySet="VentasServicioManufactura" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento" Association="Self.ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento">
+            <End Role="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Source" EntitySet="Encuestas" />
+            <End Role="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Target" EntitySet="VentasProductosElaboradosEstablecimiento" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_VolumenProduccionMensual" Association="Self.ManufacturaEstadistica_VolumenProduccionMensual">
+            <End Role="ManufacturaEstadistica_VolumenProduccionMensual_Source" EntitySet="Encuestas" />
+            <End Role="ManufacturaEstadistica_VolumenProduccionMensual_Target" EntitySet="VolumenesProducionMensual" />
+          </AssociationSet>
+          <AssociationSet Name="OpinionEmpresarial_Preguntas" Association="Self.OpinionEmpresarial_Preguntas">
+            <End Role="OpinionEmpresarial_Preguntas_Source" EntitySet="Configuraciones" />
+            <End Role="OpinionEmpresarial_Preguntas_Target" EntitySet="Preguntas" />
+          </AssociationSet>
+          <AssociationSet Name="Valor_Pregunta" Association="Self.Valor_Pregunta">
+            <End Role="Valor_Pregunta_Source" EntitySet="Valores" />
+            <End Role="Valor_Pregunta_Target" EntitySet="Preguntas" />
+          </AssociationSet>
+          <AssociationSet Name="PosibleRespuesta_Valores" Association="Self.PosibleRespuesta_Valores">
+            <End Role="PosibleRespuesta_Valores_Source" EntitySet="PosiblesRespuestas" />
+            <End Role="PosibleRespuesta_Valores_Target" EntitySet="Valores" />
+          </AssociationSet>
+          <AssociationSet Name="Pregunta_PosibleRespuesta" Association="Self.Pregunta_PosibleRespuesta">
+            <End Role="Pregunta_PosibleRespuesta_Source" EntitySet="Preguntas" />
+            <End Role="Pregunta_PosibleRespuesta_Target" EntitySet="PosiblesRespuestas" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaOpinionEmpresarial_Preguntas" Association="Self.ManufacturaOpinionEmpresarial_Preguntas">
+            <End Role="ManufacturaOpinionEmpresarial_Preguntas_Source" EntitySet="Encuestas" />
+            <End Role="ManufacturaOpinionEmpresarial_Preguntas_Target" EntitySet="Preguntas" />
+          </AssociationSet>
+          <AssociationSet Name="Establecimiento_Informante" Association="Self.Establecimiento_Informante">
+            <End Role="Establecimiento_Informante_Target" EntitySet="RolesUsuarios" />
+            <End Role="Establecimiento_Informante_Source" EntitySet="Establecimientos" />
+          </AssociationSet>
+          <AssociationSet Name="Analista_Cargo" Association="Self.Analista_Cargo">
+            <End Role="Analista_Cargo_Source" EntitySet="RolesUsuarios" />
+            <End Role="Analista_Cargo_Target" EntitySet="Cargos" />
+          </AssociationSet>
+          <AssociationSet Name="Analista_Establecimientos" Association="Self.Analista_Establecimientos">
+            <End Role="Analista_Establecimientos_Source" EntitySet="RolesUsuarios" />
+            <End Role="Analista_Establecimientos_Target" EntitySet="Establecimientos" />
+          </AssociationSet>
+          <AssociationSet Name="Usuario_Rol" Association="Self.Usuario_Rol">
+            <End Role="Usuario_Rol_Target" EntitySet="RolesUsuarios" />
+            <End Role="Usuario_Rol_Source" EntitySet="Usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </ConceptualModels>
+    <Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CodeFirstDatabase" CdmEntityContainer="Context">
+          <EntitySetMapping Name="RolesUsuarios">
+            <EntityTypeMapping TypeName="Data.Administrador">
+              <MappingFragment StoreEntitySet="DAT_ROL_ADMINISTRADOR">
+                <ScalarProperty Name="Id" ColumnName="id_rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(Data.Rol)">
+              <MappingFragment StoreEntitySet="Rol">
+                <ScalarProperty Name="Id" ColumnName="id_rol" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="Telefono" ColumnName="telefono" />
+                <ScalarProperty Name="Correo" ColumnName="correo" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Data.Analista">
+              <MappingFragment StoreEntitySet="DAT_ROL_ANALISTA">
+                <ScalarProperty Name="Id" ColumnName="id_analista" />
+                <ScalarProperty Name="CargoId" ColumnName="id_cargo" />
+                <ScalarProperty Name="AreaId" ColumnName="id_area" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Data.Informante">
+              <MappingFragment StoreEntitySet="DAT_ROL_INFORMANTE">
+                <ScalarProperty Name="Id" ColumnName="id_informante" />
+                <ScalarProperty Name="CargoId" ColumnName="id_cargo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="Data.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Id" ColumnName="id_usuario" />
+                <ScalarProperty Name="Nick" ColumnName="nick" />
+                <ScalarProperty Name="Clave" ColumnName="clave" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="Data.Area">
+              <MappingFragment StoreEntitySet="Area">
+                <ScalarProperty Name="Id" ColumnName="id_area" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cargos">
+            <EntityTypeMapping TypeName="Data.Cargo">
+              <MappingFragment StoreEntitySet="Cargo">
+                <ScalarProperty Name="Id" ColumnName="id_cargo" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Establecimientos">
+            <EntityTypeMapping TypeName="Data.Establecimiento">
+              <MappingFragment StoreEntitySet="Establecimiento">
+                <ScalarProperty Name="Id" ColumnName="id_establecimiento" />
+                <ScalarProperty Name="RazonSocial" ColumnName="razon_social" />
+                <ScalarProperty Name="Ruc" ColumnName="ruc" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Codigo" ColumnName="codigo" />
+                <ScalarProperty Name="SituacionJuridica" ColumnName="situacion_juridica" />
+                <ScalarProperty Name="Direccion" ColumnName="direccion" />
+                <ScalarProperty Name="DistritoId" ColumnName="id_distrito" />
+                <ScalarProperty Name="Telefono" ColumnName="telefono" />
+                <ScalarProperty Name="Fax" ColumnName="fax" />
+                <ScalarProperty Name="CiiuId" ColumnName="id_ciiu" />
+                <ScalarProperty Name="DiasLaborables" ColumnName="dias_laborables" />
+                <ScalarProperty Name="CantidadTrabajadores" ColumnName="cantidad_trabajadores" />
+                <ScalarProperty Name="AnalistaId" ColumnName="id_analista" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ciiu">
+            <EntityTypeMapping TypeName="Data.Ciiu">
+              <MappingFragment StoreEntitySet="Ciiu">
+                <ScalarProperty Name="Id" ColumnName="id_ciiu" />
+                <ScalarProperty Name="Descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="Codigo" ColumnName="codigo" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Distritos">
+            <EntityTypeMapping TypeName="Data.Distrito">
+              <MappingFragment StoreEntitySet="Distrito">
+                <ScalarProperty Name="Id" ColumnName="id_distrito" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ProvinciaId" ColumnName="id_provincia" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Provincias">
+            <EntityTypeMapping TypeName="Data.Provincia">
+              <MappingFragment StoreEntitySet="Provincia">
+                <ScalarProperty Name="Id" ColumnName="id_provincia" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="DepartamentoId" ColumnName="id_departamento" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departamentos">
+            <EntityTypeMapping TypeName="Data.Departamento">
+              <MappingFragment StoreEntitySet="Departamento">
+                <ScalarProperty Name="Id" ColumnName="id_departamento" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Encuestas">
+            <EntityTypeMapping TypeName="IsTypeOf(Data.Encuesta)">
+              <MappingFragment StoreEntitySet="Encuesta">
+                <ScalarProperty Name="Id" ColumnName="id_encuesta" />
+                <ScalarProperty Name="EstablecimientoId" ColumnName="id_establecimiento" />
+                <ScalarProperty Name="EstadoEncuesta" ColumnName="estado_encuesta" />
+                <ScalarProperty Name="Fecha" ColumnName="fecha" />
+                <ScalarProperty Name="Justificacion" ColumnName="justificacion" />
+                <ScalarProperty Name="AnalistaId" ColumnName="id_analista" />
+                <ScalarProperty Name="InformanteId" ColumnName="id_informante" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Data.ManufacturaEstadistica">
+              <MappingFragment StoreEntitySet="DAT_ENC_MANUF_EST">
+                <ScalarProperty Name="Id" ColumnName="id_manufactura_estadistica" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Data.ManufacturaOpinionEmpresarial">
+              <MappingFragment StoreEntitySet="DAT_ENC_OPIN_EMP">
+                <ScalarProperty Name="Id" ColumnName="id_manufactura_op_empresarial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FactoresProduccion">
+            <EntityTypeMapping TypeName="Data.FactorProduccion">
+              <MappingFragment StoreEntitySet="FactorProduccion">
+                <ScalarProperty Name="Id" ColumnName="id_factor_produccion" />
+                <ScalarProperty Name="ProduccionNormal" ColumnName="produccion_normal" />
+                <ScalarProperty Name="Incremento" ColumnName="incremento" />
+                <ScalarProperty Name="Decremento" ColumnName="decremento" />
+                <ScalarProperty Name="FactorId" ColumnName="id_factor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Factores">
+            <EntityTypeMapping TypeName="Data.Factor">
+              <MappingFragment StoreEntitySet="Factor">
+                <ScalarProperty Name="Id" ColumnName="id_factor" />
+                <ScalarProperty Name="TipoFactor" ColumnName="tipo_factor" />
+                <ScalarProperty Name="Valor" ColumnName="valor" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LineaProductos">
+            <EntityTypeMapping TypeName="Data.LineaProducto">
+              <MappingFragment StoreEntitySet="LineaProducto">
+                <ScalarProperty Name="Id" ColumnName="id_linea_produto" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="FactorId" ColumnName="id_factor" />
+                <ScalarProperty Name="DesviacionMax" ColumnName="desviacion_max" />
+                <ScalarProperty Name="DesviacionMin" ColumnName="desviacion_min" />
+                <ScalarProperty Name="UnidadMedida" ColumnName="unidad_medida" />
+                <ScalarProperty Name="Activado" ColumnName="activado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductoMateriaPrimaPropias">
+            <EntityTypeMapping TypeName="Data.ProductoMateriaPrimaPropia">
+              <MappingFragment StoreEntitySet="ProductoMateriaPrimaPropia">
+                <ScalarProperty Name="Id" ColumnName="id_producto_mat_prop" />
+                <ScalarProperty Name="LineaProductoId" ColumnName="id_linea_producto" />
+                <ScalarProperty Name="UnidadMedida" ColumnName="unidad_medida" />
+                <ScalarProperty Name="JustificacionValorUnitario" ColumnName="justificacion_valor_unitario" />
+                <ScalarProperty Name="JustificacionProduccion" ColumnName="justificacion_produccion" />
+                <ScalarProperty Name="ValorUnitario" ColumnName="valor_unitario" />
+                <ScalarProperty Name="Existencias" ColumnName="existencias" />
+                <ScalarProperty Name="Produccion" ColumnName="produccion" />
+                <ScalarProperty Name="OtrosIngresos" ColumnName="otros_ingresos" />
+                <ScalarProperty Name="VentasPais" ColumnName="ventas_pais" />
+                <ScalarProperty Name="VentasExtranjero" ColumnName="ventas_extranjero" />
+                <ScalarProperty Name="OtrasSalidas" ColumnName="otras_salidas" />
+                <ScalarProperty Name="IdVolumenProduccionMensual" ColumnName="id_volumen_prod_mensual" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VolumenesProducionMensual">
+            <EntityTypeMapping TypeName="Data.VolumenProduccionMensual">
+              <MappingFragment StoreEntitySet="VolumenProduccionMensual">
+                <ScalarProperty Name="Id" ColumnName="id_volumen_prod_mensual" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductosMateriaPrimaTerceros">
+            <EntityTypeMapping TypeName="Data.ProductosMateriaPrimaTerceros">
+              <MappingFragment StoreEntitySet="ProductosMateriaPrimaTerceros">
+                <ScalarProperty Name="Id" ColumnName="id_producto_mat_terceros" />
+                <ScalarProperty Name="LineaProductoId" ColumnName="id_linea_producto" />
+                <ScalarProperty Name="UnidadMedida" ColumnName="unidad_medida" />
+                <ScalarProperty Name="UnidadProduccion" ColumnName="unidad_produccion" />
+                <ScalarProperty Name="VolumenProduccionMensualId" ColumnName="id_volumen_prod_mensual" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrabajadoresDiasTrabajados">
+            <EntityTypeMapping TypeName="Data.TrabajadoresDiasTrabajados">
+              <MappingFragment StoreEntitySet="TrabajadoresDiasTrabajados">
+                <ScalarProperty Name="Id" ColumnName="id_trabajadores_dias_trab" />
+                <ScalarProperty Name="DiasTrabajados" ColumnName="dias_trabajados" />
+                <ScalarProperty Name="TrabajadoresProduccion" ColumnName="trabajadores_produccion" />
+                <ScalarProperty Name="AdministrativosPlanta" ColumnName="administrativos_planta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ValoresProduccionMensual">
+            <EntityTypeMapping TypeName="Data.ValorProduccionMensual">
+              <MappingFragment StoreEntitySet="ValorProduccionMensual">
+                <ScalarProperty Name="Id" ColumnName="id_valor_prod_mensual" />
+                <ScalarProperty Name="ProdMatPropia" ColumnName="prod_mat_prima" />
+                <ScalarProperty Name="ProdMatTerceros" ColumnName="prod_mat_prima_terceros" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VentasProductosElaboradosEstablecimiento">
+            <EntityTypeMapping TypeName="Data.VentasProductosElaboradosEstablecimiento">
+              <MappingFragment StoreEntitySet="VentasProductosElaboradosEstablecimiento">
+                <ScalarProperty Name="Id" ColumnName="id_venta_productos_estab" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VentasPaisExtranjero">
+            <EntityTypeMapping TypeName="Data.VentaPaisExtranjero">
+              <MappingFragment StoreEntitySet="VentaPaisExtranjero">
+                <ScalarProperty Name="Id" ColumnName="id_venta_extranjero" />
+                <ScalarProperty Name="VentaPais" ColumnName="venta_pais" />
+                <ScalarProperty Name="VentaExtranjero" ColumnName="venta_extranjero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VentasServicioManufactura">
+            <EntityTypeMapping TypeName="Data.VentaServiciosManufactura">
+              <MappingFragment StoreEntitySet="VentaServiciosManufactura">
+                <ScalarProperty Name="Id" ColumnName="id_venta_servicio_manufactura" />
+                <ScalarProperty Name="Nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Pais" ColumnName="pais" />
+                <ScalarProperty Name="Exterior" ColumnName="exterior" />
+                <ScalarProperty Name="VentaProductosElaboradosEstablecimientoId" ColumnName="id_venta_productos_estab" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Preguntas">
+            <EntityTypeMapping TypeName="Data.Pregunta">
+              <MappingFragment StoreEntitySet="Pregunta">
+                <ScalarProperty Name="Id" ColumnName="id_pregunta" />
+                <ScalarProperty Name="Texto" ColumnName="texto" />
+                <ScalarProperty Name="Comienza" ColumnName="comienza" />
+                <ScalarProperty Name="Intervalo" ColumnName="intervalo" />
+                <ScalarProperty Name="PosibleRespuestaId" ColumnName="id_posible_respuesta" />
+                <ScalarProperty Name="IdManufacturaOpinionEmpresarial" ColumnName="id_manufactura_op_empresarial" />
+                <ScalarProperty Name="EstadoPregunta" ColumnName="estado_pregunta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Configuraciones">
+            <EntityTypeMapping TypeName="Data.OpinionEmpresarial">
+              <MappingFragment StoreEntitySet="DAT_CONF_OPIN_EMP">
+                <ScalarProperty Name="Id" ColumnName="id_configuracion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(Data.Configuracion)">
+              <MappingFragment StoreEntitySet="Configuracion">
+                <ScalarProperty Name="Id" ColumnName="id_configuracion" />
+                <ScalarProperty Name="Fecha" ColumnName="fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PosiblesRespuestas">
+            <EntityTypeMapping TypeName="Data.PosibleRespuesta">
+              <MappingFragment StoreEntitySet="PosibleRespuesta">
+                <ScalarProperty Name="Id" ColumnName="id_posible_respuesta" />
+                <ScalarProperty Name="TipoRespuesta" ColumnName="TipoRespuesta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Valores">
+            <EntityTypeMapping TypeName="Data.Valor">
+              <MappingFragment StoreEntitySet="Valor">
+                <ScalarProperty Name="Id" ColumnName="id_valor" />
+                <ScalarProperty Name="Texto" ColumnName="texto" />
+                <ScalarProperty Name="Numero" ColumnName="numero" />
+                <ScalarProperty Name="Seleccionado" ColumnName="seleccionado" />
+                <ScalarProperty Name="PosibleRespuestaId" ColumnName="PosibleRespuestaId" />
+                <ScalarProperty Name="PregunatId" ColumnName="PregunatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trazas">
+            <EntityTypeMapping TypeName="Data.Traza">
+              <MappingFragment StoreEntitySet="Traza">
+                <ScalarProperty Name="Id" ColumnName="id_traza" />
+                <ScalarProperty Name="Texto" ColumnName="texto" />
+                <ScalarProperty Name="Tipo" ColumnName="tipo" />
+                <ScalarProperty Name="Fecha" ColumnName="fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ManufacturaEstadistica_FactoresProduccion" TypeName="Data.ManufacturaEstadistica_FactoresProduccion" StoreEntitySet="FactorProduccion">
+            <EndProperty Name="ManufacturaEstadistica_FactoresProduccion_Source">
+              <ScalarProperty Name="Id" ColumnName="id_manufactura_estadistica" />
+            </EndProperty>
+            <EndProperty Name="ManufacturaEstadistica_FactoresProduccion_Target">
+              <ScalarProperty Name="Id" ColumnName="id_factor_produccion" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ManufacturaEstadistica_TrabajadoresDiasTrabajados" TypeName="Data.ManufacturaEstadistica_TrabajadoresDiasTrabajados" StoreEntitySet="TrabajadoresDiasTrabajados">
+            <EndProperty Name="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Source">
+              <ScalarProperty Name="Id" ColumnName="id_manufactura_estadistica" />
+            </EndProperty>
+            <EndProperty Name="ManufacturaEstadistica_TrabajadoresDiasTrabajados_Target">
+              <ScalarProperty Name="Id" ColumnName="id_trabajadores_dias_trab" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ManufacturaEstadistica_ValorProduccionMensual" TypeName="Data.ManufacturaEstadistica_ValorProduccionMensual" StoreEntitySet="ValorProduccionMensual">
+            <EndProperty Name="ManufacturaEstadistica_ValorProduccionMensual_Source">
+              <ScalarProperty Name="Id" ColumnName="id_manufactura_estadistica" />
+            </EndProperty>
+            <EndProperty Name="ManufacturaEstadistica_ValorProduccionMensual_Target">
+              <ScalarProperty Name="Id" ColumnName="id_valor_prod_mensual" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero" TypeName="Data.VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero" StoreEntitySet="VentaPaisExtranjero">
+            <EndProperty Name="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Source">
+              <ScalarProperty Name="Id" ColumnName="id_venta_productos_estab" />
+            </EndProperty>
+            <EndProperty Name="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero_Target">
+              <ScalarProperty Name="Id" ColumnName="id_venta_extranjero" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento" TypeName="Data.ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento" StoreEntitySet="VentasProductosElaboradosEstablecimiento">
+            <EndProperty Name="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Source">
+              <ScalarProperty Name="Id" ColumnName="id_manufactura_estadistica" />
+            </EndProperty>
+            <EndProperty Name="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento_Target">
+              <ScalarProperty Name="Id" ColumnName="id_venta_productos_estab" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ManufacturaEstadistica_VolumenProduccionMensual" TypeName="Data.ManufacturaEstadistica_VolumenProduccionMensual" StoreEntitySet="VolumenProduccionMensual">
+            <EndProperty Name="ManufacturaEstadistica_VolumenProduccionMensual_Source">
+              <ScalarProperty Name="Id" ColumnName="id_manufactura_estadistica" />
+            </EndProperty>
+            <EndProperty Name="ManufacturaEstadistica_VolumenProduccionMensual_Target">
+              <ScalarProperty Name="Id" ColumnName="id_volumen_prod_mensual" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="OpinionEmpresarial_Preguntas" TypeName="Data.OpinionEmpresarial_Preguntas" StoreEntitySet="OpinionEmpresarialPregunta">
+            <EndProperty Name="OpinionEmpresarial_Preguntas_Source">
+              <ScalarProperty Name="Id" ColumnName="id_op_empresarial" />
+            </EndProperty>
+            <EndProperty Name="OpinionEmpresarial_Preguntas_Target">
+              <ScalarProperty Name="Id" ColumnName="id_pregunta" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Establecimiento_Informante" TypeName="Data.Establecimiento_Informante" StoreEntitySet="Establecimiento">
+            <EndProperty Name="Establecimiento_Informante_Target">
+              <ScalarProperty Name="Id" ColumnName="id_informante" />
+            </EndProperty>
+            <EndProperty Name="Establecimiento_Informante_Source">
+              <ScalarProperty Name="Id" ColumnName="id_establecimiento" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="id_informante" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Usuario_Rol" TypeName="Data.Usuario_Rol" StoreEntitySet="Usuario">
+            <EndProperty Name="Usuario_Rol_Target">
+              <ScalarProperty Name="Id" ColumnName="id_rol" />
+            </EndProperty>
+            <EndProperty Name="Usuario_Rol_Source">
+              <ScalarProperty Name="Id" ColumnName="id_usuario" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="id_rol" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </Mappings>
+    <StorageModels>
+      <Schema Namespace="CodeFirstDatabaseSchema" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="id_rol" />
+          </Key>
+          <Property Name="id_rol" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="apellidos" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="telefono" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="correo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nick" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="clave" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="id_rol" Type="bigint" customannotation:Index="{ Name: IX_id_rol, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="id_area" />
+          </Key>
+          <Property Name="id_area" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cargo">
+          <Key>
+            <PropertyRef Name="id_cargo" />
+          </Key>
+          <Property Name="id_cargo" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Establecimiento">
+          <Key>
+            <PropertyRef Name="id_establecimiento" />
+          </Key>
+          <Property Name="id_establecimiento" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="razon_social" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="ruc" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="codigo" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="situacion_juridica" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="direccion" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="id_distrito" Type="bigint" customannotation:Index="{ Name: IX_id_distrito, Order: 0 }" Nullable="false" />
+          <Property Name="telefono" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="fax" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="id_ciiu" Type="bigint" customannotation:Index="{ Name: IX_id_ciiu, Order: 0 }" Nullable="false" />
+          <Property Name="dias_laborables" Type="int" Nullable="false" />
+          <Property Name="cantidad_trabajadores" Type="int" Nullable="false" />
+          <Property Name="id_analista" Type="bigint" customannotation:Index="{ Name: IX_id_analista, Order: 0 }" Nullable="true" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+          <Property Name="id_informante" Type="bigint" customannotation:Index="{ Name: IX_id_informante, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Ciiu">
+          <Key>
+            <PropertyRef Name="id_ciiu" />
+          </Key>
+          <Property Name="id_ciiu" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="codigo" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Distrito">
+          <Key>
+            <PropertyRef Name="id_distrito" />
+          </Key>
+          <Property Name="id_distrito" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="id_provincia" Type="bigint" customannotation:Index="{ Name: IX_id_provincia, Order: 0 }" Nullable="false" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Provincia">
+          <Key>
+            <PropertyRef Name="id_provincia" />
+          </Key>
+          <Property Name="id_provincia" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="id_departamento" Type="bigint" customannotation:Index="{ Name: IX_id_departamento, Order: 0 }" Nullable="true" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="id_departamento" />
+          </Key>
+          <Property Name="id_departamento" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Encuesta">
+          <Key>
+            <PropertyRef Name="id_encuesta" />
+          </Key>
+          <Property Name="id_encuesta" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_establecimiento" Type="bigint" customannotation:Index="{ Name: IX_id_establecimiento, Order: 0 }" Nullable="false" />
+          <Property Name="estado_encuesta" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="justificacion" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="id_analista" Type="bigint" customannotation:Index="{ Name: IX_id_analista, Order: 0 }" Nullable="true" />
+          <Property Name="id_informante" Type="bigint" customannotation:Index="{ Name: IX_id_informante, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="FactorProduccion">
+          <Key>
+            <PropertyRef Name="id_factor_produccion" />
+          </Key>
+          <Property Name="id_factor_produccion" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="produccion_normal" Type="bit" Nullable="false" />
+          <Property Name="incremento" Type="bit" Nullable="false" />
+          <Property Name="decremento" Type="bit" Nullable="false" />
+          <Property Name="id_factor" Type="bigint" customannotation:Index="{ Name: IX_id_factor, Order: 0 }" Nullable="true" />
+          <Property Name="id_manufactura_estadistica" Type="bigint" customannotation:Index="{ Name: IX_id_manufactura_estadistica, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Factor">
+          <Key>
+            <PropertyRef Name="id_factor" />
+          </Key>
+          <Property Name="id_factor" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipo_factor" Type="int" Nullable="false" />
+          <Property Name="valor" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LineaProducto">
+          <Key>
+            <PropertyRef Name="id_linea_produto" />
+          </Key>
+          <Property Name="id_linea_produto" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="id_factor" Type="bigint" customannotation:Index="{ Name: IX_id_factor, Order: 0 }" Nullable="true" />
+          <Property Name="desviacion_max" Type="float" Nullable="false" />
+          <Property Name="desviacion_min" Type="float" Nullable="false" />
+          <Property Name="unidad_medida" Type="int" Nullable="false" />
+          <Property Name="activado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductoMateriaPrimaPropia">
+          <Key>
+            <PropertyRef Name="id_producto_mat_prop" />
+          </Key>
+          <Property Name="id_producto_mat_prop" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_linea_producto" Type="bigint" customannotation:Index="{ Name: IX_id_linea_producto, Order: 0 }" Nullable="true" />
+          <Property Name="unidad_medida" Type="int" Nullable="false" />
+          <Property Name="justificacion_valor_unitario" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="justificacion_produccion" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="valor_unitario" Type="float" Nullable="false" />
+          <Property Name="existencias" Type="float" Nullable="false" />
+          <Property Name="produccion" Type="float" Nullable="false" />
+          <Property Name="otros_ingresos" Type="float" Nullable="false" />
+          <Property Name="ventas_pais" Type="float" Nullable="false" />
+          <Property Name="ventas_extranjero" Type="float" Nullable="false" />
+          <Property Name="otras_salidas" Type="float" Nullable="false" />
+          <Property Name="id_volumen_prod_mensual" Type="bigint" customannotation:Index="{ Name: IX_id_volumen_prod_mensual, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VolumenProduccionMensual">
+          <Key>
+            <PropertyRef Name="id_volumen_prod_mensual" />
+          </Key>
+          <Property Name="id_volumen_prod_mensual" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_manufactura_estadistica" Type="bigint" customannotation:Index="{ Name: IX_id_manufactura_estadistica, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductosMateriaPrimaTerceros">
+          <Key>
+            <PropertyRef Name="id_producto_mat_terceros" />
+          </Key>
+          <Property Name="id_producto_mat_terceros" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_linea_producto" Type="bigint" customannotation:Index="{ Name: IX_id_linea_producto, Order: 0 }" Nullable="true" />
+          <Property Name="unidad_medida" Type="int" Nullable="false" />
+          <Property Name="unidad_produccion" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="id_volumen_prod_mensual" Type="bigint" customannotation:Index="{ Name: IX_id_volumen_prod_mensual, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrabajadoresDiasTrabajados">
+          <Key>
+            <PropertyRef Name="id_trabajadores_dias_trab" />
+          </Key>
+          <Property Name="id_trabajadores_dias_trab" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dias_trabajados" Type="int" Nullable="false" />
+          <Property Name="trabajadores_produccion" Type="int" Nullable="false" />
+          <Property Name="administrativos_planta" Type="int" Nullable="false" />
+          <Property Name="id_manufactura_estadistica" Type="bigint" customannotation:Index="{ Name: IX_id_manufactura_estadistica, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ValorProduccionMensual">
+          <Key>
+            <PropertyRef Name="id_valor_prod_mensual" />
+          </Key>
+          <Property Name="id_valor_prod_mensual" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="prod_mat_prima" Type="float" Nullable="false" />
+          <Property Name="prod_mat_prima_terceros" Type="float" Nullable="false" />
+          <Property Name="id_manufactura_estadistica" Type="bigint" customannotation:Index="{ Name: IX_id_manufactura_estadistica, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VentasProductosElaboradosEstablecimiento">
+          <Key>
+            <PropertyRef Name="id_venta_productos_estab" />
+          </Key>
+          <Property Name="id_venta_productos_estab" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_manufactura_estadistica" Type="bigint" customannotation:Index="{ Name: IX_id_manufactura_estadistica, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VentaPaisExtranjero">
+          <Key>
+            <PropertyRef Name="id_venta_extranjero" />
+          </Key>
+          <Property Name="id_venta_extranjero" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="venta_pais" Type="float" Nullable="false" />
+          <Property Name="venta_extranjero" Type="float" Nullable="false" />
+          <Property Name="id_venta_productos_estab" Type="bigint" customannotation:Index="{ Name: IX_id_venta_productos_estab, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VentaServiciosManufactura">
+          <Key>
+            <PropertyRef Name="id_venta_servicio_manufactura" />
+          </Key>
+          <Property Name="id_venta_servicio_manufactura" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="pais" Type="float" Nullable="false" />
+          <Property Name="exterior" Type="float" Nullable="false" />
+          <Property Name="id_venta_productos_estab" Type="bigint" customannotation:Index="{ Name: IX_id_venta_productos_estab, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pregunta">
+          <Key>
+            <PropertyRef Name="id_pregunta" />
+          </Key>
+          <Property Name="id_pregunta" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="texto" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="comienza" Type="datetime" Nullable="true" />
+          <Property Name="intervalo" Type="time" Precision="7" Nullable="true" />
+          <Property Name="id_posible_respuesta" Type="bigint" Nullable="true" />
+          <Property Name="id_manufactura_op_empresarial" Type="bigint" customannotation:Index="{ Name: IX_id_manufactura_op_empresarial, Order: 0 }" Nullable="true" />
+          <Property Name="estado_pregunta" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Configuracion">
+          <Key>
+            <PropertyRef Name="id_configuracion" />
+          </Key>
+          <Property Name="id_configuracion" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PosibleRespuesta">
+          <Key>
+            <PropertyRef Name="id_posible_respuesta" />
+          </Key>
+          <Property Name="id_posible_respuesta" Type="bigint" customannotation:Index="{ Name: IX_id_posible_respuesta, Order: 0 }" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoRespuesta" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Valor">
+          <Key>
+            <PropertyRef Name="id_valor" />
+          </Key>
+          <Property Name="id_valor" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="texto" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="numero" Type="int" Nullable="false" />
+          <Property Name="seleccionado" Type="bit" Nullable="false" />
+          <Property Name="PosibleRespuestaId" Type="bigint" customannotation:Index="{ Name: IX_PosibleRespuestaId, Order: 0 }" Nullable="false" />
+          <Property Name="PregunatId" Type="bigint" customannotation:Index="{ Name: IX_PregunatId, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Traza">
+          <Key>
+            <PropertyRef Name="id_traza" />
+          </Key>
+          <Property Name="id_traza" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="texto" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="tipo" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OpinionEmpresarialPregunta">
+          <Key>
+            <PropertyRef Name="id_op_empresarial" />
+            <PropertyRef Name="id_pregunta" />
+          </Key>
+          <Property Name="id_op_empresarial" Type="bigint" customannotation:Index="{ Name: IX_id_op_empresarial, Order: 0 }" Nullable="false" />
+          <Property Name="id_pregunta" Type="bigint" customannotation:Index="{ Name: IX_id_pregunta, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DAT_ROL_ADMINISTRADOR">
+          <Key>
+            <PropertyRef Name="id_rol" />
+          </Key>
+          <Property Name="id_rol" Type="bigint" customannotation:Index="{ Name: IX_id_rol, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DAT_ROL_ANALISTA">
+          <Key>
+            <PropertyRef Name="id_analista" />
+          </Key>
+          <Property Name="id_analista" Type="bigint" customannotation:Index="{ Name: IX_id_analista, Order: 0 }" Nullable="false" />
+          <Property Name="id_cargo" Type="bigint" customannotation:Index="{ Name: IX_id_cargo, Order: 0 }" Nullable="true" />
+          <Property Name="id_area" Type="bigint" customannotation:Index="{ Name: IX_id_area, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="DAT_ROL_INFORMANTE">
+          <Key>
+            <PropertyRef Name="id_informante" />
+          </Key>
+          <Property Name="id_informante" Type="bigint" customannotation:Index="{ Name: IX_id_informante, Order: 0 }" Nullable="false" />
+          <Property Name="id_cargo" Type="bigint" customannotation:Index="{ Name: IX_id_cargo, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="DAT_ENC_MANUF_EST">
+          <Key>
+            <PropertyRef Name="id_manufactura_estadistica" />
+          </Key>
+          <Property Name="id_manufactura_estadistica" Type="bigint" customannotation:Index="{ Name: IX_id_manufactura_estadistica, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DAT_ENC_OPIN_EMP">
+          <Key>
+            <PropertyRef Name="id_manufactura_op_empresarial" />
+          </Key>
+          <Property Name="id_manufactura_op_empresarial" Type="bigint" customannotation:Index="{ Name: IX_id_manufactura_op_empresarial, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DAT_CONF_OPIN_EMP">
+          <Key>
+            <PropertyRef Name="id_configuracion" />
+          </Key>
+          <Property Name="id_configuracion" Type="bigint" customannotation:Index="{ Name: IX_id_configuracion, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <Association Name="Establecimiento_Ciiu">
+          <End Role="Ciiu" Type="Self.Ciiu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Establecimiento" Type="Self.Establecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciiu">
+              <PropertyRef Name="id_ciiu" />
+            </Principal>
+            <Dependent Role="Establecimiento">
+              <PropertyRef Name="id_ciiu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Provincia_Departamento">
+          <End Role="Departamento" Type="Self.Departamento" Multiplicity="0..1" />
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="id_departamento" />
+            </Principal>
+            <Dependent Role="Provincia">
+              <PropertyRef Name="id_departamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Distrito_Provincia">
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia">
+              <PropertyRef Name="id_provincia" />
+            </Principal>
+            <Dependent Role="Distrito">
+              <PropertyRef Name="id_provincia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Establecimiento_Distrito">
+          <End Role="Distrito" Type="Self.Distrito" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Establecimiento" Type="Self.Establecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Distrito">
+              <PropertyRef Name="id_distrito" />
+            </Principal>
+            <Dependent Role="Establecimiento">
+              <PropertyRef Name="id_distrito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Encuesta_Analista">
+          <End Role="DAT_ROL_ANALISTA" Type="Self.DAT_ROL_ANALISTA" Multiplicity="0..1" />
+          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ROL_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Principal>
+            <Dependent Role="Encuesta">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Encuesta_Establecimiento">
+          <End Role="Establecimiento" Type="Self.Establecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Establecimiento">
+              <PropertyRef Name="id_establecimiento" />
+            </Principal>
+            <Dependent Role="Encuesta">
+              <PropertyRef Name="id_establecimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Encuesta_Informante">
+          <End Role="DAT_ROL_INFORMANTE" Type="Self.DAT_ROL_INFORMANTE" Multiplicity="0..1" />
+          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ROL_INFORMANTE">
+              <PropertyRef Name="id_informante" />
+            </Principal>
+            <Dependent Role="Encuesta">
+              <PropertyRef Name="id_informante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Factor_FactoresProduccion">
+          <End Role="Factor" Type="Self.Factor" Multiplicity="0..1" />
+          <End Role="FactorProduccion" Type="Self.FactorProduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Factor">
+              <PropertyRef Name="id_factor" />
+            </Principal>
+            <Dependent Role="FactorProduccion">
+              <PropertyRef Name="id_factor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LineaProducto_Factor">
+          <End Role="Factor" Type="Self.Factor" Multiplicity="0..1" />
+          <End Role="LineaProducto" Type="Self.LineaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Factor">
+              <PropertyRef Name="id_factor" />
+            </Principal>
+            <Dependent Role="LineaProducto">
+              <PropertyRef Name="id_factor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductoMateriaPrimaPropia_LineaProducto">
+          <End Role="LineaProducto" Type="Self.LineaProducto" Multiplicity="0..1" />
+          <End Role="ProductoMateriaPrimaPropia" Type="Self.ProductoMateriaPrimaPropia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LineaProducto">
+              <PropertyRef Name="id_linea_produto" />
+            </Principal>
+            <Dependent Role="ProductoMateriaPrimaPropia">
+              <PropertyRef Name="id_linea_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VolumenProduccionMensual_ProductosMateriaPrimaPropia">
+          <End Role="VolumenProduccionMensual" Type="Self.VolumenProduccionMensual" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProductoMateriaPrimaPropia" Type="Self.ProductoMateriaPrimaPropia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VolumenProduccionMensual">
+              <PropertyRef Name="id_volumen_prod_mensual" />
+            </Principal>
+            <Dependent Role="ProductoMateriaPrimaPropia">
+              <PropertyRef Name="id_volumen_prod_mensual" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductosMateriaPrimaTerceros_LineaProducto">
+          <End Role="LineaProducto" Type="Self.LineaProducto" Multiplicity="0..1" />
+          <End Role="ProductosMateriaPrimaTerceros" Type="Self.ProductosMateriaPrimaTerceros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LineaProducto">
+              <PropertyRef Name="id_linea_produto" />
+            </Principal>
+            <Dependent Role="ProductosMateriaPrimaTerceros">
+              <PropertyRef Name="id_linea_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VolumenProduccionMensual_ProductosMateriaPrimaTerceros">
+          <End Role="VolumenProduccionMensual" Type="Self.VolumenProduccionMensual" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProductosMateriaPrimaTerceros" Type="Self.ProductosMateriaPrimaTerceros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VolumenProduccionMensual">
+              <PropertyRef Name="id_volumen_prod_mensual" />
+            </Principal>
+            <Dependent Role="ProductosMateriaPrimaTerceros">
+              <PropertyRef Name="id_volumen_prod_mensual" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaEstadistica_FactoresProduccion">
+          <End Role="DAT_ENC_MANUF_EST" Type="Self.DAT_ENC_MANUF_EST" Multiplicity="1" />
+          <End Role="FactorProduccion" Type="Self.FactorProduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ENC_MANUF_EST">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Principal>
+            <Dependent Role="FactorProduccion">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaEstadistica_TrabajadoresDiasTrabajados">
+          <End Role="DAT_ENC_MANUF_EST" Type="Self.DAT_ENC_MANUF_EST" Multiplicity="1" />
+          <End Role="TrabajadoresDiasTrabajados" Type="Self.TrabajadoresDiasTrabajados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ENC_MANUF_EST">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Principal>
+            <Dependent Role="TrabajadoresDiasTrabajados">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaEstadistica_ValorProduccionMensual">
+          <End Role="DAT_ENC_MANUF_EST" Type="Self.DAT_ENC_MANUF_EST" Multiplicity="1" />
+          <End Role="ValorProduccionMensual" Type="Self.ValorProduccionMensual" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ENC_MANUF_EST">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Principal>
+            <Dependent Role="ValorProduccionMensual">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero">
+          <End Role="VentasProductosElaboradosEstablecimiento" Type="Self.VentasProductosElaboradosEstablecimiento" Multiplicity="1" />
+          <End Role="VentaPaisExtranjero" Type="Self.VentaPaisExtranjero" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VentasProductosElaboradosEstablecimiento">
+              <PropertyRef Name="id_venta_productos_estab" />
+            </Principal>
+            <Dependent Role="VentaPaisExtranjero">
+              <PropertyRef Name="id_venta_productos_estab" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura">
+          <End Role="VentasProductosElaboradosEstablecimiento" Type="Self.VentasProductosElaboradosEstablecimiento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VentaServiciosManufactura" Type="Self.VentaServiciosManufactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VentasProductosElaboradosEstablecimiento">
+              <PropertyRef Name="id_venta_productos_estab" />
+            </Principal>
+            <Dependent Role="VentaServiciosManufactura">
+              <PropertyRef Name="id_venta_productos_estab" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento">
+          <End Role="DAT_ENC_MANUF_EST" Type="Self.DAT_ENC_MANUF_EST" Multiplicity="1" />
+          <End Role="VentasProductosElaboradosEstablecimiento" Type="Self.VentasProductosElaboradosEstablecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ENC_MANUF_EST">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Principal>
+            <Dependent Role="VentasProductosElaboradosEstablecimiento">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaEstadistica_VolumenProduccionMensual">
+          <End Role="DAT_ENC_MANUF_EST" Type="Self.DAT_ENC_MANUF_EST" Multiplicity="1" />
+          <End Role="VolumenProduccionMensual" Type="Self.VolumenProduccionMensual" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ENC_MANUF_EST">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Principal>
+            <Dependent Role="VolumenProduccionMensual">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OpinionEmpresarial_Preguntas_Source">
+          <End Role="DAT_CONF_OPIN_EMP" Type="Self.DAT_CONF_OPIN_EMP" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OpinionEmpresarialPregunta" Type="Self.OpinionEmpresarialPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_CONF_OPIN_EMP">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="OpinionEmpresarialPregunta">
+              <PropertyRef Name="id_op_empresarial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OpinionEmpresarial_Preguntas_Target">
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OpinionEmpresarialPregunta" Type="Self.OpinionEmpresarialPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
+              <PropertyRef Name="id_pregunta" />
+            </Principal>
+            <Dependent Role="OpinionEmpresarialPregunta">
+              <PropertyRef Name="id_pregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Valor_Pregunta">
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="0..1" />
+          <End Role="Valor" Type="Self.Valor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
+              <PropertyRef Name="id_pregunta" />
+            </Principal>
+            <Dependent Role="Valor">
+              <PropertyRef Name="PregunatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PosibleRespuesta_Valores">
+          <End Role="PosibleRespuesta" Type="Self.PosibleRespuesta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Valor" Type="Self.Valor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PosibleRespuesta">
+              <PropertyRef Name="id_posible_respuesta" />
+            </Principal>
+            <Dependent Role="Valor">
+              <PropertyRef Name="PosibleRespuestaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Pregunta_PosibleRespuesta">
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="1" />
+          <End Role="PosibleRespuesta" Type="Self.PosibleRespuesta" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
+              <PropertyRef Name="id_pregunta" />
+            </Principal>
+            <Dependent Role="PosibleRespuesta">
+              <PropertyRef Name="id_posible_respuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaOpinionEmpresarial_Preguntas">
+          <End Role="DAT_ENC_OPIN_EMP" Type="Self.DAT_ENC_OPIN_EMP" Multiplicity="0..1" />
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ENC_OPIN_EMP">
+              <PropertyRef Name="id_manufactura_op_empresarial" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="id_manufactura_op_empresarial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Establecimiento_Informante">
+          <End Role="DAT_ROL_INFORMANTE" Type="Self.DAT_ROL_INFORMANTE" Multiplicity="0..1" />
+          <End Role="Establecimiento" Type="Self.Establecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ROL_INFORMANTE">
+              <PropertyRef Name="id_informante" />
+            </Principal>
+            <Dependent Role="Establecimiento">
+              <PropertyRef Name="id_informante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Analista_Establecimientos">
+          <End Role="DAT_ROL_ANALISTA" Type="Self.DAT_ROL_ANALISTA" Multiplicity="0..1" />
+          <End Role="Establecimiento" Type="Self.Establecimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAT_ROL_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Principal>
+            <Dependent Role="Establecimiento">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Usuario_Rol">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="0..1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="id_rol" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="id_rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Administrador_TypeConstraint_From_Rol_To_DAT_ROL_ADMINISTRADOR">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="1" />
+          <End Role="DAT_ROL_ADMINISTRADOR" Type="Self.DAT_ROL_ADMINISTRADOR" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="id_rol" />
+            </Principal>
+            <Dependent Role="DAT_ROL_ADMINISTRADOR">
+              <PropertyRef Name="id_rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Analista_TypeConstraint_From_Rol_To_DAT_ROL_ANALISTA">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="1" />
+          <End Role="DAT_ROL_ANALISTA" Type="Self.DAT_ROL_ANALISTA" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="id_rol" />
+            </Principal>
+            <Dependent Role="DAT_ROL_ANALISTA">
+              <PropertyRef Name="id_analista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Analista_Cargo1">
+          <End Role="Cargo" Type="Self.Cargo" Multiplicity="0..1" />
+          <End Role="DAT_ROL_ANALISTA" Type="Self.DAT_ROL_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="id_cargo" />
+            </Principal>
+            <Dependent Role="DAT_ROL_ANALISTA">
+              <PropertyRef Name="id_cargo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Analista_Area1">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="DAT_ROL_ANALISTA" Type="Self.DAT_ROL_ANALISTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="id_area" />
+            </Principal>
+            <Dependent Role="DAT_ROL_ANALISTA">
+              <PropertyRef Name="id_area" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Informante_TypeConstraint_From_Rol_To_DAT_ROL_INFORMANTE">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="1" />
+          <End Role="DAT_ROL_INFORMANTE" Type="Self.DAT_ROL_INFORMANTE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="id_rol" />
+            </Principal>
+            <Dependent Role="DAT_ROL_INFORMANTE">
+              <PropertyRef Name="id_informante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Informante_Cargo1">
+          <End Role="Cargo" Type="Self.Cargo" Multiplicity="0..1" />
+          <End Role="DAT_ROL_INFORMANTE" Type="Self.DAT_ROL_INFORMANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="id_cargo" />
+            </Principal>
+            <Dependent Role="DAT_ROL_INFORMANTE">
+              <PropertyRef Name="id_cargo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaEstadistica_TypeConstraint_From_Encuesta_To_DAT_ENC_MANUF_EST">
+          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="1" />
+          <End Role="DAT_ENC_MANUF_EST" Type="Self.DAT_ENC_MANUF_EST" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Encuesta">
+              <PropertyRef Name="id_encuesta" />
+            </Principal>
+            <Dependent Role="DAT_ENC_MANUF_EST">
+              <PropertyRef Name="id_manufactura_estadistica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManufacturaOpinionEmpresarial_TypeConstraint_From_Encuesta_To_DAT_ENC_OPIN_EMP">
+          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="1" />
+          <End Role="DAT_ENC_OPIN_EMP" Type="Self.DAT_ENC_OPIN_EMP" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Encuesta">
+              <PropertyRef Name="id_encuesta" />
+            </Principal>
+            <Dependent Role="DAT_ENC_OPIN_EMP">
+              <PropertyRef Name="id_manufactura_op_empresarial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OpinionEmpresarial_TypeConstraint_From_Configuracion_To_DAT_CONF_OPIN_EMP">
+          <End Role="Configuracion" Type="Self.Configuracion" Multiplicity="1" />
+          <End Role="DAT_CONF_OPIN_EMP" Type="Self.DAT_CONF_OPIN_EMP" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="DAT_CONF_OPIN_EMP">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CodeFirstDatabase">
+          <EntitySet Name="Rol" EntityType="Self.Rol" Schema="dbo" Table="DAT_ROL" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" Table="SEG_USUARIO" />
+          <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" Table="TIPO_AREA" />
+          <EntitySet Name="Cargo" EntityType="Self.Cargo" Schema="dbo" Table="TIPO_CARGO" />
+          <EntitySet Name="Establecimiento" EntityType="Self.Establecimiento" Schema="dbo" Table="DAT_ESTABLECIMIENTO" />
+          <EntitySet Name="Ciiu" EntityType="Self.Ciiu" Schema="dbo" Table="CAT_CIIU" />
+          <EntitySet Name="Distrito" EntityType="Self.Distrito" Schema="dbo" Table="CAT_DISTRITO" />
+          <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" Table="TIPO_PROVINCIA" />
+          <EntitySet Name="Departamento" EntityType="Self.Departamento" Schema="dbo" Table="TIPO_DPTO" />
+          <EntitySet Name="Encuesta" EntityType="Self.Encuesta" Schema="dbo" Table="DAT_ENCUESTA" />
+          <EntitySet Name="FactorProduccion" EntityType="Self.FactorProduccion" Schema="dbo" Table="CAT_FACT_PROD" />
+          <EntitySet Name="Factor" EntityType="Self.Factor" Schema="dbo" Table="CAT_FACTOR" />
+          <EntitySet Name="LineaProducto" EntityType="Self.LineaProducto" Schema="dbo" Table="CAT_LINEA_PROD" />
+          <EntitySet Name="ProductoMateriaPrimaPropia" EntityType="Self.ProductoMateriaPrimaPropia" Schema="dbo" Table="DAT_PROD_MAT_PROP" />
+          <EntitySet Name="VolumenProduccionMensual" EntityType="Self.VolumenProduccionMensual" Schema="dbo" Table="DAT_VOL_PROD_MEN" />
+          <EntitySet Name="ProductosMateriaPrimaTerceros" EntityType="Self.ProductosMateriaPrimaTerceros" Schema="dbo" Table="DAT_PROD_MAT_TERC" />
+          <EntitySet Name="TrabajadoresDiasTrabajados" EntityType="Self.TrabajadoresDiasTrabajados" Schema="dbo" Table="DAT_TRAB_DIAS_TRAB" />
+          <EntitySet Name="ValorProduccionMensual" EntityType="Self.ValorProduccionMensual" Schema="dbo" Table="DAT_VAL_PROD_MENS" />
+          <EntitySet Name="VentasProductosElaboradosEstablecimiento" EntityType="Self.VentasProductosElaboradosEstablecimiento" Schema="dbo" Table="DAT_VENT_PROD_ESTAB" />
+          <EntitySet Name="VentaPaisExtranjero" EntityType="Self.VentaPaisExtranjero" Schema="dbo" Table="DAT_VENT_EXT" />
+          <EntitySet Name="VentaServiciosManufactura" EntityType="Self.VentaServiciosManufactura" Schema="dbo" Table="DAT_VENT_SERV_MANUF" />
+          <EntitySet Name="Pregunta" EntityType="Self.Pregunta" Schema="dbo" Table="CAT_PREG" />
+          <EntitySet Name="Configuracion" EntityType="Self.Configuracion" Schema="dbo" Table="DAT_CONF" />
+          <EntitySet Name="PosibleRespuesta" EntityType="Self.PosibleRespuesta" Schema="dbo" Table="DAT_POS_RESP" />
+          <EntitySet Name="Valor" EntityType="Self.Valor" Schema="dbo" Table="DAT_VALOR" />
+          <EntitySet Name="Traza" EntityType="Self.Traza" Schema="dbo" Table="DAT_TRAZA" />
+          <EntitySet Name="OpinionEmpresarialPregunta" EntityType="Self.OpinionEmpresarialPregunta" Schema="dbo" Table="DAT_PREG_OP_EMP" />
+          <EntitySet Name="DAT_ROL_ADMINISTRADOR" EntityType="Self.DAT_ROL_ADMINISTRADOR" Schema="dbo" Table="DAT_ROL_ADMINISTRADOR" />
+          <EntitySet Name="DAT_ROL_ANALISTA" EntityType="Self.DAT_ROL_ANALISTA" Schema="dbo" Table="DAT_ROL_ANALISTA" />
+          <EntitySet Name="DAT_ROL_INFORMANTE" EntityType="Self.DAT_ROL_INFORMANTE" Schema="dbo" Table="DAT_ROL_INFORMANTE" />
+          <EntitySet Name="DAT_ENC_MANUF_EST" EntityType="Self.DAT_ENC_MANUF_EST" Schema="dbo" Table="DAT_ENC_MANUF_EST" />
+          <EntitySet Name="DAT_ENC_OPIN_EMP" EntityType="Self.DAT_ENC_OPIN_EMP" Schema="dbo" Table="DAT_ENC_OPIN_EMP" />
+          <EntitySet Name="DAT_CONF_OPIN_EMP" EntityType="Self.DAT_CONF_OPIN_EMP" Schema="dbo" Table="DAT_CONF_OPIN_EMP" />
+          <AssociationSet Name="Establecimiento_Ciiu" Association="Self.Establecimiento_Ciiu">
+            <End Role="Ciiu" EntitySet="Ciiu" />
+            <End Role="Establecimiento" EntitySet="Establecimiento" />
+          </AssociationSet>
+          <AssociationSet Name="Provincia_Departamento" Association="Self.Provincia_Departamento">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Provincia" EntitySet="Provincia" />
+          </AssociationSet>
+          <AssociationSet Name="Distrito_Provincia" Association="Self.Distrito_Provincia">
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Distrito" EntitySet="Distrito" />
+          </AssociationSet>
+          <AssociationSet Name="Establecimiento_Distrito" Association="Self.Establecimiento_Distrito">
+            <End Role="Distrito" EntitySet="Distrito" />
+            <End Role="Establecimiento" EntitySet="Establecimiento" />
+          </AssociationSet>
+          <AssociationSet Name="Encuesta_Analista" Association="Self.Encuesta_Analista">
+            <End Role="DAT_ROL_ANALISTA" EntitySet="DAT_ROL_ANALISTA" />
+            <End Role="Encuesta" EntitySet="Encuesta" />
+          </AssociationSet>
+          <AssociationSet Name="Encuesta_Establecimiento" Association="Self.Encuesta_Establecimiento">
+            <End Role="Establecimiento" EntitySet="Establecimiento" />
+            <End Role="Encuesta" EntitySet="Encuesta" />
+          </AssociationSet>
+          <AssociationSet Name="Encuesta_Informante" Association="Self.Encuesta_Informante">
+            <End Role="DAT_ROL_INFORMANTE" EntitySet="DAT_ROL_INFORMANTE" />
+            <End Role="Encuesta" EntitySet="Encuesta" />
+          </AssociationSet>
+          <AssociationSet Name="Factor_FactoresProduccion" Association="Self.Factor_FactoresProduccion">
+            <End Role="Factor" EntitySet="Factor" />
+            <End Role="FactorProduccion" EntitySet="FactorProduccion" />
+          </AssociationSet>
+          <AssociationSet Name="LineaProducto_Factor" Association="Self.LineaProducto_Factor">
+            <End Role="Factor" EntitySet="Factor" />
+            <End Role="LineaProducto" EntitySet="LineaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="ProductoMateriaPrimaPropia_LineaProducto" Association="Self.ProductoMateriaPrimaPropia_LineaProducto">
+            <End Role="LineaProducto" EntitySet="LineaProducto" />
+            <End Role="ProductoMateriaPrimaPropia" EntitySet="ProductoMateriaPrimaPropia" />
+          </AssociationSet>
+          <AssociationSet Name="VolumenProduccionMensual_ProductosMateriaPrimaPropia" Association="Self.VolumenProduccionMensual_ProductosMateriaPrimaPropia">
+            <End Role="VolumenProduccionMensual" EntitySet="VolumenProduccionMensual" />
+            <End Role="ProductoMateriaPrimaPropia" EntitySet="ProductoMateriaPrimaPropia" />
+          </AssociationSet>
+          <AssociationSet Name="ProductosMateriaPrimaTerceros_LineaProducto" Association="Self.ProductosMateriaPrimaTerceros_LineaProducto">
+            <End Role="LineaProducto" EntitySet="LineaProducto" />
+            <End Role="ProductosMateriaPrimaTerceros" EntitySet="ProductosMateriaPrimaTerceros" />
+          </AssociationSet>
+          <AssociationSet Name="VolumenProduccionMensual_ProductosMateriaPrimaTerceros" Association="Self.VolumenProduccionMensual_ProductosMateriaPrimaTerceros">
+            <End Role="VolumenProduccionMensual" EntitySet="VolumenProduccionMensual" />
+            <End Role="ProductosMateriaPrimaTerceros" EntitySet="ProductosMateriaPrimaTerceros" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_FactoresProduccion" Association="Self.ManufacturaEstadistica_FactoresProduccion">
+            <End Role="DAT_ENC_MANUF_EST" EntitySet="DAT_ENC_MANUF_EST" />
+            <End Role="FactorProduccion" EntitySet="FactorProduccion" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_TrabajadoresDiasTrabajados" Association="Self.ManufacturaEstadistica_TrabajadoresDiasTrabajados">
+            <End Role="DAT_ENC_MANUF_EST" EntitySet="DAT_ENC_MANUF_EST" />
+            <End Role="TrabajadoresDiasTrabajados" EntitySet="TrabajadoresDiasTrabajados" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_ValorProduccionMensual" Association="Self.ManufacturaEstadistica_ValorProduccionMensual">
+            <End Role="DAT_ENC_MANUF_EST" EntitySet="DAT_ENC_MANUF_EST" />
+            <End Role="ValorProduccionMensual" EntitySet="ValorProduccionMensual" />
+          </AssociationSet>
+          <AssociationSet Name="VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero" Association="Self.VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero">
+            <End Role="VentasProductosElaboradosEstablecimiento" EntitySet="VentasProductosElaboradosEstablecimiento" />
+            <End Role="VentaPaisExtranjero" EntitySet="VentaPaisExtranjero" />
+          </AssociationSet>
+          <AssociationSet Name="VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura" Association="Self.VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura">
+            <End Role="VentasProductosElaboradosEstablecimiento" EntitySet="VentasProductosElaboradosEstablecimiento" />
+            <End Role="VentaServiciosManufactura" EntitySet="VentaServiciosManufactura" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento" Association="Self.ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento">
+            <End Role="DAT_ENC_MANUF_EST" EntitySet="DAT_ENC_MANUF_EST" />
+            <End Role="VentasProductosElaboradosEstablecimiento" EntitySet="VentasProductosElaboradosEstablecimiento" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_VolumenProduccionMensual" Association="Self.ManufacturaEstadistica_VolumenProduccionMensual">
+            <End Role="DAT_ENC_MANUF_EST" EntitySet="DAT_ENC_MANUF_EST" />
+            <End Role="VolumenProduccionMensual" EntitySet="VolumenProduccionMensual" />
+          </AssociationSet>
+          <AssociationSet Name="OpinionEmpresarial_Preguntas_Source" Association="Self.OpinionEmpresarial_Preguntas_Source">
+            <End Role="DAT_CONF_OPIN_EMP" EntitySet="DAT_CONF_OPIN_EMP" />
+            <End Role="OpinionEmpresarialPregunta" EntitySet="OpinionEmpresarialPregunta" />
+          </AssociationSet>
+          <AssociationSet Name="OpinionEmpresarial_Preguntas_Target" Association="Self.OpinionEmpresarial_Preguntas_Target">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="OpinionEmpresarialPregunta" EntitySet="OpinionEmpresarialPregunta" />
+          </AssociationSet>
+          <AssociationSet Name="Valor_Pregunta" Association="Self.Valor_Pregunta">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="Valor" EntitySet="Valor" />
+          </AssociationSet>
+          <AssociationSet Name="PosibleRespuesta_Valores" Association="Self.PosibleRespuesta_Valores">
+            <End Role="PosibleRespuesta" EntitySet="PosibleRespuesta" />
+            <End Role="Valor" EntitySet="Valor" />
+          </AssociationSet>
+          <AssociationSet Name="Pregunta_PosibleRespuesta" Association="Self.Pregunta_PosibleRespuesta">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="PosibleRespuesta" EntitySet="PosibleRespuesta" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaOpinionEmpresarial_Preguntas" Association="Self.ManufacturaOpinionEmpresarial_Preguntas">
+            <End Role="DAT_ENC_OPIN_EMP" EntitySet="DAT_ENC_OPIN_EMP" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
+          </AssociationSet>
+          <AssociationSet Name="Establecimiento_Informante" Association="Self.Establecimiento_Informante">
+            <End Role="DAT_ROL_INFORMANTE" EntitySet="DAT_ROL_INFORMANTE" />
+            <End Role="Establecimiento" EntitySet="Establecimiento" />
+          </AssociationSet>
+          <AssociationSet Name="Analista_Establecimientos" Association="Self.Analista_Establecimientos">
+            <End Role="DAT_ROL_ANALISTA" EntitySet="DAT_ROL_ANALISTA" />
+            <End Role="Establecimiento" EntitySet="Establecimiento" />
+          </AssociationSet>
+          <AssociationSet Name="Usuario_Rol" Association="Self.Usuario_Rol">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Administrador_TypeConstraint_From_Rol_To_DAT_ROL_ADMINISTRADOR" Association="Self.Administrador_TypeConstraint_From_Rol_To_DAT_ROL_ADMINISTRADOR">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="DAT_ROL_ADMINISTRADOR" EntitySet="DAT_ROL_ADMINISTRADOR" />
+          </AssociationSet>
+          <AssociationSet Name="Analista_TypeConstraint_From_Rol_To_DAT_ROL_ANALISTA" Association="Self.Analista_TypeConstraint_From_Rol_To_DAT_ROL_ANALISTA">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="DAT_ROL_ANALISTA" EntitySet="DAT_ROL_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="Analista_Cargo1" Association="Self.Analista_Cargo1">
+            <End Role="Cargo" EntitySet="Cargo" />
+            <End Role="DAT_ROL_ANALISTA" EntitySet="DAT_ROL_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="Analista_Area1" Association="Self.Analista_Area1">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="DAT_ROL_ANALISTA" EntitySet="DAT_ROL_ANALISTA" />
+          </AssociationSet>
+          <AssociationSet Name="Informante_TypeConstraint_From_Rol_To_DAT_ROL_INFORMANTE" Association="Self.Informante_TypeConstraint_From_Rol_To_DAT_ROL_INFORMANTE">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="DAT_ROL_INFORMANTE" EntitySet="DAT_ROL_INFORMANTE" />
+          </AssociationSet>
+          <AssociationSet Name="Informante_Cargo1" Association="Self.Informante_Cargo1">
+            <End Role="Cargo" EntitySet="Cargo" />
+            <End Role="DAT_ROL_INFORMANTE" EntitySet="DAT_ROL_INFORMANTE" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaEstadistica_TypeConstraint_From_Encuesta_To_DAT_ENC_MANUF_EST" Association="Self.ManufacturaEstadistica_TypeConstraint_From_Encuesta_To_DAT_ENC_MANUF_EST">
+            <End Role="Encuesta" EntitySet="Encuesta" />
+            <End Role="DAT_ENC_MANUF_EST" EntitySet="DAT_ENC_MANUF_EST" />
+          </AssociationSet>
+          <AssociationSet Name="ManufacturaOpinionEmpresarial_TypeConstraint_From_Encuesta_To_DAT_ENC_OPIN_EMP" Association="Self.ManufacturaOpinionEmpresarial_TypeConstraint_From_Encuesta_To_DAT_ENC_OPIN_EMP">
+            <End Role="Encuesta" EntitySet="Encuesta" />
+            <End Role="DAT_ENC_OPIN_EMP" EntitySet="DAT_ENC_OPIN_EMP" />
+          </AssociationSet>
+          <AssociationSet Name="OpinionEmpresarial_TypeConstraint_From_Configuracion_To_DAT_CONF_OPIN_EMP" Association="Self.OpinionEmpresarial_TypeConstraint_From_Configuracion_To_DAT_CONF_OPIN_EMP">
+            <End Role="Configuracion" EntitySet="Configuracion" />
+            <End Role="DAT_CONF_OPIN_EMP" EntitySet="DAT_CONF_OPIN_EMP" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </StorageModels>
+  </Runtime>
+  <Designer>
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="ProcessDependentTemplatesOnSave" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <Diagrams >
+      <Diagram DiagramId="856f041c521f43bb9fae94f73ca8fedf" Name="Diagram1">
+        <EntityTypeShape EntityType="Data.Administrador" Width="1.5" PointX="5.625" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Usuario" Width="1.5" PointX="8.625" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Rol" Width="1.5" PointX="8.625" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Analista" Width="1.5" PointX="16.125" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Area" Width="1.5" PointX="11.625" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Cargo" Width="1.5" PointX="20.625" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Informante" Width="1.5" PointX="14.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Establecimiento" Width="1.5" PointX="20.625" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Ciiu" Width="1.5" PointX="22.875" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Distrito" Width="1.5" PointX="22.875" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Provincia" Width="1.5" PointX="25.125" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Departamento" Width="1.5" PointX="27.375" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Encuesta" Width="1.5" PointX="18.375" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.ManufacturaEstadistica" Width="1.5" PointX="21.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.FactorProduccion" Width="1.5" PointX="23.625" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Factor" Width="1.5" PointX="27.375" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.LineaProducto" Width="1.5" PointX="25.125" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.ProductoMateriaPrimaPropia" Width="1.5" PointX="22.875" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.VolumenProduccionMensual" Width="1.5" PointX="20.625" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.ProductosMateriaPrimaTerceros" Width="1.5" PointX="22.875" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.TrabajadoresDiasTrabajados" Width="1.5" PointX="20.625" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.ValorProduccionMensual" Width="1.5" PointX="20.625" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.VentasProductosElaboradosEstablecimiento" Width="1.5" PointX="20.625" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.VentaPaisExtranjero" Width="1.5" PointX="22.875" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.VentaServiciosManufactura" Width="1.5" PointX="22.875" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.ManufacturaOpinionEmpresarial" Width="1.5" PointX="19.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Pregunta" Width="1.5" PointX="20.625" PointY="40.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.OpinionEmpresarial" Width="1.5" PointX="20.625" PointY="38.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.PosibleRespuesta" Width="1.5" PointX="22.875" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Valor" Width="1.5" PointX="25.125" PointY="40.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Configuracion" Width="1.5" PointX="20.625" PointY="36.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Data.Traza" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <InheritanceConnector EntityType="Data.Administrador" ManuallyRouted="false" />
+        <InheritanceConnector EntityType="Data.Analista" ManuallyRouted="false" />
+        <InheritanceConnector EntityType="Data.Informante" ManuallyRouted="false" />
+        <InheritanceConnector EntityType="Data.ManufacturaEstadistica" ManuallyRouted="false" />
+        <InheritanceConnector EntityType="Data.ManufacturaOpinionEmpresarial" ManuallyRouted="false" />
+        <InheritanceConnector EntityType="Data.OpinionEmpresarial" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Analista_Area" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Informante_Cargo" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Establecimiento_Ciiu" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Provincia_Departamento" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Distrito_Provincia" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Establecimiento_Distrito" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Encuesta_Analista" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Encuesta_Establecimiento" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Encuesta_Informante" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Factor_FactoresProduccion" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.LineaProducto_Factor" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.ProductoMateriaPrimaPropia_LineaProducto" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.VolumenProduccionMensual_ProductosMateriaPrimaPropia" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.ProductosMateriaPrimaTerceros_LineaProducto" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.VolumenProduccionMensual_ProductosMateriaPrimaTerceros" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.ManufacturaEstadistica_FactoresProduccion" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.ManufacturaEstadistica_TrabajadoresDiasTrabajados" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.ManufacturaEstadistica_ValorProduccionMensual" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.VentasProductosElaboradosEstablecimiento_VentaPaisExtranjero" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.VentasProductosElaboradosEstablecimiento_VentaServiciosManufactura" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.ManufacturaEstadistica_VentasProductosElaboradosEstablecimiento" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.ManufacturaEstadistica_VolumenProduccionMensual" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.OpinionEmpresarial_Preguntas" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Valor_Pregunta" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.PosibleRespuesta_Valores" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Pregunta_PosibleRespuesta" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.ManufacturaOpinionEmpresarial_Preguntas" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Establecimiento_Informante" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Analista_Cargo" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Analista_Establecimientos" ManuallyRouted="false" />
+        <AssociationConnector Association="Data.Usuario_Rol" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</Edmx>

@@ -1,0 +1,106 @@
+﻿@using Entity
+@model Domain.Query<Entity.EstablecimientoAnalista>
+
+@{
+    ViewBag.Title = "Establecimiento Asignados";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+<a href="/UsuarioIntranet/IndexAnalista" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+<h3 class="screen-title">Asignación de Establecimiento a @ViewBag.NombreAnalista</h3>
+@using (Html.BeginForm("BuscarEstablecimientosAsignados", "UsuarioIntranet", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&uacute;squeda</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">Raz&oacute;n Social</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.Nombre, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">Identificador</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.IdentificadorInterno, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">RUC</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.CAT_ESTABLECIMIENTO.Ruc, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+<p>
+    <a href="javascript:void(0);" id="add-btn" class="btn btn-primary btn-custom-add">Asignar Establecimiento</a>
+</p>
+<div id="table-container">
+    @Html.Partial("_TableEstablecimientosAsignados", Model)
+</div>
+
+@*MODALS*@
+<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Establecimientos</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#add-btn").click(function () {
+            var $elem = $(this);
+            var id = $elem.attr("data-id");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: $.origin() + "/UsuarioIntranet/EstablecimientosNoAsignados/",
+                success: function (data) {
+                    $("#editItem .modal-body").html(data);
+                    $("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                    console.log(xhr);
+                }
+            });
+
+        });
+    })
+</script>
+
+

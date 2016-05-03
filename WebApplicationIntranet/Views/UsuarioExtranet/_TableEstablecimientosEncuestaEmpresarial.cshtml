@@ -1,0 +1,51 @@
+﻿@using Entity
+@using PagedList.Mvc
+@model Domain.Query<Entity.Establecimiento>
+<table class="table table-striped table-hover table-bordered table-condensed tabla small">
+    <thead>
+        <tr class="cabecera">
+            <th style="width: 100px;"> Identificador Interno </th>
+            <th> Establecimiento </th>
+            <th> RUC </th>
+            
+            <th>Acci&oacute;n</th>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Elements)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdentificadorInterno)</td>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
+               
+                <td>
+                    <a href="/EncuestaEmpresarial/Encuestas/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ver Encuestas de Opinión Empresarial" id="quitar-@item.Id" role="@item.Id" class="quitarw-btn">
+                        <i class="color-black glyphicon glyphicon-search"></i>
+                    </a>
+                    |
+                    <a href="/EncuestaEstadistica/Encuestas/@item.Id" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ver Encuestas Estadísticas" id="quitar-@item.Id" role="@item.Id" class="quitarw-btn">
+                        <i class="color-black glyphicon glyphicon-folder-open"></i>
+                    </a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Elements.Count == 0)
+{
+    <div class="no-elements-notification">
+        No hay elementos para mostrar
+    </div>
+}
+@Html.PagedListPager(Model.Elements, page => Url.Action("PageEstablecimientosEncuestaEmpresarial", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.InitTooltip();
+    })
+</script>
+

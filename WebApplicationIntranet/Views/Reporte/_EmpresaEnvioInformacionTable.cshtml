@@ -1,0 +1,46 @@
+﻿@model List<Entity.Reportes.EmpresaEnvioInfo>
+<style>
+    .table {
+        white-space: nowrap;
+    }
+    th {
+    text-align:center;    
+}
+</style>
+<div class="table-responsive">
+    <table id="ExportTable" class="table table-striped table-hover table-bordered table-condensed tabla small margin-bottom-10">
+        <thead>
+            <tr class="cabecera">
+                <th >NRO.</th>
+                <th >CÓDIGO</th>
+                <th >ESTABLECIMIENTO</th>
+                <th >CIIU / ANALISTA</th>
+                <th >¿ENTRA AL CÁLCULO?</th>
+                <th >VER</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int i = 0;}
+            @foreach (var item in Model)
+            {
+                i++;
+                <tr>
+                    <td>@i</td>
+                    <td>@item.establecimiento_ruc</td>
+                    <td>@item.establecimiento_nombre</td>
+                    <td>@item.ciiu_codigo / @item.usuario_login</td>
+                    <td>@(item.entraCalculo == 1 ? "SI" : "NO")</td>
+                    @*<td><a href="/EncuestaEstadistica/EncuestaAnalista?idEncuesta=@item.encuesta_id&ro=1"><i class="fa fa-eye"></i></a></td>*@
+                    @*<td><a href="/EncuestaEstadistica/Encuesta?idEncuesta=@item.encuesta_id"><i class="fa fa-eye"></i></a></td>*@
+                    <td><a href="/EncuestaEstadistica/Export?url=@Request.Url.GetLeftPart(UriPartial.Authority)/EncuestaEstadistica/EncuestaViewPrint?idEncuesta=@item.encuesta_id"><i class="fa fa-eye"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+   
+    </div>
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>

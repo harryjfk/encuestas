@@ -1,0 +1,100 @@
+﻿@model Entity.EncuestaEstadistica
+
+@{
+
+}
+@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap5form"}))
+    {*@
+
+<div class="panel panel-primary">
+    <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+        <strong>Alertas</strong>
+        <div>
+            <ul></ul>
+        </div>
+    </div>
+    @Html.HiddenFor(t => t.TrabajadoresDiasTrabajados.Identificador)
+    <div class="panel-heading">Capítulo V: Número de trabajadores y días trabajados</div>
+    <div class="panel-body">
+        <div class="col-md-6 ">
+            <div class="input-group padding-5">
+                <span class="input-group-addon">Días trabajados</span>
+                @Html.TextBoxFor(t => t.TrabajadoresDiasTrabajados.DiasTrabajados, new { @class = "form-control reset-max-width" })
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="input-group padding-5">
+                <span class="input-group-addon">Trabajadores en producción</span>
+                @Html.TextBoxFor(t => t.TrabajadoresDiasTrabajados.TrabajadoresProduccion, new { @class = "form-control reset-max-width" })
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="input-group padding-5">
+                <span class="input-group-addon">Administrativos en planta</span>
+                @Html.TextBoxFor(t => t.TrabajadoresDiasTrabajados.AdministrativosPlanta, new { @class = "form-control reset-max-width" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <a id="btnSaveTrabDiasTrab" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Guardar" class="btn btn-primary pull-right">
+                Guardar
+            </a>
+        </div>
+    </div>
+
+</div>
+@{
+    var now = DateTime.Now;
+    var days = DateTime.DaysInMonth(now.Year, now.Month);
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSaveTrabDiasTrab").click(function () {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: $.origin() + "/EncuestaEstadistica/SaveTrabajadoresDiasTrabajados/",
+                data: {
+                    diasTrabajados: $('#TrabajadoresDiasTrabajados_DiasTrabajados')[0].value,
+                    trabajadoresProduccion: $('#TrabajadoresDiasTrabajados_TrabajadoresProduccion')[0].value,
+                    administrativoPlanta: $('#TrabajadoresDiasTrabajados_AdministrativosPlanta')[0].value
+                },
+                success: function (data) {
+                    if (data.Success) {
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                        $("#errors-container").addClass("hidden");
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                    console.log(thrownError);
+                    alert('Failed to retrieve data.');
+                }
+            });
+        });
+        $("#TrabajadoresDiasTrabajados_DiasTrabajados").inputmask("9{1,2}");
+        $("#TrabajadoresDiasTrabajados_TrabajadoresProduccion").inputmask("9{1,20}");
+        $("#TrabajadoresDiasTrabajados_AdministrativosPlanta").inputmask("9{1,20}");
+       // var days=@days;
+        $("#TrabajadoresDiasTrabajados_DiasTrabajados").on('change',function(e) {
+            var value = $(this).val();
+            if (value < 1 || value > @days) {
+                $(this).addClass("error-input");
+            } else {
+                $(this).removeClass("error-input");
+            }
+        });
+    });
+</script>
+@*}*@

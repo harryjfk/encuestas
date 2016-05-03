@@ -1,0 +1,113 @@
+﻿@model Entity.MetodoCalculo
+@{
+    Layout = "";
+}
+@using (Html.BeginForm("Create", "MetodoCalculo", FormMethod.Post, new { name = "Me-635737043806718519" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+        }
+
+        <div class="form-group">
+            <label for="nombre" class="col-md-4 control-label"> Nombre</label>
+            <div class="col-md-7">
+                @if (!Model.RegistroObligatorio)
+                {
+                    @Html.TextBoxFor(t => t.nombre, new {@class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.nombre)
+                }
+                else
+                {
+                    <span class="form-control">
+                        @Model.nombre
+                    </span>
+                }
+            </div>
+            @if (!Model.RegistroObligatorio)
+            {
+                <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+            }
+           
+        </div>
+
+
+        <div class="form-group">
+            <label for="Activado" class="col-md-4 control-label">Activado</label>
+            <div class="col-md-1">
+                @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                @Html.ValidationMessageFor(model => model.Activado)
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form[name='Me-635737043806718519']").submit(function (e) {e.preventDefault() })
+        $("button[name='aceptarbtn']").click(function () {
+            var nombre = $("#nombre");
+            if (nombre && nombre.val() != "") {
+                var $elem = $(this);
+                $elem.addClass("disabled");
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: $.origin() + "/MetodoCalculo/CreatePost/",
+                    data: $("form[name='Me-635737043806718519']").serialize(),
+                    success: function (data) {
+                        $elem.removeClass("disabled");
+                        if (data.Success) {
+                            $("#table-container").html(data.Data);
+                            $("#editItem").modal("hide");
+                            $.smallBox({
+                                title: "Confirmación",
+                                content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                                color: "#659265",
+                                iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                timeout: 4000
+                            });
+                        } else {
+                            var errors = "";
+                            for (var i = 0; i < data.Errors.length; i++) {
+                                errors += "<li>" + data.Errors[i] + "</li>";
+                            }
+                            $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                        }
+                        //$("#editItem .modal-body").html(data);
+                        //$("#editItem").modal("show");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $elem.removeClass("disabled");
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            }else{$.errorIsRequired();}
+            
+
+        });
+        $('#nombre').maxlength({ events: ['blur'], slider: true, maxCharacters: 20, statusText: 'caracteres restantes' });
+
+    })
+</script>

@@ -1,0 +1,200 @@
+﻿@using System.Globalization
+@model Entity.Reportes.IndiceVariacion
+@{
+    var guid = Guid.NewGuid().ToString();
+    var guid2 = Guid.NewGuid().ToString();
+   
+}
+@Scripts.Render("~/bundles/jquery")
+
+
+<div id="@guid" class="col-md-6" style="margin: 0 auto"></div>
+<div id="@guid2" class="col-md-6" style="margin: 0 auto"></div>
+<script type="text/javascript">
+    var consumo = [];
+    var intermedio = [];
+    var capital = [];
+    var servicio = [];
+    @{
+        var yAxisTitle = "Indice";
+        if (Model.IsVariacion)
+        {
+            yAxisTitle = "Variacion";
+        }
+        var idconsumo = "Bienes de Consumo".GetHashCode();
+        var cons = Model.Indice.FirstOrDefault(t => t.Id == idconsumo);
+        if (cons != null)
+        {
+            foreach (var d in cons.Values.OrderBy(t => t.Number))
+            {
+                @Html.Raw("consumo.push([" + d.Value + "]);");
+            }
+        }
+        var idintermedio = "Bienes Intermedios".GetHashCode();
+        var inter = Model.Indice.FirstOrDefault(t => t.Id == idintermedio);
+        if (inter != null)
+        {
+            foreach (var d in inter.Values.OrderBy(t => t.Number))
+            {
+                @Html.Raw("intermedio.push([" + d.Value + "]);");
+            }
+        }
+        var idcapital = "Bienes de Capital".GetHashCode();
+        var cap = Model.Indice.FirstOrDefault(t => t.Id == idcapital);
+        if (cap != null)
+        {
+            foreach (var d in cap.Values.OrderBy(t => t.Number))
+            {
+                @Html.Raw("capital.push([" + d.Value + "]);");
+            }
+        }
+        var idservicio = "Servicio".GetHashCode();
+        var serv = Model.Indice.FirstOrDefault(t => t.Id == idservicio);
+        if (serv != null)
+        {
+            foreach (var d in serv.Values.OrderBy(t => t.Number))
+            {
+                @Html.Raw("servicio.push([" + d.Value + "]);");
+            }
+        }
+    }
+    $(document).ready(function () {
+        $('#@guid2').highcharts({
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'MANUFACTURA NO PRIMARIA'
+            },
+            subtitle: {
+                text: 'Lineas Superpuestas'
+            },
+            xAxis: {
+                categories: [
+                    'Ene',
+                    'Feb',
+                    'Mar',
+                    'Abr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Ago',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dic'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '@yAxisTitle'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Bienes de Consumo',
+                data: consumo
+
+            }, {
+                name: 'Bienes Intermedios',
+                data: intermedio
+
+            }, {
+                name: 'Bienes de Capital',
+                data: capital
+
+            },
+            {
+                name: 'Servicio',
+                data: servicio
+
+            }]
+        });
+
+
+
+        $('#@guid').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'MANUFACTURA NO PRIMARIA'
+            },
+            subtitle: {
+                text: 'Barras'
+            },
+            xAxis: {
+                categories: [
+                    'Ene',
+                    'Feb',
+                    'Mar',
+                    'Abr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Ago',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dic'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '@yAxisTitle'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Bienes de Consumo',
+                data: consumo
+
+            }, {
+                name: 'Bienes Intermedios',
+                data: intermedio
+
+            }, {
+                name: 'Bienes de Capital',
+                data: capital
+
+            },
+            {
+                name: 'Servicio',
+                data: servicio
+
+            }]
+        });
+
+        $("text:contains('Highcharts.com')").hide();
+    });
+</script>

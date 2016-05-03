@@ -1,0 +1,74 @@
+﻿@using System.Globalization
+@using Entity
+@using PagedList.Mvc
+@model Domain.Query<Entity.EncuestaEmpresarial>
+<table class="table table-striped table-hover table-bordered table-condensed tabla small">
+    <thead>
+        <tr class="cabecera">
+        <th style="width: 20px;"></th>
+            <th>
+                MES
+            </th>
+            <th>
+                A&Ntilde;O
+            </th>
+            <th>
+                ESTABLECIMIENTO
+            </th>
+	<th>ACCI&Oacute;N</th>	
+</thead>
+
+    <tbody>
+        @foreach (var item in Model.Elements)
+        {
+            <tr>
+                <td>
+                    @switch (item.EstadoEncuesta)
+                    {
+                        case EstadoEncuesta.Enviada:<span data-toggle="tooltip" data-placement="top" data-original-title="ENVIADA @item.fecha_ultimo_envio.GetValueOrDefault().ToString("F",CultureInfo.GetCultureInfo("es"))" title=""><i class="fa fa-sign-out text-success"></i></span>
+                            break;
+                        case EstadoEncuesta.NoEnviada:<span data-toggle="tooltip" data-placement="top" data-original-title="NO ENVIADA" title=""><i class="glyphicon glyphicon-eye-close text-danger"></i></span>
+                            break;
+                        case EstadoEncuesta.Observada:<span data-toggle="tooltip" data-placement="top" data-original-title="@item.Justificacion" title=""><i class="fa fa-pencil-square-o text-warning"></i></span>
+                            break;
+                        case EstadoEncuesta.Validada:<span data-toggle="tooltip" data-placement="top" data-original-title="VALIDADA" title=""><i class="glyphicon glyphicon-ok text-success"></i></span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @item.Fecha.ToString("MMMM",CultureInfo.GetCultureInfo("es")).ToUpper()
+                </td>
+                <td>
+                    @item.Fecha.Year
+                </td>
+                <td>
+                   @Html.DisplayFor(t=> item.Establecimiento.Nombre)
+                </td>
+
+                <td>
+                    <a href="/EncuestaEmpresarial/Encuesta?idEncuesta=@item.Id" data-toggle="tooltip" data-placement="top" data-original-title="Ver" title="">
+                        <i class="color-yellow glyphicon glyphicon-pencil"></i>
+                    </a>
+                </td>
+                 
+</tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Elements.Count == 0)
+{
+    <div class="no-elements-notification">
+        No hay elementos para mostrar
+    </div>
+}
+@Html.PagedListPager(Model.Elements, page => Url.Action("Page", new { page }),PagedListRenderOptions.ClassicPlusFirstAndLast )
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $.InitTooltip();
+    })
+</script>		 
+		

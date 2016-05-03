@@ -1,0 +1,237 @@
+﻿@using System.Globalization
+@using Entity
+@using WebApplication.Models
+@using Domain
+@model VentasProductosEstablecimientos
+
+<div class="panel panel-default">
+    <div class="panel-heading">Valor de venta por servicios relacionados con manufactura</div>
+    <div class="panel-body">
+        <div id="errors-containervs005" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+        @if (Model.Encuesta.Establecimiento.TipoEnum == TipoEstablecimiento.Servicio)
+        {
+            @Html.CheckBox("ServiciosActivados", new {disabled = "true", @checked = "true"})<span>El establecimiento brindó servicios a terceros en el mes de referencia</span>
+        }
+        else
+        {
+            @Html.CheckBoxFor(t => t.ServiciosActivados)<span>El establecimiento brindó servicios a terceros en el mes de referencia</span>
+        }
+       
+        <table id="tableServicios" class="table table-striped table-hover table-bordered table-condensed tabla small">
+            <thead>
+                <tr class="cabecera">
+                    <th>
+                        CIIU
+                    </th>
+                    <th>
+                        Detalle
+                    </th>
+                    <th>
+                        Venta pais
+                    </th>
+                    <th>
+                        Venta extranjero
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.VentasServicioManufactura)
+                {
+                    <input type="hidden" class="valVSM" role="@item.Id"/>
+                    <tr>
+                        <td>                            
+                            @Html.DisplayFor(modelItem => item.ciiu)
+                            <input type="hidden" id="ciiu-@item.Id" value="@item.ciiu">
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.detalle)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(modelItem => item.venta, new { style = "  width: 100%;", @class = "mask4 form-control vsp-" + item.Id, Value = item.venta.GetValueOrDefault().ProduceFormat() })
+                            @if (item.justificacion_venta_pais == null)
+                            {
+                                <div class="panel justServ panel-default pnl-just div-vsvp-@item.Id" style="display:none; margin-top: 5px;">
+                                    <span>Justificaci&oacute;n</span>
+                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = "width: 100%;", @class = "form-control vsvp-" + item.Id })
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="panel justServ panel-default pnl-just div-vsvp-@item.Id" style="margin-top: 5px;">
+                                    <span>Justificaci&oacute;n</span>
+                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_pais, new { style = "width: 100%;", @class = "form-control vsvp-" + item.Id })
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(modelItem => item.venta_extranjero, new { style = "  width: 100%;", @class = "mask4 form-control vse-" + item.Id, Value = item.venta_extranjero.GetValueOrDefault().ProduceFormat() })
+                            @if (item.justificacion_venta_ext == null)
+                            {
+                                <div class="panel justServ panel-default pnl-just div-vsve-@item.Id" style="display:none; margin-top: 5px;">
+                                    <span>Justificaci&oacute;n</span>
+                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_ext, new { style = "width: 100%;", @class = "form-control vsve-" + item.Id })
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="panel justServ panel-default pnl-just div-vsve-@item.Id" style="margin-top: 5px;">
+                                    <span>Justificaci&oacute;n</span>
+                                    @Html.TextAreaFor(modelItem => item.justificacion_venta_ext, new { style = "width: 100%;", @class = "form-control vsve-" + item.Id })
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="pull-right">
+            <a href="javascript:void(0);" id="edit-ventaServ" data-toggle="tooltip" data-placement="top" title="" data-original-title="Guardar" class="btn btn-primary">Guardar</a>
+        </div>
+        @if (!Model.VentasServicioManufactura.Any())
+        {
+            <div class="no-elements-notification">
+                No hay elementos para mostrar
+            </div>
+        }
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.justServ textarea').each(function (i, el) {
+            var value = $(this).val().trim();
+            $(this).val(value);
+        });
+
+        maskEstadistico();
+
+        if ($("#ServiciosActivados").prop('checked')) {
+            $('#tableServicios input[class*="vsp-"]').removeAttr('disabled');
+            $('#tableServicios input[class*="vse-"]').removeAttr('disabled');
+        } else {
+            $('#tableServicios input[class*="vsp-"]').val('');
+            $('#tableServicios input[class*="vse-"]').val('');
+            $('#tableServicios input[class*="vsp-"]').attr('disabled', 'disabled');
+            $('#tableServicios input[class*="vse-"]').attr('disabled', 'disabled');
+        }
+
+        $("#ServiciosActivados").on("change", function () {
+            if ($(this).prop('checked')) {                
+                $('#tableServicios input[class*="vsp-"]').removeAttr('disabled');
+                $('#tableServicios input[class*="vse-"]').removeAttr('disabled');
+            } else {
+                $('#tableServicios input[class*="vsp-"]').val('');
+                $('#tableServicios input[class*="vse-"]').val('');
+                $('#tableServicios input[class*="vsp-"]').attr('disabled', 'disabled');
+                $('#tableServicios input[class*="vse-"]').attr('disabled', 'disabled');
+            }
+            
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/EncuestaEstadistica/SetService/",
+                data: {
+                    value: $(this)[0].checked
+                },
+                success: function (data) {
+
+                    $.smallBox({
+                        title: "Confirmación",
+                        content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                        color: "#659265",
+                        iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                        timeout: 4000
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        });
+        
+        $("#edit-ventaServ").click(function (e) {
+            var list = [];            
+            $(".valVSM").each(function (i, el) {
+                var $elem = $(el);
+                var id = $elem.attr("role");
+                var vsp = 0;
+                if ($('.vsp-' + id)[0]) {
+                    vsp = getValueEstadistico('.vsp-' + id);
+                }
+                var vse = null;
+                if ($('.vse-' + id)[0]) {
+                    vse = getValueEstadistico('.vse-' + id);
+                }
+                var justPaiz = $('.vsvp-' + id)[0].value;
+                var justExt = $('.vsve-' + id)[0].value;
+                var obj = {
+                    Id: id,
+                    venta_extranjero: vse,
+                    venta: vsp,
+                    justificacion_venta_ext: justExt,
+                    justificacion_venta_pais: justPaiz
+                };                
+                list.push(obj);
+            });
+            $(".justServ").hide();
+            $.ajax({
+                cache: false,
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                url: $.origin() + "/EncuestaEstadistica/SaveServicio/",
+                data: JSON.stringify({ "services": list }),
+                success: function (data) {
+                    if (data.Success) {
+                        $("#errors-containervs005").addClass("hidden");
+
+                        for (var j = 0; j < data.Extranjero.length; j++) {
+                            $($('.div-vsve-' + data.Extranjero[j])[0]).show();
+                        }
+
+                        for (var k = 0; k < data.Pais.length; k++) {
+                            $($('.div-vsvp-' + data.Pais[k])[0]).show();
+                        }
+
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        for (var j = 0; j < data.Extranjero.length; j++) {
+
+                            $($('.div-vsve-' + data.Extranjero[j])[0]).show();
+                        }
+                        for (var k = 0; k < data.Pais.length; k++) {
+
+                            $($('.div-vsvp-' + data.Pais[k])[0]).show();
+                        }
+                        $("#errors-containervs005").removeClass("hidden").find("ul").html(errors);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+            e.preventDefault();
+        });
+        $.InitTooltip();
+    });
+</script>
+

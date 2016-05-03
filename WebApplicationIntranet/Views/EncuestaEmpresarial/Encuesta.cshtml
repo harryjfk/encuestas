@@ -1,0 +1,552 @@
+﻿@using System.Globalization
+@using Entity
+@using WebApplication.Models
+@model EncuestaEmpresarial
+
+@{
+
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger animated bounceIn">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+<div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+    <strong>Alertas</strong>
+    <div>
+        <ul></ul>
+    </div>
+</div>
+<a href="/EncuestaEmpresarial/Encuestas/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+@if (Model != null)
+{
+    using (Html.BeginForm("Enviar", "EncuestaEmpresarial", FormMethod.Post, new { name = "cap1form" }))
+    {
+        @Html.Hidden("encid", Model.Id)
+
+        //INFORMANTE
+        @Html.Hidden("infNombre", Model.Id)
+        @Html.Hidden("infCorreo", Model.Id)
+        @Html.Hidden("infTelefono", Model.Id)
+        @Html.Hidden("infCargoId", Model.Id)
+
+
+
+
+
+        <h3 class="screen-title">
+            Encuesta de Manufactura Opini&oacute;n Empresarial
+            <span class="label label-primary">
+                @Model.Fecha.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()
+            </span>
+        </h3>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Preguntas</div>
+            <div class="panel-body">
+                @foreach (var item in Model.Preguntas.Where(t => !t.Valores.Any()).OrderBy(t => t.orden))
+                {
+                    if (item.PosiblesRespuestas.Any())
+                    {
+                        <div class="pregunta-container" data-id="@item.Id">
+                            <div>
+                                <p class="pregunta-text">@item.orden- @item.Texto</p>
+                            </div>
+                            <div>
+                                @{
+                        var pr = item.PosiblesRespuestas.FirstOrDefault();
+                                }
+
+                                @foreach (var v in pr.Valores.OrderBy(t => t.orden))
+                                {
+                                    var hasPrAso = v.IdPregunta != null;
+                                    var ch = v.Seleccionado ? "true" : "false";
+                                    <div class="valores-respuestas-container">
+                                        <div class="valor-container">
+                                            @if (pr.Tipo == TipoPosibleRespuesta.Alternativa)
+                                            {
+                                                if (v.Seleccionado || item.PreguntasObligatorias)
+                                                {
+                                                    if (!item.PreguntasObligatorias)
+                                                    {
+                                                        @Html.CheckBox(v.Texto, new
+                                                               {
+                                                                   @checked = "chequed",
+                                                                   datavalueasoc = "false",
+                                                                   @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
+                                                                   dataorigpregid = pr.Id,
+                                                                   datavalorid = v.Id,                                                                   
+                                                                   datatexto = v.Texto,
+                                                                   datapospregid = v.IdPosibleRespuesta,
+                                                                   datapregid = v.IdPregunta
+                                                               })
+
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.CheckBox(v.Texto, new
+                                                            {
+                                                                disabled = "true",
+                                                                @checked = "chequed",
+                                                                datavalueasoc = "false",
+                                                                @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
+                                                                dataorigpregid = pr.Id,
+                                                                datavalorid = v.Id,                                                                
+                                                                datatexto = v.Texto,
+                                                                datapospregid = v.IdPosibleRespuesta,
+                                                                datapregid = v.IdPregunta
+                                                            })
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    @Html.CheckBox(v.Texto, new
+                                                       {
+                                                           datavalueasoc = "false",
+                                                           @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(),
+                                                           dataorigpregid = pr.Id,
+                                                           datavalorid = v.Id,                                                           
+                                                           datatexto = v.Texto,
+                                                           datapospregid = v.IdPosibleRespuesta,
+                                                           datapregid = v.IdPregunta
+                                                       });
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (v.Seleccionado)
+                                                {
+                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { @checked = "chequed", datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                }
+                                                else
+                                                {
+                                                    @Html.RadioButton("valor" + pr.Id, v.Texto, new { datavalueasoc = "false", @class = "imp preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta });
+                                                }
+                                            }
+                                            @*@(
+                                                pr.Tipo == TipoPosibleRespuesta.Excluyente ?
+                                                    Html.CheckBox(v.Texto, new { @checked = @ch, datavalueasoc = "false", @class = "preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta })
+                                                    : Html.RadioButton("valor" + pr.Id, v.Texto, new { @checked = @ch, datavalueasoc = "false", @class = "preg-asoc-input preg-asoc-input-" + @hasPrAso.ToString().ToLower(), dataorigpregid = pr.Id, datavalorid = v.Id, datanumero = v.Numero, datatexto = v.Texto, datapospregid = v.IdPosibleRespuesta, datapregid = v.IdPregunta })
+                                                                                              )*@
+                                            <span class="valores-text">@v.Texto</span>
+                                            @{
+                                            var hidden = "hidden";
+                                            if ((v.Seleccionado || item.PreguntasObligatorias) && pr.Tipo == TipoPosibleRespuesta.Alternativa)
+                                            {
+                                                hidden = "";
+                                            }
+                                            }
+                                            @if (hasPrAso)
+                                            {
+                                                <span class="preg-asociada-container preg-@pr.Id preg-asoc-@v.Id animated fadeInLeft fast @hidden">
+                                                    <span class="margin-right-10 bold">@v.Pregunta.Texto</span>
+                                                    @{
+                                                var posResp = v.Pregunta.PosiblesRespuestas.FirstOrDefault();
+                                                    }
+                                                    @if (posResp != null)
+                                                    {
+                                                        foreach (var tv in posResp.Valores.OrderBy(t => t.orden))
+                                                        {
+                                                            var see = tv.Seleccionado ? "true" : "false";
+                                                            if (tv.PosibleRespuesta.Tipo == TipoPosibleRespuesta.Excluyente)
+                                                            {
+                                                                if (tv.Seleccionado)
+                                                                {
+                                                                    @Html.RadioButton("aa" + v.Id, tv.Texto, new { @checked = "checked", @class = "imp", datavalueasoc = "true", name = "aa", datavalueasocid = tv.Id,datavalorid=tv.Id, datavalueasoctext = tv.Texto })
+                                                                }
+                                                                else
+                                                                {
+                                                                    @Html.RadioButton("aa" + v.Id, tv.Texto, new { datavalueasoc = "true", @class = "imp", name = "aa", datavalueasocid = tv.Id,datavalorid=tv.Id, datavalueasoctext = tv.Texto })
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                if (tv.Seleccionado)
+                                                                {
+                                                                    @Html.CheckBox(tv.Texto, new { @checked = "checked", datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto, @class = "imp" })
+                                                                }
+                                                                else
+                                                                {
+                                                                    @Html.CheckBox(tv.Texto, new { datavalueasoc = "true", name = "aa" + @v.Id, datavalueasocid = tv.Id, datavalueasoctext = tv.Texto, @class = "imp" })
+                                                                }
+
+                                                            }
+                                                            <span class="margin-right-10">@tv.Texto</span>
+                                                            if (tv.Personalizado)
+                                                            {
+                                                                if (tv.Seleccionado)
+                                                                {
+                                                                    <input style="margin-left: 10px; width: 100%" type="text" class="personalizado" value="@tv.texto_personalizado" data-vid="@tv.Id" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input style="margin-left: 10px; width: 100%" type="text" class="hidden personalizado animated fadeInLeft fast" data-vid="@tv.Id" />
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                </span>
+                                            }
+                                            @if (v.Personalizado)
+                                            {
+                                                if (v.Seleccionado)
+                                                {
+                                                    <input value="@v.texto_personalizado" style="margin-left: 10px;  width: 100%" type="text" class="personalizado" data-vid="@v.Id" />
+                                                }
+                                                else
+                                                {
+                                                    <input style="margin-left: 10px; width: 100%" type="text" class="hidden personalizado animated fadeInLeft fast" data-vid="@v.Id" />
+                                                }
+                                            }
+
+                                        </div>
+
+
+
+                                    </div>
+                                }
+
+
+
+
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            @*<input id="btn-guardar" name="submit" type="button" class="btn btn-primary pull-right" value="Guardar" />*@
+            <input id="btn-enviar" name="submit" type="button" class="btn btn-primary pull-right" value="Enviar" />
+        </div>
+
+    }
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.imp').each(function(i, e) {
+            $(e).change(function() {
+                if ($(e)[0].checked) {
+                    var id = $(e).attr('datavalorid');
+                    var personalizado = $("input[data-vid='" + id + "']")[0];
+                    if (personalizado) {
+                        $(personalizado).removeClass("hidden");
+                    }
+                } else {
+                    var id = $(e).attr('datavalorid');
+                    var personalizado = $("input[data-vid='" + id + "']")[0];
+                    if (personalizado) {
+                        $(personalizado).addClass("hidden");
+                    }
+                }
+            });
+        });
+
+        $(".preg-asoc-input").click(function () {
+            var pregId = $(this).attr("dataorigpregid");
+            var valorId = $(this).attr("datavalorid");
+            if (!$(this)[0].checked) {
+                $(".preg-" + pregId + ".preg-asoc-" + valorId).addClass("hidden");
+            }
+            if ($(this)[0].checked) {
+                if ($(this).hasClass("preg-asoc-input-true")) {
+                    $(".preg-asoc-" + valorId).removeClass("hidden");
+                }
+            }
+            if ($($(this)[0]).prop('checked')) {
+                //"preg-asoc-94"
+                //console.log(valorId);
+                //$('input[type="radio"][name="valor' + pregId + '"]').each(function(i, e) {
+                //    console.log(e);
+                //});
+                if (($(this)[0].type) == 'radio') {
+                    $('.preg-' + pregId).each(function (i, e) {
+                        //console.log(i, e);
+                        if (!$(e).hasClass('preg-asoc-' + valorId)) {
+                            $(e).addClass("hidden");
+                        }
+                    });
+                }
+                //.prop('checked', false);
+            }
+
+        });
+
+        $("#btn-enviar").click(function () {
+
+            var preg = $(".pregunta-container");
+
+            var preguntasjs = [];
+
+            preg.each(function (i, e) {
+
+                var valores = [];
+
+                var idPreg = $(e).attr("data-id");
+                var text = $(e).find(".pregunta-text").html();
+                var checks = $(e).find("input[type='checkbox'][datavalueasoc='false']");
+                var radios = $(e).find("input[type='radio'][datavalueasoc='false']");
+
+                if (checks.length > 0) {
+                    checks.each(function (j, v) {
+                        var $obj = $(v);
+                        var tempValue = {
+                            Id: $obj.attr("datavalorid"),                            
+                            Seleccionado: v.checked ? 1 : 0,
+                            Texto: $obj.attr("datatexto"),
+                            IdPosibleRespuesta: $obj.attr("datapospregid"),
+                            IdPregunta: $obj.attr("datapregid")
+                        };
+                        if ($obj.attr("datapregid") != "") {
+                            var pregAsocValues = [];
+                            var valPregAsoc = $(e).find(".preg-asoc-" + $obj.attr("datavalorid") + " [datavalueasoc='true']");
+                            valPregAsoc.each(function (ind, ob) {
+                                pregAsocValues.push({
+                                    Id: $(ob).attr("datavalueasocid"),
+                                    Texto: $(ob).attr("datavalueasoctext"),
+                                    Seleccionado: ob.checked ? 1 : 0,
+                                });
+                            });
+                            tempValue.Pregunta = {
+                                Id: $obj.attr("datapregid"),
+                                Valores: pregAsocValues
+                            };
+                        }
+                        var textPer = $('input[data-vid="' + tempValue.Id + '"]')[0];
+                        if (textPer) {
+                            tempValue.texto_personalizado = $(textPer).val();
+                        }
+                        valores.push(tempValue);
+                    });
+                }
+
+                if (radios.length > 0) {
+                    radios.each(function (j, v) {
+                        var $obj = $(v);
+                        var tempValue = {
+                            Id: $obj.attr("datavalorid"),                            
+                            Seleccionado: v.checked ? 1 : 0,
+                            Texto: $obj.attr("datatexto"),
+                            IdPosibleRespuesta: $obj.attr("datapospregid"),
+                            IdPregunta: $obj.attr("datapregid")
+                        };
+                        if ($obj.attr("datapregid") != "") {
+                            var pregAsocValues = [];
+                            var valPregAsoc = $(e).find(".preg-asoc-" + $obj.attr("datavalorid") + " [datavalueasoc='true']");
+                            valPregAsoc.each(function (ind, ob) {
+                                pregAsocValues.push({
+                                    Id: $(ob).attr("datavalueasocid"),
+                                    Texto: $(ob).attr("datavalueasoctext"),
+                                    Seleccionado: ob.checked ? 1 : 0,
+                                });
+                            });
+                            tempValue.Pregunta = {
+                                Id: $obj.attr("datapregid"),
+                                Valores: pregAsocValues
+                            };
+                        }
+                        var textPer = $('input[data-vid="' + tempValue.Id + '"]')[0];
+                        if (textPer) {
+                            tempValue.texto_personalizado = $(textPer).val();
+                        }
+                        valores.push(tempValue);
+                    });
+                }
+
+
+                preguntasjs.push({
+                    Id: idPreg,
+                    Texto: text,
+                    Valores: valores
+                });
+
+            });
+
+            var sendData = {
+                Id: $("input[name='encid']").val(),
+                Preguntas: preguntasjs
+            };
+
+
+            $.SmartMessageBox({
+                title: "Mensaje",
+                content: "¿Esta seguro que desea enviar la encuesta?",
+                buttons: '[No][Si]'
+            }, function (ButtonPressed) {
+                if (ButtonPressed === "Si") {
+                    $.ajax({
+                        cache: false,
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        url: window.location.origin + "/EncuestaEmpresarial/Enviar/",
+                        data: JSON.stringify(sendData),
+                        success: function (data) {
+                            if (data.Success) {
+                                //window.location.href = window.location.origin + "/EncuestaEmpresarial";
+                                $.smallBox({
+                                    title: "Confirmación",
+                                    content: "<i class='fa fa-clock-o'></i> <i>El elemento se envió correctamente</i>",
+                                    color: "#659265",
+                                    iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                                    timeout: 4000
+                                });
+                                $(".body-content").html(data.Data);
+                            } else {
+                                var errors = "";
+                                for (var i = 0; i < data.Errors.length; i++) {
+                                    errors += "<li>" + data.Errors[i] + "</li>";
+                                }
+                                $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve data.');
+                        }
+                    });
+                }
+                if (ButtonPressed === "No") {
+
+                }
+
+            });
+
+        });
+        $("#btn-guardar").click(function () {
+
+            var preg = $(".pregunta-container");
+
+            var preguntasjs = [];
+
+            preg.each(function (i, e) {
+
+                var valores = [];
+
+                var idPreg = $(e).attr("data-id");
+                var text = $(e).find(".pregunta-text").html();
+                var checks = $(e).find("input[type='checkbox'][datavalueasoc='false']");
+                var radios = $(e).find("input[type='radio'][datavalueasoc='false']");
+
+                if (checks.length > 0) {
+                    checks.each(function (j, v) {
+                        var $obj = $(v);
+                        var tempValue = {
+                            Id: $obj.attr("datavalorid"),                            
+                            Seleccionado: v.checked ? 1 : 0,
+                            Texto: $obj.attr("datatexto"),
+                            IdPosibleRespuesta: $obj.attr("datapospregid"),
+                            IdPregunta: $obj.attr("datapregid")
+                        };
+                        if ($obj.attr("datapregid") != "") {
+                            var pregAsocValues = [];
+                            var valPregAsoc = $(e).find(".preg-asoc-" + $obj.attr("datavalorid") + " [datavalueasoc='true']");
+                            valPregAsoc.each(function (ind, ob) {
+                                pregAsocValues.push({
+                                    Id: $(ob).attr("datavalueasocid"),
+                                    Texto: $(ob).attr("datavalueasoctext"),
+                                    Seleccionado: ob.checked ? 1 : 0,
+                                });
+                            });
+                            tempValue.Pregunta = {
+                                Id: $obj.attr("datapregid"),
+                                Valores: pregAsocValues
+                            };
+                        }
+                        valores.push(tempValue);
+                    });
+                }
+
+                if (radios.length > 0) {
+                    radios.each(function (j, v) {
+                        var $obj = $(v);
+                        var tempValue = {
+                            Id: $obj.attr("datavalorid"),                            
+                            Seleccionado: v.checked ? 1 : 0,
+                            Texto: $obj.attr("datatexto"),
+                            IdPosibleRespuesta: $obj.attr("datapospregid"),
+                            IdPregunta: $obj.attr("datapregid")
+                        };
+                        if ($obj.attr("datapregid") != "") {
+                            var pregAsocValues = [];
+                            var valPregAsoc = $(e).find(".preg-asoc-" + $obj.attr("datavalorid") + " [datavalueasoc='true']");
+                            valPregAsoc.each(function (ind, ob) {
+                                pregAsocValues.push({
+                                    Id: $(ob).attr("datavalueasocid"),
+                                    Texto: $(ob).attr("datavalueasoctext"),
+                                    Seleccionado: ob.checked ? 1 : 0,
+                                });
+                            });
+                            tempValue.Pregunta = {
+                                Id: $obj.attr("datapregid"),
+                                Valores: pregAsocValues
+                            };
+                        }
+                        valores.push(tempValue);
+                    });
+                }
+
+
+                preguntasjs.push({
+                    Id: idPreg,
+                    Texto: text,
+                    Valores: valores
+                });
+
+            });
+
+            var sendData = {
+                Id: $("input[name='encid']").val(),
+                Preguntas: preguntasjs
+            };
+
+
+            $.ajax({
+                cache: false,
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                url: window.location.origin + "/EncuestaEmpresarial/Guardar/",
+                data: JSON.stringify(sendData),
+                success: function (data) {
+                    if (data.Success) {
+                        //window.location.href = window.location.origin + "/EncuestaEmpresarial";
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                        $(".body-content").html(data.Data);
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+
+        });
+
+
+
+    });
+</script>

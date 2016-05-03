@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C33B074C-CCF6-4C65-8183-5179A75939AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Domain</RootNamespace>
+    <AssemblyName>Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libraries\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>Office\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="oracle.manageddataaccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Oracle.ManagedDataAccess\v4.0_4.121.1.0__89b483f429c47342\oracle.manageddataaccess.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Filters.cs" />
+    <Compile Include="Managers\AuditoriaManager.cs" />
+    <Compile Include="Managers\CiiuEstablecimientoManager.cs" />
+    <Compile Include="Managers\ReporteManager.cs" />
+    <Compile Include="Managers\ViewPorcentajeEncuestaEstadisticaManager.cs" />
+    <Compile Include="Managers\EncuestaAnalistaManager.cs" />
+    <Compile Include="Managers\EstablecimientoAnalistaManager.cs" />
+    <Compile Include="Managers\AñoBaseManager.cs" />
+    <Compile Include="Managers\ParametrizacionEnvioManager.cs" />
+    <Compile Include="Managers\LineaProductoUnidadMedidaManager.cs" />
+    <Compile Include="Managers\MetodoCalculoManager.cs" />
+    <Compile Include="Managers\ExportacionHarinaTrigoManager.cs" />
+    <Compile Include="Managers\ImportacionHarinaTrigoManager.cs" />
+    <Compile Include="Managers\ConsumoHarinaFideosManager.cs" />
+    <Compile Include="Managers\IpmIppManager.cs" />
+    <Compile Include="Managers\TipoCambioManager.cs" />
+    <Compile Include="Managers\MateriaPropiaManager.cs" />
+    <Compile Include="Managers\MateriaTercerosManager.cs" />
+    <Compile Include="Managers\VentaServicioManufacturaManager.cs" />
+    <Compile Include="Managers\VentasPaisextranjeroManager.cs" />
+    <Compile Include="Managers\VentasProductosEstablecimientoManager.cs" />
+    <Compile Include="Managers\ValorProduccionManager.cs" />
+    <Compile Include="Managers\FactorProduccionManager.cs" />
+    <Compile Include="Managers\TrabajadoresDiasTrabajadosManager.cs" />
+    <Compile Include="Managers\VolumenProduccionManager.cs" />
+    <Compile Include="Managers\EncuestaEstadisticaManager.cs" />
+    <Compile Include="Managers\EncuestaEmpresarialManager.cs" />
+    <Compile Include="Managers\PosibleRespuestaManager.cs" />
+    <Compile Include="Managers\ValorManager.cs" />
+    <Compile Include="Managers\EncuestaManager.cs" />
+    <Compile Include="Managers\PreguntaManager.cs" />
+    <Compile Include="Managers\LineaProductoEstablecimientoManager.cs" />
+    <Compile Include="Managers\CargoManager.cs" />
+    <Compile Include="Query.cs" />
+    <Compile Include="Managers\UbigeoManager.cs" />
+    <Compile Include="Managers\DistritoManager.cs" />
+    <Compile Include="Managers\ProvinciaManager.cs" />
+    <Compile Include="Managers\DepartamentoManager.cs" />
+    <Compile Include="Managers\ContactoManager.cs" />
+    <Compile Include="Managers\EstablecimientoManager.cs" />
+    <Compile Include="Managers\UnidadMedidaManager.cs" />
+    <Compile Include="Managers\FactorManager.cs" />
+    <Compile Include="Managers\LineaProductoManager.cs" />
+    <Compile Include="Managers\GenericManager.cs" />
+    <Compile Include="Managers\Manager.cs" />
+    <Compile Include="Managers\CiiuManager.cs" />
+    <Compile Include="Managers\UsuarioManager.cs" />
+    <Compile Include="Managers\RolManager.cs" />
+    <Compile Include="OperationResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="Trazas\RegistroTrazaDb.cs" />
+    <Compile Include="Validation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{fefce33c-0910-42a9-823f-8f2dbd34bc0f}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entity\Entity.csproj">
+      <Project>{27d356a7-b13f-464d-af7b-444984d6a516}</Project>
+      <Name>Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Seguridad\Seguridad.csproj">
+      <Project>{43f87206-a182-4081-bb3a-c8aacf9fd5f9}</Project>
+      <Name>Seguridad</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libraries\EPPlus.dll" />
+    <Content Include="Office\Microsoft.Office.Interop.Excel.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

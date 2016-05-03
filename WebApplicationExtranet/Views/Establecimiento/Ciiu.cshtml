@@ -1,0 +1,82 @@
+﻿@using Entity
+@using WebApplication.Models
+@model Domain.Query<Ciiu>
+
+@{
+    ViewBag.Title = "CIIU";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+<a href="/Establecimiento/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+
+<h3 class="screen-title">Gestión del Clasificador Industrial Internacional Uniforme (CIIU) por establecimiento (@ViewBag.Establecimiento.Ruc-@ViewBag.Establecimiento.Nombre-@ViewBag.Establecimiento.IdentificadorInterno)</h3>
+@using (Html.BeginForm("BuscarCiiu", "Establecimiento", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">C&Oacute;DIGO</span>
+                        @*<input type="text" class="form-control" name="Codigo">*@
+                        @Html.TextBoxFor(t => t.Criteria.Codigo, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">DESCRIPCI&Oacute;N</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+<div id="table-container">
+    @Html.Partial("_TableCiiu", Model)
+</div>
+
+
+
+@*MODALS*@
+<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Nuevo CIIU</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    })
+</script>

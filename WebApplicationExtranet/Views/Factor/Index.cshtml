@@ -1,0 +1,99 @@
+﻿@using Entity
+@model Domain.Query<Entity.Factor>
+
+@{
+    ViewBag.Title = "Factor";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+
+
+<h3 class="screen-title">Gestión de factores que afectaron a la producción</h3>
+@using (Html.BeginForm("Buscar", "Factor", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&Uacute;SQUEDA</div>
+        @{
+    var sel0 = Model == null||Model.Criteria==null || Model.Criteria.Tipo != 0 ? "" : "selected";
+    var sel1 = Model == null || Model.Criteria == null || Model.Criteria.Tipo != 1 ? "" : "selected";
+    var sel3 = (Model == null || Model.Criteria == null || Model.Criteria.Tipo != -99999999) ? "" : "selected";
+            if (Model == null || Model.Criteria == null)
+            {
+                sel3 = "selected";
+            }
+        }
+        <div class="panel-body">
+            <div class="row">
+	<div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">EFECTO</span>
+                        @*<input type="text" class="form-control">*@                        
+                        @Html.EnumDropDownListFor(t => t.Criteria.TipoFactor, new { @class = "form-control" })
+                        <select name="Criteria.Tipo" class="form-control">
+                            <option @sel3 value="-99999999">Todos</option>
+                            <option @sel0 value="0">Incremento</option>
+                            <option @sel1 value="1">Disminución</option>
+                        </select>  
+                    </div>
+                </div>
+		<div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">FACTOR</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
+                    </div>
+                </div>
+		<div class="col-md-4">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+<p>
+    <a href="javascript:void(0);" id="add-btn" class="btn btn-primary btn-custom-add">Nuevo Factor</a>
+</p>
+<div id="table-container">
+    @Html.Partial("_Table", Model)
+</div>
+
+
+
+@*MODALS*@
+<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Nuevo Factor</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.CreateItemOpenModal("add-btn", "editItem", "Factor");
+
+    })
+</script>	
+	 
+		

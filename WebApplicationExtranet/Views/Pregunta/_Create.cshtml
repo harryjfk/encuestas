@@ -1,0 +1,192 @@
+﻿@model Entity.Pregunta
+@{
+    Layout = "";
+}
+@using (Html.BeginForm("Create", "Pregunta", FormMethod.Post, new { name = "addform" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
+            <strong>Alertas</strong>
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+
+
+
+        @if (Model != null)
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+        }
+        
+        @{
+        var selectedObligatorio = Model.Comienza == null ? "checked" : "";
+        var selectedTemporal = Model.Comienza == null ? "" : "checked";
+        var contClass = Model.Comienza == null ? "hidden" : "";
+        }
+
+        <div class="form-group">
+            <label for="Texto" class="col-md-4 control-label">Texto</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.Texto, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Texto)
+            </div>
+            <div class="col-md-1 txt-color-red"><span>(*)</span></div>
+        </div>
+        <div class="form-group">
+            <label for="Orden" class="col-md-4 control-label">&Oacute;rden</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(t => t.orden, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.orden)
+            </div>
+            
+        </div>
+        
+        <div class="form-group">
+            <label for="Tipo" class="col-md-4 control-label">Tipo</label>
+            <div class="col-md-8">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="tipo" id="tipo1" value="permanente" @selectedObligatorio>
+                        Permanente
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="tipo" id="tipo2" value="temporal" @selectedTemporal>
+                        Temporal
+                    </label>
+                </div>
+            </div>
+        </div>
+        @{
+            var date = "";
+            if (Model.Comienza != null)
+            {
+                date = Model.Comienza.GetValueOrDefault().ToString("dd-MM-yyyy");
+            }
+        }
+        <div id="temporal-dates-container" class="animated fadeInDown fast @contClass">
+            <div class="form-group">
+                <label for="Comienzo" class="col-md-4 control-label">Comienzo</label>
+                <div class="col-md-7">
+                    @*@Html.TextBoxFor(model => model.Comienza, new { @class = "form-control", id = "datetimepicker1" })*@
+                    <input type="text" value="@date" class="form-control" name="Comienza"  id="datetimepicker1" />
+                    <span class="input-group-addon input-group-addon-datetimepicker">
+                        <span style="margin-top: 2px;" class="fa fa-calendar"></span>
+                    </span>
+                    @*<div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                        </span>
+                    </div>*@
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Intervalo" class="col-md-4 control-label">Intervalo (Meses)</label>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(t => t.Intervalo, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <label for="Comienza" class="col-md-4 control-label">Comienza</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.Comienza, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Comienza)
+            </div>
+        </div>*@
+        @*<div class="form-group">
+            <label for="Intervalo" class="col-md-4 control-label">Intervalo</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(t => t.Intervalo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Intervalo)
+            </div>
+        </div>*@
+        <div class="form-group">
+            <label for="Activado" class="col-md-4 control-label">Activado</label>
+            <div class="col-md-1">
+                @Html.CheckBoxFor(t => t.Activado, new { @class = "form-control check-small" })
+                @Html.ValidationMessageFor(model => model.Activado)
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" name="aceptarbtn" class="btn btn-primary" value="Aceptar">Aceptar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#datetimepicker1').datepicker({
+            pickTime: false,
+            language: "es",
+            dateFormat: 'dd-mm-yy'
+        });
+        
+
+        $("input[name='tipo']").change(function () {
+            var selectedValue = $("input[name='tipo']:checked").val();
+            if (selectedValue == "permanente") {
+                $("#temporal-dates-container").addClass("hidden");
+                $("#datetimepicker1").attr("name", "ComienzaTemp");
+                $("#Intervalo").attr("name", "IntervaloTemp");
+            }
+            else {
+                $("#temporal-dates-container").removeClass("hidden");
+                $("#datetimepicker1").attr("name", "Comienza");
+                $("#Intervalo").attr("name", "Intervalo");
+            }
+        });
+
+        $("button[name='aceptarbtn']").click(function () {
+            var $elem = $(this);
+            $elem.addClass("disabled");
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: $.origin() + "/Pregunta/CreatePost/",
+                data: $("form[name='addform']").serialize(),
+                success: function (data) {
+                    $elem.removeClass("disabled");
+                    if (data.Success) {
+                        $("#table-container").html(data.Data);
+                        $("#editItem").modal("hide");
+                        $.smallBox({
+                            title: "Confirmación",
+                            content: "<i class='fa fa-clock-o'></i> <i>El elemento se guardó correctamente</i>",
+                            color: "#659265",
+                            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    } else {
+                        var errors = "";
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            errors += "<li>" + data.Errors[i] + "</li>";
+                        }
+                        $("#errors-container").removeClass("hidden").find("ul").html(errors);
+                    }
+                    //$("#editItem .modal-body").html(data);
+                    //$("#editItem").modal("show");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $elem.removeClass("disabled");
+                    alert('Failed to retrieve data.');
+                }
+            });
+
+        });
+        $('#Texto').maxlength({ events: ['blur'], slider: true, maxCharacters: 1000, statusText: 'caracteres restantes' });
+
+    })
+</script>
+

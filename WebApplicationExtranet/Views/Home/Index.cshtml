@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "PRODUCE";
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+<div class="jumbotron">
+    <h1 style="font-size: 50px">MINISTERIO DE LA PRODUCCI&Oacute;N</h1>
+    <p class="lead">La Extranet PRODUCE esta dise&ntilde;ada para facilitarle la comunicaci&oacute;n con el Ministerio, poniendo a tu disposici&oacute;n las siguientes herramientas:</p>
+    
+</div>
+
+<div class="row tools-container">
+    <div class="col-md-4">
+        <h2><i class="glyphicon glyphicon-edit"></i> Mis tr&aacute;mites</h2>
+        <p>
+            Revisa el estado de mis tr&aacute;mites con el Ministerio.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2><i class="fa fa-calendar"></i> Calendario</h2>
+        <p>
+            Con todos los cursos, seminarios y eventos relaciondos al sector productivo.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2><i class="glyphicon glyphicon-share"></i> Bolsa</h2>
+        <p>
+            Informaci&oacute;n sobre las principales bolsas de valores del mundo.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2><i class="glyphicon glyphicon-list-alt"></i> Noticias</h2>
+        <p>
+            Mantente informado con las &ucirc;ltimas noticias del sector.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2><i class="glyphicon glyphicon-signal"></i> @*Gr&aacute;ficas*@ Estad&iacute;sticas</h2>
+        <p>
+            Con el desenvolvimiento de los sectores pesquero e industrial.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2><i class="glyphicon glyphicon-new-window"></i> Aplicaciones</h2>
+        <p>
+            Recibe informaci&oacute;n de manera interactiva.
+        </p>
+    </div>
+</div>
+<br />
+<p>Te invitamos a convertir esta Extranet en tu herramienta de informaci&oacute;n. Si aun no estas registrado @Html.ActionLink("contactanos", "Contact").</p>

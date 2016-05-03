@@ -1,0 +1,55 @@
+﻿@model List<SelectListItem>
+     @{
+         Layout = "";
+    }      
+
+<div class="panel panel-default">
+    <div class="panel-heading">Factores</div>
+    <div class="panel-body">
+        @foreach (var item in Model)
+        {
+            if (item.Selected)
+            {
+                <div>
+                    @Html.CheckBox(item.Text, new {disabled = "true", @checked = "chequed", value = @item.Value ,@class="chfactor"})
+                    <span>@item.Text</span>
+
+                    @if (item.Value == "0")
+                    {
+                        <input type="text" id="otro_factor" value="@ViewBag.OtroFactor" class="animated fadeInLeft fast" readonly="readonly" />
+                    }
+                </div>
+            }
+            else
+            {
+                <div>
+                    @Html.CheckBox(item.Text, new {disabled = "true", value = @item.Value ,@class="chfactor"})
+                    <span>@item.Text</span>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('.chfactor').on('change',function() {
+            var elem = (this);
+            var id = elem.value;
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: window.location.origin + "/EncuestaEstadistica/SetFactorProduccion/",
+                data:{id:id,put:elem.checked},
+                success: function (data) {
+                    //$("#divDecrecimiento").html(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        });
+    });
+
+</script>

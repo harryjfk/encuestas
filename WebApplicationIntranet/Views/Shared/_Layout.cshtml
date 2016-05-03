@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("head", false)
+</head>
+<body>
+    @*<h1>Identificador: @ViewBag.Identificador</h1>
+        <h1>Rol  : @ViewBag.Rol</h1>
+        <h1>Empresa: @ViewBag.Empresa</h1>
+        <h1>Id: @ViewBag.Id</h1>
+        <h1>Login: @ViewBag.Login</h1>
+        <h1>Ndocumento: @ViewBag.Ndocumento</h1>
+        <h1>Nombre: @ViewBag.Nombre</h1>
+        <h1>Tipo: @ViewBag.Tipo</h1>
+        <h1>IdentityName: @ViewBag.IdentityName</h1>*@
+    <input type="hidden" id="hosturl" value="@ViewBag.Host" />
+    <div class="navbar">
+        <div class="container">
+            <ul class="nav nav-pills">
+                <li><a href="@Url.Action("Index","Home")"><img alt="semci" src="~/Content/img/logo-apl.png" /></a></li>
+                @*<li class="navbar-right"><img alt="produce" src="~/Content/img/logo-emp.png" /></li>*@
+            </ul>
+        </div>
+    </div>
+
+    @{
+        var navbarclass = Request.IsAuthenticated ? "" : "nav-home-view";
+        var bodyclass = Request.IsAuthenticated ? "" : "body-home-view";
+    }
+
+    <div class="navbar navbar-inverse @navbarclass">
+        <div class="container" style="margin:0; padding: 0;width: 100%;padding-right: 20px !important;">
+            @*<div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @if (Request.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Inicio", "Index", "Home", new { area = "" }, new { @class = "navbar-brand hidden-sm" })
+                    }
+                </div>*@
+
+            @try
+            {
+                if (Session["pr"] != null)
+                {
+                    <div class="navbar-collapse collapse">                        
+                        <ul class="nav navbar-nav">
+                            @if (Session["pr"].ToString() == "Administrador")
+                            {
+                                @*<li class="dropdown">
+                                        <a href="#" data-toggle="dropdown">otro</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Login</a></li>
+                                            <li class="dropdown-submenu">
+                                                <a tabindex="-1" href="#" data-toggle="dropdown">More options</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a tabindex="-1" href="#">Second level</a></li>
+                                                    <li><a href="#">Second level</a></li>
+                                                    <li><a href="#">Second level</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Logout</a></li>
+                                        </ul>
+                                    </li>*@
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuraci&oacute;n<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Encuestas<b ></b></a>
+                                            <ul class="dropdown-menu">
+                                                <li>@Html.ActionLink("Factores", "Index", "Factor")</li>
+                                                <li>@Html.ActionLink("Cargos del informante", "Index", "Cargo")</li>
+                                                <li>@Html.ActionLink("Parametrización de correos", "Index", "ParametrizacionEnvio")</li>
+                                                <li>@Html.ActionLink("Preguntas de Opinión", "Index", "Pregunta")</li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">C&aacute;lculos<b ></b></a>
+                                            <ul class="dropdown-menu">
+                                                <li>@Html.ActionLink("Tipo de Cambio", "Index", "TipoCambio")</li>
+                                                <li>@Html.ActionLink("Método de Cálculo", "Index", "MetodoCalculo")</li>
+                                                <li>@Html.ActionLink("Parametrización de Año Base", "Index", "AñoBase")</li>
+                                                <li>@Html.ActionLink("Carga de valores - IPP", "IndexCarga", "IpmIpp")</li>   
+                                                <li>@Html.ActionLink("IPM-IPP", "Index", "IpmIpp")</li>
+                                                <li>@Html.ActionLink("Consumo de Harina para Fideos", "Index", "ConsumoHarinaFideo")</li>
+                                                <li>@Html.ActionLink("Importación y Exportación de Harina de Trigo", "Index", "ImportacionExportacionHarinaTrigo")</li>
+                                                                                             
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios<b ></b></a>
+                                            <ul class="dropdown-menu">
+                                                <li>@Html.ActionLink("Administrador", "IndexAdministrador", "UsuarioIntranet")</li>
+                                                <li>@Html.ActionLink("Analistas por establecimiento", "IndexAnalista", "UsuarioIntranet")</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Productos<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("CIIU", "Index", "Ciiu")</li>
+                                        <li>@Html.ActionLink("Unidad de Medida", "Index", "UnidadMedida")</li>
+                                        <li>@Html.ActionLink("Productos", "Index", "LineaProducto")</li>
+                                    </ul>
+                                </li>
+                                <li>@Html.ActionLink("Establecimiento", "Index", "Establecimiento")</li>
+                              
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes de gesti&oacute;n<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("Empresas que enviaron información", "EmpresaEnvioInformacion", "Reporte")</li>
+                                        <li>@Html.ActionLink("Variación % CIIU establecimiento", "IVFPorEstablecimientoVariacionMes", "Reporte")</li>
+                                        <li>@Html.ActionLink("Indice por establecimiento", "IVFPorEstablecimiento", "Reporte")</li>
+                                        <li>@Html.ActionLink("Variación % de IVF por establecimiento", "IVFPorEstablecimientoVariacion", "Reporte")</li>
+                                        <li>@Html.ActionLink("Seguimiento Encuesta", "SeguimientoEncuesta", "Reporte")</li>
+
+                                        @*<li>@Html.ActionLink("Empresas que enviaron información", "EmpresaEnvioInformacion", "Reporte")</li>
+                                        <li>@Html.ActionLink("Porcentaje de Encuestas Estadísticas", "PorcentajeEncuestaEstadistica", "Reporte")</li>
+                                        <li>@Html.ActionLink("Indice Mensual de Volumen Físico", "IVFMensual", "Reporte")</li>
+                                        <li>@Html.ActionLink("IVF por Establecimiento", "IVFPorEstablecimiento", "Reporte")</li>                                        
+                                        <li>@Html.ActionLink("Descarga archivos de consulta", "DescargaArchivos", "Reporte")</li>
+                                        <li>@Html.ActionLink("Según variable de análisis", "IndiceValorFisico", "Reporte")</li>*@
+                                        @*<li>@Html.ActionLink("Empresas que enviaron información", "EmpresaEnvioInformacion", "Reporte")</li>*@
+                                    </ul>
+                                </li>
+                                <li>@Html.ActionLink("Manual Administrativo", "Index", "Establecimiento")</li>
+
+                            }
+
+                            @if (Session["pr"].ToString() == "Informante")
+                            {
+                                <li class="dropdown">
+                                    @Html.ActionLink("Establecimientos", "EstablecimientosEncuestaEmpresarial", "UsuarioExtranet")
+                                    @*<a href="#" class="dropdown-toggle" data-toggle="dropdown">Establecimientos <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Html.ActionLink("Registro de Encuesta Estadística", "EstablecimientosEncuestaEstadistica", "UsuarioExtranet")</li>
+                                            <li>@Html.ActionLink("Registro de Encuesta de Opinión", "EstablecimientosEncuestaEmpresarial", "UsuarioExtranet")</li>
+
+                                        </ul>*@
+                                </li>
+                            }
+
+                            @if (Session["pr"].ToString() == "Analista")
+                            {
+
+                                <li>@Html.ActionLink("Establecimientos", "EstablecimientosEncuestas", "UsuarioIntranet")</li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        @*<li>@Html.ActionLink("Porcentaje de Encuestas Estadísticas", "PorcentajeEncuestaEstadistica", "Reporte")</li>
+                                        <li><a href="http://www.produce.gob.pe/index.php/estadisticas/boletines-mensuales">Reporte de la producci&oacute;n manufacturera</a></li>
+                                        <li>@Html.ActionLink("Indice de Valor Físico", "IndiceValorFisico", "Reporte")</li>*@
+
+                                        <li>@Html.ActionLink("Cobertura del IVF", "CoberturadeIVF", "Reporte")</li>
+                                        <li>@Html.ActionLink("Índice mensual de volumen físico de la producción manufacturera", "IVFMensual", "Reporte")</li>
+                                        <li>@Html.ActionLink("Incidencia o Contribución al IVFPM según actividad productiva", "IVFPMIncidenciaActividad", "Reporte")</li>                                        
+                                        <li>@Html.ActionLink("Variación del índice de volumen físico de la producción manufacturera", "IVFMensualVariacion", "Reporte")</li>
+                                        <li>@Html.ActionLink("Índice de volumen físico de la producción manufacturera", "IVFCuadroResumen", "Reporte")</li>
+                                        <li>@Html.ActionLink("Descarga de datos", "DescargaArchivos", "Reporte")</li>
+                                    </ul>
+                                </li>
+                            }
+
+                            @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        </ul>
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                }
+            }
+            catch (Exception)
+            {
+
+                //throw;
+            }
+
+
+        </div>
+    </div>
+    <div class="container body-content @bodyclass">
+        @RenderBody()
+    </div>
+
+    @if (!Request.IsAuthenticated && Session["pr"] != null)
+    {
+        <footer>
+            <div class="container">
+                <div class="col-md-6">
+                    <address>
+                        Redmond, WA 98052-6399<br />
+                        <abbr>P:</abbr><br />
+                        425.555.0100
+                    </address>
+                    <address>
+                        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+                        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+                    </address>
+                </div>
+
+
+                <div class="col-md-6 copyright">
+                    <p>© 2015 PRODUCE. All Rights Reserved</p>
+                </div>
+            </div>
+
+        </footer>
+    }
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/mask")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/notifications")
+    @Scripts.Render("~/bundles/boostrapdatetimepicker")
+    @Scripts.Render("~/bundles/customscripts")
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btn-login").click(function (event) {
+            $(".drop-login").toggleClass("hidden");
+            event.stopPropagation();
+        });
+        $('html').click(function () {
+            var $login = $("#form-login");
+            if ($login.length) {
+                $login.addClass("hidden");
+            }
+        });
+        $('#form-login').click(function (event) {
+            event.stopPropagation();
+        });
+        $("#collapse-create").click(function () {
+            $("#form-login").addClass("hidden");
+        });
+    })
+</script>

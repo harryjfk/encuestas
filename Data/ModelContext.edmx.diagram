@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1f03eb695874409f99e263903709a433" Name="Diagram1" ZoomLevel="63" ShowGrid="true" DisplayType="true">
+        <EntityTypeShape EntityType="Model.Cargo" Width="1.875" PointX="2.625" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Ciiu" Width="2" PointX="0.5" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Contacto" Width="1.875" PointX="6.75" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Encuesta" Width="2" PointX="10" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.EncuestaEmpresarial" Width="1.5" PointX="15" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.EncuestaEstadistica" Width="2" PointX="6.875" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.LineaProductoEstablecimiento" Width="2.875" PointX="9" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Establecimiento" Width="2" PointX="4.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.LineaProducto" Width="2.25" PointX="5" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.MateriaPropia" Width="2.125" PointX="15" PointY="30.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.MateriaTerceros" Width="2.75" PointX="18" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.PosibleRespuesta" Width="1.5" PointX="15" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Pregunta" Width="1.875" PointX="13" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.TrabajadoresDiasTrabajados" Width="2.375" PointX="12.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.UnidadMedida" Width="3" PointX="13.875" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Valor" Width="1.75" PointX="17" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ValorProduccion" Width="2.375" PointX="21.125" PointY="21.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.VentasServicioManufactura" Width="3.25" PointX="18.875" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.VentasPaisExtranjero" Width="2.25" PointX="14.625" PointY="27" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.VentasProductosEstablecimientos" Width="2.875" PointX="11.25" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.VolumenProduccion" Width="1.5" PointX="12.75" PointY="29.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Rol" Width="1.5" PointX="0.75" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Usuario" Width="2.25" PointX="2.875" PointY="19.25" IsExpanded="true" />
+        <AssociationConnector Association="Model.SYS_C0012596" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012614" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012597" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012598" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012600" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012601" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012606" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012607" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012609" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012615" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012618" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012616" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012617" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012619" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012620" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012621" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012624" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012625" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C0012627" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.CAT_ESTAB_CIIU" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SEG_USUARIO_ROL" ManuallyRouted="false" />
+        <InheritanceConnector EntityType="Model.EncuestaEstadistica" />
+        <InheritanceConnector EntityType="Model.EncuestaEmpresarial" />
+        <AssociationConnector Association="Model.SYS_C0012622" />
+        <AssociationConnector Association="Model.SYS_C0012623" />
+        <AssociationConnector Association="Model.SYS_C0012629" />
+        <AssociationConnector Association="Model.SYS_C0012630" />
+        <AssociationConnector Association="Model.FK_VALOR_PROD_CIIU" />
+        <AssociationConnector Association="Model.FK_VALORPROD_ENCUESTA" />
+        <AssociationConnector Association="Model.FK_VENTA_PAIS_EXTR_CIIU" />
+        <AssociationConnector Association="Model.FK_VENTA_PAIS_EXT_VENTA_PROD" />
+        <EntityTypeShape EntityType="Model.Factor" Width="2" PointX="17.5" PointY="20.875" />
+        <EntityTypeShape EntityType="Model.FactorProducccion" Width="2.375" PointX="20.25" PointY="17.25" />
+        <AssociationConnector Association="Model.SYS_C0014682" />
+        <AssociationConnector Association="Model.CAT_FACTOR_FACTOR_PROD" />
+        <AssociationConnector Association="Model.FK_PREGUNTA_ENCUESTA" />
+        <EntityTypeShape EntityType="Model.TipoCambio" Width="1.5" PointX="2.375" PointY="4" />
+        <EntityTypeShape EntityType="Model.IpmIpp" Width="1.5" PointX="3.25" PointY="23.375" />
+        <AssociationConnector Association="Model.SYS_C008155" />
+        <EntityTypeShape EntityType="Model.ConsumoHarinaFideo" Width="1.5" PointX="5.625" PointY="3.625" />
+        <EntityTypeShape EntityType="Model.ExportacionHarinaTrigo" Width="1.5" PointX="8.25" PointY="2.5" />
+        <EntityTypeShape EntityType="Model.ImportacionHarinaTrigo" Width="1.5" PointX="10.25" PointY="2.5" />
+        <EntityTypeShape EntityType="Model.MetodoCalculo" Width="1.5" PointX="12.625" PointY="2.75" />
+        <AssociationConnector Association="Model.SYS_C008183" />
+        <EntityTypeShape EntityType="Model.LineaProductoUnidadMedida" Width="3.375" PointX="8.375" PointY="7.5" />
+        <AssociationConnector Association="Model.SYS_C008203" />
+        <AssociationConnector Association="Model.SYS_C008204" />
+        <AssociationConnector Association="Model.SYS_C008205" />
+        <EntityTypeShape EntityType="Model.AñoBase" Width="1.5" PointX="19.625" PointY="10.5" />
+        <AssociationConnector Association="Model.SYS_C008222" />
+        <AssociationConnector Association="Model.SYS_C008223" />
+        <AssociationConnector Association="Model.SYS_C008224" />
+        <AssociationConnector Association="Model.SYS_C008225" />
+        <EntityTypeShape EntityType="Model.ParametrizacionEnvio" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.EstablecimientoAnalista" Width="2.25" PointX="8" PointY="15.625" />
+        <AssociationConnector Association="Model.SYS_C008338" />
+        <AssociationConnector Association="Model.SYS_C008339" />
+        <AssociationConnector Association="Model.SYS_C008349" />
+        <EntityTypeShape EntityType="Model.EncuestaAnalista" Width="1.5" PointX="16.75" PointY="17.25" />
+        <AssociationConnector Association="Model.SYS_C008374" />
+        <AssociationConnector Association="Model.SYS_C008373" />
+        <AssociationConnector Association="Model.SYS_C008375" />
+        <EntityTypeShape EntityType="Model.Auditoria" Width="1.5" PointX="12.75" PointY="32.125" />
+        <AssociationConnector Association="Model.SYS_C008297" />
+        <EntityTypeShape EntityType="Model.ViewProcentajeEncuestaExtadistica" Width="1.5" PointX="0.75" PointY="6.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

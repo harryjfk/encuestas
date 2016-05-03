@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://srv-desnet-services.produccion.gob.pe:7023/WCFSistemasService.svc?xsd=xsd0" filename="WCFSistemasService.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://srv-desnet-services.produccion.gob.pe:7023/WCFSistemasService.svc?xsd=xsd1" filename="WCFSistemasService0.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://srv-desnet-services.produccion.gob.pe:7023/WCFSistemasService.svc?xsd=xsd2" filename="WCFSistemasService1.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://srv-desnet-services.produccion.gob.pe:7023/WCFSistemasService.svc?wsdl" filename="WCFSistemasService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://srv-desnet-services.produccion.gob.pe:7023/WCFSistemasService.svc?disco" filename="WCFSistemasService.disco" />
+  </Results>
+</DiscoveryClientResultsFile>

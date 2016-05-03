@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Entity.UsuarioIntranet>
+@{
+    ViewBag.Title = "Analistas Asignados";
+}
+<a href="/UsuarioExtranet/EstablecimientosEncuestaEmpresarial" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+<div class="title-container-details">
+    <h3 class="screen-title">Analistas Asignados al establecimiento (@ViewBag.Establecimiento.Ruc-@ViewBag.Establecimiento.Nombre-@ViewBag.Establecimiento.IdentificadorInterno)</h3>
+
+   
+
+    @if (Model.Any())
+    {
+        foreach (var est in Model)
+        {
+            <div class="info-child-screen-details">
+                <div>
+                    <span class="bold">CIIU: </span> <span>@est.CAT_ESTAB_ANALISTA.First().CAT_CIIU.ToString()</span>
+                </div>
+                <div>
+                    <span class="bold">Nombre: </span> <span>@est.Nombres</span>
+                </div>
+                <div>
+                    <span class="bold">Apellidos: </span> <span>@est.Apellidos</span>
+                </div>
+                <div>
+                    <span class="bold">Teléfono: </span> <span>@est.Telefono</span>
+                </div>                
+            </div>
+        <br/>
+        }
+    }
+    else
+    {
+        <div class="info-child-screen-details">
+            SIN ASIGNAR
+        </div>
+    }
+</div>

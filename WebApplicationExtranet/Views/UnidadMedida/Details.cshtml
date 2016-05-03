@@ -1,0 +1,24 @@
+﻿
+@model Entity.UnidadMedida
+
+@{
+    ViewBag.Title = "Detalles del Unidad de Medida";
+}
+<div class="title-container-details">
+    <h3 class="screen-title">Detalles del Unidad de Medida</h3>
+
+    <a href="/UnidadMedida/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold">Descripci&oacute;n: </span> <span>@Model.Descripcion</span>
+        </div>
+        <div>
+            <span class="bold">Abreviatura: </span> <span>@Model.Abreviatura</span>
+        </div>  
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>   
+		 
+    </div>
+</div>	

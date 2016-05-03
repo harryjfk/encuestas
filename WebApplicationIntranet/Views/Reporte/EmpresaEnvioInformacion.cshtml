@@ -1,0 +1,214 @@
+﻿
+@{
+    ViewBag.Title = "Empresas que enviaron información";
+    var meses = new[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+}
+@Scripts.Render("~/bundles/jquery")
+
+<h3 class="screen-title">@ViewBag.Title</h3>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">B&Uacute;SQUEDA</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Año</span>
+                    <select id="select-ano" name="Year" class="form-control">
+                        @for (int i = 2012; i <= DateTime.Now.Year; i++)
+                        {
+                            <option value="@i">@i.ToString()</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">Mes</span>
+                    <select id="select-mes" name="Month" class="form-control">
+                        @for (int i = 0; i < meses.Length; i++)
+                        {
+                            <option value="@(i+1)">@meses[i]</option>
+                        }
+                    </select>
+                </div>
+            </div>                
+            <div class="col-md-4">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">CIIU</span>                        
+                    @{Html.RenderAction("GetDorpDown", "CIIU", new { id = 0, nombre = "IdCiiu", @default = "Todos" });}
+                </div>
+            </div>                
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group margin-top-5">
+                    <span class="input-group-addon">Analista</span>                        
+                    @{Html.RenderAction("GetDorpDown", "UsuarioIntranet", new { id = 0, nombre = "IdAnalista", @default = "Todos" });}
+                        
+                </div>
+            </div>
+            <div class="col-md-4 margin-top-5">
+            </div>
+            <div class="col-md-4 margin-top-5">
+                <input type="submit" value="Buscar" id="btn-buscar" class="btn btn-default" />
+                <a href="javascript:void(0);" id="btn-export-excel" class="btn btn-default btns-group">Excel</a>
+                <a href="#" id="btn-export-pdf" class="btn btn-default  btns-group">PDF</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="filter-rpt">
+    <div class="filter-text">Filtros:</div>
+    <div class="label label-primary" id="filter-anio"></div>
+    <div class="label label-primary" id="filter-mes"></div>
+    <div class="label label-primary" id="filter-ciiu"></div>
+    <div class="label label-primary" id="filter-analista"></div>
+</div>*@
+
+@*<div id="table-container" class="margin-bottom-10">
+    <table id="tbl-envio-informacion" class="table table-striped table-hover table-bordered table-condensed tabla small margin-bottom-10">
+        <thead>
+            <tr class="cabecera">
+                <th style="width: 6%">NRO.</th>
+                <th style="width: 10%">CÓGIDO</th>
+                <th style="width: 54%">ESTABLECIMIENTO</th>
+                <th style="width: 20%">CIIU / ANALISTA</th>
+                <th style="width: 10%">¿ENTRA AL CÁLCULO?</th>
+            </tr>            
+       </thead>       
+    </table>
+</div>*@
+
+<script type='text/javascript' src='~/Scripts/JsExport/jquery-git2.js'></script>
+<script type='text/javascript' src="~/Scripts/JsExport/jspdf.debug.js"></script>
+<div id="htmlExportTable">
+
+</div>
+
+<input type="hidden" id="filterJSON" />
+
+
+
+
+<script>
+
+    function GetFilter() {
+
+        var filter = {
+            'Year': $('#select-ano').val(),
+            'Month': $('#select-mes').val(),
+            'IdCiiu': $('#IdCiiu').val(),
+            'IdAnalista': $('#IdAnalista').val()
+        };
+
+        return filter;
+    }
+
+    $(document).ready(function () {
+        $.search($('#select-ano'));
+        $.search($('#select-mes'));
+
+        $('#btn-export-excel').click(function (e) {
+            e.preventDefault();
+
+            @*window.open('@Url.Action("EmpresaEnvioInformacionExcel", "Reporte")?' + jQuery.param(GetFilter()) + '&Mes=' + $('#select-mes option:selected').text() + '&Ciiu=' + $('#IdCiiu option:selected').text() + '&Analista=' + $('#IdAnalista option:selected').text());*@
+            window.open('@Url.Action("ExportarExcel_EmpresaEnvioInformacion", "Reporte")?' + jQuery.param(GetFilter()) + '&Mes=' + $('#select-mes option:selected').text() + '&Ciiu=' + $('#IdCiiu option:selected').text() + '&Analista=' + $('#IdAnalista option:selected').text());
+        });
+
+        $('#btn-export-pdf').click(function (e) {
+            e.preventDefault();
+
+            //window.open('@Url.Action("EmpresaEnvioInformacionPDF", "Reporte")?' + jQuery.param(GetFilter()) + '&Mes=' + $('#select-mes option:selected').text() + '&Ciiu=' + $('#IdCiiu option:selected').text() + '&Analista=' + $('#IdAnalista option:selected').text());
+            //window.open('@Url.Action("Encuesta", "EncuestaEstadistica")?idEncuesta=1');
+
+                var pdf = new jsPDF('l', 'pt', 'letter');
+                source = $('#htmlExportTable')[0]; //table Id
+                specialElementHandlers = {
+                    '#bypassme': function (element, renderer) {
+                        return true
+                    }
+                };
+                margins = { //table margins and width
+                    top: 80,
+                    bottom: 60,
+                    left: 40,
+                    width: 600
+                };
+                pdf.text("Empresas que enviaron información", 10, 30);
+
+                pdf.fromHTML(
+                source,
+                margins.left,
+                margins.top, {
+                    'width': margins.width,
+                    'elementHandlers': specialElementHandlers
+                },
+
+                function (dispose) {
+                    pdf.save('Reporte.pdf'); //Filename
+                }, margins);
+
+
+        });
+
+        $('#btn-buscar').click(function (e) {
+            e.preventDefault();
+
+            $('#filter-anio').text('Año: ' + $('#select-ano').val());
+            $('#filter-mes').text('Mes: ' + $('#select-mes option:selected').text());
+            $('#filter-ciiu').text('CIIU: ' + $('#IdCiiu option:selected').text());
+            $('#filter-analista').text('Analista: ' + $('#IdAnalista option:selected').text());
+            $.ajax({
+                cache: false,
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                url: window.location.protocol + "//" + window.location.host + "/Reporte/EmpresaEnvioInformacionTable/",
+                data: GetFilter(),
+                success: function (data) {
+                    var html = data.trim();
+                    $("#htmlExportTable").html(html);
+                    $('#textProcess').css({ 'display': 'none' });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Ocurrió un error.');
+                }
+            });
+            return;
+            //
+            $.get('@Url.Action("BuscarEmpresaEnvioInformacion", "Reporte")', GetFilter(), function (data) {
+
+                $('#ExportTable tbody').remove();
+
+                var $tbody = $('<tbody></tbody>');
+
+                if (data.length == 0) {
+                    var $rowClean = $('<tr><td colspan="5">No hay registros.</td></tr>');
+                    $('#ExportTable').append($rowClean);
+                } else {
+                    for (var i = 0, l = data.length; i < l; ++i) {
+                        var $tr = $('<tr></tr>');
+
+                        var $tdNro = $('<td>' + (i + 1) + '</td>');
+                        var $tdCodigo = $('<td>' + data[i].IdentificadorEstablecimiento + '</td>');
+                        var $tdEst = $('<td>' + data[i].Establecimiento + '</td>');
+                        var $tdCiiuAnalista = $('<td>' + data[i].CIIU + ' / ' + data[i].Analista + '</td>');
+                        var $tdEntraCalculo = $('<td>' + data[i].EsCalculo + '</td>');
+
+                        $tr.append($tdNro);
+                        $tr.append($tdCodigo);
+                        $tr.append($tdEst);
+                        $tr.append($tdCiiuAnalista);
+                        $tr.append($tdEntraCalculo);
+
+                        $tbody.append($tr);
+                    }
+
+                    $('#ExportTable').append($tbody);
+                }
+            });
+        });
+    });
+</script>

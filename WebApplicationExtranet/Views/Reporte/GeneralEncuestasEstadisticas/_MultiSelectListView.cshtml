@@ -1,0 +1,12 @@
+﻿@using System.Activities.Statements
+@model List<SelectListItem>
+@{
+    
+}
+
+<select id="ecl" multiple="multiple" class="form-control reset-max-width" style="width:100%;">
+    @foreach (var item in Model)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+</select>

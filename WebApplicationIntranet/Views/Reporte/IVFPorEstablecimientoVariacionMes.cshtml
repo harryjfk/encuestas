@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewBag.Title = " Variación % CIIU - Establecimiento";
+    var meses = new[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+}
+
+@Scripts.Render("~/bundles/jquery")
+<h3 class="screen-title">@ViewBag.Title</h3>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">B&Uacute;SQUEDA</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Año</span>
+                    <select id="select-ano" name="Year" class="form-control">
+                        @for (int i = DateTime.Now.Year; i >= 2012; i--)
+                        {
+                            <option value="@i">@i.ToString()</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">Mes</span>
+                    <select id="select-mes-desde" name="MonthFrom" class="form-control">
+                        @for (int i = 0; i < meses.Length; i++)
+                        {
+                            <option value="@(i+1)">@meses[i]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CIIU</span>
+                    @{Html.RenderAction("GetDorpDown", "Ciiu", new { nombre = "IdCiiu" });}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group" style="z-index:3;">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;Establecimiento</span>
+                    @{Html.RenderAction("GetDorpDown", "Establecimiento", new { nombre = "IdEstablecimiento" });}
+                </div>
+            </div>
+        </div>        
+        <div class="row margin-top-5">
+            <div class="col-md-4">
+                <input type="submit" value="Buscar" id="btn-buscar" class="btn btn-default" />
+                <a id="btn-export-excel" class="btn btn-default  btns-group">Excel</a>                
+            </div>
+        </div>
+    </div>
+</div>
+<span id="textProcess" style="color: #777;background-color: #f5f5f5;border-color: #ddd;padding:10px 15px;display:none;">Procesando... Espere por favor.</span>
+
+<div id="errors-container-general" class="alert alert-danger animated bounceIn hidden">
+    <strong>Error de consulta</strong>
+    <div>
+        <ul></ul>
+    </div>
+</div>
+
+<div id="contenedor-table">
+
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#IdCiiu').prepend('<option value="-1" selected="selected">TODOS</option>');
+            $('#IdCiiu').chosen();
+            $('#IdEstablecimiento').prepend('<option value="-1" selected="selected">TODOS</option>');
+            $('#IdEstablecimiento').chosen();
+        });
+
+        $('#btn-buscar').click(function (e) {
+            e.preventDefault();
+            console.log($('#IdCiiu').val());
+
+            $('#tbl-ivf').css({ 'display': 'none' });
+            $('#textProcess').css({ 'display': '' });
+
+            if (parseInt($('#select-mes-desde').val()) > parseInt($('#select-mes-fin').val())) {
+                var errors = "";
+                errors += "<li>Mes inicio no puede ser mayor a mes fin.</li>";
+                $("#errors-container-general").removeClass("hidden").find("ul").html(errors);
+                $('#textProcess').css({ 'display': 'none' });
+
+                return;
+            } else {
+                $("#errors-container-general").addClass("hidden");
+            }
+
+            $.ajax({
+                cache: false,
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                url: window.location.protocol + "//" + window.location.host + "/Reporte/IVFPorEstablecimientoVariacionTableMes/",
+                data: {                   
+                    year: $('#select-ano').val(),                   
+                    month: $('#select-mes-desde').val(),
+                    ciiu: $('#IdCiiu').val(),
+                    estb: $('#IdEstablecimiento').val()
+                },
+                success: function (data) {
+                    var html = data.trim();
+                    $("#contenedor-table").html(html);
+                    $('#textProcess').css({ 'display': 'none' });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Ocurrió un error.');
+                }
+            });
+        });
+
+        $('#btn-export-excel').click(function (e) {
+            $('#alertaDatos').css({ 'display': 'none' });
+            $('#textProcess').css({ 'display': '' });
+            $.ajax({
+                cache: false,
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: window.location.protocol + "//" + window.location.host + "/Reporte/ValidarData/",
+                data: {
+                    year: $('#select-ano').val(),
+                    month: $('#select-mes-desde').val(),
+                    ciiu: $('#IdCiiu').val(),
+                    estb: $('#IdEstablecimiento').val()
+                },
+                success: function (data) {
+                    console.log(data);
+                    //if (data.Cantidad > 0) {
+                    window.location = "/Reporte/ExportarExcelEstablecimientoMes?year=" + $('#select-ano').val() + "&month=" + $('#select-mes-desde').val() + "&ciiu=" + $('#IdCiiu').val() + "&estb=" + $('#IdEstablecimiento').val();
+                    //} else {
+                        $('#textProcess').css({ 'display': 'none' });
+                        $('#alertaDatos').css({ 'display': '' });
+                    //}
+                }
+            });
+        });
+    </script>
+}

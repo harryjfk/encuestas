@@ -1,0 +1,102 @@
+﻿@using Entity
+@model Domain.Query<Entity.EncuestaEstadistica>
+
+@{
+    ViewBag.Title = "Estadística Industrial Mensual";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+<a href="/UsuarioIntranet/EstablecimientosEncuestas" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+<h3 class="screen-title">@ViewBag.Title (@ViewBag.Establecimiento.Ruc - @ViewBag.Establecimiento.Nombre.Trim() - @ViewBag.Establecimiento.IdentificadorInterno)</h3>
+@using (Html.BeginForm("BuscarEncuestaAnalista", "EncuestaEstadistica", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">Búsqueda</div>
+        @{
+    var sel0 = Model == null || Model.Criteria == null || Model.Criteria.Mes != null ? "" : "selected";
+    var sel1 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 1 ? "" : "selected";
+    var sel2 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 2 ? "" : "selected";
+    var sel3 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 3 ? "" : "selected";
+    var sel4 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 4 ? "" : "selected";
+    var sel5 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 5 ? "" : "selected";
+    var sel6 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 6 ? "" : "selected";
+    var sel7 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 7 ? "" : "selected";
+    var sel8 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 8 ? "" : "selected";
+    var sel9 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 9 ? "" : "selected";
+    var sel10 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 10 ? "" : "selected";
+    var sel11 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 11 ? "" : "selected";
+    var sel12 = Model == null || Model.Criteria == null || Model.Criteria.Mes != 12 ? "" : "selected";
+
+    if (Model == null || Model.Criteria == null)
+    {
+        sel0 = "selected";
+    }
+        }
+        <div class="panel-body">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-addon">MES</span>
+                    @*<input type="text" class="form-control">*@
+                    @*@Html.TextBoxFor(t => t.Criteria.Mes, new { @class = "form-control" })*@
+                    <select name="Criteria.Mes" class="form-control">
+                        <option @sel0 value="null">Todos</option>
+                        <option @sel1 value="1">Enero</option>
+                        <option @sel2 value="2">Febrero</option>
+                        <option @sel3 value="3">Marzo</option>
+                        <option @sel4 value="4">Abril</option>
+                        <option @sel5 value="5">Mayo</option>
+                        <option @sel6 value="6">Junio</option>
+                        <option @sel7 value="7">Julio</option>
+                        <option @sel8 value="8">Agosto</option>
+                        <option @sel9 value="9">Septiembre</option>
+                        <option @sel10 value="10">Octubre</option>
+                        <option @sel11 value="11">Noviembre</option>
+                        <option @sel12 value="12">Diciembre</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-addon">A&Ntilde;O</span>
+                    @*<input type="text" class="form-control">*@
+                    @Html.TextBoxFor(t => t.Criteria.Year, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+<div id="table-container">
+    @Html.Partial("_TableAnalista", Model)
+    
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#Criteria_Year").inputmask("9999");
+    });
+</script>
+
+
+
+
+

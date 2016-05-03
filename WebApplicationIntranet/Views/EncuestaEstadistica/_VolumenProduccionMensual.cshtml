@@ -1,0 +1,28 @@
+﻿@using System.Globalization
+@using Entity
+@using WebApplication.Models
+@model EncuestaEstadistica
+
+@{
+
+}
+@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap2form"}))
+{*@
+    <div class="panel panel-primary">
+        <div class="panel-heading">Capítulo II: Volúmenes de producción mensual del establecimiento</div>
+       
+        <div class="panel-body">
+            @Html.HiddenFor(t=>t.VolumenProduccionMensual.Identificador)
+            <h5 >Anote en la sección A los productos elaborados por el establecimiento con materia prima propia. </h5>
+            <div id="productosMateriaPrimaPropia">
+                @{ Html.RenderPartial("_TableProductoMateriaPrimaPropia", Model.VolumenProduccionMensual.MateriasPropia); }
+            </div>
+            <h5>Si desea agregar nuevas líneas de producto, por favor, póngase en contacto con el analista responsable.</h5>
+            <h5>En la sección B, registre los productos elaborados por la empresa con materia prima recibida de terceros, señalando sólo la cantidad producida en el mes de referencia.</h5>
+            <div id="productosMateriaPrimaTerceros">
+                @{ Html.RenderPartial("_TableProductoMateriaPrimaTerceros", Model.VolumenProduccionMensual.MateriasTercero); }
+            </div>
+        </div>
+       
+    </div>
+@*}*@

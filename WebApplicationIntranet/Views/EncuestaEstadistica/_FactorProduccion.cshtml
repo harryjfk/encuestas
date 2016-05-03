@@ -1,0 +1,153 @@
+﻿@model Entity.EncuestaEstadistica
+
+@{
+
+}
+@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap6form"}))
+    {*@
+<div class="panel panel-primary">
+    @{
+        var ch1 = Model.FactorProduccion.ProduccionNormal == 0 ? "hidden" : "";
+        var v1 = Model.FactorProduccion.ProduccionNormal == 1 ? "true" : "false";
+        var ch2 = Model.FactorProduccion.Incremento == 0 ? "hidden" : "";
+        var v2 = Model.FactorProduccion.Incremento == 1 ? "true" : "false";
+        var ch3 = Model.FactorProduccion.Decrecimiento == 0 ? "hidden" : "";
+        var v3 = Model.FactorProduccion.Decrecimiento == 1 ? "true" : "false";
+    }
+    <div class="panel-heading">Capítulo VI: Factores que afectaron la producción</div>
+    <div class="panel-body">
+        <div class="col-md-4">
+            <label>
+                @if (Model.FactorProduccion.ProduccionNormal == 1)
+                {
+                    @Html.RadioButton("FactorProduccion", "FactorProduccion.ProduccionNormal", new { @checked = "chequed", id = "prodNormal" })
+                    <span>Producci&oacute;n Normal</span>
+                }
+                else
+                {
+                    @Html.RadioButton("FactorProduccion", "FactorProduccion.ProduccionNormal", new { id = "prodNormal" })
+                    <span>Producci&oacute;n Normal</span>
+                }
+            </label>
+        </div>
+        <div class="col-md-4">
+
+            @if (Model.FactorProduccion.Incremento == 1)
+            {
+                <label>
+                    @Html.RadioButton("FactorProduccion", "FactorProduccion.Incremento", new { @checked = "chequed", id = "incremento" })
+                    <span>Incremento</span>
+                </label>
+                <div id="divIncremento" class="clear">
+                    @{
+                Html.RenderAction("FillFactoresIncremento");
+                    }
+                </div>
+            }
+            else
+            {
+                <label>
+                    @Html.RadioButton("FactorProduccion", "FactorProduccion.Incremento", new { id = "incremento" })
+                    <span>Incremento</span>
+                </label>
+                <div id="divIncremento" class="clear">
+
+                </div>
+            }
+
+
+        </div>
+        <div class="col-md-4">
+
+            @if (Model.FactorProduccion.Decrecimiento == 1)
+            {
+                <label>
+                    @Html.RadioButton("FactorProduccion", "FactorProduccion.Decrecimiento", new { @checked = "chequed", id = "disminucion" })
+                    <span>Disminuci&oacute;n</span>
+                </label>
+                <div id="divDecrecimiento" class="clear">
+                    @{
+                Html.RenderAction("FillFactoresDecrecimiento");
+                    }
+                </div>
+            }
+            else
+            {
+                <label>
+                    @Html.RadioButton("FactorProduccion", "FactorProduccion.Decrecimiento", new { id = "disminucion" })
+                    <span>Disminuci&oacute;n</span>
+                </label>
+                <div id="divDecrecimiento" class="clear">
+
+                </div>
+            }
+
+
+        </div>
+
+    </div>
+
+</div>
+@*}*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#incremento").on("change", function () {
+            var elem = $(this)[0];
+            $(".clear").html("");
+            if (elem.checked) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: window.location.origin + "/EncuestaEstadistica/FillFactoresIncremento/",
+                    success: function (data) {
+                        $("#divIncremento").html(data);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            } else {
+                $("#divIncremento").html("");
+            }
+        });
+        $("#disminucion").on("change", function () {
+            var elem = $(this)[0];
+            $(".clear").html("");
+            if (elem.checked) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: window.location.origin + "/EncuestaEstadistica/FillFactoresDecrecimiento/",
+                    success: function (data) {
+                        $("#divDecrecimiento").html(data);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            } else {
+                $("#divDecrecimiento").html("");
+            }
+        });
+        $("#prodNormal").on('change', function () {
+            var elem = $(this)[0];
+            $(".clear").html("");
+            if (elem.checked) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: window.location.origin + "/EncuestaEstadistica/ProduccionNormal/",
+                    success: function (data) {
+                        //$("#divDecrecimiento").html(data);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            } else {
+                // $("#divDecrecimiento").html("");
+            }
+        });
+    });
+</script>

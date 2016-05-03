@@ -1,0 +1,31 @@
+﻿@using System.Globalization
+@model Entity.TipoCambio
+@{
+    ViewBag.Title = "Detalle del Tipo de Cambio";
+}
+
+<div class="title-container-details">
+    <h3 class="screen-title">Detalle del Tipo de Cambio</h3>
+    <a href="/TipoCambio/Index" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+    <div class="info-child-screen-details">
+        <div>
+            <span class="bold">Año: </span> <span>@Model.fecha.ToString("yyyy", CultureInfo.GetCultureInfo("ES"))</span>
+        </div>
+        <div>
+            <span class="bold">Mes: </span> <span class="text-capitalize">@Model.fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES"))</span>
+        </div>
+        <div>
+            <span class="bold">Tipo de Cambio Venta: </span> <span>@Model.tipo_cambio_venta.ToString("0.0000")</span>
+        </div>
+
+        <div>
+            <span class="bold">Tipo de Cambio Compra: </span> <span>@Model.tipo_cambio_compra.ToString("0.0000")</span>
+        </div>
+        <div>
+            <span class="bold">Activado: </span> <span>@Model.Activado</span>
+        </div>
+    </div>
+</div>
+
+

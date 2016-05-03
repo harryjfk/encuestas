@@ -1,0 +1,135 @@
+﻿@using Entity
+@model Domain.Query<Entity.Establecimiento>
+
+@{
+    ViewBag.Title = "Establecimiento";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
+
+<h3 class="screen-title">Establecimiento</h3>
+@using (Html.BeginForm("Buscar", "Establecimiento", FormMethod.Post))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">B&uacute;squeda</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">Raz&oacute;n Social</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.Nombre, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">&nbsp; &nbsp; ID</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.IdentificadorInterno, new { @class = "form-control" })
+                    </div>
+                </div >
+                <br /><br />
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">&nbsp; &nbsp;&nbsp;RUC</span>
+                       
+                        @Html.TextBoxFor(t => t.Criteria.Ruc, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">CIIU</span>
+                        @*<input type="text" class="form-control">*@
+                        @Html.TextBoxFor(t => t.Criteria.CiiuText, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" value="Buscar" name="buscarbtn" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+<p>
+    <a href="javascript:void(0);" id="add-btn" class="btn btn-primary btn-custom-add">Nuevo Establecimiento</a>
+    <a href="javascript:void(0);" id="upPoll-btn" class="btn btn-primary btn-custom-add">Subir Encuestas</a>
+</p>
+<div id="table-container">
+    @Html.Partial("_Table", Model)
+</div>
+
+@*MODALS*@
+<div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Nuevo Establecimiento</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="uploadPolls" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Subir Encuestas</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Upload", "EncuestaEstadistica", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmUploadPoll"})) {
+                    <div class="form-group">
+                        <label for="excelPoll">Archivo de Encuestas</label>
+                        <input type="file" id="excelPoll" name="excelPoll">
+                        <p class="help-block">Extensión *.xls</p>
+                    </div>
+                }
+                
+                <p class="label label-info">IMPORTANTE: Analistas e informantes de las encuestas deben previamente configurados.</p>                
+            </div>
+            <div class="modal-footer">
+                <a href="/Descargas/formato_encuesta.xlsx" style="float:left;"><i class="glyphicon glyphicon-download"></i> Descargar Formato</a>
+                <button type="button" name="upload-btn" id="upload-btn" class="btn btn-primary" value="Subir">Subir</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.CreateItemOpenModal("add-btn", "editItem", "Establecimiento");
+        
+
+        $('#upPoll-btn').click(function () {
+            var $tr = $(this).parent().parent();
+
+            //$('#uploadPolls h4').text(' - ' + $tr.find('td:eq(2)').text() + ' ' + $tr.find('td:eq(4)').text());
+            $('#uploadPolls').modal('show');
+
+        });
+    });
+    $('#upload-btn').click(function () {        
+        $(this).parent().parent().find('.modal-body form').submit();
+    });
+</script>
+
+

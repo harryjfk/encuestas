@@ -1,0 +1,199 @@
+﻿@using System.Globalization
+@using Entity
+@using WebApplication.Models
+@using Domain
+@model EncuestaEstadistica
+
+@section head{
+    <style>
+        .ui-dialog { z-index: 999999992!important;}
+        .ui-widget-overlay { z-index: 999999991!important;}
+    </style>
+}
+
+<div id="errors-container-general" class="alert alert-danger animated bounceIn hidden">
+    <strong>Alertas</strong>
+    <div>
+        <ul></ul>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+
+<a href="@Url.Action("EncuestasAnalista","EncuestaEstadistica")/@Model.IdEstablecimiento" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
+
+<div>
+    <div class="row">
+        <div class="col-md-12 text-align-center">
+            <h2>Estadística Industrial Mensual  @Model.Fecha.ToString("yyyy", CultureInfo.GetCultureInfo("ES")).ToUpper()</h2>
+            <h4>Información del mes @Model.Fecha.ToString("MMMM", CultureInfo.GetCultureInfo("ES")).ToUpper()</h4>
+        </div>
+        <div class="col-md-12 text-align-center">
+            <span class="col-md-12">Esta encuesta tiene solo fines estadísticos amparada por</span>
+            <span class="col-md-12">D.L. Nº 604    --   D.S. 043-2001-PCM-Art. 97 del secreto estadístico y</span>
+            <span class="col-md-12">R.M. 343-2012    Ley Nº 29812     R.J. N° XXX -2014-INEI</span>
+            <span class="col-md-12">La información será utilizada en la elaboración de estadísticas del sector Manufactura en el País.</span>
+
+        </div>
+    </div>
+</div>
+
+@if (Model != null)
+{
+    using (Html.BeginForm("UpdatePrevious", "EncuestaEstadistica", FormMethod.Post, new { name = "encuestaEstadisticaForm" }))
+    {
+        @Html.HiddenFor(t => t.Id)           
+        <div id="cap1">
+            @{ Html.RenderPartial("_IdentificacionEstablecimiento", Model); }
+        </div>
+        <div id="cap2">
+            @{ Html.RenderPartial("_VolumenProduccionMensual", Model); }
+        </div>
+        <div id="cap3">
+            @{ Html.RenderPartial("_ValorProduccionEstablecimiento", Model); }
+        </div>
+        <div id="cap4">
+            @{ Html.RenderPartial("_ValorVentasProductosEstablecimiento", Model); }
+        </div>
+        <div id="cap5">
+            @{ Html.RenderPartial("_TrabajadoresDiasTrabajados", Model); }
+        </div>
+        <div id="cap6">
+            @{ Html.RenderPartial("_FactorProduccion", Model); }
+        </div>
+        <div class="row text-align-center">
+            <h4 class="col-md-12">Agradecemos su valiosa colaboración con las estadísticas oficiales del país</h4>
+            <span class="col-md-12 text-align-left">El  formulario debera remitirse : </span>
+            <span class="col-md-12 text-align-left">Via WEB  en forma virtual a través de la ruta de acceso https://extranet.produce.gob.pe utilizando su clave de acceso</span>
+            <span class="col-md-12 text-align-left">Correo electronico : est_manufactura@produce.gob.pe</span>
+            <span class="col-md-12 text-align-left">Coordinaciones en Lima y Callao,  Ministerio de la Producción al 616-2222 anexos 1651,1636,1414,1839, 1832, 1847</span>
+            <span class="col-md-12 text-align-left">Regiones,  Direcciones Regionales de PRODUCE</span>
+            <span class="col-md-12 text-align-left"> La presentación tardía, el suministro de datos falsos y la negativa a dar información solicitada dan lugar a las sanciones establecidas en el Artículo 89° del D.S. N° 043-2001-PCM, publicado en El Peruano del día 25/04/2001 </span>
+        </div>
+
+        <div class="modal-footer">
+            <a id="btnEncuestaUpdate" href="#" class="btn btn-primary pull-right">Actualizar la encuesta</a>
+        </div>
+
+        <div id="dialog-confirm" title="Actualización de encuesta">
+            ¿Está seguro que desea actualizar la encuesta?
+        </div>
+    }
+}
+
+@Scripts.Render("~/bundles/mask")
+
+@section scripts{
+    <script>
+        $('#dialog-confirm').dialog({
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            modal: true,
+            buttons: {
+                'Actualizar Encuesta': function () {
+                    $('#btnConfirmUpdate').addClass('disabled');
+                    $('#btnConfirmUpdate').val('disabled');
+                    $.post('@Url.Action("UpdatePrevious", "EncuestaEstadistica")/@Request.QueryString["idEncuesta"]', $("form[name='encuestaEstadisticaForm']").serialize(), function (data) {
+                        $("#dialog-confirm").dialog("close");
+
+                        if (data.Success) {
+                            window.location = '@Url.Action("EncuestasAnalista","EncuestaEstadistica")/@Model.IdEstablecimiento';
+                        } else {
+                            showErrores(data);
+                        }
+                    });
+                },
+                'Cancelar': function () {
+                    $(this).dialog('close');
+                }
+            },
+            create: function () {
+                $(this).closest('.ui-dialog')
+                    .find('.ui-dialog-buttonpane button')
+                    .addClass('btn btn-primary');
+                $(this).closest('.ui-dialog')
+                    .find('.ui-dialog-buttonpane button:first').attr('id','btnConfirmUpdate');
+            }
+        });
+    </script>
+}
+
+<script type="text/javascript">
+    function maskEstadistico() {
+        $(".mask4:not([disabled])").inputmask("decimal", {
+            radixPoint: ",",
+            autoGroup: true,
+            groupSeparator: " ",
+            groupSize: 3,
+            digits: 4,
+            repeat: 11,
+            allowPlus: false,
+            allowMinus: false,
+            placeholder: '0',
+            digitsOptional: false
+        });
+
+        $(".mask4[disabled]").inputmask("decimal", {
+            radixPoint: ",",
+            autoGroup: true,
+            groupSeparator: " ",
+            groupSize: 3,
+            digits: 4,
+            repeat: 11,
+            allowPlus: false,
+            allowMinus: true,
+            placeholder: '0',
+            digitsOptional: false
+        });
+    }
+
+    function getValueEstadistico(selector) {
+        return $(selector).inputmask('unmaskedvalue').replace(',', '.');
+    }     
+
+    $(document).ready(function () {
+
+        $("#btnEncuestaUpdate").click(function (e) {
+            e.preventDefault();
+            
+            var isCompleteJusti = true;
+
+            $('.pnl-just').each(function (i, el) {
+                var $elem = $(this);
+                if ($elem.css('display') != 'none') {
+                    var valueJusti = $elem.find('textarea').val().trim();
+
+                    if (valueJusti.length == 0) {
+                        isCompleteJusti = false;
+                    }
+                }
+            });
+
+            if (isCompleteJusti == false) {
+                var data = {};
+                data.Errors = ['Debe completar los campos de justificación.'];
+                showErrores(data);
+                return;
+            }
+
+            $("#dialog-confirm").dialog("open");
+        });        
+    });
+
+    function showErrores(data) {
+
+        var errors = "";
+        for (var i = 0; i < data.Errors.length; i++) {
+            errors += "<li>" + data.Errors[i] + "</li>";
+        }
+        $("#errors-container-general").removeClass("hidden").find("ul").html(errors);
+        $.smallBox({
+            title: "Error",
+            content: "<i class='fa fa-clock-o'></i> <i>Error al validar la encuesta</i>",
+            color: "#C46A69",
+            iconSmall: "fa fa-check fa-2x fadeInRight animated",
+            timeout: 4000
+        });
+        window.scrollTo(0, 0);
+    }
+</script>
