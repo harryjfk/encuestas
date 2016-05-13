@@ -42,13 +42,19 @@ namespace WebApplication.Controllers
                 case "ciiu":
                     model =
                         establecimientos.SelectMany(t => t.Ciius).Distinct()
-                            .Select(t => new SelectListItem() { Text = t.ToString(), Value = t.Id.ToString() })
+                            .Select(t => new SelectListItem() { Text = t.Ciiu.Nombre, Value = t.IdCiiu.ToString() })
                             .ToList();
                     break;
                 case "producto":
                     model =
                         establecimientos.SelectMany(t => t.LineasProductoEstablecimiento).Distinct()
-                            .Select(t => new SelectListItem() { Text = t.ToString(), Value = t.Id.ToString() })
+                            .Select(t => new SelectListItem() { Text = t.LineaProducto.Nombre, Value = t.IdLineaProducto.ToString() })
+                            .ToList();
+                    break;
+                case "lineaproducto":
+                    model =
+                        establecimientos.SelectMany(t => t.LineasProductoEstablecimiento).Distinct()
+                            .Select(t => new SelectListItem() { Text = t.LineaProducto.Nombre, Value = t.IdLineaProducto.ToString() })
                             .ToList();
                     break;
             }
