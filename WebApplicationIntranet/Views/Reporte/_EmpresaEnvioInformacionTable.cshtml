@@ -32,7 +32,7 @@
                     <td>@(item.entraCalculo == 1 ? "SI" : "NO")</td>
                     @*<td><a href="/EncuestaEstadistica/EncuestaAnalista?idEncuesta=@item.encuesta_id&ro=1"><i class="fa fa-eye"></i></a></td>*@
                     @*<td><a href="/EncuestaEstadistica/Encuesta?idEncuesta=@item.encuesta_id"><i class="fa fa-eye"></i></a></td>*@
-                    <td><a href="/EncuestaEstadistica/Export?url=@Request.Url.GetLeftPart(UriPartial.Authority)/EncuestaEstadistica/Encuesta?idEncuesta=@item.encuesta_id"><i class="fa fa-eye"></i></a></td>
+                    <td><a href="/EncuestaEstadistica/Export?url=@Request.Url.GetLeftPart(UriPartial.Authority)/EncuestaEstadistica/EncuestaViewPrint?idEncuesta=@item.encuesta_id"><i class="fa fa-eye"></i></a></td>
                 </tr>
             }
         </tbody>

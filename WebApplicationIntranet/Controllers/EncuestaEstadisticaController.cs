@@ -434,11 +434,7 @@ namespace WebApplication.Controllers
                                         encuestaEstadisticaUpload.CodigoCIIU = currentWorksheet.Cells[row, 3].Value.ToString();
                                         encuestaEstadisticaUpload.CodigoLineaProducto = currentWorksheet.Cells[row, 6].Value.ToString();
                                         encuestaEstadisticaUpload.AbreviaturaUM = currentWorksheet.Cells[row, 7].Value.ToString();
-                                        encuestaEstadisticaUpload.Materia = string.Empty;
-                                        if (currentWorksheet.Cells[row, 14].Value != null)
-                                        {
-                                            currentWorksheet.Cells[row, 14].Value.ToString();
-                                        }
+                                        encuestaEstadisticaUpload.Materia = currentWorksheet.Cells[row, 14].Value.ToString();
                                         encuestaEstadisticaUpload.Produccion = Convert.ToDecimal(currentWorksheet.Cells[row, 10].Value);
                                         if (encuestaEstadisticaUpload.Materia == "P")
                                         {
@@ -600,6 +596,15 @@ namespace WebApplication.Controllers
             if (encuesta == null) return HttpNotFound("Encuesta No encontrada");
             IdEncuestaEstadistica = encuesta.Id;
             return View("Encuesta", encuesta);            
+        }
+
+        public ActionResult EncuestaViewPrint(long idEncuesta = 0)
+        {
+            var manager = Manager;
+            var encuesta = manager.EncuestaEstadistica.FindById(idEncuesta);
+            if (encuesta == null) return HttpNotFound("Encuesta No encontrada");
+            IdEncuestaEstadistica = encuesta.Id;
+            return View("EncuestaViewPrint", encuesta);
         }
 
         public ActionResult GetNombreDistrito(string idDistrito)

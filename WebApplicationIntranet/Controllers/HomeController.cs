@@ -10,7 +10,6 @@ using WebApplication;
 using WebApplication.Models;
 using Seguridad.PRODUCE;
 //using Data.UsuarioIntranetService;
-using Microsoft.AspNet.Identity;
 
 namespace WebApplication.Controllers
 {
@@ -24,24 +23,7 @@ namespace WebApplication.Controllers
 
         public ActionResult Index(UserInformation user)
         {
-            // Acá se agrega un fix. Como el método de autenticación tiene la cookie activada va a recuperarla siempre
-            // cuando se vuelva a ingresar al sitio. Por lo cual la sesión se perdió pero el usuario está autenticado
-            string currentLoginUser = string.Empty;
-            if (Request.IsAuthenticated)
-            {
-                if (Session["login"] == null)
-                {
-                    // Indica que la sesión se perdió pero está autenticado. Recuperar el usuario
-                    currentLoginUser = User.Identity.GetUserName();
-                    Session["login"] = currentLoginUser;
-                }
-                else
-                {
-                    currentLoginUser = Session["login"].ToString();
-                }
-            }
-
-            var usuario = Manager.Usuario.Repositorio.GetUsuariosIntranet(null, t => t.Login == currentLoginUser);
+            var usuario = Manager.Usuario.Repositorio.GetUsuariosIntranet(null, t => t.Login == Session["login"].ToString());
             if (usuario.Count > 0)
             {
                 user = new UserInformation()

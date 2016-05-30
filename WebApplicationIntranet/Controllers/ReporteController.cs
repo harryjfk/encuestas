@@ -1767,8 +1767,8 @@ namespace WebApplication.Controllers
                 row["Nro."] = (i + 1).ToString();
                 row["Codigo"] = rep[i].establecimiento_ruc;
                 row["Establecimiento"] = rep[i].establecimiento_nombre;
-                row["CIIU/Analista"] = rep[i].establecimiento_ruc;
-                row["EntraCalculo"] = rep[i].establecimiento_ruc;
+                row["CIIU/Analista"] = rep[i].ciiu_codigo;
+                row["EntraCalculo"] = rep[i].entraCalculo == 0 ? "No" : "Sí" ;
                 dt.Rows.Add(row);
             }
             dt.TableName = "EmpresaEnvioInformacion";

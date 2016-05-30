@@ -22,6 +22,8 @@
     <IISExpressUseClassicPipelineMode />
     <NuGetPackageImportStamp>4c7cdffa</NuGetPackageImportStamp>
     <UseGlobalApplicationHostFile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -234,7 +236,6 @@
     <Compile Include="Attributes\MultiButtonAttribute.cs" />
     <Compile Include="Binders\ModelBinder.cs" />
     <Compile Include="Controllers\AuditoriaController.cs" />
-    <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\ParametrizacionEnvioController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AñoBaseController.cs" />
@@ -326,7 +327,6 @@
     <Content Include="Descargas\PRODUCE.Manual.Usuario.Analista.pdf" />
     <Content Include="bin\Select.Html.dep" />
     <Content Include="Descargas\formato_encuesta.xlsx" />
-    <EmbeddedResource Include="Static\Pdf\ManualAdministrativo.pdf" />
     <None Include="Properties\PublishProfiles\IIS.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -407,6 +407,7 @@
     <Content Include="Views\Reporte\_IVFPMIncidenciaActividadTable.cshtml" />
     <Content Include="Views\Reporte\SeguimientoEncuesta.cshtml" />
     <Content Include="Views\Reporte\_EmpresaEnvioInformacionTable.cshtml" />
+    <Content Include="Views\EncuestaEstadistica\EncuestaViewPrint.cshtml" />
     <None Include="Web References\ServiceSunat\WCFSistemasService.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -582,7 +583,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Download\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
@@ -670,7 +670,9 @@
       <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Habilite la restauración del paquete NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Select.HtmlToPdf.1.2.0.0\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.1.2.0.0\build\Select.HtmlToPdf.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
