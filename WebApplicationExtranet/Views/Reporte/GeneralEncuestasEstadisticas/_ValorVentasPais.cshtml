@@ -1,0 +1,52 @@
+﻿@using System.Globalization
+@using Domain
+@using Entity
+@using WebApplication.Models
+@model List<VentasPaisExtranjero>
+
+
+
+                <table class="table table-striped table-hover table-bordered table-condensed tabla small">
+                    <thead>
+                        <tr class="cabecera">
+                            <th>Cod. Establecimiento</th>
+                            <th>Razon Social</th>
+                            <th>Mes</th>
+                            <th>CIIU</th>
+                            <th>
+                                Venta pais
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.OrderBy(t => t.CAT_CIIU.ToString()))
+                        {
+                            <tr>
+                                <td>
+                                    @item.CAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.IdentificadorInterno
+                                </td>
+                                <td>
+                                    @item.CAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.RazonSocial
+                                </td>
+                                <td>
+                                    @item.CAT_VENTAS_PROD_ESTAB.Encuesta.Fecha.Month.GetMonthText()
+                                </td>
+                                <td>
+                                    @item.CAT_CIIU.Codigo
+                                </td>
+                                <td>
+                                    @item.VentaPais.GetValueOrDefault().ToString("0.00", CultureInfo.GetCultureInfo("en"))
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (!Model.Any())
+                {
+                    <div class="no-elements-notification">
+                        No hay elementos para mostrar
+                    </div>
+                }
+            
+      

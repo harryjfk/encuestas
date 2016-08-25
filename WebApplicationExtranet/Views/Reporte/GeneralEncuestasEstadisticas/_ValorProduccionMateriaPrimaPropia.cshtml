@@ -1,0 +1,52 @@
+﻿@using System.Globalization
+@using Domain
+@model List<Entity.ValorProduccion>
+
+@*@using (Html.BeginForm("Buscar", "EncuestaEstadistica", FormMethod.Post, new {name = "cap3form"}))
+    {*@
+
+        <table class="table table-striped table-hover table-bordered table-condensed tabla small">
+            <thead>
+                <tr class="cabecera">
+                    <th>Cod. Establecimiento</th>
+                    <th>Razon Social</th>
+                    <th>Mes</th>
+                    <th>CIIU</th>
+                    <th>
+                        Materia prima propia
+                    </th>
+                  
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.OrderBy(t => t.CAT_CIIU.ToString()))
+                {
+                    <tr>
+                        <td>
+                            @item.CAT_ENCUESTA_ESTADISTICA.Establecimiento.IdentificadorInterno
+                        </td>
+                        <td>
+                            @item.CAT_ENCUESTA_ESTADISTICA.Establecimiento.RazonSocial
+                        </td>
+                        <td>
+                            @item.CAT_ENCUESTA_ESTADISTICA.Fecha.Month.GetMonthText()
+                        </td>
+                        <td>
+                            @item.CAT_CIIU.Codigo
+                        </td>
+                        <td>
+                            @item.ProductosMateriaPropia.GetValueOrDefault().ToString("0.00", CultureInfo.GetCultureInfo("en"))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.Count == 0)
+        {
+            <div class="no-elements-notification">
+                No hay elementos para mostrar
+            </div>
+        }
+   

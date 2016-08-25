@@ -410,6 +410,13 @@
     <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\Index.cshtml" />
     <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_MultiSelectListView.cshtml" />
     <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_ReporteGeneralEstadistico.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_VolumenProduccionMateriaPrimaPropia.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_VolumenProduccionMateriaPrimaTerceros.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_ValorProduccionMateriaPrimaPropia.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_ValorProduccionMateriaPrimaTerceros.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_ValorVentasPais.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_ValorVentasExtranjero.cshtml" />
+    <Content Include="Views\Reporte\GeneralEncuestasEstadisticas\_TrabajadoresDiasTrabajados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

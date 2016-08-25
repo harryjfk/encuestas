@@ -103,16 +103,6 @@
     <Compile Include="Repositorios\RepositorioDepartamento.cs" />
     <Compile Include="Repositorios\RepositorioUbigeo.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="Web References\UsuarioExtranetService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-    <Compile Include="Web References\UsuarioIntranetService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entity\Entity.csproj">
@@ -145,51 +135,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Web References\UsuarioExtranetService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\UsuarioExtranetService\UsuarioExtranetExtendidoResponse.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\UsuarioExtranetService\UsuarioExtranetService.wsdl" />
-    <None Include="Web References\UsuarioExtranetService\UsuarioExtranetService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\UsuarioExtranetService\UsuarioExtranetService0.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\UsuarioExtranetService\UsuarioExtranetService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\UsuarioIntranetService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\UsuarioIntranetService\UsuarioIntranetExtendidoResponse.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\UsuarioIntranetService\UsuarioIntranetService.wsdl" />
-    <None Include="Web References\UsuarioIntranetService\UsuarioIntranetService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\UsuarioIntranetService\UsuarioIntranetService0.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\UsuarioIntranetService\UsuarioIntranetService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\UsuarioIntranetService\UsuarioIntranetService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="libraries\Devart.Data.Oracle.Entity.dll" />
     <Content Include="libraries\Devart.Data.Oracle.Entity.Migrations.dll" />
     <Content Include="libraries\Devart.Data.Oracle.Entity.Spatials.dll" />
     <Content Include="libraries\Microsoft.AspNet.Identity.EntityFramework.dll" />
-    <None Include="Web References\UsuarioIntranetService\UsuarioIntranetService.disco" />
-    <None Include="Web References\UsuarioExtranetService\UsuarioExtranetService.disco" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -199,30 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://172.20.11.9:7000/UsuarioExtranetService.svc">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\UsuarioExtranetService\</RelPath>
-      <UpdateFromURL>http://172.20.11.9:7000/UsuarioExtranetService.svc</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>Data_UsuarioExtranetService_UsuarioExtranetService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://172.20.11.9:7000/UsuarioIntranetService.svc">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\UsuarioIntranetService\</RelPath>
-      <UpdateFromURL>http://172.20.11.9:7000/UsuarioIntranetService.svc</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>Data_UsuarioIntranetService_UsuarioIntranetService</CachedSettingsPropName>
-    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

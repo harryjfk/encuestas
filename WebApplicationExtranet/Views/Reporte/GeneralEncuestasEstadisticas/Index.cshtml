@@ -4,15 +4,21 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/Content/css")
 <h3 class="screen-title">Reporte General de Encuestas Estad&iacute;sticas</h3>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Alertas</strong>
+        <div>
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+}
 @using (Html.BeginForm())
 {
     <input type="hidden" name="InputTypes" id="InputTypes" />
-    <div id="errors-container" class="alert alert-danger animated bounceIn hidden">
-        <strong>Alertas</strong>
-        <div>
-            <ul></ul>
-        </div>
-    </div>
+  
     <div class="panel panel-primary">
         <div class="panel-heading">1.Seleccione el &Aacute;mbito de An&aacute;lisis</div>
         <div class="panel-body">
@@ -65,19 +71,19 @@
                         <input type="radio" name="Output" value="VPMT" />
                         <span>Volumen de Producci&oacute;n con Materia de terceros</span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lp">
                         <input type="radio" name="Output" value="VAPMP" />
                         <span>Valor de Producci&oacute;n con Materia Prima</span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lp">
                         <input type="radio" name="Output" value="VAPMT" />
                         <span>Valor de Producci&oacute;n con Materia de terceros</span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lp">
                         <input type="radio" name="Output" value="VVP" />
                         <span>Valor de Ventas en el pa&iacute;s</span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lp">
                         <input type="radio" name="Output" value="VVE" />
                         <span>Valor de Ventas en el extranjero</span>
                     </div>
@@ -102,7 +108,14 @@
                             <select class="form-control reset-max-width" id="yearDrop" name="Year">
                                 @for (var i = 2012; i <= DateTime.Now.Year; i++)
                                 {
-                                <option value="@i">@i</option>
+                                    if (i == DateTime.Now.Year)
+                                    {
+                                        <option selected="selected" value="@i">@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
                                 }
                             </select>
 
@@ -140,7 +153,7 @@
                 </div>
 
             </div>
-            <div class="row">
+            <div class="row margin-top-5">
                 <div class="col-md-2">
                     <input type="submit" class="btn-xs btn-primary" value="PDF" name="action:PDF" />
                     <input type="submit" class="btn-xs btn-primary" value="Excel" name="action:Excel" />
@@ -397,6 +410,12 @@
 
                     } else {
                         $("#NT").hide();
+                    }
+                    if (elem.val() != "LineaProducto") {
+                        $(".lp").show();
+
+                    } else {
+                        $(".lp").hide();
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {

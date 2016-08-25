@@ -20,6 +20,97 @@ namespace Domain
 {
     public static class Tools
     {
+
+        public static List<Object> Convert(this IEnumerable<MateriaPropia> list)
+        {
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.VolumenProduccion.Encuesta.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.VolumenProduccion.Encuesta.Establecimiento.RazonSocial,
+                Mes = t.VolumenProduccion.Encuesta.Fecha.Month.GetMonthText(),
+                CIIU = t.LineaProducto.Ciiu.Codigo,
+                Cod_Producto = t.LineaProducto.Codigo,
+                Descripcion = t.LineaProducto.Nombre,
+                UM = t.UnidadMedida.Abreviatura,
+                Produccion = t.Produccion,
+                Valor_Unitario = t.ValorUnitario,
+                Otros_Ingresos = t.OtrosIngresos,
+                Otras_Salidas = t.OtrasSalidas,
+                Ventas_extranjero = t.VentasExtranjero,
+                Ventas_Pais = t.VentasPais,
+                Existencias = t.Existencia
+            }).Cast<object>().ToList();
+        }
+        public static List<Object> Convert(this IEnumerable<MateriaTerceros> list)
+        {
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.VolumenProduccion.Encuesta.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.VolumenProduccion.Encuesta.Establecimiento.RazonSocial,
+                Mes = t.VolumenProduccion.Encuesta.Fecha.Month.GetMonthText(),
+                CIIU = t.LineaProducto.Ciiu.Codigo,
+                Cod_Producto = t.LineaProducto.Codigo,
+                Descripcion = t.LineaProducto.Nombre,
+                UM = t.UnidadMedida.Abreviatura,
+                Unidad_Produccion = t.UnidadProduccion
+            }).Cast<object>().ToList();
+        }
+        public static List<Object> Convert(this IEnumerable<TrabajadoresDiasTrabajados> list)
+        {
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.Encuesta.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.Encuesta.Establecimiento.RazonSocial,
+                Mes = t.Encuesta.Fecha.Month.GetMonthText(),
+                Dias_Trabajados = t.DiasTrabajados,
+                Administrativos_Planta = t.AdministrativosPlanta,
+                Trabajadores_Produccion = t.TrabajadoresProduccion
+            }).Cast<object>().ToList();
+        }
+        public static List<Object> Convert(this IEnumerable<ValorProduccion> list, bool isPropia = true)
+        {
+            if (isPropia)
+            {
+                return list.Select(t => new
+                               {
+                                   Cod_Establecimiento = t.CAT_ENCUESTA_ESTADISTICA.Establecimiento.IdentificadorInterno,
+                                   Razon_Social = t.CAT_ENCUESTA_ESTADISTICA.Establecimiento.RazonSocial,
+                                   Mes = t.CAT_ENCUESTA_ESTADISTICA.Fecha.Month.GetMonthText(),
+                                   CIIU = t.CAT_CIIU.Codigo,
+                                   Materia_Propia = t.ProductosMateriaPropia
+                               }).Cast<object>().ToList();
+            }
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.CAT_ENCUESTA_ESTADISTICA.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.CAT_ENCUESTA_ESTADISTICA.Establecimiento.RazonSocial,
+                Mes = t.CAT_ENCUESTA_ESTADISTICA.Fecha.Month.GetMonthText(),
+                CIIU = t.CAT_CIIU.Codigo,
+                Materia_Terceros = t.ProductosMateriaTerceros
+            }).Cast<object>().ToList();
+        }
+        public static List<Object> Convert(this IEnumerable<VentasPaisExtranjero> list, bool isVentaPais = true)
+        {
+            if (isVentaPais)
+            {
+                return list.Select(t => new
+                {
+                    Cod_Establecimiento = t.CAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.IdentificadorInterno,
+                    Razon_Social = t.CAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.RazonSocial,
+                    Mes = t.CAT_VENTAS_PROD_ESTAB.Encuesta.Fecha.Month.GetMonthText(),
+                    CIIU = t.CAT_CIIU.Codigo,
+                    Ventas_Pais = t.VentaPais
+                }).Cast<object>().ToList();
+            }
+            return list.Select(t => new
+            {
+                Cod_Establecimiento = t.CAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.IdentificadorInterno,
+                Razon_Social = t.CAT_VENTAS_PROD_ESTAB.Encuesta.Establecimiento.RazonSocial,
+                Mes = t.CAT_VENTAS_PROD_ESTAB.Encuesta.Fecha.Month.GetMonthText(),
+                CIIU = t.CAT_CIIU.Codigo,
+                Ventas_Extranjero = t.VentaExtranjero
+            }).Cast<object>().ToList();
+        }
         public static void UpdateKey<T>(this T element, long value) where T : class
         {
             try
@@ -111,18 +202,18 @@ namespace Domain
                 default:
                     return value;
             }
-            
-        }
-       
 
-        public static bool ExportToExcel<T>(this IList<T> source,string nombreHoja,string nombreReporte,string direccion)
+        }
+
+
+        public static bool ExportToExcel<T>(this IList<T> source, string nombreHoja, string nombreReporte, string direccion)
         {
             var dt = ExcelUtility.ConvertToDataTable(source);
-           return ExcelUtility.WriteDataTableToExcel(dt, nombreHoja, direccion, nombreReporte);
-          
+            return ExcelUtility.WriteDataTableToExcel(dt, nombreHoja, direccion, nombreReporte);
+
         }
 
-      
+
     }
 
     public static class ExcelUtility
@@ -144,17 +235,17 @@ namespace Domain
                 pack.Workbook.Worksheets.Add(worksheetName);
                 var ws = pack.Workbook.Worksheets[1];
                 ws.Name = ReporType;
-                ws.Cells.Style.Font.Size = 11; 
+                ws.Cells.Style.Font.Size = 11;
                 ws.Cells.Style.Font.Name = "Calibri";
-              
-               
+
+
                 ws.Cells[1, 1].Value = ReporType.ToUpper();
                 ws.Cells[1, 2].Value = "DATE : " + DateTime.Now.ToShortDateString().ToUpper();
                 var rowcount = 2;
 
                 foreach (DataRow datarow in dataTable.Rows)
                 {
-                   
+
                     rowcount += 1;
                     for (var i = 1; i <= dataTable.Columns.Count; i++)
                     {
@@ -170,11 +261,11 @@ namespace Domain
                         if (rowcount <= 3) continue;
                         if (i != dataTable.Columns.Count) continue;
                         if (rowcount % 2 != 0) continue;
-                        
+
                     }
 
                 }
-             
+
                 pack.Save();
                 return true;
             }
@@ -187,12 +278,17 @@ namespace Domain
         {
             var properties =
             TypeDescriptor.GetProperties(typeof(T));
+            if (data.Any())
+            {
+                properties =
+           TypeDescriptor.GetProperties(data[0].GetType());
+            }
             var table = new DataTable();
             foreach (PropertyDescriptor prop in properties)
             {
                 if (data.Any(t => prop.GetValue(t) != null))
                 {
-                    table.Columns.Add(prop.Name.Replace("_", ""),
+                    table.Columns.Add(prop.Name.Replace("_", " "),
                     Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
                 }
             }
@@ -201,9 +297,9 @@ namespace Domain
                 var row = table.NewRow();
                 foreach (PropertyDescriptor prop in properties)
                 {
-                    if (true)
+                    if (data.Any(t => prop.GetValue(t) != null))
                     {
-                         row[prop.Name.Replace("_", "")] = prop.GetValue(item) ?? DBNull.Value;
+                        row[prop.Name.Replace("_", " ")] = prop.GetValue(item) ?? DBNull.Value;
                     }
                 }
                 table.Rows.Add(row);
